@@ -1,1 +1,5 @@
+---
+slug: /
+---
+
 # Intro page
