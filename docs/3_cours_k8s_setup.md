@@ -4,6 +4,12 @@ draft: false
 sidebar_position: 7
 ---
 
+## Kubernetes
+
+- Kubernetes est une solution d'orchestration de conteneurs extrêmement populaire.
+- Le projet est très ambitieux : une façon de considérer son ampleur est de voir Kubernetes comme un système d'exploitation (et un standard ouvert) pour les applications distribuées et le cloud.
+- Le projet est développé en Open Source au sein de la Cloud Native Computing Foundation.
+
 ## Architecture de Kubernetes
 
 Kubernetes a une architecture master/worker ce qui signifie que certains certains noeuds du cluster contrôlent l'exécution par les autres noeuds de logiciels ou jobs.

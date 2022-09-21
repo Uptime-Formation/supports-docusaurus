@@ -4,7 +4,9 @@ title: Accueil
 sidebar_position: 0
 ---
 
-# Bienvenue sur le site des supports de formation
+# Bienvenue sur le s- Début du cursus :
+  - Est-ce que ça vous plait ?
+  - Quels modules avez vous déjà fait ?ite des supports de formation
 
 Utilisez le menu de gauche pour parcourir les cours et TP.
 
@@ -16,6 +18,8 @@ Utilisez le menu de gauche pour parcourir les cours et TP.
 - Accédez à votre VM via l'interface Guacamole avec le login fourni par le formateur (traditionnellement votre prenom en minuscule et sans accent et un mot de passe générique indiqué à l'oral)
 
 - Pour accéder au copier-coller de Guacamole, il faut appuyer simultanément sur **`Ctrl+Alt+Shift`** et utiliser la zone de texte qui s'affiche (réappuyer sur `Ctrl+Alt+Shift` pour revenir à la VM).
+
+- Cependant comme ce copier-coller est capricieux, il est conseillé d'ouvrir cette page de doc dans le navigateur à l'intérieur de guacamole et de suivre à partir de la machine distance.
 
 ## Imprimer le site internet
 
