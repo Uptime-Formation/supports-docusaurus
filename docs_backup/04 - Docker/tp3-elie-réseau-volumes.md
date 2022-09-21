@@ -63,7 +63,7 @@ Explorons un peu notre réseau Docker.
 
 - Exécutez à l'intérieur du conteneur `moby-counter` avec (`docker exec`) la commande `ping -c 3 redis` sur notre conteneur applicatif. Quelle est l'adresse ip affichée ?
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker exec moby-counter cat ping -c3 redis
@@ -71,11 +71,11 @@ docker exec moby-counter cat ping -c3 redis
 
 - => le conteneur connait le nom de domaine associée à l'adresse ip du conteneur redis car Docker fournit un service DNS automatique aux conteneurs.
 
-{{% /expand %}}
+</details>
 
 - De même, affichez le contenu des fichiers `/etc/hosts` et `/etc/resolv.conf`. Nous constatons que docker a automatiquement configuré le nom d'hôte de la machine avec l'identifiant du conteneur.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker exec moby-counter cat /etc/hosts
@@ -95,11 +95,11 @@ nameserver 127.0.0.11  => l'ip du server DNS (nameserver) docker est automatique
 options ndots:0
 ```
 
-{{% /expand %}}
+</details>
 
 - Pour le vérifier interrogeons le serveur DNS de notre réseau `moby-counter` en lançant la commande `nslookup redis 127.0.0.11` toujours grâce à `docker exec`.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker exec moby-counter nslookup redis 127.0.0.11
@@ -111,13 +111,13 @@ Name:      redis
 Address 1: 172.19.0.2 redis.moby-counter => on récupère bien l'ip de redis
 ```
 
-{{% /expand %}}
+</details>
 
 - Créez un deuxième réseau `moby-counter2` et une deuxième instance de l'application dans ce réseau : `docker run --name moby-counter2 --network moby-counter2 -p 9090:80 russmckendrick/moby-counter`
 
 - Lors que vous pingez `redis` depuis cette nouvelle instance de l'application, quelle ip obtenez vous ?
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker exec moby-counter2 ping -c 3 redis
@@ -126,13 +126,13 @@ ping: bad address 'redis'
 ```
 
 => redis n'est pas joignable
-{{% /expand %}}
+</details>
 
 - Récupérez comme auparavant l'adresse ip du nameserver local pour `moby-counter2`.
 
 - Puis lancez `nslookup redis <nameserver_ip>` pour tester la résolution de DNS. Comparer l'adresse ip avec les adresses habituelles Docker.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker exec moby-counter2 nslookup redis 127.0.0.11
@@ -143,7 +143,7 @@ Address 1: 127.0.0.11
 nslookup: can't resolve 'redis': Name does not resolve
 ```
 
-{{% /expand %}}
+</details>
 
 Bien que vous ne puissiez pas avoir deux conteneurs avec les mêmes noms, comme nous l'avons déjà découvert, notre deuxième réseau fonctionne complètement isolé de notre premier réseau, ce qui signifie que nous pouvons toujours utiliser le domaine `redis` ; pour ce faire, nous devons ajouter le drapeau `--network-alias` :
 
@@ -151,7 +151,7 @@ Bien que vous ne puissiez pas avoir deux conteneurs avec les mêmes noms, comme 
 
 - Relancez la résolution précédente avec `nslookup`.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker exec moby-counter2 nslookup redis 127.0.0.11
@@ -163,12 +163,12 @@ Name:      redis
 Address 1: 172.20.0.3 redis2.moby-counter2 => maintenant que nous avons ajouté le network alias redis pointe bien vers le conteneur redis2
 ```
 
-{{% /expand %}}
+</details>
 
 - Vous pouvez retrouver la configuration du réseau et les conteneurs qui lui sont relié avec `docker network inspect moby-counter`.
   Notez la section IPAM (IP Address Management).
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```json
 [
@@ -218,7 +218,7 @@ Address 1: 172.20.0.3 redis2.moby-counter2 => maintenant que nous avons ajouté 
 ]
 ```
 
-{{% /expand %}}
+</details>
 
 - Arrêtons nos conteneurs `docker container stop moby-counter2 redis2`.
 
@@ -253,9 +253,9 @@ docker container run -d --name moby-counter --network moby-counter -p 8000:80 ru
 - Redémarrez le conteneur moby-counter : `docker restart moby-counter`
 - Rechargez la page. Que s'est-il passé ?
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 L'application refonctionne mais les données (les logo docker) on été effacées => plus de logo car les positions des balaines étaient stockée dans le redis
-{{% /expand %}}
+</details>
 
 - Supprimez à nouveau le conteneur redis.
 
@@ -314,7 +314,7 @@ La beaucoup de conteneurs docker sont des applications `stateful` c'est à dire 
 
 - Affichez le contenu du volume avec la commande : `docker container exec redis ls -lhat /data`
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker container exec redis ls -lhat /data
@@ -325,7 +325,7 @@ drwxr-xr-x    2 redis    redis       4.0K Jul 30 22:28 .
 -rw-r--r--    1 redis    redis        142 Jul 30 22:28 dump.rdb => fichier contenant les données redis
 ```
 
-{{% /expand %}}
+</details>
 
 Finalement nous allons écraser ce volume anonyme par le notre : la bonne façon de créer des volumes consiste à les créer manuellement (volume nommés). `docker volume create redis_data`.
 
@@ -343,49 +343,49 @@ C'est quelque peu trompeur, car tous les volumes sont techniquement "bind mounte
   - monté en read-only (`:ro` après le paramètre de la question précédente)
 
 Le read only est nécessaire pour que les deux redis n'écrivent pas de façon contradictoire dans la base de valeurs.
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker network create moby-counter2
 docker container run -d --name redis2 -v redis_data:/data:ro --network moby-counter2 --network-alias redis redis:alpine
 ```
 
-{{% /expand %}}
+</details>
 
 - Ajoutez une deuxième instance de l'application dans le deuxième réseau connectée à ce nouveau redis.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker run -itd --name moby-counter2 --network moby-counter2 -p 9090:80 russmckendrick/moby-counter
 ```
 
-{{% /expand %}}
+</details>
 
 - Visitez la deuxième application: vous devriez voir également le même motif de moby apparaître.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker container stop redis moby-counter
 ```
 
 Notez que `docker stop` et `docker container stop` sont équivalents
-{{% /expand %}}
+</details>
 
 - Pour nettoyer tout ce travail, arrêtez les les deux redis et les deux moby-counter.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker stop redis redis2 moby-counter moby-counter2
 ```
 
-{{% /expand %}}
+</details>
 
 - Lancez trois `prune` pour les conteneurs d'abord puis les réseaux et les volumes.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker container prune
@@ -393,7 +393,7 @@ docker network prune
 docker volume prune
 ```
 
-{{% /expand %}}
+</details>
 
 {{% notice info %}}
 Comme les réseau et volumes n'étaient plus attachés à des conteneurs en fonctionnement ils ont étés supprimés. Généralement, il faut faire beaucoup **plus attention** au prune de **volumes (données à perdre)** que de **conteneur(rien à perdre car immutable et dans le registry)**.

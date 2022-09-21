@@ -121,7 +121,7 @@ CMD ["./boot.sh"]
 
 - Avec `docker login`, `docker tag` et `docker push`, poussez l'image `microblog` sur le Docker Hub. Créez un compte sur le Docker Hub le cas échéant.
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker login
@@ -129,7 +129,7 @@ docker tag microblog:latest <your-docker-registry-account>/microblog:latest
 docker push <your-docker-registry-account>/microblog:latest
 ```
 
-{{% /expand %}}
+</details>
 
 ## Améliorer le Dockerfile
 
@@ -168,7 +168,7 @@ fi
 <!--
 - Avec l'aide du [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/), faire en sorte que l'app `microblog` soit exécutée par un utilisateur appelé `microblog`.
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```Dockerfile
 # Ajoute un user et groupe appelés microblog
@@ -177,13 +177,13 @@ RUN chown -R microblog:microblog ./
 USER microblog
 ```
 
-{{% /expand %}} -->
+</details> -->
 
 <!-- Après avoir ajouté ces instructions, lors du build, que remarque-t-on ?
 
-{{% expand "Réponse :" %}}
+<details><summary>Réponse</summary>
 La construction reprend depuis la dernière étape modifiée. Sinon, la construction utilise les layers précédents, qui avaient été mis en cache par le Docker Engine.
-{{% /expand %}} -->
+</details> -->
 
 ### Exposer le port
 
@@ -192,7 +192,7 @@ La construction reprend depuis la dernière étape modifiée. Sinon, la construc
 
 ### Dockerfile amélioré
 
-{{% expand "`Dockerfile` final :" %}}
+<details><summary>Réponse</summary>
 
 ```Dockerfile
 FROM python:3-alpine
@@ -211,7 +211,7 @@ EXPOSE 5000
 CMD ["./boot.sh"]
 ```
 
-{{% /expand %}}
+</details>
 
 ## L'instruction HEALTHCHECK
 
@@ -296,7 +296,7 @@ Une image est composée de plusieurs layers empilés entre eux par le Docker Eng
 - Puis trouvez comment y pousser une image dessus.
 - Enfin, supprimez votre image en local et récupérez-la depuis votre registry.
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 # Créer le registry
@@ -314,7 +314,7 @@ docker image remove localhost:5000/my-ubuntu
 docker pull localhost:5000/my-ubuntu
 ```
 
-{{% /expand %}}
+</details>
 
 ## _Facultatif :_ Faire parler la vache
 
@@ -329,7 +329,7 @@ Le but est de faire fonctionner notre programme dans un conteneur à partir de c
 - Pour information, `cowsay` s'installe dans `/usr/games/cowsay`.
 - La liste des options (incontournables) de `cowsay` se trouve ici : <https://debian-facile.org/doc:jeux:cowsay>
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```Dockerfile
 FROM ubuntu
@@ -338,7 +338,7 @@ ENTRYPOINT ["/usr/games/cowsay"]
 # les crochets sont nécessaires, car ce n'est pas tout à fait la même instruction qui est exécutée sans
 ```
 
-{{% /expand %}}
+</details>
 
 - L'instruction `ENTRYPOINT` et la gestion des entrées-sorties des programmes dans les Dockerfiles peut être un peu capricieuse et il faut parfois avoir de bonnes notions de Bash et de Linux pour comprendre (et bien lire la documentation Docker).
 - On utilise parfois des conteneurs juste pour qu'ils s'exécutent une fois (pour récupérer le résultat dans la console, ou générer des fichiers). On utilise alors l'option `--rm` pour les supprimer dès qu'ils s'arrêtent.

@@ -73,7 +73,7 @@ if __name__ == '__main__':
 CMD ["uwsgi", "--http", "0.0.0.0:9090", "--wsgi-file", "/app/identidock.py", "--callable", "app", "--stats", "0.0.0.0:9191"]
 ```
 
-{{% expand "Correction `Dockerfile`  :" %}}
+<details><summary>Réponse</summary>
 
 ```Dockerfile
 FROM python:3.7
@@ -87,11 +87,11 @@ CMD ["uwsgi", "--http", "0.0.0.0:9090", "--wsgi-file", "/app/identidock.py", \
 "--callable", "app", "--stats", "0.0.0.0:9191"]
 ```
 
-{{% /expand %}}
+</details>
 
 - Construire l'application, la lancer et vérifier avec `docker exec`, `whoami` et `id` l'utilisateur avec lequel tourne le conteneur.
 
-{{% expand "Réponse  :" %}}
+<details><summary>Réponse</summary>
 
 - `docker build -t identidock .`
 - `docker run --detach --name identidock -p 9090:9090 identidock`
@@ -102,7 +102,7 @@ Une fois dans le conteneur lancez:
 - `whoami` et `id`
 - vérifiez aussi avec `ps aux` que le serveur est bien lancé.
 
-{{% /expand %}}
+</details>
 
 - Validez la version actuelle du code avec `git init && git add -A && git commit -m tp_compose_init`
 
@@ -141,7 +141,7 @@ fi
 - Testez votre conteneur en mode DEV avec `docker run --env CONTEXT=DEV -p 5000:5000 identidock`, visitez localhost:5000
 - Et en mode `PROD` avec `docker run --env CONTEXT=PROD -p 9090:9090 identidock`. Visitez localhost:9090.
 
-{{% expand "Correction `Dockerfile`:" %}}
+<details><summary>Réponse</summary>
 
 ```Dockerfile
 FROM python:3.7
@@ -157,7 +157,7 @@ USER uwsgi
 CMD ["/boot.sh"]
 ```
 
-{{% /expand %}}
+</details>
 
 Conclusions:
 

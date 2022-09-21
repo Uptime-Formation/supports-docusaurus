@@ -170,9 +170,9 @@ C'est quelque peu trompeur, car tous les volumes sont techniquement "bind mounte
   - partageant le volume de données du premier (cf. cours)
       - monté en read-only (`:ro` après le paramètre de la question précédente)
 
-{{% expand "Indice :" %}}
+<details><summary>Réponse</summary>
 `docker run -v redis_data:/data -d --name redis2 --network moby-network2 --network-alias redis redis:alpine`
-{{% /expand %}}
+</details>
 
 Le read-only est nécessaire pour que les deux Redis n'écrivent pas de façon contradictoire dans la base de valeurs.
 
@@ -216,14 +216,14 @@ ENV DATABASE_URL=sqlite:////data/app.db
 
 - Ajouter au `Dockerfile` une instruction `VOLUME` pour stocker la base de données SQLite de l'application.
 
-{{% expand "Indice :" %}}
+<details><summary>Réponse</summary>
 
 Dans le conteneur, le chemin de la base de données est :
 `/data/app.db`
 
-{{% /expand %}}
+</details>
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 Voici le `Dockerfile` complet :
 
@@ -247,7 +247,7 @@ VOLUME ["/data"]
 CMD ["./boot.sh"]
 ```
 
-{{% /expand %}}
+</details>
 
 - Créez un volume nommé appelé `microblog_db`, et lancez un conteneur l'utilisant, créez un compte et écrivez un message.
 - Vérifier que le volume nommé est bien utilisé en branchant un deuxième conteneur `microblog` utilisant le même volume nommé.
@@ -274,7 +274,7 @@ SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
 Lire le `Dockerfile` de l'application `microblog` à l'adresse `https://github.com/uptime-formation/microblog` (branche `docker`) du TP précédent pour le lancer dans le même réseau qu'un conteneur `mysql` lancé avec les bonnes options de configuration.
 
 
-{{% expand "Indice 1 :" %}}
+<details><summary>Réponse</summary>
 
 La ligne du `Dockerfile` qui nous intéresse est la suivante :
 
@@ -284,13 +284,13 @@ ENV DATABASE_URL=mysql+mysqlconnector://microblog:${MYSQL_PASSWORD}@db/microblog
 
 Il faut donc remplacer la variable `DATABASE_URL` au lancement.
 
-{{% /expand %}}
+</details>
 
-{{% expand "Indice 2 :" %}}
+<details><summary>Réponse</summary>
 
 Il va falloir configurer des options de démarrage pour le conteneur `mysql`, à lire sur le [Docker Hub](https://hub.docker.com/).
 
-{{% /expand %}} -->
+</details> -->
 
 ### _Facultatif :_ Packagez votre propre app
 

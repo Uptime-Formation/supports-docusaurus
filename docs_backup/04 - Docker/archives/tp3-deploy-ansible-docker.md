@@ -12,9 +12,9 @@ draft: true
 
 
 
-{{% expand Correction %}}
+<details><summary>Réponse</summary>
 
-{{% /expand %}}
+</details>
 
 
 

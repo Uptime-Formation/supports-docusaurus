@@ -66,13 +66,13 @@ const config = {
         items: [
           // {
           //   type: 'doc',
-          //   docId: 'intro',
+          //   docId: 'accueil',
           //   position: 'left',
           //   label: 'Tutorial',
           // },
           // {to: '/blog'          // {
           //   type: 'doc',
-          //   docId: 'intro',
+          //   docId: 'accueil',
           //   position: 'left',
           //   label: 'Tutorial',
           // },, label: 'Blog', position: 'left'},

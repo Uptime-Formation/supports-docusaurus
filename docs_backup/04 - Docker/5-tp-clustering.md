@@ -14,9 +14,9 @@ Initialisez Swarm avec `docker swarm init`.
 A l'aide de `docker service create`, créer un service à partir de l'image `traefik/whoami` accessible sur le port `9999` et connecté au port `80` et avec 5 répliques.
 
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 `docker service create --name whoami --replicas 5 -p 9999:80 traefik/whoami`
-{{% /expand %}}
+</details>
 
 Accédez à votre service et actualisez plusieurs fois la page. Les informations affichées changent. Pourquoi ?
 
@@ -82,31 +82,31 @@ Accédez à votre service et actualisez plusieurs fois la page. Les informations
 Vous avez remarqué ? Nous avons déployé une super stack d'application de vote avec succès mais, si vous testez le vote, vous verrez que ça ne marche pas, il n'est pas comptabilisé.
 Outre le fait que c'est un plaidoyer vivant contre le vote électronique, vous pourriez tenter de débugger ça maintenant (c'est plutôt facile).
 
-{{% expand "Indice 1 :" %}}
+<details><summary>Réponse</summary>
 Première étape, regarder les logs !
-{{% /expand %}}
+</details>
 
-{{% expand "Indice 2 :" %}}
+<details><summary>Réponse</summary>
 Deuxième étape, vérifier sur le dépôt GitHub officiel de l'app si quelqu'un a déjà répertorié ce bug : <https://github.com/dockersamples/example-voting-app/issues/>
-{{% /expand %}}
+</details>
 
 <!-- 
-{{% expand "Indice 3 :" %}}
+<details><summary>Réponse</summary>
 Hmm, ce serait [ce satané _commit_](https://github.com/dockersamples/example-voting-app/pull/159) qui serait à la source de toute cela !
-{{% /expand %}} -->
+</details> -->
 
-{{% expand "Indice 3 :" %}}
+<details><summary>Réponse</summary>
 Ce commentaire semble contenir la clé du mystère au chocolat : <https://github.com/dockersamples/example-voting-app/issues/162#issuecomment-609521466>
 
-{{% /expand %}}
+</details>
 
-{{% expand "Solution / explications :" %}}
+<details><summary>Réponse</summary>
 Quelqu'un a abandonné le dépôt Docker Hub lié à cette app et la personne qui y a accès est injoignable ! C'est un très bon exemple de la réalité de l'écosystème Docker, et du fait qu'il faut se méfier des images créées par d'autres. Heureusement, il suffit juste :
 
 - de _rebuild_ les différentes images à partir de leur Dockerfile,
 - puis d'éditer votre fichier Docker Compose (`docker-stack.yml`) pour qu'il se base sur l'image que vous venez de reconstruire.
 
-{{% /expand %}}
+</details>
 
 ### Introduction à Kubernetes
 

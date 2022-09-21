@@ -1,17 +1,12 @@
 ---
-title: "TP 1 - Installer Docker et jouer avec"
-weight: 1015
+title: "TP1 - Manipulation de conteneurs"
 ---
 
-# Premier TD : on installe Docker et on joue avec
+## Installer Docker (si nécessaire)
 
-## Installer Docker sur la VM Ubuntu dans Guacamole
+### Installation classique sur Ubuntu
 
-- Accédez à votre VM via l'interface Guacamole
-
-- Pour accéder au copier-coller de Guacamole, il faut appuyer sur **`Ctrl+Alt+Shift`** et utiliser la zone de texte qui s'affiche (réappuyer sur `Ctrl+Alt+Shift` pour revenir à la VM).
-
-<!-- - Vérifiez l'installation de Docker en lançant `sudo docker info`. -->
+- Pour savoir si docker et installé et sa version, lancez `sudo docker info`.
 
 - Pour installer Docker, suivez la [documentation officielle pour installer Docker sur Ubuntu](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository), depuis "Install using the repository" jusqu'aux deux commandes `sudo apt-get update` et `sudo apt-get install docker-ce docker-ce-cli containerd.io`.
 
@@ -26,15 +21,9 @@ weight: 1015
   - Ajoutez-le au groupe avec la commande `sudo usermod -aG docker <user>` (en remplaçant `<user>` par ce qu'il faut)
   - Pour actualiser la liste de groupes auquel appartient l'utilisateur, redémarrez la VM avec `sudo reboot` puis reconnectez-vous avec Guacamole pour que la modification sur les groupes prenne effet.
 
-  <!-- **à l'aide du bouton en haut à droite de l'écran sur Ubuntu (pas simplement le terminal mais bien la session Ubuntu, redémarrer marche aussi)**  -->
+<!-- - Docker nous propose aussi une installation en une ligne (_one-liner_) : `curl -sSL https://get.docker.com | sudo sh` -->
 
-<!-- - Relancez la session de terminal (en quittant le terminal puis en le relançant)
-
-- Faites un snapshot de la VM Ubuntu avec VirtualBox -->
-
-Pour les prochaines fois, Docker nous propose aussi une installation en une ligne (_one-liner_) : `curl -sSL https://get.docker.com | sudo sh`
-
-### Autocomplétion
+### Ajouter l'autocomplétion
 
 - Pour vous faciliter la vie, ajoutez le plugin _autocomplete_ pour Docker et Docker Compose à `bash` en copiant les commandes suivantes :
 
@@ -46,9 +35,7 @@ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.24.1/contrib/com
 
 **Important:** Vous pouvez désormais appuyer sur la touche TAB pour utiliser l'autocomplétion quand vous écrivez des commandes Docker
 
----
-
-# Pour vérifier l'installation
+### Pour vérifier l'installation
 
 - Les commandes de base pour connaître l'état de Docker sont :
 
@@ -60,18 +47,18 @@ docker ps -a # affiche  également les conteneurs arrêtés
 
 ## Manipuler un conteneur
 
+![](/img/changingThings.jpg)
+
 - **Commandes utiles :** <https://devhints.io/docker>
 - **Documentation `docker run` :** <https://docs.docker.com/engine/reference/run/>
 
-Mentalité :
-![](/img/changingThings.jpg)
-Il faut aussi prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.
+Il faut prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.
 
 Avec l'aide du support et de `--help`, et en notant sur une feuille ou dans un fichier texte les commandes utilisées :
 
 - Lancez simplement un conteneur Debian en mode _attach_. Que se passe-t-il ?
 
-{{% expand "Résultat :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker run debian
@@ -80,42 +67,42 @@ docker run --attach debian
 # Il ne se passe rien car comme debian ne contient pas de processus qui continue de tourner le conteneur s'arrête
 ```
 
-{{% /expand %}}
+</details>
 
 - Lancez un conteneur Debian (`docker run` puis les arguments nécessaires, cf. l'aide `--help`)n avec l'option "mode détaché" et la commande passée au conteneur `echo "Je suis le conteneur basé sur Debian"`. Rien n'apparaît. En effet en mode détaché la sortie standard n'est pas connectée au terminal.
 
 - Lancez `docker logs` avec le nom ou l'id du conteneur. Vous devriez voir le résultat de la commande `echo` précédente.
 
-{{% expand "Résultat :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker logs <5b91aa9952fa> # n'oubliez pas que l'autocomplétion est activée, il suffit d'appuyer sur TAB !
 => Debian container
 ```
 
-{{% /expand %}}
+</details>
 
 <!-- - Réessayez en affichant le résultat cette fois-ci avec le mode *attached* -->
 
 - Affichez la liste des conteneurs en cours d'exécution
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker ps
 ```
 
-{{% /expand %}}
+</details>
 
 - Affichez la liste des conteneurs en cours d'exécution et arrêtés.
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker ps -a
 ```
 
-{{% /expand %}}
+</details>
 
 - Lancez un conteneur debian **en mode détaché** avec la commande `sleep 3600`
 
@@ -131,24 +118,24 @@ docker stop <conteneur>
 
 - Trouvez comment vous débarrasser d'un conteneur récalcitrant (si nécessaire, relancez un conteneur avec la commande `sleep 3600` en mode détaché).
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker kill <conteneur>
 ```
 
-{{% /expand %}}
+</details>
 
 - Tentez de lancer deux conteneurs avec le nom `debian_container`
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```
 docker run -d --name debian_container debian sleep 500
 docker run -d --name debian_container debian sleep 500
 ```
 
-{{% /expand %}}
+</details>
 
 Le nom d'un conteneur doit être unique (à ne pas confondre avec le nom de l'image qui est le modèle utilisé à partir duquel est créé le conteneur).
 
@@ -161,9 +148,7 @@ docker run debian -d --name debian2 sleep 500
 - Lancez un conteneur debian en mode interactif (options `-i -t`) avec la commande `/bin/bash` et le nom `debian_interactif`.
 - Explorer l'intérieur du conteneur : il ressemble à un OS Linux Debian normal.
 
----
-
-## Chercher sur Docker Hub
+## Chercher et étudier une image sur Docker Hub
 
 - Visitez [hub.docker.com](https://hub.docker.com)
 - Cherchez l'image de Nginx (un serveur web), et téléchargez la dernière version (`pull`).
@@ -180,15 +165,15 @@ docker run --name "test_nginx" nginx
 
 Ce conteneur n'est pas très utile, car on a oublié de configurer un port exposé sur `localhost`.
 
-- Trouvez un moyen d'accéder quand même au Nginx à partir de l'hôte Docker (indice : quelle adresse IP le conteneur possède-t-il ?).
+- Trouvez un moyen d'accéder quand même au Nginx à partir de l'hôte Docker (indice : quelle adresse IP le conteneur possède-t-il ? inpectez le conteneur...).
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 - Dans un nouveau terminal lancez `docker inspect test_nginx` (c'est le nom de votre conteneur Nginx). Cette commande fournit plein d'informations utiles mais difficiles à lire.
 
 - Lancez la commande à nouveau avec `| grep IPAddress` à la fin. Vous récupérez alors l'adresse du conteneur dans le réseau virtuel Docker.
 
-{{% /expand %}}
+</details>
 
 - Arrêtez le(s) conteneur(s) `nginx` créé(s).
 - Relancez un nouveau conteneur `nginx` avec cette fois-ci le port correctement configuré dès le début pour pouvoir visiter votre Nginx en local.
@@ -199,8 +184,6 @@ docker run -p 8080:80 --name "test2_nginx" nginx # la syntaxe est : port_hote:po
 
 - En visitant l'adresse et le port associé au conteneur Nginx, on doit voir apparaître des logs Nginx dans son terminal car on a lancé le conteneur en mode _attach_.
 - Supprimez ce conteneur. NB : On doit arrêter un conteneur avant de le supprimer, sauf si on utilise l'option "-f".
-
----
 
 On peut lancer des logiciels plus ambitieux, comme par exemple Funkwhale, une sorte d'iTunes en web qui fait aussi réseau social :
 
@@ -239,26 +222,26 @@ docker network create wordpress
 
 - Il va aussi falloir définir un nom pour ce conteneur
 
-{{% expand "Résultat :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker run --name mysqlpourwordpress -d -e MYSQL_ROOT_PASSWORD=motdepasseroot -e MYSQL_DATABASE=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=monwordpress --network wordpress mysql:5.7
 ```
 
-{{% /expand %}}
+</details>
 
 - inspectez le conteneur MySQL avec `docker inspect`
 
 - Faites de même avec la documentation sur le Docker Hub pour préconfigurer l'app Wordpress.
 - En plus des variables d'environnement, il va falloir le mettre dans le même réseau, et exposer un port
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker run --name wordpressavecmysql -d -e WORDPRESS_DB_HOST="mysqlpourwordpress:3306" -e WORDPRESS_DB_PASSWORD=monwordpress -e WORDPRESS_DB_USER=wordpress --network wordpress -p 80:80 wordpress
 ```
 
-{{% /expand %}}
+</details>
 
 - regardez les logs du conteneur Wordpress avec `docker logs`
 
@@ -272,13 +255,13 @@ docker run --name wordpressavecmysql -d -e WORDPRESS_DB_HOST="mysqlpourwordpress
 
 - Combinez cette commande avec `docker rm` pour supprimer tous les conteneurs arrêtés (indice : en Bash, une commande entre les parenthèses de "`$()`" est exécutée avant et utilisée comme chaîne de caractère dans la commande principale)
 
-{{% expand "Solution :" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 docker rm $(docker ps -aq -f status=exited)
 ```
 
-{{% /expand %}}
+</details>
 
 - S'il y a encore des conteneurs qui tournent (`docker ps`), supprimez un des conteneurs restants en utilisant l'autocomplétion et l'option adéquate
 
@@ -292,7 +275,7 @@ docker rm $(docker ps -aq -f status=exited)
 
 ### Portainer
 
-Portainer est un portail web pour gérer une installation Docker via une interface graphique. Il va nous faciliter la vie.
+Portainer est un portail web pour gérer une installation Docker via une interface graphique. Il peut vous faciliter la vie.
 
 - Lancer une instance de Portainer :
 

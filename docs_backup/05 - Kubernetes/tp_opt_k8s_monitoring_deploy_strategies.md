@@ -186,70 +186,70 @@ Nous allons d'abord construire l'image docker de l'application à partir des sou
 
 - Changez le contexte de docker cli pour pointer vers minikube avec `eval` et la commande précédente.
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 eval $(minikube docker-env)
 docker system info | grep Name # devrait afficher minikube si le contexte docker est correctement défini.
 ```
 
-{{% /expand %}}
+</details>
 
 - Allez dans le dossier `goprom_app` et "construisez" l'image docker de l'application avec le tag `tecpi/goprom`.
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 cd goprom_app
 docker build -t tecpi/goprom .
 ```
 
-{{% /expand %}}
+</details>
 
 - Allez dans le dossier de la première stratégie `recreate` et ouvrez le fichier `app-v1.yml`. Notez que `image:` est à `tecpi/goprom` et qu'un paramètre `imagePullPolicy` est défini à `Never`. Ainsi l'image sera récupéré dans le registry local du docker de minikube ou sont stockées les images buildées localement plutôt que récupéré depuis un registry distant.
 
 - Appliquez ce déploiement kubernetes:
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 cd '../k8s-strategies/1 - recreate'
 kubectl apply -f app-v1.yml
 ```
 
-{{% /expand %}}
+</details>
 
 ### Observons notre application et son déploiement kubernetes
 
 - Explorez le fichier de code go de l'application `main.go` ainsi que le fichier de déploiement `app-v1.yml`. Quelles sont les routes http exposées par l'application ?
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 - L'application est accessible sur le port `8080` du conteneur et la route `/`.
 - L'application expose en plus deux routes de diagnostic (`probe`) kubernetes sur le port `8086` sur `/live` pour la `liveness` et `/ready` pour la `readiness` (cf https://kubernetes.io/docs/)
 - Enfin, `goprom` expose une route spécialement pour le monitoring Prometheus sur le port `9101` et la route `/metrics`
 
-{{% /expand %}}
+</details>
 
 - Faites un forwarding de port `Minikube` pour accéder au service `goprom` dans votre navigateur.
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 minikube service goprom
 ```
 
-{{% /expand %}}
+</details>
 
 - Faites un forwarding de port pour accéder au service `goprom-metrics` dans votre navigateur. Quelles informations récupère-t-on sur cette route ?
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 ```bash
 minikube service goprom-metrics
 ```
 
-{{% /expand %}}
+</details>
 
 - Pour tester le service `prometheus-server` nous avons besoin de le mettre en mode NodePort (et non ClusterIP par défaut). Modifiez le service dans Lens pour changer son type.
 - Exposez le service avec Minikube (n'oubliez pas de préciser le namespace monitoring).
@@ -257,7 +257,7 @@ minikube service goprom-metrics
 
 - Quelle est la section des fichiers de déploiement qui indique à prometheus ou récupérer les métriques ?
 
-{{% expand "réponse:" %}}
+<details><summary>Réponse</summary>
 
 ```yaml
 apiVersion: apps/v1
@@ -273,7 +273,7 @@ annotations:
   prometheus.io/port: "9101"
 ```
 
-{{% /expand %}}
+</details>
 
 
 
