@@ -139,7 +139,7 @@ docker service create \
 
 ### _Facultatif :_ Utiliser Traefik avec Swarm
 
-Vous pouvez désormais faire [l'exercice 2 du TP 7](/docs/Docker/tp-traefik) pour configurer un serveur web qui permet d'accéder à vos services Swarm via des domaines spécifiques.
+Vous pouvez désormais faire [l'exercice 2 du TP 7](/Docker/tp-traefik) pour configurer un serveur web qui permet d'accéder à vos services Swarm via des domaines spécifiques.
 
 
 <!-- ### *Facultatif :* du monitoring de cluster Docker Swarm avec *Prometheus*

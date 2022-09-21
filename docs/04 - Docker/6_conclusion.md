@@ -121,7 +121,7 @@ htop
 ## Aller plus loin
 
 - Le livre _Mastering Docker_, de Russ McKendrick et Scott Gallagher
-- les ressources présentes dans la [bibliographie](/docs/Docker/bibliographie)
+- les ressources présentes dans la [bibliographie](/Docker/bibliographie)
 - la liste de [Awesome Docker](https://github.com/veggiemonk/awesome-docker)
 
 ![](/img/dockercraft.gif)
