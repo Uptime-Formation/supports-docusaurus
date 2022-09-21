@@ -1,6 +1,7 @@
 ---
 slug: /
 title: Accueil
+sidebar_position: 0
 ---
 
 # Bienvenue sur le site des supports de formation

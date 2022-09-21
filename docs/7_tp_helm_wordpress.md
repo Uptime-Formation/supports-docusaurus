@@ -1,7 +1,7 @@
 ---
-title: "12 - TP 6 - Déployer Wordpress avec Helm et ArgoCD"
+title: "TP 7 - Déployer Wordpress avec Helm"
 draft: false
-weight: 2071
+sidebar_position: 14
 ---
 
 Helm est un "gestionnaire de paquet" ou vu autrement un "outil de templating avancé" pour k8s qui permet d'installer des applications plsu complexe de façon paramétrable :
@@ -14,7 +14,7 @@ Inconvénient: Helm ajoute souvent de la complexité non nécessaire car les Cha
 
 Helm ne dispense pas de maîtriser l'administration de son cluster.
 
-### Installer Helm
+## Installer Helm
 
 - Pour installer Helm sur Ubuntu, utilisez : `sudo snap install helm --classic`
 
@@ -22,7 +22,7 @@ Helm ne dispense pas de maîtriser l'administration de son cluster.
 
 `helm completion bash | sudo tee /etc/bash_completion.d/helm` et relancez votre terminal.
 
-### Utiliser un chart Helm pour installer Wordpress
+## Utiliser un chart Helm pour installer Wordpress
 
 - Cherchez Wordpress sur [https://artifacthub.io/](https://artifacthub.io/).
 
@@ -40,7 +40,7 @@ On peut écraser certains de ces paramètres dans un nouveau fichier par exemple
 
 - Désinstallez Wordpress avec `helm uninstall wordpress-tp`
 
-### Utiliser la fonction `template` de Helm pour étudier les ressources d'un Chart
+## Utiliser la fonction `template` de Helm pour étudier les ressources d'un Chart
 
 - Visitez le code des charts de votre choix en clonant le répertoire Git des Charts officielles Bitnami et en l'explorant avec VSCode :
 
@@ -83,7 +83,9 @@ ingress:
 - En utilisant ces paramètres, plutôt que d'installer le chart, nous allons faire le rendu (templating) des fichiers ressource générés par le chart: `helm template wordpress-tp bitnami/wordpress --values=values.yaml > wordpress-tp-manifests.yaml`.
 
 On peut maintenant lire dans ce fichier les objets kubernetes déployés par le chart et ainsi apprendre de nouvelles techniques et syntaxes. En le parcourant on peut constater que la plupart des objets abordés pendant cette formation y sont présent plus certains autres.
-### ArgoCD pour installer et visualiser en live les ressources de notre chart
+
+<!-- 
+## ArgoCD pour installer et visualiser en live les ressources de notre chart
 
 Argocd permet d'installer des applications qui peuvent être soit des dossiers de manifestes kubernetes simple, soit des dossiers contenant une `kustomization.yaml` soit des charts Helm. Une application Argocd peut être créée dans l'interface web ou être déclarée elle-même grâce à un fichier manifeste de type:
 
@@ -148,4 +150,4 @@ Vous pouvez visiter le blog à l'adresse: `https://wordpress.<votrelogin>.k8s.do
 
 ### Solution
 
-Le dépôt Git contenant la correction de ce TP et des précédents est accessible avec cette commande : `git clone -b all_corrections https://github.com/Uptime-Formation/corrections_tp.git`
+Le dépôt Git contenant la correction de ce TP et des précédents est accessible avec cette commande : `git clone -b all_corrections https://github.com/Uptime-Formation/corrections_tp.git` -->

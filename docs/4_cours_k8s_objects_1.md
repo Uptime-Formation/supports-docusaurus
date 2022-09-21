@@ -1,7 +1,7 @@
 ---
-title: 05 - Cours - Objets Kubernetes - Partie 1
+title: Cours 4 - Objets Fondamentaux Kubernetes
 draft: false
-weight: 2030
+sidebar_position: 8
 ---
 
 ## L'API et les Objets Kubernetes

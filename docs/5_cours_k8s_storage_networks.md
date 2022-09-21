@@ -1,8 +1,13 @@
 ---
 draft: false
-title: 08 - Cours - Le stockage et le réseau dans Kubernetes
-weight: 2052
+title: Cours 5 - Le stockage et le réseau dans Kubernetes
+sidebar_position: 11
 ---
+
+
+## Le stockage et les Volumes dans Docker
+
+Les conteneurs sont immutables
 
 ## Le stockage dans Kubernetes
 
@@ -32,19 +37,17 @@ spec:
 ```
 
 La problématique des volumes et du stockage est plus compliquée dans kubernetes que dans docker car k8s cherche à répondre à de nombreux cas d'usages. [doc officielle](https://kubernetes.io/fr/docs/concepts/storage/volumes/). Il y a donc de nombeux types de volumes kubernetes correspondants à des usages de base et aux solutions proposées par les principaux fournisseurs de cloud.
-
+<!-- 
 Mentionnons quelques d'usage de base des volumes:
 
 - `hostPath`: monte un dossier du noeud ou est plannifié le pod à l'intérieur du conteneur.
-- `local`: comme hostPath mais conscient de la situation physique du volume sur le noeud et à combiner avec les placements de pods avec `nodeAffinity`
-- `emptyDir`: un dossier temporaire qui est supprimé en même temps que le pod
-- `configMap`: pour monter des fichiers de configurations provenant du cluster à l'intérieur des pods
-- `secret`: pour monter un secret (configuration) provenant du cluster à l'intérieur des pods
+- `configMap` ou `secret`: pour monter des fichiers de configurations provenant du cluster à l'intérieur des pods
 - `nfs`: stockage réseau classique
 - `cephfs`: monter un volume ceph provenant d'un ceph installé sur le cluster
 - etc.
 
 En plus de la gestion manuelle des volumes avec les option précédentes, kubernetes permet de provisionner dynamiquement du stockage en utilisant des plugins de création de volume grâce à 3 types d'objets: `StorageClass` `PersistentVolume` et `PersistentVolumeClaim`.
+
 ### Les types de stockage avec les `StorageClasses`
 
 Le stockage dynamique dans Kubernetes est fourni à travers des types de stockage appelés *StorageClasses* :
@@ -52,13 +55,13 @@ Le stockage dynamique dans Kubernetes est fourni à travers des types de stockag
 - dans le cloud, ce sont les différentes offres de volumes du fournisseur,
 - dans un cluster auto-hébergé c'est par exemple des opérateurs de stockage comme `rook.io` ou `longhorn`(Rancher).
 
-[doc officielle](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+[doc officielle](https://kubernetes.io/docs/concepts/storage/storage-classes/) -->
 
 ### Demander des volumes et les liers aux pods :`PersistentVolumes` et `PersistentVolumeClaims`
 
-Quand un conteneur a besoin d'un volume, il crée une *PersistentVolumeClaim* : une demande de volume (persistant). Si un des objets *StorageClass* est en capacité de le fournir, alors un *PersistentVolume* est créé et lié à ce conteneur : il devient disponible en tant que volume monté dans le conteneur.
+Quand un conteneur a besoin d'un volume, il crée une *PersistentVolumeClaim* : une demande de volume (persistant). Si une des *StorageClass* du cluster est en capacité de le fournir, alors un *PersistentVolume* est créé et lié à ce conteneur : il devient disponible en tant que volume monté dans le conteneur.
 
-- les *StorageClasses* fournissent du stockage
+<!-- - les *StorageClasses* fournissent du stockage -->
 - les conteneurs demandent du volume avec les *PersistentVolumeClaims*
 - les *StorageClasses* répondent aux *PersistentVolumeClaims* en créant des objets *PersistentVolumes* : le conteneur peut accéder à son volume.
 
@@ -85,20 +88,9 @@ Comparaisons :
 
 ## Vidéos
 
-Des vidéos assez complètes sur le réseau, faites par Calico :
+Une vidéos assez complète sur le réseau, faites par Calico :
 - [Kubernetes Ingress networking](https://www.youtube.com/watch?v=40VfZ_nIFWI&list=PLoWxE_5hnZUZMWrEON3wxMBoIZvweGeiq&index=5)
 - [Kubernetes Services networking](https://www.youtube.com/watch?v=NFApeJRXos4&list=PLoWxE_5hnZUZMWrEON3wxMBoIZvweGeiq&index=4)
-- [Kubernetes networking on Azure](https://www.youtube.com/watch?v=JyLtg_SJ1lo&list=PLoWxE_5hnZUZMWrEON3wxMBoIZvweGeiq&index=2)
-
-Sur MetalLB, les autres vidéos de la chaîne sont très intéressantes également :
-- [Why you need to use MetalLB -  Adrian Goins](https://www.youtube.com/watch?v=Ytc24Y0YrXE)
-
-
-### Fournir des services LoadBalancer on premise avec `MetalLB`
-
-Dans un cluster managé provenant d'un fournisseur de cloud, la création d'un objet Service Lodbalancer entraine le provisionning d'une nouvelle machine de loadbalancing à l'extérieur du cluster avec une IPv4 publique grâce à l'offre d'IaaS du provideur (impliquant des frais supplémentaires).
-
-Cette intégration n'existe pas par défaut dans les clusters de dev comme minikube ou les cluster on premise (le service restera pending et fonctionnera comme un NodePort). Le projet [*MetalLB*](https://metallb.universe.tf/) cherche à y remédier en vous permettant d'installer un loadbalancer directement dans votre cluster en utilisant une connexion IP classique ou BGP pour la haute disponibilité.
 
 
 ## Les objets Ingresses
@@ -166,6 +158,7 @@ Chaque provider de cloud et flavour de kubernetes est légèrement différent au
 
 Comparaison des controlleurs: <https://medium.com/flant-com/comparing-ingress-controllers-for-kubernetes-9b397483b46b>
 
+<!-- 
 ## Gestion dynamique des certificats à l'aide de `certmanager`
 
 `Certmanager` est une application kubernetes (un `operator`) plus ou moins officielle  capable de générer automatiquement des certificats TLS/HTTPS pour nos ingresses.
@@ -201,4 +194,4 @@ spec:
               number: 80
 ```
 
-
+ -->

@@ -1,7 +1,7 @@
 ---
-title: "07 - TP 4 - Déployer une application multiconteneurs"
+title: "TP 5 - Déployer une application multiconteneurs"
 draft: false
-weight: 2050
+sidebar_position: 10
 ---
 
 Récupérez le projet de base en clonant la correction du TP2: `git clone -b tp_monsterstack_base https://github.com/Uptime-Formation/corrections_tp.git tp3`
@@ -95,21 +95,29 @@ spec:
 
 - Appliquez ces ressources avec `kubectl` et vérifiez dans `Lens` que les 5 + 1 réplicats sont bien lancés.
 
-## Installer et configurer skaffold
+## Envoyer les images dans le cluster : quel workflow de développement ?
 
-Par rapport au workflow de développement docker, nous avons ici une difficultée : construire l'image avec `docker build` ou `docker-compose` ajoute bien l'image à notre installation docker en local mais cette image n'est pas automatiquement accessible depuis notre cluster (k3s ou minikube).
+Au moment de lancer dans kubernetes la 3e partie de l'application, nous rencontrons un problème pratique : l'image à déployer est construite à partir d'un Dockerfile, elle est ensuite disponible dans le stock de nos images docker en local. Mais notre cluster (minikube ou autre) n'a pas accès par défaut à ces images : résultat nous pouvons bien construire et lancer l'image du frontend avec `docker build` et `docker run -p 5000:5000 frontend` mais nous ne pouvons pas utiliser cette image dans un fichier `deployment` avec `image: frontend` car le cluster ne saura pas ou la trouver => `ErrImagePull`
 
-=> Si on essaye de déployer le frontend en créant un déploiement nous auront donc une erreur `ErrImagePull` et le pod ne se lancera pas.
+Nous devons donc trouver comment envoyer l'image dans le cluster et idéalement de façon efficace.
 
-Pour remédier à ce problème dans les situations de développement simple on peut utiliser deux méthodes classiques:
+- La première méthode est de pousser l'image sur un registry par exemple DockerHub. Ensuite si nous faisons référence dans le déploiement à `<votre_hub_login>/frontend` ou `<addresse_registry>/frontend` le cluster devrait pouvoir télécharger l'image. Cette méthode est cependant trop lente pour le développement car il faudrait lancer plusieurs commandes à chaque modification du code ou des fichiers k8s.
 
-- utiliser `minikube` et son intégration avec Docker tel qu'expliqué ici: https://minikube.sigs.k8s.io/docs/handbook/pushing/#1-pushing-directly-to-the-in-cluster-docker-daemon-docker-env. Une fois la commande `eval $(minikube docker-env)` lancée les commande type `docker build` contruiront l'image directement dans le cluster.
+- Une méthode plus rapide est d'utiliser `minikube` et son intégration avec Docker tel qu'expliqué ici: https://minikube.sigs.k8s.io/docs/handbook/pushing/#1-pushing-directly-to-the-in-cluster-docker-daemon-docker-env. Une fois la commande `eval $(minikube docker-env)` lancée les commande type `docker build` contruiront l'image directement dans le cluster.
 
-- Accéder à ou héberger un service de registry d'images docker un pour pouvoir pousser nos builds d'images dedans et ensuite les télécharger dans le cluster. <!-- TODO (Voir le cours **Problématiques pratiques de production** pour une discussion sur les différentes options de registries) -->
+- Une solution puissante et générique mais un peu plus complexe pour avoir un workflow développement confortable et compatible avec `minikube` mais aussi tout autre distribution kubernetes est `skaffold` combiné à un registry d'images. Avec cette méthode `skaffold` surveille automatiquement nos modification de développement et reconstruira/redéploiera l'image à chaque fois en quelques secondes
 
-Cette seconde solution est générique et correspond au processus général de déploiement dans kubernetes. Le problème en situation de développement est que ce processus de build et push docker à chaque modification est très/trop lent et fatiguant en pratique. Heureusement le mécanisme de layers des images Docker ne nous oblige à uploader que les layers modifiés de notre image à chaque build mais cela ne règle pas le fond du problème du processus manuel répétif qui viens gréver le développement.
+<details><summary>version Minikube</summary>
 
-La solution puissante et générique choisie dans ce TP pour avoir un workflow développement confortable et compatible avec `minikube`, `k3s` ou tout autre distribution kubernetes est `skaffold` combiné à un registry d'images.
+- Lancez la commande `eval $(minikube docker-env)` qui vas indiquer à la cli docker d'utiliser le daemon présent à l'intérieur du cluster minikube, notamment pour construire l'image.
+
+- Lancez un build docker `docker build -t frontend .`
+
+- Vérifiez que l'image `frontend` est bien présente dans le cluster avec `docker image list`
+
+</details>
+
+<details><summary>version Skaffold</summary>
 
 - Vérifiez que vous n'êtes pas dans l'environnement minikube docker-env avec `env | grep DOCKER` qui doit ne rien renvoyer.
 - Installez `skaffold` en suivant les indications ici: `https://skaffold.dev/docs/install/`
@@ -131,7 +139,51 @@ deploy:
 
 - Lancez le build, push, et le déploiement du imagebackend et du redis avec `skaffold dev --tail=false`
 
+</details>
+
 ## Déploiement du `frontend`
+
+Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
+
+<details><summary>version Minikube</summary>
+
+Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: monsterstack
+spec:
+  selector:
+    matchLabels:
+      app: monsterstack
+      partie: frontend
+  strategy:
+    type: Recreate
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: monsterstack
+        partie: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: frontend
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: registry-credential
+```
+
+- Appliquez ce fichier avec `kubectl` et vérifiez que le déploiement frontend est bien créé.
+
+</details>
+
+<details><summary>version Skaffold</summary>
 
 Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
 
@@ -169,8 +221,28 @@ spec:
 
 - Relancez `skaffold dev --tail=false` si nécessaire.
 
-- Testez le fonctionnement du frontend avec la commande `kubectl port-forward ...`
-#### Santé du service avec les `Probes`
+</details>
+
+- Testez le fonctionnement du frontend avec la commande `kubectl port-forward ...` ou avec le port-forward de Lens.
+
+## Paramétrer notre déploiement
+
+### Configuration de l'application avec des variables d'environnement simples
+
+- Notre application frontend peut être configurée en mode DEV ou PROD. Pour cela elle attend une variable d'environnement `CONTEXT` pour lui indiquer si elle doit se lancer en mode `PROD` ou en mode `DEV`. Ici nous mettons l'environnement `DEV` en ajoutant (aligné avec la livenessProbe):
+
+```yaml
+env:
+  - name: CONTEXT
+    value: DEV
+```
+- Généralement la valeur d'une variable est fournie au pod à l'aide d'une ressource de type `ConfigMap` ou `Secret` ce que nous verrons par la suite.
+
+- Configurez de même les variables `IMAGEBACKEND_DOMAIN` et `REDIS_DOMAIN` comme dans le docker-compose.
+
+<details><summary>Facultatif: Santé du service avec les Probes</summary>
+
+### Santé du service avec les `Probes`
 
 - Ajoutons des healthchecks au conteneur dans le pod avec la syntaxe suivante (le mot-clé `livenessProbe` doit être à la hauteur du `i` de `image:`) :
 
@@ -207,21 +279,11 @@ La **readinessProbe** est un test qui s'assure que l'application est prête à r
 
 - On peut le constater avec `kubectl describe deployment frontend` dans la section évènement ou avec `Lens` en bas du panneau latéral droite d'une ressource.
 
+</details>
 
-#### Configuration d'une application avec des variables d'environnement simples
+<details><summary>Facultatif: Ajouter des indications de ressources</summary>
 
-- Notre application frontend peut être configurée en mode DEV ou PROD. Pour cela elle attend une variable d'environnement `CONTEXT` pour lui indiquer si elle doit se lancer en mode `PROD` ou en mode `DEV`. Ici nous mettons l'environnement `DEV` en ajoutant (aligné avec la livenessProbe):
-
-```yaml
-env:
-  - name: CONTEXT
-    value: DEV
-```
-- Généralement la valeur d'une variable est fournie au pod à l'aide d'une ressource de type `ConfigMap` ou `Secret` ce que nous verrons par la suite.
-
-- Configurez de même les variables `IMAGEBACKEND_DOMAIN` et `REDIS_DOMAIN` comme dans le docker-compose.
-
-#### Ajouter des indications de ressource nécessaires pour garantir la qualité de service
+### Ajouter des indications de ressources nécessaires pour garantir la qualité de service
 
 - Ajoutons aussi des contraintes sur l'usage du CPU et de la RAM, en ajoutant à la même hauteur que `env:` :
 
@@ -239,8 +301,9 @@ Nos pods auront alors **la garantie** de disposer d'un dixième de CPU (100/1000
 
 Documentation : https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
 
+</details>
 
-#### Exposer notre stack avec des services
+## Gérer la communication réseau de notre application avec des `Services`
 
 Les services K8s sont des endpoints réseaux qui balancent le trafic automatiquement vers un ensemble de pods désignés par certains labels. Ils sont un peu la pierre angulaire des applications microservices qui sont composées de plusieurs sous parties elles même répliquées.
 
@@ -279,8 +342,7 @@ Le type sera : `ClusterIP` pour `imagebackend` et `redis`, car ce sont des servi
 - Visitez votre application dans le navigateur avec `minikube service frontend`.
 - Supprimez éventuellement l'application avec `skaffold delete`.
 
-### Ajoutons un ingress (~ reverse proxy) pour exposer notre application en http
-
+## Exposer notre application à l'extérieur avec un `Ingress` (~ reverse proxy)
 
 - Pour **Minikube** : Installons le contrôleur Ingress Nginx avec `minikube addons enable ingress`.
 

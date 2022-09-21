@@ -1,5 +1,6 @@
 ---
 title: Cours 1 - Docker et son architecture
+sidebar_position: 1
 ---
 
 ## Terminologie et concepts fondamentaux
@@ -10,11 +11,9 @@ title: Cours 1 - Docker et son architecture
 - un **registry** : un serveur ou stocker des artefacts docker c'est à dire des images versionnées.
 - un **orchestrateur** : un outil qui gère automatiquement le cycle de vie des conteneurs (création/suppression).
 
-## Visualiser l'architecture Docker
 
 ![](/img/docker-architecture.png)
 
-- Le service (daemon) : 
 
 ## Environnement de développement Docker
 

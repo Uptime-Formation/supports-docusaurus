@@ -1,7 +1,7 @@
 ---
 draft: false
-title: "06 - TP 3 - Déployer en utilisant des fichiers ressource et Lens"
-weight: 2045
+title: "TP 4 - Déployer en utilisant des fichiers ressource et Lens"
+sidebar_position: 9
 ---
 
 Dans ce court TP nous allons redéployer notre application `demonstration` du TP1 mais cette fois en utilisant `kubectl apply -f` et en visualisant le résultat dans `Lens`.

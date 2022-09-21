@@ -1,5 +1,6 @@
 ---
-title: "TP1 - Manipulation de conteneurs"
+title: "TP 1 - Manipulation de conteneurs"
+sidebar_position: 2
 ---
 
 ## Installer Docker (si nécessaire)

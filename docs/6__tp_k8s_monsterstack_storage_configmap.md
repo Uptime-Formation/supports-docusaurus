@@ -1,7 +1,7 @@
 ---
 draft: false
-title: "09 - TP 5 - Ajouter une persistance et une configMap à notre application"
-weight: 2055
+title: "TP 6 - Ajouter une persistance et une configMap à notre application"
+sidebar_position: 12
 ---
 
 ## Persister les données de Redis

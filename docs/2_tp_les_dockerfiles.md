@@ -1,6 +1,6 @@
 ---
-title: TP 2 - Images et conteneurs
-weight: 1025
+title: TP 2 - Conteneuriser une application
+sidebar_position: 4
 ---
 
 ## Découverte d'une application web flask
@@ -37,8 +37,8 @@ git clone https://github.com/uptime-formation/microblog/
 
 ## Passons à Docker
 
-Déployer une application Flask manuellement à chaque fois est relativement pénible. Pour que les dépendances de deux projets Python ne se perturbent pas, il faut normalement utiliser un environnement virtuel `virtualenv` pour séparer ces deux apps.
-Avec Docker, les projets sont déjà isolés dans des conteneurs. Nous allons donc construire une image de conteneur pour empaqueter l’application et la manipuler plus facilement. Assurez-vous que Docker est installé.
+Déployer une application Flask manuellement à chaque fois est relativement pénible. Pour que les dépendances de deux projets Python ne se perturbent pas, il faut traditionnellement utiliser un environnement virtuel `virtualenv` pour séparer ces deux apps.
+Avec Docker, les projets sont déjà isolés dans des conteneurs. Nous allons donc construire une image de conteneur pour empaqueter l’application et la manipuler plus facilement.
 
 Pour connaître la liste des instructions des Dockerfiles et leur usage, se référer au [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/).
 
@@ -72,8 +72,6 @@ RUN apt-get update -y
 RUN apt-get install -y python3-pip
 ```
 
-<!-- `RUN apt-get install -y python3-pip python-dev build-essential` -->
-
 - Reconstruisez votre image. Si tout se passe bien, poursuivez.
 
 - Pour installer les dépendances python et configurer la variable d'environnement Flask ajoutez:
@@ -100,8 +98,6 @@ Puis, dans la 2e ligne, le dossier courant dans le conteneur est déplacé à `/
 
 - Reconstruisez votre image. **Observons que le build recommence à partir de l'instruction modifiée. Les layers précédents avaient été mis en cache par le Docker Engine.**
 - Si tout se passe bien, poursuivez.
-
-  <!-- - `RUN pip3 install flask` -->
 
 - Enfin, ajoutons la section de démarrage à la fin du Dockerfile, c'est un script appelé `boot.sh` :
 
@@ -133,7 +129,23 @@ docker push <your-docker-registry-account>/microblog:latest
 
 ## Améliorer le Dockerfile
 
-### Une image plus simple
+### Faire tourner notre application avec un utilisateur non privilégié
+
+- Avec l'aide du [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/), faire en sorte que l'app `microblog` soit exécutée par un utilisateur appelé `microblog`.
+
+<details><summary>Réponse</summary>
+
+```Dockerfile
+# Ajoute un user et groupe appelés microblog
+RUN addgroup -S microblog && adduser -S microblog -G microblog
+RUN chown -R microblog:microblog ./
+USER microblog
+```
+
+</details>
+
+
+### Une image plus légère avec alpine
 
 - A l'aide de l'image `python:3-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
 
@@ -165,26 +177,6 @@ fi
 - Puis, grâce aux bons arguments allant avec `docker run`, lancez une instance de l'app en configuration `PROD` et une instance en environnement `DEV` (joignables sur deux ports différents).
 - Avec `docker ps` ou en lisant les logs, vérifiez qu'il existe bien une différence dans le programme lancé.
 
-<!--
-- Avec l'aide du [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/), faire en sorte que l'app `microblog` soit exécutée par un utilisateur appelé `microblog`.
-
-<details><summary>Réponse</summary>
-
-```Dockerfile
-# Ajoute un user et groupe appelés microblog
-RUN addgroup -S microblog && adduser -S microblog -G microblog
-RUN chown -R microblog:microblog ./
-USER microblog
-```
-
-</details> -->
-
-<!-- Après avoir ajouté ces instructions, lors du build, que remarque-t-on ?
-
-<details><summary>Réponse</summary>
-La construction reprend depuis la dernière étape modifiée. Sinon, la construction utilise les layers précédents, qui avaient été mis en cache par le Docker Engine.
-</details> -->
-
 ### Exposer le port
 
 - Ajoutons l'instruction `EXPOSE 5000` pour indiquer à Docker que cette app est censée être accédée via son port `5000`.
@@ -213,139 +205,3 @@ CMD ["./boot.sh"]
 
 </details>
 
-## L'instruction HEALTHCHECK
-
-`HEALTHCHECK` permet de vérifier si l'app contenue dans un conteneur est en bonne santé.
-
-- Dans un nouveau dossier ou répertoire, créez un fichier `Dockerfile` dont le contenu est le suivant :
-
-```Dockerfile
-FROM python:alpine
-
-RUN apk add curl
-RUN pip install flask==0.10.1
-
-ADD /app.py /app/app.py
-WORKDIR /app
-
-HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
-
-CMD python app.py
-```
-
-- Créez aussi un fichier `app.py` avec ce contenu :
-
-```python
-from flask import Flask
-
-healthy = True
-
-app = Flask(__name__)
-
-@app.route('/health')
-def health():
-    global healthy
-
-    if healthy:
-        return 'OK', 200
-    else:
-        return 'NOT OK', 500
-
-@app.route('/kill')
-def kill():
-    global healthy
-    healthy = False
-    return 'You have killed your app.', 200
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
-```
-
-- Observez bien le code Python et la ligne `HEALTHCHECK` du `Dockerfile` puis lancez l'app. A l'aide de `docker ps`, relevez où Docker indique la santé de votre app.
-- Visitez l'URL `/kill` de votre app dans un navigateur. Refaites `docker ps`. Que s'est-il passé ?
-
-- _(Facultatif)_ Rajoutez une instruction `HEALTHCHECK` au `Dockerfile` de notre app microblog.
-
----
-
-## _Facultatif_ : Décortiquer une image
-
-Une image est composée de plusieurs layers empilés entre eux par le Docker Engine et de métadonnées.
-
-- Affichez la liste des images présentes dans votre Docker Engine.
-
-- Inspectez la dernière image que vous venez de créez (`docker image --help` pour trouver la commande)
-
-- Observez l'historique de construction de l'image avec `docker image history <image>`
-
-- Visitons **en root** (`sudo su`) le dossier `/var/lib/docker/` sur l'hôte. En particulier, `image/overlay2/layerdb/sha256/` :
-
-  - On y trouve une sorte de base de données de tous les layers d'images avec leurs ancêtres.
-  - Il s'agit d'une arborescence.
-
-- Vous pouvez aussi utiliser la commande `docker save votre_image -o image.tar`, et utiliser `tar -C image_decompressee/ -xvf image.tar` pour décompresser une image Docker puis explorer les différents layers de l'image.
-
-- Pour explorer la hiérarchie des images vous pouvez installer `https://github.com/wagoodman/dive`
-
----
-
-## _Facultatif :_ un Registry privé
-
-- En récupérant [la commande indiquée dans la doc officielle](https://docs.docker.com/registry/deploying/), créez votre propre registry.
-- Puis trouvez comment y pousser une image dessus.
-- Enfin, supprimez votre image en local et récupérez-la depuis votre registry.
-
-<details><summary>Réponse</summary>
-
-```bash
-# Créer le registry
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
-
-# Y pousser une image
-docker tag ubuntu:16.04 localhost:5000/my-ubuntu
-docker push localhost:5000/my-ubuntu
-
-# Supprimer l'image en local
-docker image remove ubuntu:16.04
-docker image remove localhost:5000/my-ubuntu
-
-# Récupérer l'image depuis le registry
-docker pull localhost:5000/my-ubuntu
-```
-
-</details>
-
-## _Facultatif :_ Faire parler la vache
-
-Créons un nouveau Dockerfile qui permet de faire dire des choses à une vache grâce à la commande `cowsay`.
-Le but est de faire fonctionner notre programme dans un conteneur à partir de commandes de type :
-
-- `docker run --rm cowsay Coucou !`
-- `docker run --rm cowsay -f stegosaurus Yo!`
-- `docker run --rm cowsay -f elephant-in-snake Un éléphant dans un boa.`
-
-- Doit-on utiliser la commande `ENTRYPOINT` ou la commande `CMD` ? Se référer au [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/) si besoin.
-- Pour information, `cowsay` s'installe dans `/usr/games/cowsay`.
-- La liste des options (incontournables) de `cowsay` se trouve ici : <https://debian-facile.org/doc:jeux:cowsay>
-
-<details><summary>Réponse</summary>
-
-```Dockerfile
-FROM ubuntu
-RUN apt-get update && apt-get install -y cowsay
-ENTRYPOINT ["/usr/games/cowsay"]
-# les crochets sont nécessaires, car ce n'est pas tout à fait la même instruction qui est exécutée sans
-```
-
-</details>
-
-- L'instruction `ENTRYPOINT` et la gestion des entrées-sorties des programmes dans les Dockerfiles peut être un peu capricieuse et il faut parfois avoir de bonnes notions de Bash et de Linux pour comprendre (et bien lire la documentation Docker).
-- On utilise parfois des conteneurs juste pour qu'ils s'exécutent une fois (pour récupérer le résultat dans la console, ou générer des fichiers). On utilise alors l'option `--rm` pour les supprimer dès qu'ils s'arrêtent.
-
-## _Facultatif :_ Un multi-stage build
-
-Transformez le `Dockerfile` de l'app `dnmonster` située à l'adresse suivante pour réaliser un multi-stage build afin d'obtenir l'image finale la plus légère possible :
-<https://github.com/amouat/dnmonster/>
-
-La documentation pour les multi-stage builds est à cette adresse : <https://docs.docker.com/develop/develop-images/multistage-build/>

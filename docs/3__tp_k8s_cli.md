@@ -1,17 +1,8 @@
 ---
-title: 02 - TP1 - Découvrir la cli kubectl et déployer une application
+title: TP 3 - Découvrir la cli kubectl et déployer une application
 draft: false
-weight: 2015
+sidebar_position: 6
 ---
-
-Au cours de nos TPs nous allons passer rapidement en revue quelques manières de mettre en place Kubernetes :
-
-- Un cluster de développement avec `minikube`
-- Un cluster k3s simple de un noeud (TP2)
-- Un cluster managed loué chez un provider (TP2)
-- Bonus : un cluster à la main avec `kubeadm`
-
-Nous allons d'abord passer par la première option.
 
 ## Découverte de Kubernetes
 

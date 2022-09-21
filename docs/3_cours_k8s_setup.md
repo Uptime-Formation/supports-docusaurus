@@ -1,7 +1,7 @@
 ---
-title: 03 - Cours - Mettre en place un cluster Kubernetes
+title: Cours 3 - Architecture de Kubernetes et les différents types de clusters
 draft: false
-weight: 2025
+sidebar_position: 7
 ---
 
 ## Architecture de Kubernetes
