@@ -1,7 +1,6 @@
 ---
 slug: /
 title: Accueil
-draft: true
 ---
 
 # Bienvenu sur le site des supports de formation
