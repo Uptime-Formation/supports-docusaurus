@@ -30,7 +30,7 @@ FROM debian:latest
 
 RUN apt update && apt install htop
 
-CMD ['sleep 1000']
+CMD 'htop'
 ```
 
 - La commande pour construire l'image est :
@@ -101,6 +101,8 @@ ENTRYPOINT ["/usr/bin/python3"]
 Par exemple avec `/usr/bin/python3` comme entrypoint, la commande `print("hello docker !")` sera interprétée comme du langage python. Par exemple `docker run monconteneurpython print("hello docker !")` affichera `hello docker !`.
 
 Ne pas confondre avec `RUN` qui exécute une commande Bash uniquement pendant la construction de l'image.
+
+En fait c'est même un peu plus compliqué : https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact
 
 ### L'instruction `HEALTHCHECK` pour préparer la haute disponibilité
 
