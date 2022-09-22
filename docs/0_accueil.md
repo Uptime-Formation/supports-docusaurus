@@ -4,9 +4,7 @@ title: Accueil
 sidebar_position: 0
 ---
 
-# Bienvenue sur le s- Début du cursus :
-  - Est-ce que ça vous plait ?
-  - Quels modules avez vous déjà fait ?ite des supports de formation
+# Bienvenue sur le site des supports de formation
 
 Utilisez le menu de gauche pour parcourir les cours et TP.
 
