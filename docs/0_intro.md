@@ -23,10 +23,6 @@ sidebar_position: 1
 ### A propos de vous
 
 - Attentes ?
-- Début du cursus :
-  - Est-ce que ça vous plait ?
-  - Quels modules avez vous déjà fait ?
-
 
 
 ## Trois transformations profondes de l'informatique
