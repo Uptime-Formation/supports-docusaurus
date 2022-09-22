@@ -62,10 +62,11 @@ Avec l'aide du support et de `--help`, et en notant sur une feuille ou dans un f
 <details><summary>Réponse</summary>
 
 ```bash
-docker run debian
+docker run debian # mode attaché le terminal est connecter à la sortie du conteneur
 # ou
-docker run --attach debian
-# Il ne se passe rien car comme debian ne contient pas de processus qui continue de tourner le conteneur s'arrête
+docker run --detach debian # mode détacher le conteneur est exécuté en arrière plan
+
+# Avec l'une ou l'autre commande, il ne se passe rien car nous n'avons rien lancé dans Debian. Le conteneur s'arrête immédiatement car il n'a rien à faire
 ```
 
 </details>
