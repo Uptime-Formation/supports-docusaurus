@@ -68,7 +68,7 @@ Pour connaître la liste des instructions des Dockerfiles et leur usage, se réf
 - Il s’agit d’un Linux standard, mais il n’est pas conçu pour être utilisé comme un système complet, juste pour une application isolée. Il faut maintenant ajouter notre application Flask à l’intérieur. Dans le Dockerfile supprimez la ligne CMD, puis ajoutez :
 
 ```Dockerfile
-RUN apt-get update -y
+RUN apt-get update
 RUN apt-get install -y python3-pip
 ```
 
