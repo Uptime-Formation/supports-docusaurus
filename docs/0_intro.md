@@ -73,7 +73,7 @@ Les conteneurs sont souvent comparés à l'innovation du porte conteneur pour le
   - la complexité est plus gérable car tout est déclaré et modifiable au fur et à mesure de façon centralisée
   - l'usage de git et des branches/tags pour la gestion de l'évolution d'infrastructure
 
-### Objectifs du DevOps
+## Objectifs du DevOps
 
 - Rapidité (celerité) de déploiement logiciel (organisation agile du développement et livraison jusqu'à plusieurs fois par jour)
   - Implique l'automatisation du déploiement et ce qu'on appelle la CI/CD c'est à dire une infrastructure de déploiement continu à partir de code.

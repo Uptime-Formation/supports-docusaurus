@@ -63,6 +63,8 @@ docker image ls
 - Un conteneur est une instance en cours de fonctionnement ("vivante") d'une image.
   - un conteneur en cours de fonctionnement est un processus (et ses processus enfants) qui tourne dans le Linux hôte (mais qui est isolé de celui-ci)
 
+
+
 ## Commandes Docker
 
 Docker fonctionne avec des sous-commandes et propose de grandes quantités d'options pour chaque commande.
@@ -83,7 +85,7 @@ docker ps    # affiche les conteneurs en train de tourner
 docker ps -a # affiche  également les conteneurs arrêtés
 ```
 
-### Créer et lancer un conteneur
+### Créer et lancer un conteneur `docker run`
 
 <!-- ![](/img/ops-basics-isolation.svg) -->
 
@@ -99,7 +101,7 @@ docker run [-d] [-p port_h:port_c] [-v dossier_h:dossier_c] <image> <commande>
 - **Un nom est automatiquement généré pour le conteneur à moins de fixer le nom avec `--name`**
 - On peut facilement lancer autant d'instances que nécessaire tant qu'il n'y a **pas de collision** de **nom** ou de **port**.
 
-### Options docker run
+#### Options docker run
 
 - Les options facultatives indiquées ici sont très courantes.
   - `-d` permet\* de lancer le conteneur en mode **daemon** ou **détaché** et libérer le terminal
@@ -110,7 +112,7 @@ docker run [-d] [-p port_h:port_c] [-v dossier_h:dossier_c] <image> <commande>
   - `-a` (ou `--attach`) permet de se connecter à l'entrée-sortie du processus dans le container.
 
 
-## Commandes Docker
+### Processus principal (commande) d'un conteneur
 
 - Le démarrage d'un conteneur est lié à une **commande**.
 
@@ -185,7 +187,7 @@ Il s'agit d'un répertoire public et souvent gratuit d'images (officielles ou no
 On peut également y créer un compte gratuit pour pousser et distribuer ses propres images, ou installer son propre serveur de distribution d'images privé ou public, appelé **registry**.
 
 
-# En résumé
+## En résumé
 
 ![](/img/docker-architecture.png)
 

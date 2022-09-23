@@ -197,7 +197,7 @@ Docker images are made up of multiple layers. Each of these layers is a read-onl
   - Souvent on utilise des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`).
   - Par exemple `python3` est fourni en version `python:alpine` (99 Mo), `python:3-slim` (179 Mo) et `python:latest` (918 Mo).
 
-## Les multi-stage builds
+### Les multi-stage builds
 
 Quand on tente de réduire la taille d'une image, on a recours à un tas de techniques. Avant, on utilisait deux `Dockerfile` différents : un pour la version prod, léger, et un pour la version dev, avec des outils en plus. Ce n'était pas idéal.
 
@@ -224,7 +224,7 @@ COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
 CMD ["./app"]
 ```
 
-# Créer des conteneurs personnalisés
+## Personnaliser des conteneurs existants en leur rajoutant des layers
 
 - Il n'est pas nécessaire de partir d'une image Linux vierge pour construire un conteneur.
 
@@ -239,15 +239,16 @@ CMD ["./app"]
 
 - On peut également prendre une sorte de snapshot du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <image>` et `docker push`.
 
-# Publier des images vers un registry privé
+## Publier des images vers un registry tier
 
-- Généralement les images spécifiques produites par une entreprise n'ont pas vocation à finir dans un dépôt public.
+Généralement les images spécifiques produites par une entreprise n'ont pas vocation à finir dans un dépôt public comme la version community de Docker Hub.
 
-- On peut installer des **registries privés**.
+- On peut installer ou louer des **registries privés** (Harbor, Gitlab, Docker Hub Enterprise, le service registry de votre fournisseur de cloud, etc...)
 
 - On utilise alors `docker login <adresse_repo>` pour se logger au registry et le nom du registry dans les `tags` de l'image.
 
-- Exemples de registries :
-  - **Gitlab** fournit un registry très intéressant car intégré dans leur workflow DevOps.
-  <!-- - **Docker Trusted Registry (DTR)** fait partie de **Docker Enterprise** et pratique des tests de sécurité sur les images. -->
+<!-- Exemples de registries :
+  - **Gitlab** fournit un registry très intéressant car intégré dans leur workflow DevOps. -->
+
+<!-- **Docker Trusted Registry (DTR)** fait partie de **Docker Enterprise** et pratique des tests de sécurité sur les images. -->
 

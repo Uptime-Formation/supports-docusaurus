@@ -1,8 +1,10 @@
 ---
-title: "TP 5 - Déployer une application multiconteneurs"
+title: "TP 4-2 - Déployer une application multiconteneurs"
 draft: false
 sidebar_position: 10
 ---
+
+## Une application d'exemple en 3 parties
 
 Récupérez le projet de base en clonant la correction du TP2: `git clone -b tp_monsterstack_base https://github.com/Uptime-Formation/corrections_tp.git tp3`
 
@@ -15,7 +17,7 @@ Elle est composée :
 
 Nous allons également utiliser le builder kubernetes `skaffold` pour déployer l'application en mode développement : l'image du frontend `frontend` sera construite à partir du code source présent dans le dossier `app` et automatiquement déployée dans le cluster (`minikube` ou `k3s`).
 
-# Etudions le code et testons avec `docker-compose`
+## Etudions le code et testons avec `docker-compose`
 
 - Le frontend est une application web python (flask) qui propose un petit formulaire et lance une requete sur le backend pour chercher une image et l'afficher.
 - Il est construit à partir du `Dockerfile` présent dans le dossier `TP3`.
@@ -111,7 +113,7 @@ Nous devons donc trouver comment envoyer l'image dans le cluster et idéalement 
 
 - Lancez la commande `eval $(minikube docker-env)` qui vas indiquer à la cli docker d'utiliser le daemon présent à l'intérieur du cluster minikube, notamment pour construire l'image.
 
-- Lancez un build docker `docker build -t frontend .`
+- Lancez un build docker `docker build -t frontend .`. La construction va être effectué directement dans le cluster.
 
 - Vérifiez que l'image `frontend` est bien présente dans le cluster avec `docker image list`
 
@@ -407,6 +409,6 @@ spec:
 - Visitez la page `http://monsterstack.local` pour constater que notre Ingress (reverse proxy) est bien fonctionnel.
 <!-- Pour le moment l'image de monstre ne s'affiche pas car la sous route de récup d'image /monster de notre application ne colle pas avec l'ingress que nous avons défini. TODO trouver la syntaxe d'ingress pour la faire marcher -->
 
-### Solution
+## Correction du TP
 
 Le dépôt Git de la correction de ce TP est accessible ici : `git clone -b tp_monsterstack_final https://github.com/Uptime-Formation/corrections_tp.git`

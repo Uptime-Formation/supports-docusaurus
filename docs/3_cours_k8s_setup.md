@@ -116,7 +116,7 @@ Tous les principaux fournisseurs de cloud proposent depuis plus ou moins longtem
 
 - Google Cloud Plateform avec Google Kubernetes Engine (GKE) : très populaire car très flexible et l'implémentation de référence de Kubernetes.
 - AWS avec EKS : Kubernetes assez standard mais à la sauce Amazon pour la gestion de l'accès, des loadbalancers ou du scaling.
-- Azure avec AKS : Kubernetes assez standard mais à la sauce Amazon pour la gestion de l'accès, des loadbalancers ou du scaling.
+- Azure avec AKS : Kubernetes assez standard mais à la sauce Microsoft pour la gestion de l'accès, des loadbalancers ou du scaling.
 - DigitalOcean ou Scaleway : un peu moins de fonctions mais plus simple à appréhender <!-- (nous l'utiliserons) -->
 
 Pour sa qualité on recommande parfois Google GKE qui est plus ancien. Mais comme les gros fournisseur proposent des serveices éprouvés, il s'agit surtout de faciliter l'intégration avec l'existant:
@@ -163,7 +163,6 @@ Il existe également une série de tutoriel pour faire cette installation manuel
 
 - `Rancher`: Un écosystème Kubernetes très complet, assez _opinionated_ et entièrement open-source, non lié à un fournisseur de cloud. Inclut l'installation de stack de monitoring (Prometheus), de logging, de réseau mesh (Istio) via une interface web agréable. Rancher maintient aussi de nombreuses solutions open source, comme par exemple Longhorn pour le stockage distribué.
 - `Openshift` : Une version de Kubernetes configurée et optimisée par Red Hat pour être utilisée dans son écosystème. Elle intègre notamment du monitoring et monitoring, Jenkins&Tekton pour le déploiement, un registry d'image etc. Tout est intégré avec l'inconvénient d'être un peu captif·ve de l'écosystème et des services vendus par Red Hat.
-- `BKPR (Bitnami Kube Production Runtime)` une couche de PaaS générique à installer sur n'importe quel cluster. (Bitnami fait maintenant parti du groupe VMWare)
 
 <!-- ## Remarque sur les clusters hybrides
 Il est possible de connecter plusieurs clusters ensemble dans le cloud chez plusieurs fournisseurs -->

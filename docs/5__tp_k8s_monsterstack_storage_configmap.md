@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "TP 6 - Ajouter une persistance et une configMap à notre application"
+title: "TP 5 - Ajouter une persistance et une configMap à notre application"
 sidebar_position: 12
 ---
 

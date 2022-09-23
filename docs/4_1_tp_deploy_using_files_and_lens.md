@@ -1,10 +1,12 @@
 ---
 draft: false
-title: "TP 4 - Déployer en utilisant des fichiers ressource et Lens"
+title: "TP 4-1 - Déployer en utilisant des fichiers ressource et Lens"
 sidebar_position: 9
 ---
 
-Dans ce court TP nous allons redéployer notre application `demonstration` du TP1 mais cette fois en utilisant `kubectl apply -f` et en visualisant le résultat dans `Lens`.
+## Créer un pod rancher-demo à la main avec une description YAML
+
+Dans ce TP nous allons redéployer notre application `demonstration` du TP1 mais cette fois en utilisant `kubectl apply -f` et en visualisant le résultat dans `Lens`.
 
 - Changez de contexte pour k3s avec `kubectl config use-context k3s` ou `kubectl config use-context default`
 - Chargez également la configuration de k3s dans `Lens` en cliquant à nouveau sur plus et en selectionnant `k3s` ou `default`
@@ -21,19 +23,18 @@ Nous allons d'abord déployer notre application comme un simple **Pod** (non rec
 
 => Kubernetes refuse d'appliquer le nouveau nom de conteneur car un pod est largement immutable. Pour changer d'une quelquonque façon les conteneurs du pod il faut supprimer (`kubectl delete -f <fichier>`) et recréer le pod. Mais ce travail de mise à jour devrais être géré par un déploiement pour automatiser et pour garantir la haute disponibilité de notre application `demonstration`.
 
-
-
 Kubernetes fournit un ensemble de commande pour débugger des conteneurs :
 
 - `kubectl logs <pod-name> -c <conteneur_name>` (le nom du conteneur est inutile si un seul)
 - `kubectl exec -it <pod-name> -c <conteneur_name> -- bash`
-- `kubectl attach -it <pod-name>` (attacher l'entrée et la sortie standard du processus principal d'un pod au terminal courant, rarement utilisé)
 
 - Explorez le pod avec la commande `kubectl exec -it <pod-name> -c <conteneur_name> -- bash` écrite plus haut.
 
+- Retrouvez les fonctions de shell et de log dans l'interface de OpenLens.
+
 - Supprimez le pod.
 
-## Avec un déploiement (méthode à utiliser)
+## Utiliser un déploiement (méthode à utiliser)
 
 - Créez un fichier `demo-deploy.yaml` avec à l'intérieur le code suivant à compléter:
 
@@ -70,7 +71,7 @@ spec:
 - Changez le nombre de réplicats.
 - Que se passe-t-il si on change l'étiquette de `matchLabel` en se trompant de valeur ?
 
-## Ajoutons un service en mode NodePort
+## Ajoutons un service en mode NodePort pour visiter la demo
 
 - Créez un fichier `demo-svc.yaml` avec à l'intérieur le code suivant à compléter:
 
@@ -98,6 +99,6 @@ spec:
 
 => Les services kubernetes redirigent le trafic basés sur les étiquettes(labels) appliquées sur les pods du cluster. Il faut donc aussi éviter d'utiliser deux fois le même label pour des parties différentes de l'application.
 
-### Solution
+## Correction
 
 Le dépôt Git de la correction de ce TP est accessible ici : `git clone -b tp_rancher_demo_files https://github.com/Uptime-Formation/corrections_tp.git`

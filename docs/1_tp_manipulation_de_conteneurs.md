@@ -203,7 +203,7 @@ _Attention à ne jamais lancer deux containers connectés au même port sur l'h�
 docker rm -f funky_conteneur
 ```
 
-### _Facultatif :_ Wordpress, MYSQL et les variables d'environnement
+## _Facultatif :_ Wordpress, MYSQL et les variables d'environnement
 
 - Lancez un conteneur Wordpress joignable sur le port `8080` à partir de l'image officielle de Wordpress du Docker Hub
 - Visitez ce Wordpress dans le navigateur
@@ -271,11 +271,11 @@ docker rm $(docker ps -aq -f status=exited)
 - Supprimez une image
 - Que fait la commande `docker image prune -a` ?
 
-## Décortiquer un conteneur
+## _Facultatif_ : Décortiquer un conteneur
 
 - En utilisant la commande `docker export votre_conteneur -o conteneur.tar`, puis `tar -C conteneur_decompresse -xvf conteneur.tar` pour décompresser un conteneur Docker, explorez (avec l'explorateur de fichiers par exemple) jusqu'à trouver l'exécutable principal contenu dans le conteneur.
 
-### Portainer
+## Portainer
 
 Portainer est un portail web pour gérer une installation Docker via une interface graphique. Il peut vous faciliter la vie.
 

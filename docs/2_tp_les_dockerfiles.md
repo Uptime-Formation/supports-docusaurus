@@ -46,7 +46,7 @@ Pour connaître la liste des instructions des Dockerfiles et leur usage, se réf
 
 - Normalement, VSCode vous propose d'ajouter l'extension Docker. Il va nous faciliter la vie, installez-le. Une nouvelle icône apparaît dans la barre latérale de gauche, vous pouvez y voir les images téléchargées et les conteneurs existants. L'extension ajoute aussi des informations utiles aux instructions Dockerfile quand vous survolez un mot-clé avec la souris.
 
-- Ajoutez en haut du fichier : `FROM ubuntu:latest` Cette commande indique que notre image de base est la dernière version de la distribution Ubuntu.
+- Ajoutez en haut du fichier : `FROM ubuntu:focal` Cette commande indique que notre image de base est la dernière version de la distribution Ubuntu.
 <!-- prendre une autre image ? alpine ? -->
 
 - Nous pouvons déjà contruire un conteneur à partir de ce modèle Ubuntu vide :
