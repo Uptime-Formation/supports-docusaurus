@@ -98,7 +98,9 @@ CMD ['echo','Conteneur démarré']`
 ENTRYPOINT ["/usr/bin/python3"]
 ```
 
-Par exemple avec `/usr/bin/python3` comme entrypoint, la commande `print("hello docker !")` sera interprétée comme du langage python. Par exemple `docker run monconteneurpython print("hello docker !")` affichera `hello docker !`.
+Par exemple avec `["/usr/bin/python3", "-c"]` comme entrypoint, la commande `['print("hello docker !")']` sera interprétée comme du langage python. Par exemple `docker run monconteneurpython print("hello docker !")` affichera `hello docker !`.
+
+Ou encore avec `["/usr/bin/python3"]` comme entrypoint, la commande `monapp.py` sera interprétée et `docker run monconteneurpython monapp.py` lancera mon programme.
 
 Ne pas confondre avec `RUN` qui exécute une commande Bash uniquement pendant la construction de l'image.
 

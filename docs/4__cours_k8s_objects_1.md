@@ -11,7 +11,7 @@ Utiliser Kubernetes consiste à déclarer des objets grâce à l’API Kubernete
 On définit des objets généralement via l’interface en ligne de commande et `kubectl` de deux façons :
 
 - en lançant une commande `kubectl run <conteneur> ...`, `kubectl expose ...`
-- en décrivant un objet dans un fichier YAML ou JSON et en le passant au client `kubectl apply -f monpod.yml`
+- en décrivant un objet dans un fichier YAML ou JSON et en le passant au client `kubectl apply -f monpod.yaml`
 
 Vous pouvez également écrire des programmes qui utilisent directement l’API Kubernetes pour interagir avec le cluster et définir ou modifier l’état souhaité. **Kubernetes est complètement automatisable !**
 
@@ -110,7 +110,7 @@ Remarques de syntaxe :
 - On peut sauter des lignes dans le YAML et rendre plus lisible les descriptions
 - On sépare les différents objets par `---`
 
-# Objets de base
+## Objets de base
 
 ### Les namespaces
 

@@ -21,7 +21,7 @@ En vous inspirant du code du tutoriel officiel suivant (https://kubernetes.io/do
 Installons notre application avec `kubectl` et testons en visitant la page
 ### Observer la persistence
 
-- Supprimez uniquement les deux déploiements.
+- Supprimez uniquement les trois déploiements.
 
 - Redéployez a nouveau avec `kubectl apply -f .`, les deux déploiements sont recréés.
 
@@ -31,7 +31,7 @@ Installons notre application avec `kubectl` et testons en visitant la page
 
 - Supprimer tout avec `kubectl delete -f .`. Que s'est-il passé ? (côté storage)
 
-En l'état les `PersistentVolumes` générés par la combinaison du `PersistentVolumeClaim` et de la `StorageClass` de minikube sont également supprimés en même tant que les PVCs. Les données sont donc perdues et au chargement du site on doit relancer l'installation.
+En l'état les `PersistentVolumes` générés par la combinaison du `PersistentVolumeClaim` et de la `StorageClass` de minikube sont également supprimés en même tant que les PVCs. Les données sont donc perdues et au chargement du site le nombre de visites retombe à 0.
 
 Pour éviter cela il faut avec une `Reclaim Policy` à `retain` (conserver) et non `delete` comme suit https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/. Les volumes sont alors conservés et les données peuvent être récupérées manuellement. Mais les volumes ne peuvent pas être reconnectés à des PVCs automatiquement.
 

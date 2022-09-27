@@ -53,7 +53,10 @@ Pour connaître la liste des instructions des Dockerfiles et leur usage, se réf
   `docker build -t microblog .`
 
 - Une fois la construction terminée lancez le conteneur.
-- Le conteneur s’arrête immédiatement. En effet il ne contient aucune commande bloquante et nous n'avons précisé aucune commande au lancement. Pour pouvoir observer le conteneur convenablement il fautdrait faire tourner quelque chose à l’intérieur. Ajoutez à la fin du fichier la ligne :
+
+- Le conteneur s’arrête immédiatement. En effet il ne contient aucune commande bloquante et nous n'avons précisé aucune commande au lancement.
+
+Pour pouvoir observer le conteneur convenablement il fautdrait faire tourner quelque chose à l’intérieur. Ajoutez à la fin du fichier la ligne :
   `CMD ["/bin/sleep", "3600"]`
   Cette ligne indique au conteneur d’attendre pendant 3600 secondes comme au TP précédent.
 
@@ -129,16 +132,29 @@ docker push <your-docker-registry-account>/microblog:latest
 
 ## Améliorer le Dockerfile
 
+### Une image plus légère avec python alpine
+
+- Plutôt que de partir de l'image ubuntu et d'installer python manuellement avec apt (et de façon peu optimisée), il vaut mieux utiliser l'image officielle de la runtime python. Cette image existe en plusieurs versions (voir docker hub):
+  - `python:latest` par défaut -> + de 900MB basée sur debian avec tous les outils de complilation linux compris dans l'image => pas optimal
+  - `python:slim` version Debian allégée environ 145MB, sans les outils de compilation
+  - `python:alpine` version basée sur (Alpine Linux -> distribution ultra légère (5.5 MB) devenue très populaire pour faire des conteneurs) => image python de 46MB au total
+
+- A l'aide de l'image `python:3.8-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
+
 ### Faire tourner notre application avec un utilisateur non privilégié
 
 - Avec l'aide du [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/), faire en sorte que l'app `microblog` soit exécutée par un utilisateur appelé `microblog`.
 
 <details><summary>Réponse</summary>
 
+Ajoutez avant la ligne `CMD` : 
+
 ```Dockerfile
-# Ajoute un user et groupe appelés microblog
+# Ajoute un user et groupe appelés microblog (commande valable pour alpine mais pas debian/ubuntu)
 RUN addgroup -S microblog && adduser -S microblog -G microblog
+# Change les permission de l'application
 RUN chown -R microblog:microblog ./
+# définit l'utilisateur pour les commandes suivantes du dockerfile notamment le CMD qui fait tourner l'application
 USER microblog
 ```
 

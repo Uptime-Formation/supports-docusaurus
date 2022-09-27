@@ -144,7 +144,7 @@ Le nom d'un conteneur doit être unique (à ne pas confondre avec le nom de l'im
 - Créez un conteneur avec le nom `debian2`
 
 ```bash
-docker run debian -d --name debian2 sleep 500
+docker run -d --name debian2 debian sleep 500
 ```
 
 - Lancez un conteneur debian en mode interactif (options `-i -t`) avec la commande `/bin/bash` et le nom `debian_interactif`.

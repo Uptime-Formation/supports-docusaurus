@@ -3,14 +3,34 @@ title: Cours 1 - Docker et son architecture
 sidebar_position: 1
 ---
 
-## Terminologie et concepts fondamentaux
+## Les images et conteneurs
 
-- Une **image** : un modèle pour créer un conteneur
-- Un **conteneur** : l'instance qui tourne sur la machine.
+### Les images
+
+![](/img/docker-cycle.jpg)
+
+**Docker** possède à la fois un module pour lancer les applications (runtime) et un **outil de build** d'application.
+
+- Une image est le **résultat** d'un build :
+  - on peut la voir un peu comme une boîte "modèle" : on peut l'utiliser plusieurs fois comme base de création de containers identiques, similaires ou différents.
+
+Pour lister les images on utilise :
+
+```bash
+docker images
+docker image ls
+```
+
+### Les conteneurs
+
+- Un conteneur est une instance en cours de fonctionnement ("vivante") d'une image.
+  - un conteneur en cours de fonctionnement est un processus (et ses processus enfants) qui tourne dans le Linux hôte (mais qui est isolé de celui-ci)
+
+## Autres concepts fondamentaux
+
 - Un **volume** : un espace virtuel pour gérer le stockage d'un conteneur et le partage entre conteneurs.
 - un **registry** : un serveur ou stocker des artefacts docker c'est à dire des images versionnées.
 - un **orchestrateur** : un outil qui gère automatiquement le cycle de vie des conteneurs (création/suppression).
-
 
 ![](/img/docker-architecture.png)
 
@@ -41,27 +61,7 @@ Pas de virtualisation nécessaire car Docker (le Docker Engine) utilise le noyau
   - Documentation Ubuntu : https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
 
-## Les images et conteneurs
 
-### Les images
-
-![](/img/docker-cycle.jpg)
-**Docker** possède à la fois un module pour lancer les applications (runtime) et un **outil de build** d'application.
-
-- Une image est le **résultat** d'un build :
-  - on peut la voir un peu comme une boîte "modèle" : on peut l'utiliser plusieurs fois comme base de création de containers identiques, similaires ou différents.
-
-Pour lister les images on utilise :
-
-```bash
-docker images
-docker image ls
-```
-
-### Les conteneurs
-
-- Un conteneur est une instance en cours de fonctionnement ("vivante") d'une image.
-  - un conteneur en cours de fonctionnement est un processus (et ses processus enfants) qui tourne dans le Linux hôte (mais qui est isolé de celui-ci)
 
 
 
