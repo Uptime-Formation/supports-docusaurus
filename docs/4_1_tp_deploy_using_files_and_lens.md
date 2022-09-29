@@ -8,8 +8,6 @@ sidebar_position: 9
 
 Dans ce TP nous allons redéployer notre application `demonstration` du TP1 mais cette fois en utilisant `kubectl apply -f` et en visualisant le résultat dans `Lens`.
 
-- Changez de contexte pour k3s avec `kubectl config use-context k3s` ou `kubectl config use-context default`
-- Chargez également la configuration de k3s dans `Lens` en cliquant à nouveau sur plus et en selectionnant `k3s` ou `default`
 - Commencez par supprimer les ressources `demonstration` et `demonstration-service` du TP1
 - Créez un dossier `TP2_deploy_using_files_and_Lens` sur le bureau de la machine distante et ouvrez le avec `VSCode`.
 

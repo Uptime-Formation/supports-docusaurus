@@ -4,6 +4,10 @@ draft: false
 weight: 3000
 ---
 
+## Cours opensource de référence
+
+https://container.training/kube-selfpaced.yml.html
+
 ## Livres
 
 Chez oreilly:

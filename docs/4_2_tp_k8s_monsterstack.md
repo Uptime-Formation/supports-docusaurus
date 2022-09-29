@@ -175,10 +175,9 @@ spec:
       containers:
         - name: frontend
           image: frontend
+          imagePullPolicy: Never
           ports:
             - containerPort: 5000
-      imagePullSecrets:
-        - name: registry-credential
 ```
 
 - Appliquez ce fichier avec `kubectl` et vérifiez que le déploiement frontend est bien créé.
