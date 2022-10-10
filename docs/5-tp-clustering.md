@@ -1,15 +1,15 @@
 ---
 title: TP 5 - Orchestration et clustering
-weight: 1055
+sidebar_position: 11
 ---
 
 <!-- - Cloner l'application exemple ici : [https://gitlab.com/e-lie/getstarted_docker.git](https://gitlab.com/e-lie/getstarted_docker.git) -->
 
-# Introduction à Swarm
+## Introduction à Swarm
 
 Initialisez Swarm avec `docker swarm init`.
 
-## Créer un service
+### Créer un service
 
 A l'aide de `docker service create`, créer un service à partir de l'image `traefik/whoami` accessible sur le port `9999` et connecté au port `80` et avec 5 répliques.
 
@@ -22,7 +22,7 @@ Accédez à votre service et actualisez plusieurs fois la page. Les informations
 
 - Lancez une commande `service scale` pour changer le nombre de *replicas* de votre service et observez le changement avec `docker service ps hello`
 
-## La stack `example-voting-app`
+### La stack `example-voting-app`
 
 - Cloner l'application `example-voting-app` ici : [https://github.com/dockersamples/example-voting-app](https://github.com/dockersamples/example-voting-app)
 

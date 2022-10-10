@@ -1,6 +1,7 @@
 ---
 title: TP 3 - Réseaux
 weight: 1031
+sidebar_position: 7
 ---
 
 <!--

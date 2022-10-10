@@ -61,10 +61,6 @@ Pas de virtualisation nécessaire car Docker (le Docker Engine) utilise le noyau
   - Documentation Ubuntu : https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
 
-
-
-
-
 ## Commandes Docker
 
 Docker fonctionne avec des sous-commandes et propose de grandes quantités d'options pour chaque commande.

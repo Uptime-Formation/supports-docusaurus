@@ -1,7 +1,7 @@
 ---
-title: TP 7 (bonus) - Docker et les reverse proxies
+title: TP 6 (bonus) - Docker et les reverse proxies
 draft: false
-weight: 1075
+sidebar_position: 12
 ---
 
 ## Exercice 1 - Utiliser Traefik pour le routage
