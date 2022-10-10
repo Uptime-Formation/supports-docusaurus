@@ -102,7 +102,7 @@ docker run -d --name redis --network moby-network redis
 - Avons-nous vraiment perdu les données de notre conteneur précédent ? Non !
   Le Dockerfile pour l'image officielle Redis ressemble à ça :
 
-{{< highlight Dockerfile "hl_lines=26" >}}
+```Dockerfile
 FROM alpine:3.5
 
 RUN addgroup -S redis && adduser -S -G redis redis
@@ -135,7 +135,7 @@ RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 6379
 CMD [ "redis-server" ]
-{{< / highlight >}}
+```
 
 Notez que, vers la fin du fichier, il y a une instruction `VOLUME` ; cela signifie que lorque notre conteneur a été lancé, un volume "caché" a effectivement été créé par Docker.
 
