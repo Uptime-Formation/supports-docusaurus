@@ -71,10 +71,10 @@ Solutions :
   - avec l'option `--network` de `docker run`
   - avec l'instruction `networks:` dans un docker composer
 
-- On peut aussi créer un lien entre des conteneurs
+<!-- - On peut aussi créer un lien entre des conteneurs
   - avec l'option `--link` de `docker run`
   - avec l'instruction `link:` dans un docker composer
-  - MAIS cette fonctionnalité est **obsolète** et déconseillée
+  - MAIS cette fonctionnalité est **obsolète** et déconseillée -->
 
 ### Plugins réseaux
 

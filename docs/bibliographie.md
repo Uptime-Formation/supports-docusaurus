@@ -10,6 +10,12 @@ https://container.training/kube-selfpaced.yml.html
 
 ## Livres
 
+- Docker in Action, second Edition - Manning
+- 
+
+
+## Kubernetes
+
 Chez oreilly:
 
 - Cloud Native DevOps with Kubernetes (la philosophie et les enjeux du choix de kubernetes avec des exemples techniques)
@@ -65,3 +71,9 @@ Sur MetalLB, les autres vidéos de la chaîne sont très bien :
 ## Gestion de secrets
 
 - https://argoproj.github.io/argo-cd/operator-manual/secret-management/
+
+## Outils pour faciliter la vie
+
+- skaffold
+- popeye - https://popeyecli.io/
+- kbe-ps1 - https://github.com/jonmosco/kube-ps1

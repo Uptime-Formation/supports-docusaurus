@@ -162,7 +162,7 @@ Les commandes suivantes sont couramment utilisées lorsque vous travaillez avec 
 
 - `stop` arrête les conteneurs sans les enlever.
 
-- `rm` enlève les contenants à l'arrêt. N'oubliez pas d'utiliser l'argument `-v` pour supprimer tous les volumes gérés par Docker.
+- `rm` enlève les conteneurs à l'arrêt. N'oubliez pas d'utiliser l'argument `-v` pour supprimer tous les volumes gérés par Docker.
 
 - `down` détruit tous les conteneurs définis dans le fichier Compose, ainsi que les réseaux
 
