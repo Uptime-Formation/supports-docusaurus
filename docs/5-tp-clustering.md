@@ -87,7 +87,7 @@ Première étape, regarder les logs !
 </details>
 
 <details><summary>Réponse</summary>
-Deuxième étape, vérifier sur le dépôt GitHub officiel de l'app si quelqu'un a déjà répertorié ce bug : <https://github.com/dockersamples/example-voting-app/issues/>
+Deuxième étape, vérifier sur le dépôt GitHub officiel de l'app si quelqu'un a déjà répertorié ce bug : https://github.com/dockersamples/example-voting-app/issues/
 </details>
 
 <!-- 
@@ -96,7 +96,7 @@ Hmm, ce serait [ce satané _commit_](https://github.com/dockersamples/example-vo
 </details> -->
 
 <details><summary>Réponse</summary>
-Ce commentaire semble contenir la clé du mystère au chocolat : <https://github.com/dockersamples/example-voting-app/issues/162#issuecomment-609521466>
+Ce commentaire semble contenir la clé du mystère au chocolat : https://github.com/dockersamples/example-voting-app/issues/162#issuecomment-609521466
 
 </details>
 
@@ -139,7 +139,7 @@ docker service create \
 
 ### _Facultatif :_ Utiliser Traefik avec Swarm
 
-Vous pouvez désormais faire [l'exercice 2 du TP 7](/Docker/tp-traefik) pour configurer un serveur web qui permet d'accéder à vos services Swarm via des domaines spécifiques.
+Vous pouvez désormais faire l'exercice 2 du TP Docker Traefik pour configurer un serveur web qui permet d'accéder à vos services Swarm via des domaines spécifiques.
 
 
 <!-- ### *Facultatif :* du monitoring de cluster Docker Swarm avec *Prometheus*
