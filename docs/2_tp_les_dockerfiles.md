@@ -97,7 +97,7 @@ WORKDIR /microblog
 Cette première ligne indique de copier tout le contenu du dossier courant sur l'hôte dans un dossier `/microblog` à l’intérieur du conteneur.
 Nous n'avons pas copié les requirements en même temps pour pouvoir tirer partie des fonctionnalités de cache de Docker, et ne pas avoir à retélécharger les dépendances de l'application à chaque fois que l'on modifie le contenu de l'app.
 
-Puis, dans la 2e ligne, le dossier courant dans le conteneur est déplacé à `/`.
+Puis, dans la 2e ligne, le dossier courant dans le conteneur est déplacé à `/microblog`.
 
 - Reconstruisez votre image. **Observons que le build recommence à partir de l'instruction modifiée. Les layers précédents avaient été mis en cache par le Docker Engine.**
 - Si tout se passe bien, poursuivez.
@@ -160,10 +160,6 @@ USER microblog
 
 </details>
 
-
-### Une image plus légère avec alpine
-
-- A l'aide de l'image `python:3-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
 
 ### Faire varier la configuration en fonction de l'environnement
 
