@@ -11,7 +11,7 @@ sidebar_position: 5
 - Dans un nouveau dossier ou répertoire, créez un fichier `Dockerfile` dont le contenu est le suivant :
 
 ```Dockerfile
-FROM python:alpine
+FROM python:3.6-alpine
 
 RUN apk add curl
 RUN pip install flask==0.10.1

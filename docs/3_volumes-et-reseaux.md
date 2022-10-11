@@ -18,7 +18,6 @@ Solutions :
 - Des réseaux dynamiques par défaut automatiques (DHCP mais surtout DNS automatiques)
 - Des volumes (partagés ou non, distribués ou non) montés dans les conteneurs
 
----
 
 ## Réseau
 
@@ -34,7 +33,6 @@ Solutions :
 
 - Instruction `port:` d'un compose file.
 
----
 
 ### Bridge et overlay
 
@@ -50,7 +48,6 @@ Solutions :
 
 - Un réseau overlay est un réseau virtuel privé déployé par dessus un réseau existant (typiquement public). Pour par exemple faire un cloud multi-datacenters.
 
----
 
 #### Le réseau Docker est très automatique
 
@@ -90,7 +87,6 @@ Il existe :
     - Du multicast UDP
     <!-- Donner un autre exemple -->
 
----
 
 ## Volumes
 
@@ -134,7 +130,6 @@ ls /home/user/app/data:
   `docker volume create mon_volume`
   `docker run -d -v mon_volume:/data redis`
 
----
 
 ### L'instruction `VOLUME` dans un `Dockerfile`
 
@@ -157,26 +152,28 @@ docker volume create --driver local \
     monVolume
 ```
 
----
 
 ### Plugins de volumes
 
-On peut utiliser d'autres systèmes de stockage en installant de nouveau plugins de driver de volume. Par exemple, le plugin `vieux/sshfs` permet de piloter un volume distant via SSH.
+On peut utiliser d'autres systèmes de stockage en installant de nouveaux plugins de driver de volume. En effet, dans le cas d'un cluster Docker (Swarm mode), il est insuffisant de stocker les données en local sur le disque d'un noeud du cluster.
 
 Exemples:
 
 - SSHFS (utilisation d'un dossier distant via SSH)
+- Portworx ()
 - NFS (protocole NFS)
 - BeeGFS (système de fichier distribué générique)
 - Amazon EBS (vendor specific)
 - etc.
+
+
+Par exemple, le plugin `vieux/sshfs` permet de piloter un volume distant via SSH.
 
 ```bash
 docker volume create -d vieux/sshfs -o sshcmd=<sshcmd> -o allow_other sshvolume
 docker run -p 8080:8080 -v sshvolume:/path/to/folder --name test someimage
 ```
 
----
 
 Ou via docker-compose :
 
@@ -189,7 +186,8 @@ volumes:
       allow_other: ""
 ```
 
----
+Autre exemple, PortWorx : https://docs.portworx.com/operations/operate-other/operate-docker/volume-plugin/
+
 
 ### Permissions
 
@@ -204,7 +202,6 @@ USER graphite
 CMD ["echo", "Data container for graphite"]
 ```
 
----
 
 ### Backups de volumes
 
@@ -212,3 +209,5 @@ CMD ["echo", "Data container for graphite"]
 - qui accède au volume avec `--volume-from`
 - qui est identique aux autres et donc normalement avec les mêmes UID/GID/permissions.
 <!-- - permet de ne pas perdre bêtement le volume lors d'un `prune` car il reste un conteneur qui y est lié -->
+
+Dans Kubernetes, la meilleure option pour le backup est la solution Velero qui permet d'automatiser à la fois le backup logique des déploiement dans le cluster et celui des données des volumes.

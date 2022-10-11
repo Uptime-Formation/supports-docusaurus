@@ -57,21 +57,23 @@ Il faut prendre l'habitude de bien lire ce que la console indique après avoir p
 
 Avec l'aide du support et de `--help`, et en notant sur une feuille ou dans un fichier texte les commandes utilisées :
 
-- Lancez simplement un conteneur Debian en mode _attach_. Que se passe-t-il ?
+- Lancez simplement un conteneur Debian (fonctionnement par défaut -> le conteneur est au premier plan c'est à dire attaché au terminal courant). Que se passe-t-il ?
+
+- Lancez un conteneur Debian (`docker run` puis les arguments nécessaires, cf. l'aide `--help`)n avec l'option "mode détaché" et la commande passée au conteneur `echo "Je suis le conteneur basé sur Debian"`. 
+
+Rien n'apparaît. En effet en mode détaché la sortie standard n'est pas connectée au terminal.
 
 <details><summary>Réponse</summary>
 
 ```bash
 docker run debian # mode attaché le terminal est connecter à la sortie du conteneur
 # ou
-docker run --detach debian # mode détacher le conteneur est exécuté en arrière plan
+docker run --detach debian # mode détaché le conteneur est exécuté en arrière plan
 
 # Avec l'une ou l'autre commande, il ne se passe rien car nous n'avons rien lancé dans Debian. Le conteneur s'arrête immédiatement car il n'a rien à faire
 ```
 
 </details>
-
-- Lancez un conteneur Debian (`docker run` puis les arguments nécessaires, cf. l'aide `--help`)n avec l'option "mode détaché" et la commande passée au conteneur `echo "Je suis le conteneur basé sur Debian"`. Rien n'apparaît. En effet en mode détaché la sortie standard n'est pas connectée au terminal.
 
 - Lancez `docker logs` avec le nom ou l'id du conteneur. Vous devriez voir le résultat de la commande `echo` précédente.
 
@@ -106,11 +108,11 @@ docker ps -a
 
 </details>
 
-- Lancez un conteneur debian **en mode détaché** avec la commande `sleep 3600`
+- Lancez un conteneur debian **en mode détaché** avec la commande `sleep 45`
 
-- Réaffichez la liste des conteneurs qui tournent
+- Réaffichez la liste des conteneurs qui tournent puis refaite de même un peu plus tard. Que constate-t-on ?
 
-- Tentez de stopper le conteneur, que se passe-t-il ?
+<!-- - Tentez de stopper le conteneur, que se passe-t-il ?
 
 ```
 docker stop <conteneur>
@@ -126,7 +128,7 @@ docker stop <conteneur>
 docker kill <conteneur>
 ```
 
-</details>
+</details> -->
 
 - Tentez de lancer deux conteneurs avec le nom `debian_container`
 
@@ -195,7 +197,7 @@ docker run --name funky_conteneur -p 80:80 funkwhale/all-in-one:1.0.1
 
 Vous pouvez visiter ensuite ce conteneur Funkwhale sur le port 80 (après quelques secondes à suivre le lancement de l'application dans les logs) ! Mais il n'y aura hélas pas de musique dedans :(
 
-_Attention à ne jamais lancer deux containers connectés au même port sur l'hôte, sinon cela échouera !_
+_Attention à ne pas lancer deux containers connectés au même port sur l'hôte, sinon cela échouera !_
 
 - Supprimons ce conteneur :
 

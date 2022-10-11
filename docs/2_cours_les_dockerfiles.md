@@ -84,6 +84,8 @@ CMD ["python", "/usr/src/app/app.py"]
 
 - `USER` : permet de choisir l'utilisateur courant pour exécuter les commandes de construction et lancer le programme à la fin (nécessaire pour une image sécurisée). Il faut au préalable créer l'utilisateur avec une commande unix par exemple `RUN useradd ...`.
 
+
+
 ### Définir le programme du conteneur avec `CMD` et `ENTRYPOINT`
 
 - `CMD` : placée à la fin du `Dockerfile`, elle permet de préciser la commande par défaut lancée à la création d'une instance du conteneur avec `docker run`. on l'utilise avec une liste de paramètres.
@@ -106,6 +108,8 @@ Ne pas confondre avec `RUN` qui exécute une commande Bash uniquement pendant la
 
 En fait c'est même un peu plus compliqué : https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact
 
+
+
 ### L'instruction `HEALTHCHECK` pour préparer la haute disponibilité
 
 `HEALTHCHECK` permet de vérifier si l'app contenue dans un conteneur est en bonne santé.
@@ -114,7 +118,7 @@ En fait c'est même un peu plus compliqué : https://docs.docker.com/engine/refe
 HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
 ```
 
-Nous verrons un exemple dans le TP suivant et aborderons la santé dans le contexte de Kubernetes.
+Nous verrons un exemple dans le TP suivant et aborderons la santé dans le contexte du clustering.
 
 
 <!-- ### Les variables d'environnement dans le Dockerfile
@@ -247,10 +251,21 @@ Généralement les images spécifiques produites par une entreprise n'ont pas vo
 
 - On peut installer ou louer des **registries privés** (Harbor, Gitlab, Docker Hub Enterprise, le service registry de votre fournisseur de cloud, etc...)
 
-- On utilise alors `docker login <adresse_repo>` pour se logger au registry et le nom du registry dans les `tags` de l'image.
+- On utilise alors `docker login <adresse_repo>` pour se logger au registry et le nom du registry dans les `tags` de l'image.ocker se positionne de plus en plus commercialement sur la partie amont de la conteneurisation, car sa solution d'orchestration intégrée pour la prod a perdu en
 
 <!-- Exemples de registries :
   - **Gitlab** fournit un registry très intéressant car intégré dans leur workflow DevOps. -->
 
 <!-- **Docker Trusted Registry (DTR)** fait partie de **Docker Enterprise** et pratique des tests de sécurité sur les images. -->
 
+## Bonnes pratiques sur pour les Dockerfiles et le build.
+
+- https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+- https://docs.docker.com/get-started/09_image_best/
+
+## Créer des images sans docker
+
+- Avec `podman`, `buildah` et par exemple `Ansible`
+
+- Construire une image à l'intérieur d'un conteneur non privilégié avec `Kaniko`

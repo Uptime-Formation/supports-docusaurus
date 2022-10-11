@@ -4,7 +4,7 @@ weight: 1050
 sidebar_position: 10
 ---
 
-# Orchestration
+## Orchestration
 
 - Un des intérêts principaux de Docker et des conteneurs en général est de :
 
@@ -18,30 +18,45 @@ Les nœuds d’un cluster sont les machines (serveurs physiques, machines virtue
 L'orchestration consiste à automatiser la création et la répartition des conteneurs à travers un cluster de serveurs. Cela peut permettre de :
 
 - déployer de nouvelles versions d'une application progressivement.
-- faire grandir la quantité d'instances de chaque application facilement.
-- voire dans le cas de l'auto-scaling de faire grossir l'application automatiquement en fonction de la demande.
+- faire grandir la quantité d'instances de chaque application facilement (horizontal scaling)...
+- ... voire dans le cas de l'auto-scaling de faire grossir l'application automatiquement en fonction de la demande.
+
+## Orchestration : comparaison de Docker Services (Swarmkit) et Kubernetes
+
+Les deux solutions ont un coeur de fonctionnalité très semblable :
+
+- Faire tourner des conteneurs répliqués avec une scalabilité horizontale
+- Fonctionnent de façon déclarative et incrémentale sur la base de fichier yaml
+- route les requêtes automatiquement dans le Cluster entre les ensembles de conteneurs
+- gère la configuration et les volumes de façon externe/indépendante des conteneurs
+
+Caractéristiques de Docker Services (Swarm Mode):
+
+- Swarm plus intégré avec la CLI et le workflow Docker.
+- Swarm est plus simple à installer et gérer on premise.
+<!-- - Swarm est orienté vers le on premise/self hosting (peu de vendeur cloud Docker) ?-->
+- Swarm est moins structurant que kubernetes mais aussi moins automatique que Kubernetes (les fichiers de déploiement kubernetes sont plus détailler ce qui permet au cluster de prendre des décisions)
+- Dans Swarm les conteneurs sont faiblement couplés (lancés indépendamment)
+
+- Swarm est plus ou moins un logiciel legacy dans le sens ou Mirantis qui a racheté Docker EE favorise Kubernetes. Mais c'est un logiciel opensource et quelques fonctionnalités sont encore ajoutées mais, il a perdu beaucoup en popularité face à Kubernetes (et Nomad etc) (https://github.com/moby/swarmkit/issues/2665)
+
+Caractéristiques de Kubernetes: 
+
+- Kubernetes au contraire crée des **pods** qui peuvent être des grappes de conteneurs solidaires ce qui permet de Pattern multiconteneur de type sidecar.
+
+- Kubernetes a beaucoup plus de fonctionnalités avancées. Il s'agit plus d'un écosystème qui couvre un large panel de cas d'usage.
+
+- Kubernetes a une meilleure fault tolerance de par sont comportement plus prédictible et la configuration plus détaillée des déploiements.
+
+- Kubernetes est plus standardisé ce qui explique sa popularité
+
+- Kubernetes est entièrement extensible et programmable grace à sont architecture distribuée ouverte et son API modulaire parfaitement versionnée.
+
+- Kubernetes est adapté à des petits et très gros clusters.
 
 
 
----
-
-# Docker Swarm
-
-<!-- ajout sous-commandes spécifiques à swarm, stack, services, swarm, node... -->
-
-- Swarm est l'**outil de clustering et d'orchestration natif** de Docker (développé par Docker Inc.).
-
-- Il s'intègre très bien avec les autres commandes docker (on a même pas l'impression de faire du clustering).
-
-- Il permet de gérer de très grosses productions Docker.
-
-- Swarm utilise l'API standard du Docker Engine (sur le port 2376) et sa propre API de management Swarm (sur le port 2377).
-
-- Il a perdu un peu en popularité face à Kubernetes mais c'est très relatif (voir comparaison plus loin).
-
----
-
-## Architecture de Docker Swarm
+### Architecture de Docker Swarm
 
 
 <br />
@@ -53,7 +68,7 @@ L'orchestration consiste à automatiser la création et la répartition des cont
 - Les nœuds managers sont en fait aussi des workers et font tourner des conteneurs, c'est leur rôles qui varient.
 
 
-## Consensus entre managers Swarm
+### Consensus entre managers Swarm
 
 - L'algorithme Raft : http://thesecretlivesofdata.com/raft/
   ![](/img/raft-algorithm.gif)
@@ -61,16 +76,13 @@ L'orchestration consiste à automatiser la création et la répartition des cont
 - Pas d'_intelligent balancing_ dans Swarm
   - l'algorithme de choix est "spread", c'est-à-dire qu'il répartit au maximum en remplissant tous les nœuds qui répondent aux contraintes données.
 
----
 
-
-## Docker Services et Stacks
+### Docker Services et Stacks
 
 - les **services** : la distribution **d'un seul conteneur en plusieurs exemplaires**
 
 - les **stacks** : la distribution (en plusieurs exemplaires) **d'un ensemble de conteneurs (app multiconteneurs)** décrits dans un fichier Docker Compose
 
----
 
 ```yml
 version: "3"
@@ -102,9 +114,8 @@ networks:
     * `replicas` : nombre d'exemplaires du conteneur
     * `resources` : contraintes d'utilisation de CPU ou de RAM sur le nœud
 
----
 
-## Sous-commandes Swarm
+### Sous-commandes Swarm
 
 - `swarm init` : Activer Swarm et devenir manager d'un cluster d'un seul nœud
 - `swarm join` : Rejoindre un cluster Swarm en tant que nœud manager ou worker
@@ -129,7 +140,6 @@ networks:
 - `docker node promote` : Transforme un nœud worker en manager
 - `docker node demote` : Transforme un nœud manager en worker
 
----
 
 <!-- faire plus court -->
 <!-- ajout illustration -->
@@ -173,7 +183,7 @@ networks:
 
 --- -->
 
-## Répartition de charge (load balancing)
+### Répartition de charge (load balancing)
 <!-- ajout illustration -->
 
 - Un load balancer : une sorte d'**"aiguillage" de trafic réseau**, typiquement HTTP(S) ou TCP.
@@ -191,53 +201,25 @@ networks:
 
 - Répartition géographique : en fonction de la provenance des requêtes on va rediriger vers un datacenter adapté (+ ou - proche)
 
----
 
-## Le loadbalancing de Swarm est automatique
-<!-- ajout illustration -->
+### Le loadbalancing de Swarm est automatique
 
 - Loadbalancer intégré : Ingress
-
 - Permet de router automatiquement le trafic d'un service vers les nœuds qui l'hébergent et sont disponibles.
-
 - Pour héberger une production il suffit de rajouter un loadbalancer externe qui pointe vers un certain nombre de nœuds du cluster et le trafic sera routé automatiquement à partir de l'un des nœuds.
 
----
-
-## Solutions de loadbalancing externe
+### Solutions de loadbalancing externe
 
 - **HAProxy** : Le plus répandu en loadbalancing
 - **Træfik** : Simple à configurer et fait pour l'écosystème Docker
 - **NGINX** : Serveur web générique mais a depuis quelques années des fonctions puissantes de loadbalancing et de TCP forwarding.
 
----
-<!-- ajout explications -->
 
-## Gérer les données sensibles dans Swarm avec les secrets Docker
 
-- `echo "This is a secret" | docker secret create my_secret_data`
-
-- `docker service create --name monservice --secret my_secret_data redis:alpine`
-  => monte le contenu secret dans `/var/run/my_secret_data`
-
----
-
-## Docker Machine
-
-<!-- faire plus court -->
+### Docker Machine
 
 - C'est l'outil de gestion d'hôtes Docker
 - Il est capable de créer des serveurs Docker "à la volée"
-
-<!-- 
-  - chez différents fournisseurs de cloud
-  - en local avec VirtualBox pour tester son application en mode production et/ou distribué.
-
-- L'intérêt de `docker-machine` est d'être **parfaitement intégré** dans l'outil de CLI Docker.
-
-- Il sert également de base pour créer un Swarm Docker et distribuer les conteneurs entre plusieurs hôtes. -->
-
-<!-- --- -->
 
 - Concrètement, `docker-machine` permet de **créer automatiquement des machines** avec le **Docker Engine** et **ssh** configuré et de gérer les **certificats TLS** pour se connecter à l'API Docker des différents serveurs.
 
@@ -261,52 +243,13 @@ Pour basculer `eval $(docker env hote-digitalocean);`
 - `docker ps -a` affiche le conteneur en train de tourner à distance.
 - `wget $(docker-machine ip hote-digitalocean)` va récupérer la page nginx.
 
----
+Une bonne alternative pour installer Docker sur un cluster de machine est d'utiliser un outil de gestion de configuration plus générique comme Ansible.
 
-# Présentation de Kubernetes
 
-![](/img/kubernetes.png)
+<!-- ### Gérer la configuration externe dans le cluster avec les resources configuration -->
 
-- Les **pods** Kubernetes servent à grouper des conteneurs en unités d'application (microservices ou non) fortement couplées (un peu comme les *stacks* Swarm)
+### Gérer les données sensibles dans Swarm avec les secrets Docker
 
-- Les **services** sont des groupes de pods exposés à l'extérieur
-- 
-- Les **deployments** sont une abstraction pour scaler ou mettre à jours des groupes de **pods** (un peu comme les *tasks* dans Swarm).
-
-<!-- - Ces derniers tendent à se rapprocher d'une VM du point de vue de l'application. -->
-
----
-
-## Présentation de Kubernetes
-
-- Une autre solution très à la mode depuis 4 ans. Un buzz word du DevOps en France :)
-
-- Une solution **robuste**, **structurante** et **open source** d'orchestration Docker.
-
-- Au cœur du consortium **Cloud Native Computing Foundation** très influent dans le monde de l'informatique.
-
-- Hébergeable de façon identique dans le cloud, on-premise ou en mixte.
-
-- Kubernetes a un flat network (un overlay de plus bas niveau que Swarm) : https://neuvector.com/network-security/kubernetes-networking/
-
----
-
-## Comparaison Swarm et Kubernetes
-
-- Swarm plus intégré avec la CLI et le workflow Docker.
-- Swarm est plus fluide, moins structurant mais moins automatique que Kubernetes.
-- Swarm groupe les containers entre eux par **stack**.
-- Kubernetes au contraire crée des **pods** avec une meilleure isolation.
-  - Kubernetes a une meilleure fault tolerance que Swarm
-  - attention au contre-sens : un service Swarm est un seul conteneur répliqué, un service Kubernetes est un groupe de conteneurs (pod) répliqué, plus proche des Docker Stacks.
-
----
-
-## Comparaison Swarm et Kubernetes
-
-- Kubernetes a plus d'outils intégrés. Il s'agit plus d'un écosystème qui couvre un large panel de cas d'usage.
-<!-- - Swarm a un mauvais monitoring et le stockage distribué n'est pas intégré de façon standard. -->
-- Swarm est beaucoup plus simple à mettre en œuvre qu'une stack Kubernetes.
-- Swarm serait donc mieux pour les clusters moyen et Kubernetes pour les très gros
-
----
+- `echo "This is a secret" | docker secret create my_secret_data`
+- `docker service create --name monservice --secret my_secret_data redis:alpine`
+  => monte le contenu secret dans `/var/run/my_secret_data`

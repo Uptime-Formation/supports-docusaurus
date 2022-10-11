@@ -216,6 +216,13 @@ ENV CONTEXT PROD
 
 EXPOSE 5000
 
+# Ajoute un user et groupe appelés microblog (commande valable pour alpine mais pas debian/ubuntu)
+RUN addgroup -S microblog && adduser -S microblog -G microblog
+# Change les permission de l'application
+RUN chown -R microblog:microblog ./
+# définit l'utilisateur pour les commandes suivantes du dockerfile notamment le CMD qui fait tourner l'application
+USER microblog
+
 CMD ["./boot.sh"]
 ```
 

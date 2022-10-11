@@ -88,6 +88,8 @@ Les conteneurs sont souvent comparés à l'innovation du porte conteneur pour le
 - Reproductibilité / Fiabilité : lancer un conteneur se passe toujours de la même façon et limite les aléas
 - Supporte l'architecture distribuée (microservices) en permettant l'isolation légère de chaque partie du logiciel
 
+- Docker se positionne de plus en plus commercialement sur la partie amont de la conteneurisation, car sa solution d'orchestration intégrée pour la prod a perdu en popularité et glisse doucement vers le legacy.
+
 ### Apports Kubernetes pour le DevOps
 
 - Abstraction et standardisation des infrastructures: 
