@@ -262,7 +262,7 @@ networks:
 
 ## D'autres services
 
-### Exerciced de _google-fu_
+### Exercice de _google-fu_
 
 #### ex: un pad HedgeDoc
 
@@ -345,7 +345,7 @@ Puis, à l'aide de la documentation Elasticsearch et/ou en adaptant de bouts de 
 
 ### _Facultatif_ : ajouter une stack ELK à `microblog`
 
-<!-- TODO: Fiare avec ma version de l'app et du docker compose -->
+<!-- TODO: Faire avec ma version de l'app et du docker compose -->
 
 Dans la dernière version de l'app `microblog`, Elasticsearch est utilisé pour fournir une fonctionnalité de recherche puissante dans les posts de l'app.
 Avec l'aide du [tutoriel de Miguel Grinberg](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xix-deployment-on-docker-containers), écrivez le `docker-compose.yml` qui permet de lancer une stack entière pour `microblog`. Elle devra contenir un conteneur `microblog`, un conteneur `mysql`, un conteneur `elasticsearch` et un conteneur `kibana`.
