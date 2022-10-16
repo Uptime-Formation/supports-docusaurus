@@ -1,7 +1,7 @@
 ---
-title: Cours 3 - Architecture de Kubernetes et les différents types de clusters
+title: Cours 2 - Architecture de Kubernetes et les différents types de clusters
 draft: false
-sidebar_position: 7
+sidebar_position: 3
 ---
 
 ## Kubernetes

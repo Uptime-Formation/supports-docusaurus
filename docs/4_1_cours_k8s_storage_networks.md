@@ -1,7 +1,7 @@
 ---
 draft: false
-title: Cours 5 - Le stockage et le réseau dans Kubernetes
-sidebar_position: 11
+title: Cours 4 - Le stockage et le réseau dans Kubernetes
+sidebar_position: 8
 ---
 
 

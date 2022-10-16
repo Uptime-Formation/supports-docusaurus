@@ -1,7 +1,7 @@
 ---
-title: 10 - Cours - Objets Kubernetes Partie 2.
+title: Cours 4-2 - Objets Kubernetes Partie 2.
 draft: false
-weight: 2060
+sidebar_position: 9
 ---
 
 

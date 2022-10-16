@@ -1,7 +1,7 @@
 ---
-title: 04 - TP2 - Plusieurs installations simples de Kubernetes
+title: TP2 - Plusieurs installations simples de Kubernetes
 draft: false
-weight: 2025
+sidebar_position: 4
 ---
 
 ## Une 2e installation: `k3s` sur votre VPS

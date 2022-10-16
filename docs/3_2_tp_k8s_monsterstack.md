@@ -1,7 +1,7 @@
 ---
-title: "TP 4-2 - Déployer une application multiconteneurs"
+title: "TP 3-2 - Déployer une application multiconteneurs"
 draft: false
-sidebar_position: 10
+sidebar_position: 7
 ---
 
 ## Une application d'exemple en 3 parties

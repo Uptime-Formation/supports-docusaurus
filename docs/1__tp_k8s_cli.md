@@ -1,7 +1,7 @@
 ---
-title: TP 3 - Découvrir la cli kubectl et déployer une application
+title: TP 1 - Découvrir la cli kubectl et déployer une application
 draft: false
-sidebar_position: 6
+sidebar_position: 2
 ---
 
 ## Découverte de Kubernetes

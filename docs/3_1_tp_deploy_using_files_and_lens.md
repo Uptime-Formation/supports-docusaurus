@@ -1,7 +1,7 @@
 ---
 draft: false
-title: "TP 4-1 - Déployer en utilisant des fichiers ressource et Lens"
-sidebar_position: 9
+title: "TP 3-1 - Déployer en utilisant des fichiers ressource et Lens"
+sidebar_position: 6
 ---
 
 ## Créer un pod rancher-demo à la main avec une description YAML

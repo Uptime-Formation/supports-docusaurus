@@ -1,7 +1,7 @@
 ---
-title: Cours 6 - Méthodes pour installer des applications Kubernetes
+title: Cours 5 - Méthodes pour installer des applications Kubernetes
 draft: false
-sidebar_position: 13
+sidebar_position: 11
 ---
 
 ### Kustomize
