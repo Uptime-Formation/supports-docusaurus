@@ -29,7 +29,6 @@ BitBucket propose aussi son outil de pipeline, à la différence qu'il n'a pas d
 ### Ressources
 - https://support.atlassian.com/bitbucket-cloud/docs/run-docker-commands-in-bitbucket-pipelines/
 
-
 ## Conclusion
 ### Déployer notre container ou notre projet Docker Compose
 Nous avons fait la partie CI (intégration continue). Une étape supplémentaire est nécessaire pour ajouter le déploiement continu de l'app (CD) : si aucune étape précédente n'a échoué, la nouvelle version de l'app devra être déployée sur votre serveur, via une connexion SSH et `rsync` par exemple.

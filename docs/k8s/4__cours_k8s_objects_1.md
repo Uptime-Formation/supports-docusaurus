@@ -141,11 +141,11 @@ Un Pod comprend en plus des conteneurs, des `ressources de stockage`, `une IP r�
 
 Plus précisément ces conteneurs étroitement liés et qui partagent :
 
-- les mêmes ressources de calcul
 - des volumes communs
 - la même interface réseau : la même IP, les même noms de domaine internes
 - les conteneurs peuvent se parler en IPC
 - ont un nom différent et des logs différents
+- ont des sondes (liveness/readiness probes) et des limites de ram et cpu différentes pour chaque conteneur
 
 Chaque Pod est destiné à exécuter une instance unique d’un workload donné. Si vous désirez mettre à l’échelle votre workload, vous devez multiplier le nombre de Pods avec un déploiement.
 
