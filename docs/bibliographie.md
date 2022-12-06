@@ -1,7 +1,7 @@
 ---
 title: Bibliographie
 draft: false
-weight: 3000
+sidebar_position: 30
 ---
 
 ## Cours opensource de référence

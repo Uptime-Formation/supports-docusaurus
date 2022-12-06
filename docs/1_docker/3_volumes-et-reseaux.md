@@ -1,7 +1,6 @@
 ---
 title: 3 - Volumes et réseaux
-weight: 1030
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 ## Cycle de vie d'un conteneur
