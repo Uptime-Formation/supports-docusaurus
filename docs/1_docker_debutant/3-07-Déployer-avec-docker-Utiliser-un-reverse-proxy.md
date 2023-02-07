@@ -12,7 +12,7 @@ weight: 35
 
 Avec Traefik, aussi grâce aux labels sur les conteneurs Docker
 
-![](../assets/images/docker/traefik-architecture.png)
+![](../assets/images/traefik-architecture.png)
 
 Ou avec Nginx, avec deux projets :
 
