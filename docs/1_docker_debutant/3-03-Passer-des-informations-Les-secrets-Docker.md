@@ -8,3 +8,9 @@ weight: 31
   - Comprendre les dangers d'exposer les secrets
   - Comprendre les secrets Docker
   - Savoir utiliser les secrets Docker
+
+--- 
+
+# Mauvaise pratique : exposer les secrets d'une application 
+
+Le nombre 
