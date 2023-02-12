@@ -1,10 +1,5 @@
 ---
-title: 3.
-
-02 Passer des informations Les variables d'environnement
-pre: "<b>3.
-
-02 </b>"
+title: 3.02 Passer des informations Les variables d'environnement
 weight: 30
 ---
 
