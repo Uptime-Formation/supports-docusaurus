@@ -84,3 +84,31 @@ Se référer au [mode d'emploi](https://docs.docker.com/engine/reference/builder
 ```shell
 $ docker run --env VAR=VALUE ubuntu env
 ```
+
+--- 
+# Impact sur le code 
+
+**Une fois admis qu'il faut utiliser des variables d'environnement pour configurer un service, il faut l'intégrer aux applications.**
+
+Absolument tous les langages de programmation offrent des moyens très simples de lire ces variables.
+
+En PHP, vous pouvez accéder aux variables d'environnement à l'aide de la fonction getenv().
+```php
+$maVar = getenv('MA_VAR');
+```
+
+En Python, vous pouvez accéder aux variables d'environnement à l'aide du module os.
+```python
+import os
+maVar = os.environ.get('MA_VAR')
+```
+
+En Java, vous pouvez accéder aux variables d'environnement à l'aide de la classe System.
+
+```java
+String myVar = System.getenv("MY_VAR");
+```
+Dans Node.js, vous pouvez accéder aux variables d'environnement à l'aide de l'objet process.env.
+```javascript 
+const myVar = process.env.MY_VAR;
+```
