@@ -1,5 +1,5 @@
 ---
-title: "Pourquoi Docker : Les Dockerfiles"
+title: "1.07 Pourquoi Docker : Les Dockerfiles"
 pre: "<b>1.07 </b>"
 weight: 8
 ---
@@ -7,9 +7,11 @@ weight: 8
   - Savoir comparer un Dockerfile à d'autres solutions d'IAC (Ansible, puppet)
   - Analyser les avantages et inconvénients de cette solution
 
+---
+
 ## Analogie
 
-On va voir que Docker, c'est un peu comme servir des plats surgelés - qui peuvent être par ailleurs de bonne qualité selon leur prix.
+**On va voir que Docker, c'est un peu comme servir des plats surgelés - qui peuvent être par ailleurs de bonne qualité selon leur prix.**
 
 On va opposer ça avec la "cuisine maison", qui nécessite 
 * de faire les courses, 
@@ -19,6 +21,8 @@ On va opposer ça avec la "cuisine maison", qui nécessite
 
 Et qui peut être bonne ou mauvaise selon la qualité des cuisines, des ingrédients, etc.
 
+---
+
 ## Les pratiques d'Infrastructure As Code 
 
 **On a vu que les pratiques de déploiement ont avancé dans le sens de la formalisation et de l'automatisation.**
@@ -27,6 +31,8 @@ L'objectif de l'IAC est de définir dans du code des actions manuelles.
 
 Une fois automatisées, ces opérations peuvent être reproduites.
 
+---
+
 ## Les outils d'IAC
 
 Quelques noms : 
@@ -34,6 +40,8 @@ Quelques noms :
 - Terraform : ça fait les courses 
 - Ansible : ça lance la cuisson d'un plat
 - Puppet : ça surveille des cuisines industrielles
+
+---
 
 ### **Terraform** 
 
@@ -48,6 +56,8 @@ resource "aws_ebs_volume" "my_data" {
   size              = 25                                    # in GiB; if you change this in-place, you need to SSH over and run e.g. $ sudo resize2fs /dev/xvdh
 }
 ```
+
+---
 
 ### **Ansible**
 
@@ -72,6 +82,8 @@ Est utilisé pour configurer des serveurs en fonction de leurs rôles.
           state: started
 ```
 
+---
+
 ### **Puppet** 
 
 Est utilisé pour maintenir sur le long terme une flotte de machines.
@@ -90,6 +102,8 @@ Est utilisé pour maintenir sur le long terme une flotte de machines.
 
 ```
 
+---
+
 ### Les outils d'IAC sont exécutés sur des systèmes actifs
 
 Ils vont créer de nouvelles ressources, les configurer, gérer leur cycle de vie.
@@ -99,6 +113,8 @@ Ils vont créer de nouvelles ressources, les configurer, gérer leur cycle de vi
 * Génération de fichiers de configuration
 * Lancement de process
 
+---
+
 **C'est ça la "cuisine maison".** 
 
 Elle implique beaucoup de connaissances, ce qui rend le déploiement de nouvelles applications parfois difficile.
@@ -106,6 +122,8 @@ Elle implique beaucoup de connaissances, ce qui rend le déploiement de nouvelle
 Et selon la manière dont on aura plus ou moins bien conçu sa cuisine et formé les cuistots...
 
 On aura de bons résultats et une bonne capacité d'évolution.
+
+---
 
 ## Docker, un plat surgelé ? 
 
@@ -141,6 +159,8 @@ C'est un fichier qui définit les conditions nécessaires pour que le process de
 - les besoins en stockage 
 - les ports réseaux 
 - la surveillance de l'application
+
+---
 
 **L'image Docker est «prête à consommer».**
 

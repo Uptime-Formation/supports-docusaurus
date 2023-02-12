@@ -1,5 +1,5 @@
 ---
-title: Réseaux Docker Interactions avec le système parent
+title: 2.10 Réseaux Docker Interactions avec le système parent
 pre: "<b>2.10 </b>"
 weight: 23
 ---
@@ -7,63 +7,32 @@ weight: 23
   - Comprendre le mode de fonctionnement des bridge Linux et le NAT
   - Savoir inspecter la couche réseau d'un conteneur Docker
 
-## Réseau
-
-### Gestion des ports réseaux (_port mapping_)
-
-<-- Schéma -->
-
-- L'instruction `EXPOSE` dans le Dockerfile informe Docker que le conteneur écoute sur les ports réseau au lancement. L'instruction `EXPOSE` **ne publie pas les ports**. C'est une sorte de **documentation entre la personne qui construit les images et la personne qui lance le conteneur à propos des ports que l'on souhaite publier**.
-
-- Par défaut les conteneurs n'ouvrent donc pas de port même s'ils sont déclarés avec `EXPOSE` dans le Dockerfile.
-
-- Pour publier un port au lancement d'un conteneur, c'est l'option `-p <port_host>:<port_guest>` de `docker run`.
-
-- Instruction `port:` d'un compose file.
-
 ---
 
-### Bridge et overlay
+# Le réseau Docker est très automatique
 
-<-- Schéma réseau classique bridge -->
-
-- Un réseau bridge est une façon de créer un pont entre deux carte réseaux pour construire un réseau à partir de deux.
-
-- Par défaut les réseaux docker fonctionne en bridge (le réseau de chaque conteneur est bridgé à un réseau virtuel docker)
-
-- par défaut les adresses sont en 172.0.0.0/8, typiquement chaque hôte définit le bloc d'IP 172.17.0.0/16 configuré avec DHCP.
-
-<-- Schéma réseau overlay -->
-
-- Un réseau overlay est un réseau virtuel privé déployé par dessus un réseau existant (typiquement public). Pour par exemple faire un cloud multi-datacenters.
-
+* DNS et DHCP intégré dans le "user-defined network" 
+* Fournit des adresses automatiquement
+* Fournit un nom de domaine automatique à chaque conteneur
+* Fournit par défaut une isolation des containers
 ---
 
-#### Le réseau Docker est très automatique
+## Les réseaux de type bridge
 
-<-- Schéma DNS et DHCP -->
+**Un réseau bridge est une façon de créer un pont entre deux carte réseaux pour construire un réseau à partir de deux.**
 
-- Serveur DNS et DHCP intégré dans le "user-defined network" (c'est une solution IPAM)
+Par défaut les réseaux docker fonctionne en bridge (le réseau de chaque conteneur est bridgé à un réseau virtuel docker)
 
-- Donne un nom de domaine automatique à chaque conteneur.
+Par défaut les adresses sont en 172.16.0.0/12, typiquement chaque hôte définit le bloc d'IP 172.17.0.0/16 configuré avec DHCP.
 
-- Mais ne pas avoir peur d'aller voir comment on perçoit le réseau de l'intérieur. Nécessaire pour bien contrôler le réseau.
+---
+## Les autres types de réseaux
 
-- `ingress` : un loadbalancer automatiquement connecté aux nœuds d'un Swarm. Voir la [doc sur les réseaux overlay](https://docs.docker.com/network/overlay/).
-<-- schéma ingress -->
+### Overlay
 
-### Lier des conteneurs
+Un réseau overlay est un réseau virtuel privé déployé par dessus un réseau existant (typiquement public). Pour par exemple faire un cloud multi-datacenters.
 
-- Aujourd'hui il faut utiliser un réseau dédié créé par l'utilisateur ("user-defined bridge network")
-
-  - avec l'option `--network` de `docker run`
-  - avec l'instruction `networks:` dans un docker composer
-
-- On peut aussi créer un lien entre des conteneurs
-  - avec l'option `--link` de `docker run`
-  - avec l'instruction `link:` dans un docker composer
-  - MAIS cette fonctionnalité est **obsolète** et déconseillée
-
+---
 ### Plugins réseaux
 
 Il existe :
@@ -75,4 +44,5 @@ Il existe :
     - de la sécurité
     - un DNS qui permet de simuler de la découverte de service
     - Du multicast UDP
-    <-- Donner un autre exemple -->
+
+

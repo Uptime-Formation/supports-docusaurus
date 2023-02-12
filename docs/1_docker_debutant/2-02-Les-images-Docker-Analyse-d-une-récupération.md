@@ -1,5 +1,5 @@
 ---
-title: Les images Docker Analyse d'une récupération
+title: 2.02 Les images Docker Analyse d'une récupération
 pre: "<b>2.02 </b>"
 weight: 15
 ---
@@ -8,31 +8,49 @@ weight: 15
   - Comprendre comment les étapes du Dockerfile commandent les couches
 
 ![](../assets/images/docker-cycle.jpg)
-**Docker** possède à la fois un module pour lancer les applications (runtime) et un **outil de build** d'application.
 
-- Une image est le **résultat** d'un build :
-  - on peut la voir un peu comme une boîte "modèle" : on peut l'utiliser plusieurs fois comme base de création de containers identiques, similaires ou différents.
+---
 
-Pour lister les images on utilise :
+# Que se passe-t-il quand on pull une image ?
 
-```bash
-docker images
-docker image ls
+```shell
+$ docker pull python:3.9
+```
+On voit que différentes couches sont récupérées individuellement.
+
+Ces couches ont des identifiants, des hashs, et des poids, donc des contenus, différents
+
+Observez l'historique de construction de l'image avec 
+
+```shell
+$ docker image history python:3.9
+```
+
+On peut également avoir des informations avancées avec 
+
+```shell
+$ docker image inspect python:3.9
 ```
 
 ---
 
-## Les conteneurs
+# Décortiquer une image
 
-- Un conteneur est une instance en cours de fonctionnement ("vivante") d'une image.
-  - un conteneur en cours de fonctionnement est un processus (et ses processus enfants) qui tourne dans le Linux hôte (mais qui est isolé de celui-ci)
+Une image est composée de plusieurs layers empilés entre eux par le Docker Engine et de métadonnées.
 
-## Commandes Docker
+- Affichez la liste des images présentes dans votre Docker Engine.
 
-Docker fonctionne avec des sous-commandes et propose de grandes quantités d'options pour chaque commande.
+- Inspectez la dernière image que vous venez de créez (`docker image --help` pour trouver la commande)
 
-Utilisez `--help` au maximum après chaque commande, sous-commande ou sous-sous-commandes
+- Observez l'historique de construction de l'image avec `docker image history <image>`
 
-```bash
-docker image --help
-```
+- Visitons **en root** (`sudo su`) le dossier `/var/lib/docker/` sur l'hôte. En particulier, `image/overlay2/layerdb/sha256/` :
+
+  - On y trouve une sorte de base de données de tous les layers d'images avec leurs ancêtres.
+  - Il s'agit d'une arborescence.
+
+- Vous pouvez aussi utiliser la commande `docker save votre_image -o image.tar`, et utiliser `tar -C image_decompressee/ -xvf image.tar` pour décompresser une image Docker puis explorer les différents layers de l'image.
+
+- Pour explorer la hiérarchie des images vous pouvez installer `https://github.com/wagoodman/dive`
+
+---

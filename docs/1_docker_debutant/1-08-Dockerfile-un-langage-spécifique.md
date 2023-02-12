@@ -1,5 +1,5 @@
 ---
-title: "Dockerfile : un langage spécifique"
+title: "1.08 Dockerfile : un langage spécifique"
 pre: "<b>1.08 </b>"
 weight: 9
 ---
@@ -7,11 +7,27 @@ weight: 9
   - Reconnaître les différentes étapes d'un Dockerfile
   - Savoir utiliser la commande build
   
+---
+
 ## Analogie 
 
 Pour continuer sur notre analogie de la cuisine, le Dockerfile est une recette. 
 
 C'est une suite d'instructions qui permet d'obtenir un plat cuisiné. 
+
+**On va travailler sur une recette très simple de Dockerfile, un Hello World.**
+
+---
+
+## Documentation
+
+Il existe de nombreuses instructions dans la documentation officielle 
+
+> [https://docs.docker.com/engine/reference/builder/](https://docs.docker.com/engine/reference/builder/)
+
+**Les autres instructions qu'on peut ajouter vont permettre d'aller plus loin qu'un simple Hello World.**
+
+---
 
 ## La composition d'un Dockerfile minimal
 
@@ -26,6 +42,8 @@ FROM alpine:3.5
 # run the application
 CMD ["sh", "-c", "echo Hello World"]
 ```
+
+---
 
 **On va immédiatement contruire une image avec ce Dockerfile.**
 
@@ -42,24 +60,24 @@ CMD ["sh", "-c", "echo Hello World"]
 hello World
 ```
 
+---
+
 ## Faisons une pause 
 
 **Ceci est une suite d'opérations importantes**
 
+---
+
 ### 2 instructions suffisent
 
-Pour afficher "Hello World", il nous faut au moins ces 2 informations 
+Pour afficher "Hello World", il nous a fallu au moins 2 instructions 
 
 1. le système de base dans lequel on veut lancer le process
 2. la commande du process qu'on veut lancer ici `sh -c "echo Hello World"`
 
 Q: Que se passerait-il si on ne donnait pas la 2e commande ?
 
-## Documentation
-
-- Il existe de nombreuses instructions dans la documentation officielle : [https://docs.docker.com/engine/reference/builder/](https://docs.docker.com/engine/reference/builder/)
-
-**Les autres instructions qu'on peut ajouter vont permettre d'aller plus loin qu'un simple Hello World.**
+---
 
 ### build = Dockerfile -> Image
 
@@ -67,7 +85,7 @@ La commande duild est l'opération qui "prépare le plat", et le met dans un for
 
 La commande pour est :
 
-```bash
+```shell
 docker build [-t <tag:version>] [-f <chemin_du_dockerfile>] <contexte_de_construction>
 ```
 

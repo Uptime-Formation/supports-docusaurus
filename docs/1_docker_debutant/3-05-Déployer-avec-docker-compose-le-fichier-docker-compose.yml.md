@@ -1,5 +1,5 @@
 ---
-title: Déployer avec docker compose le fichier docker compose.yml
+title: 3.05 Déployer avec docker compose le fichier docker compose.yml
 pre: "<b>3.05 </b>"
 weight: 33
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Conteneurs Docker: Premiers pas avec Portainer"
+title: "1.02 Conteneurs Docker: Premiers pas avec Portainer"
 weight: 3
 pre: "<b>1.02 </b>"
 chapter: true
@@ -9,6 +9,7 @@ chapter: true
   - Connaître les outils permettant d'interagir avec docker
   - Lancer son premier conteneur
 
+---
 
 ## Les outils pour interagir avec Docker
 
@@ -16,9 +17,9 @@ chapter: true
 
 Portainer est un portail web pour gérer une installation Docker via une interface graphique. Il va nous faciliter la vie.
 
-- Une instance de Portainer devrait être directement disponible sur l'url suivante
+- Une instance de Portainer devrait être directement disponible sur l'url suivante de votre environnement de développement
 
-```bash
+```shell
  http://localhost:9000/#!/2/docker/containers
 ```
 
@@ -30,6 +31,7 @@ Portainer est un portail web pour gérer une installation Docker via une interfa
 - Puis on va créer un conteneur avec cette image.
 - On va exposer le port de cette application web en cliquant sur `Publish all exposed network ports to random host ports`
 - Et on peut visiter la page affichée 
+---
 
 
 # Docker Hub : télécharger des images
@@ -46,7 +48,7 @@ Il s'agit d'un répertoire public et souvent gratuit d'images (officielles ou no
 
 ---
 
-# Docker Hub:
+# Docker Hub: comment ça marche ?
 
 - On peut y chercher et trouver presque n'importe quel logiciel au format d'image Docker.
 
@@ -60,12 +62,13 @@ Il s'agit d'un répertoire public et souvent gratuit d'images (officielles ou no
 
 On peut également y créer un compte gratuit pour pousser et distribuer ses propres images, ou installer son propre serveur de distribution d'images privé ou public, appelé **registry**.
 
+---
 
 ### Partie avancée
 
 - Lancer une instance de Portainer :
 
-```bash
+```shell
 docker volume create portainer_data_2
 docker run --detach --name portainer \
     -p 9000:9001 \
