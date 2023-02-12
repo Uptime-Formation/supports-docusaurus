@@ -1,5 +1,5 @@
 ---
-title: "Pourquoi Docker : Les pratiques de déploiement"
+title: "1.05 Pourquoi Docker : Les pratiques de déploiement"
 pre: "<b>1.05 </b>"
 weight: 6
 ---
@@ -7,6 +7,8 @@ weight: 6
 ## Objectifs Pédagogiques
   - Connaître l'histoire des pratiques devops
   - Comprendre les pratiques d'Infrastructure As Code et d'automatisation
+
+---
 
 ## Une petite histoire de l'automatisation du déploiement 
 
@@ -17,6 +19,8 @@ weight: 6
 (Dev) - Comment je déploie mon code sur le serveur de prod ? 
 (Ops) - Comme tu veux, mais pas le vendredi.
 ```
+---
+
 **À travers quelques exemples et quelques périodes**
 
 
@@ -34,6 +38,8 @@ Ces dates et ces expériences sont liées à mon expérience.
 Par exemple Capistrano est né en 2006, mais ce n'est pas arrivé tout de  suite. 
 
 Idem, le Devops est né en 2008, mais n'est pas devenu reconnu de suite.  
+
+---
 
 ### Les contraintes du déploiement et les solutions actuelles
 
@@ -53,6 +59,8 @@ Les applications, en particulier pour le web, ont des contraintes à gérer
 - processus de mise à jour (sauvegarde, retour en arrière) 
   > La nouvelle version de la DB marche pas avec l'ancienne version du code, on fait quoi ?
 
+---
+
 On va voir comment, aujourd'hui, on a progressé dans la résolution de ces problèmes : 
 
 - Les différents environnements utilisent les mêmes images  
@@ -65,7 +73,7 @@ On va voir comment, aujourd'hui, on a progressé dans la résolution de ces prob
 - Les backups sont automatisés par l'orchestrateur
 - Les changements importants de la base de donnée sont découplés du code
 
-
+---
 
 ## Comment on en est arrivé là / une histoire des pratiques devops
 
@@ -76,6 +84,8 @@ On utilise une application bureau pour mettre à jour le code en fonction des mo
 * Tous les désavantages qu'on peut imaginer  
 
  
+---
+
 
 ### SSH + GIT (2009)
 
@@ -83,11 +93,15 @@ On stocke les versions du code dans GIT et on se connecte sur le serveur de prod
 
 * au moins on peut revenir en arrière sur le code
 
+---
+
 ### Provisioning & IAC (2010)
 
 On peut déployer de nouvelles machines avec les logiciels et le code. 
 
 * On a une reproductibilité des environnements d'exécution
+
+---
 
 ### Capistrano (2012)
 
@@ -96,11 +110,15 @@ Un gestionnaire de mise à jour capable d'orchestrer les mises à jour avec des 
 * Automatisation mais pas de reproductibilité simple 
 
 
+---
+
 ### 12 factors app / Heroku  (2015)
 
 12 contraintes concernant le déploiement qui visent à les micro services et la croissance. 
 
 * Règles / bonnes pratiques concernant le code, les dépendances, la configuration, et autres 
+
+---
 
 ### docker (2016)
 
@@ -108,11 +126,15 @@ Un système qui formalise la construction opérant les applications, leur distri
 
 * Uniformisation du code dans les différents environnements et portabilité
 
+---
+
 ### k8s (2018)
 
 Une architecture modulaire complexe pour exécuter les applications dans des environnements sécurisés
 
 * Le déploiement devient un objet en soi, au coeur de toute un système complexe mais qui permet de gérer tous ces problèmes.
+
+---
 
 
 

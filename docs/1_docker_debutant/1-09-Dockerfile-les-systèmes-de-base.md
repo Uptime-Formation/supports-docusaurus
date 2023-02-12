@@ -1,5 +1,5 @@
 ---
-title: "Dockerfile : les systèmes de base"
+title: "1.09 Dockerfile : les systèmes de base"
 pre: "<b>1.09 </b>"
 weight: 10
 ---
@@ -24,12 +24,14 @@ Le Dockerhub fournit une liste des images de base "officielles" :
 
 ---
 
-Il y a généralement 2 chemins que l'on peut suivre : 
+**Il y a généralement 2 chemins que l'on peut suivre.**
 
 1. Soit on veut déployer une application maison, et dans ce cas on peut utiliser une image de base généraliste qu'on va customiser.
   * Debian-based (Debian, Ubuntu, ...)
   * RHEL-based (CentOs, Rocky, ...)
   * Alpine
+---
+
 2. Soit on veut déployer une solution standard, et dans ce cas on utilise une image dédiés:
   * langage (python, nodejs, ...)
   * serveur web (Nginx, Traefik, ...)
@@ -38,6 +40,8 @@ Il y a généralement 2 chemins que l'on peut suivre :
   * services (prometheus, registry, ...)
   * autres (busybox, hello-world, ...)
 
+
+---
 
 ## Optimiser la création d'images
 

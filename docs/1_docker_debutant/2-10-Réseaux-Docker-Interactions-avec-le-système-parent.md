@@ -1,5 +1,5 @@
 ---
-title: Réseaux Docker Interactions avec le système parent
+title: 2.10 Réseaux Docker Interactions avec le système parent
 pre: "<b>2.10 </b>"
 weight: 23
 ---
@@ -7,72 +7,71 @@ weight: 23
   - Comprendre le mode de fonctionnement des bridge Linux et le NAT
   - Savoir inspecter la couche réseau d'un conteneur Docker
 
-## Réseau
+---
 
-### Gestion des ports réseaux (_port mapping_)
+# Le réseau Docker est très automatique
 
-<-- Schéma -->
+Par défaut :
 
-- L'instruction `EXPOSE` dans le Dockerfile informe Docker que le conteneur écoute sur les ports réseau au lancement. L'instruction `EXPOSE` **ne publie pas les ports**. C'est une sorte de **documentation entre la personne qui construit les images et la personne qui lance le conteneur à propos des ports que l'on souhaite publier**.
+* DNS et DHCP intégré dans le "user-defined network" 
+* Fournit des adresses automatiquement
+* Fournit un nom de domaine automatique à chaque conteneur
+* Fournit par défaut une isolation des containers
 
-- Par défaut les conteneurs n'ouvrent donc pas de port même s'ils sont déclarés avec `EXPOSE` dans le Dockerfile.
-
-- Pour publier un port au lancement d'un conteneur, c'est l'option `-p <port_host>:<port_guest>` de `docker run`.
-
-- Instruction `port:` d'un compose file.
+Il est néanmoins modulaire, et permet de choisir entre plusieurs options.
 
 ---
 
-### Bridge et overlay
+## Par défaut : les réseaux de type bridge
 
-<-- Schéma réseau classique bridge -->
+**Un réseau bridge est une façon de créer un pont entre deux carte réseaux pour construire un réseau à partir de deux.**
 
-- Un réseau bridge est une façon de créer un pont entre deux carte réseaux pour construire un réseau à partir de deux.
+> Analogie: une multiprise de courant.  
+> Au départ il n'y a qu'une seule prise disponible.  
+> Avec la multiprise, cette prise unique est utilisée par d'autres appareils connectés au même appareil.
 
-- Par défaut les réseaux docker fonctionne en bridge (le réseau de chaque conteneur est bridgé à un réseau virtuel docker)
+Par défaut les réseaux docker fonctionne en bridge (le réseau de chaque conteneur est bridgé à un réseau virtuel docker)
 
-- par défaut les adresses sont en 172.0.0.0/8, typiquement chaque hôte définit le bloc d'IP 172.17.0.0/16 configuré avec DHCP.
-
-<-- Schéma réseau overlay -->
-
-- Un réseau overlay est un réseau virtuel privé déployé par dessus un réseau existant (typiquement public). Pour par exemple faire un cloud multi-datacenters.
+Par défaut les adresses sont en 172.16.0.0/12, typiquement chaque hôte définit le bloc d'IP 172.17.0.0/16 configuré avec DHCP.
 
 ---
+## Les autres types de réseaux
 
-#### Le réseau Docker est très automatique
+### Overlay
 
-<-- Schéma DNS et DHCP -->
+Un réseau overlay est un réseau virtuel privé déployé par dessus un réseau existant (typiquement public). Pour par exemple faire un cloud multi-datacenters.
 
-- Serveur DNS et DHCP intégré dans le "user-defined network" (c'est une solution IPAM)
+**Cette fonctionnalité est utilisée par la solution de Docker pour interconnecter plusieurs serveurs, Docker Swarm** 
 
-- Donne un nom de domaine automatique à chaque conteneur.
+La solution Swarm est en perte de vitesse, on ne va pas s'apesantir sur cette option.
 
-- Mais ne pas avoir peur d'aller voir comment on perçoit le réseau de l'intérieur. Nécessaire pour bien contrôler le réseau.
 
-- `ingress` : un loadbalancer automatiquement connecté aux nœuds d'un Swarm. Voir la [doc sur les réseaux overlay](https://docs.docker.com/network/overlay/).
-<-- schéma ingress -->
+### Host
+Pour les conteneurs autonomes, supprime l'isolation réseau entre le conteneur et l'hôte Docker, et utilise directement la mise en réseau de l'hôte. 
 
-### Lier des conteneurs
+### ipvlan
+Les réseaux IPvlan offrent aux utilisateurs un contrôle total sur l'adressage IPv4 et IPv6. 
 
-- Aujourd'hui il faut utiliser un réseau dédié créé par l'utilisateur ("user-defined bridge network")
+Le pilote VLAN s'appuie sur cela en donnant aux opérateurs un contrôle complet du balisage VLAN de couche 2 et même du routage IPvlan L3 pour les utilisateurs intéressés par l'intégration du réseau sous-jacent. 
 
-  - avec l'option `--network` de `docker run`
-  - avec l'instruction `networks:` dans un docker composer
+### macvlan 
+Les réseaux Macvlan vous permettent d'attribuer une adresse MAC à un conteneur, le faisant apparaître comme un périphérique physique sur votre réseau. 
 
-- On peut aussi créer un lien entre des conteneurs
-  - avec l'option `--link` de `docker run`
-  - avec l'instruction `link:` dans un docker composer
-  - MAIS cette fonctionnalité est **obsolète** et déconseillée
+Le démon Docker achemine le trafic vers les conteneurs par leurs adresses MAC. 
+
+L'utilisation du pilote macvlan est parfois le meilleur choix lorsqu'il s'agit d'applications héritées qui s'attendent à être directement connectées au réseau physique, plutôt que d'être acheminées via la pile réseau de l'hôte Docker. 
+
+### none
+Désactive tous les réseaux. Généralement utilisé en conjonction avec un pilote réseau personnalisé. none n'est pas disponible pour les services Swarm. 
 
 ### Plugins réseaux
 
-Il existe :
+En dehors des réseaux par défaut de Docker, il existe plusieurs autres solutions spécifiques de réseau disponibles pour des questions de performance et de sécurité.
 
-- les réseaux par défaut de Docker
-- plusieurs autres solutions spécifiques de réseau disponibles pour des questions de performance et de sécurité
   - Ex. : **Weave Net** pour un cluster Docker Swarm
     - fournit une autoconfiguration très simple
     - de la sécurité
     - un DNS qui permet de simuler de la découverte de service
     - Du multicast UDP
-    <-- Donner un autre exemple -->
+
+

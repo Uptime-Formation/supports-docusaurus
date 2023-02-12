@@ -1,12 +1,13 @@
 ---
-title: Docker en pratique Les strates du système de fichier
+title: 2.01 Docker en pratique Les strates du système de fichier
 pre: "<b>2.01 </b>"
 weight: 14
 ---
 ## Objectifs pédagogiques
   - Connaître l'histoire qui mène à ce système de couche
   - Comprendre les avantages et inconvénients de ce système
-
+  
+---
 
 
 ## Les layers et la mise en cache
@@ -16,52 +17,56 @@ weight: 14
 - On parle d'**Union Filesystem** car chaque couche (de fichiers) écrase la précédente.
 
 ![](../assets/images/overlay_constructs.jpg)
-<-- ![](../assets/images/OverlayFS_Image.png) -->
+![](../assets/images/OverlayFS_Image.png) 
+  
+---
 
-<-- In order to understand the relationship between images and containers, we need to explain a key piece of technology that enables Docker—the UFS (sometimes simply called a union mount). Union file systems allow multiple file systems to be overlaid, appearing to the user as a single filesytem. Folders may contain files from multiple filesystems, but if two files have the exact same path, the last mounted file will hide any previous files. Docker supports several different UFS implentations, including AUFS, Overlay, devicemapper, BTRFS, and ZFS. Which implementation is used is system dependent and can be checked by running docker info where it is listed under “Storage Driver.” It is possible to change the filesystem, but this is only recom‐ mended if you know what you are doing and are aware of the advantages and disad‐ vantages.
-Docker images are made up of multiple layers. Each of these layers is a read-only fil‐ eystem. A layer is created for each instruction in a Dockerfile and sits on top of the previous layers. When an image is turned into a container (from a docker run or docker create command), the Docker engine takes the image and adds a read-write filesystem on top (as well as initializing various settings such as the IP address, name, ID, and resource limits). -->
+# Les avantages et les inconvénients 
 
-- Chaque couche correspond à une instruction du Dockerfile.
+![](../assets/images/overlay.jpeg) 
+  
+---
 
-- `docker image history <conteneur>` permet d'afficher les layers, leur date de construction et taille respectives.
+## Avantages 
 
-- Ce principe est au coeur de l'**immutabilité** des images Docker.
+**Ce système économise de la place.**
 
-- Au lancement d'un container, le Docker Engine rajoute une nouvelle couche de filesystem "normal" read/write par dessus la pile des couches de l'image.
+Pour simplifier, chaque instruction du Dockerfile crée une nouvelle couche.
 
-- `docker diff <container>` permet d'observer les changements apportés au conteneur depuis le lancement.
+Si une couche est déjà utilisée, elle est mise en cache et ne nécessite pas de 
 
-<-- ![](../assets/images/overlay.jpeg) -->
+Au lancement d'un container, le Docker Engine rajoute une nouvelle couche de filesystem "normal" read/write par dessus la pile des couches de l'image.
+
+**Ce système est au coeur de l'**immutabilité** des images Docker.** 
+
+On ne peut pas modifier une image "dans le fond", c'est toujours le niveau "de surface" qu'on peut modifier.
+  
+---
+
+## Désavantages
+
+**Ce système complexifie la compréhension et toute opération d'introspection**
+
+Pas facile de comprendre ce qui se passe et d'aller regarder où se trouve tel fichier.
+
+**Les implémentations de système de fichiers précédentes étaient défaillantes.**
+
+Il n'était pas rare que le FS dérape et que le conteneur crash pour cette raison.
 
 ---
 
+# Les strates en pratique : lancement de conteneurs 
 
-- Observez l'historique de construction de l'image avec `docker image history <image>`
+La commande `inspect` affiche de nombreuses informations sur un conteneur en exécution, dont les éléments de son "layercake".
 
-- Il lance ensuite la série d'instructions du Dockerfile et indique un *hash* pour chaque étape.
-  - C'est le *hash* correspondant à un *layer* de l'image
+```shell
+$ docker inspact <container_id_or_name>
+...
+                "LowerDir": "/var/lib/docker/overlay2/fb94ce5c9b652d1cee5e372e76dd011cb3993d45d6c91f6c5de4d59d33afb9c2-init/diff:/var/lib/docker/overlay2/ab0fd7ce9f469a3a7f6293fde706d7028a45d5ac377224ede0a65af133385149/diff:/var/lib/docker/overlay2/21f47d9ce63dba375dc372c6bd3ad7dabb0219dccb3174d4201cbe049de1234d/diff:/var/lib/docker/overlay2/51fc7c14a3d976ef7d13b9373c902f1d7ce08cdce6f96a493aa74ac98664f773/diff:/var/lib/docker/overlay2/01a6a79a4b75eddd63b52f5a93a67345caaf62313fe081a8e3ea57b2c315a598/diff:/var/lib/docker/overlay2/40070b4000942701b6a9df6537c89ee50d7bf4777615f80d17cd6b476c70ec96/diff:/var/lib/docker/overlay2/82a250b1fb6486d14b1de2c9787d2569f4204108639adfc801a82845863a314d/diff:/var/lib/docker/overlay2/48ba460a8f37e832fda1f53eee0d084dc7fd6402aa430d567be477cc49e66ffe/diff",
+                "MergedDir": "/var/lib/docker/overlay2/fb94ce5c9b652d1cee5e372e76dd011cb3993d45d6c91f6c5de4d59d33afb9c2/merged",
+                "UpperDir": "/var/lib/docker/overlay2/fb94ce5c9b652d1cee5e372e76dd011cb3993d45d6c91f6c5de4d59d33afb9c2/diff",
+                "WorkDir": "/var/lib/docker/overlay2/fb94ce5c9b652d1cee5e372e76dd011cb3993d45d6c91f6c5de4d59d33afb9c2/work"
 
----
+```
 
 
-
-## _Facultatif_ : Décortiquer une image
-
-Une image est composée de plusieurs layers empilés entre eux par le Docker Engine et de métadonnées.
-
-- Affichez la liste des images présentes dans votre Docker Engine.
-
-- Inspectez la dernière image que vous venez de créez (`docker image --help` pour trouver la commande)
-
-- Observez l'historique de construction de l'image avec `docker image history <image>`
-
-- Visitons **en root** (`sudo su`) le dossier `/var/lib/docker/` sur l'hôte. En particulier, `image/overlay2/layerdb/sha256/` :
-
-  - On y trouve une sorte de base de données de tous les layers d'images avec leurs ancêtres.
-  - Il s'agit d'une arborescence.
-
-- Vous pouvez aussi utiliser la commande `docker save votre_image -o image.tar`, et utiliser `tar -C image_decompressee/ -xvf image.tar` pour décompresser une image Docker puis explorer les différents layers de l'image.
-
-- Pour explorer la hiérarchie des images vous pouvez installer `https://github.com/wagoodman/dive`
-
----

@@ -1,5 +1,5 @@
 ---
-title: Déployer avec Docker Les grandes lignes sécurité
+title: 3.09 Déployer avec Docker Les grandes lignes sécurité
 pre: "<b>3.09 </b>"
 weight: 37
 ---
@@ -169,8 +169,6 @@ Docker permet de faire des "quasi-machines" avec des performances proches du nat
 
 ---
 
-# Bénéfices par rapport aux machines virtuelles
-
 VM et conteneurs proposent une flexibilité de manipulation des ressources de calcul mais les machines virtuelles sont trop lourdes pour être multipliées librement :
 
 - elles ne sont pas efficaces pour isoler **chaque application**
@@ -268,7 +266,7 @@ Docker modifie beaucoup la **"logistique"** applicative.
   - exemple de durcissement conseillé : <https://docs.docker.com/engine/security/userns-remap/>
 
 <-- Exemple de renforcement :
-```bash
+```shell
 vim /etc/docker/daemon.json
 adduser docker-userns -s /bin/false
 service docker restart

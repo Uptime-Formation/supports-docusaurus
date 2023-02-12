@@ -1,5 +1,5 @@
 ---
-title: Introduction Formation
+title: 1.00 Introduction Formation
 pre: "<b>1.00 </b>"
 weight: 1
 ---
@@ -7,34 +7,22 @@ weight: 1
 
 ![](../assets/images/Moby-logo.png)
 
-## A propos de moi
+## A propos de moi / nous
 
-<-- Élie Gavoty
-
-- Developpeur backend et DevOps (Sewan Group / Yunohost)
-- Formateur DevOps, Linux, Python
-- Philosophie de la technique -->
-
-<-- Hadrien Pélissier
-
-- Ingénieur DevOps (Ansible / Docker / Kubernetes / Gitlab CI) / sécurité / développeur Python et Elixir
-- Formateur DevOps et sécurité informatique -->
-
-**Alban Crommer**
-
-- Developpeur Full-stack
-- Administrateur Système
-- Ingénieur Devops
-- Formateur DevOps
-- Mais aussi graphiste, musicien, hacker :)
+- Developpeurs 
+- Administrateurs Système
+- Ingénieurs Devops : Ansible / Docker / Kubernetes / Gitlab CI) / Sécurité 
+- Formateurs DevOps, Linux, Python, Sécurité
+- Mais aussi graphistes, musiciens, philosophes de la technique, hackers :)
 
 ## A propos de vous
 
+- Parcours ?
 - Attentes ?
 - Cursus DevOps :
   - Est-ce que ça vous plait ?
   - Quels modules avez vous déjà fait ?
-  - Répondre aux questions préalables (éventuelles réticences comprises)
+  - Répondre aux questions préalables et éventuelles réticences (normales)
   - Anticiper les problèmes de niveaux différents au sein du groupe / faire des paires
 
 

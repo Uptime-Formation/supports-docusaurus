@@ -1,5 +1,5 @@
 ---
-title: Déployer avec docker compose créer et lancer ses applications
+title: 3.06 Déployer avec docker compose créer et lancer ses applications
 pre: "<b>3.06 </b>"
 weight: 34
 ---
@@ -8,6 +8,21 @@ weight: 34
   - Savoir lancer une application multi-conteneur avec docker compose
   - Savoir créer une application multi-conteneur
 
+
+---
+
+Ou via docker-compose :
+
+```yaml
+volumes:
+  sshfsdata:
+    driver: vieux/sshfs:latest
+    driver_opts:
+      sshcmd: "username@server:/location/on/the/server"
+      allow_other: ""
+```
+
+---
 
 ## Articuler trois images avec Docker compose
 
@@ -20,7 +35,7 @@ weight: 34
 
 - Pour vous faciliter la vie et si ce n'est pas déjà le cas, ajoutez le plugin _autocomplete_ pour Docker et Docker Compose à `bash` en copiant les commandes suivantes :
 
-```bash
+```shell
 sudo apt update
 sudo apt install bash-completion curl
 sudo curl -L https://raw.githubusercontent.com/docker/compose/1.24.1/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose 
@@ -35,7 +50,7 @@ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.24.1/contrib/com
 `brew install docker-compose`
 Si la dernière commande ne marche pas, installez `docker-compose` de la façon suivante :
 
-````bash
+````shell
 mkdir bin
 curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o bin/docker-compose
 chmod +x bin/docker-compose
@@ -329,13 +344,13 @@ On se propose ici d'essayer de déployer plusieurs services pré-configurés com
 L'utilité d'Elasticsearch est que, grâce à une configuration très simple de son module Filebeat, nous allons pouvoir centraliser les logs de tous nos conteneurs Docker.
 Pour ce faire, il suffit d'abord de télécharger une configuration de Filebeat prévue à cet effet :
 
-```bash
+```shell
 curl -L -O https://raw.githubusercontent.com/elastic/beats/7.10/deploy/docker/filebeat.docker.yml
 ```
 
 Renommons cette configuration et rectifions qui possède ce fichier pour satisfaire une contrainte de sécurité de Filebeat :
 
-```bash
+```shell
 mv filebeat.docker.yml filebeat.yml
 sudo chown root filebeat.yml
 sudo chmod go-w filebeat.yml
@@ -418,7 +433,7 @@ Nous pourrions créer deux images pour les deux situations mais ce serait aller 
 
 - Créons un script bash `boot.sh` pour adapter le lancement de l'application au contexte:
 
-```bash
+```shell
 #!/bin/bash
 set -e
 if [ "$CONTEXT" = 'DEV' ]; then

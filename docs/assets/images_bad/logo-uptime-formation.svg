@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg833"
+   width="215.11707"
+   height="94.394646"
+   viewBox="0 0 215.11707 94.394646"
+   sodipodi:docname="logo-uptime-formation.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+  <metadata
+     id="metadata839">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs837" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1022"
+     id="namedview835"
+     showgrid="false"
+     inkscape:snap-page="true"
+     inkscape:zoom="2.320781"
+     inkscape:cx="100.96749"
+     inkscape:cy="84.881736"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g841" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g841">
+    <g
+       id="g914"
+       transform="translate(10.829092,0.74370283)">
+      <rect
+         style="color:#000000;overflow:visible;fill:none;stroke-width:0.944884;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+         id="rect845"
+         width="215.11707"
+         height="94.394646"
+         x="-10.829092"
+         y="-0.74370283" />
+      <path
+         style="fill:#000000;stroke-width:0.999999"
+         id="path853"
+         d="" />
+      <path
+         style="fill:#000000;stroke-width:0.999999"
+         id="path851"
+         d="" />
+      <path
+         style="fill:#000000;stroke-width:0.999999"
+         id="path849"
+         d="" />
+      <path
+         style="fill:#000000;stroke-width:0.999999"
+         id="path847"
+         d="" />
+      <g
+         id="g922">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.0838px;line-height:130%;font-family:'Grixel Acme 5 Wide Xtnd';-inkscape-font-specification:'Grixel Acme 5 Wide Xtnd';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;stroke:none;stroke-width:0.999999px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           x="94.433708"
+           y="53.503452"
+           id="text859"
+           transform="scale(1.0031997,0.9968105)"><tspan
+             sodipodi:role="line"
+             id="tspan857"
+             x="94.433708"
+             y="53.503452"
+             style="stroke-width:0.999999px">time</tspan></text>
+        <g
+           id="g901"
+           transform="matrix(0.72450535,0,0,0.72450535,22.074819,5.4120961)"
+           style="stroke-width:1.38025">
+          <path
+             sodipodi:type="star"
+             style="color:#000000;overflow:visible;fill:none;stroke:#000000;stroke-width:10.4334;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+             id="path855"
+             sodipodi:sides="6"
+             sodipodi:cx="49.180088"
+             sodipodi:cy="56.647648"
+             sodipodi:r1="47.773003"
+             sodipodi:r2="41.372635"
+             sodipodi:arg1="-1.5707963"
+             sodipodi:arg2="-1.0471976"
+             inkscape:flatsided="true"
+             inkscape:rounded="0"
+             inkscape:randomized="0"
+             d="m 49.180089,8.8746452 41.372634,23.8865028 -2e-6,47.773002 -41.372634,23.8865 -41.3726335,-23.886502 1.3e-6,-47.773003 z" />
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.8751px;line-height:130%;font-family:'Grixel Acme 5 Wide Bold';-inkscape-font-specification:'Grixel Acme 5 Wide Bold, ';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;stroke:#000000;stroke-width:1.38025px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             x="18.869934"
+             y="65.248558"
+             id="text863"
+             transform="scale(0.99254056,1.0075155)"><tspan
+               sodipodi:role="line"
+               id="tspan861"
+               x="18.869934"
+               y="65.248558"
+               style="stroke-width:1.38025px">UP</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

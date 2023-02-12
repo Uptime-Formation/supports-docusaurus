@@ -1,5 +1,5 @@
 ---
-title: Conteneurs Docker Premiers pas avec la ligne de commande
+title: 1.04 Conteneurs Docker Premiers pas avec la ligne de commande
 pre: "<b>1.04 </b>"
 weight: 5
 ---
@@ -7,119 +7,205 @@ weight: 5
 ## Objectifs Pédagogiques
   - Connaître les outils permettant d'interagir avec docker
   - Lancer un conteneur avec des passages d'arguments
-  - Savoir utiliser les commandes ps, run, exec
+  - Savoir utiliser les commandes ps, run, logs, exec
 
+
+---
+
+# Mentalité :
+![](../assets/images/changingThings.jpg)
+
+**Il faut aussi prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.**
+
+
+---
+
+# Installation de Docker
 **Docker est préinstallé sur vos machines par simplicité, ce sera à vous de l'installer dans l'environnement de travail de votre choix en fonction de vos besoins et des systèmes que vous utiliserez.**
 
 On va commencer à interagir avec Docker en utilisant le terminal, aka. ligne de commande, shell, ou terminal.
 
 Par rapport aux applications avec interface, la ligne de commande permet d'apprendre et maîtriser progressivement. 
 
-Une interface comme Portainer est utile, mais elle expose trop de fonctionnalités au départ.  
+Une interface comme Portainer est utile, mais elle expose beaucou (trop) de fonctionnalités au départ.
+
+---
+
+# Un peu de documentation
+
+- **Commandes utiles :** [https://devhints.io/docker](https://devhints.io/docker)
+- **Documentation Officielle**
+  - Toute la documentaion: [https://docs.docker.com/reference/](https://docs.docker.com/reference/)
+  - Ex: `docker run` : [https://docs.docker.com/engine/reference/run/](https://docs.docker.com/engine/reference/run/)
+- `docker --help`
+- `man docker`
+- `man docker run`
+---
+## Lancer un conteneur "Hello world"
+
+```shell
+$ docker run hello-world
+```
+
+**Décomposons cette «ligne de commande»** 
+
+* Le prompt
+```shell
+"$" est le caractère indiquant qu'on va entrer une commande dans un "PROMPT" 
+
+user@machine:~$ est un prompt plus réaliste mais plus long 
+```
+* La commande 
+```shell
+"docker" est ici l'exécutable qu'on appelle sur la machine locale
+```
+* L'argument
+```shell
+"run" est un argument qui indique à l'exécutable ce qu'on veut faire.
+En l'occurence c'est une commande Docker.
+```
+* Le sous-argument, le paramètre de la commande
+```shell"
+"hello-world"" est le nom d'une image Docker sur le DockerHub 
+```
+cf. [https://hub.docker.com/_/hello-world/](https://hub.docker.com/_/hello-world/)
+
+---
+
+## Docker Hub, chercher une image
+
+Visitez [hub.docker.com](https://hub.docker.com).
+
+C'est l'endroit où va chercher Docker par défaut. 
+
+On nomme cela un registry, on y reviendra.
+
+Par exemple cherchez l'image "ubuntu" sur le Docker Hub.
+
+---
 
 ## Pour vérifier l'installation
 
-- Les commandes de base pour connaître l'état de Docker sont :
+Les commandes de base pour connaître l'état de Docker sont :
 
-```bash
+```shell
 docker info  # affiche plein d'information sur l'engine avec lequel vous êtes en contact
 docker ps    # affiche les conteneurs en train de tourner
 docker ps -a # affiche  également les conteneurs arrêtés
 ```
 
-## Manipuler un conteneur
+Que remarquez-vous ? Quels conteneurs docker sont en train de tourner ?
 
-- **Commandes utiles :** <https://devhints.io/docker>
-- **Documentation `docker run` :** <https://docs.docker.com/engine/reference/run/>
+---
 
-Mentalité :
-![](../assets/images/changingThings.jpg)
-Il faut aussi prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.
+## Lancer un conteneur avec passages d'arguments
 
-Avec l'aide du support et de `--help`, et en notant sur une feuille ou dans un fichier texte les commandes utilisées :
+### Les bases 
+```shell
+$ docker run -it ubuntu 
+```
+Que se passe-t-il ? Le prompt vous indique que vous avez changé d'environnement.
 
-- Lancez simplement un conteneur Debian. Que se passe-t-il ?
+Pour sortir utilisez la command `exit`
 
-{{% expand "Résultat :" %}}
+Lancez de nouveau un `docker ps -a`. Que voyez-vous ? 
 
-```bash
-docker run debian
-# Il ne se passe rien car comme debian ne contient pas de processus qui continue de tourner le conteneur s'arrête
+**`-it` permet de lancer une commande en mode _interactif_ (un terminal comme `bash`).**
+
+Lancez la commande sans mode interactif. Que se passe-t-il ?
+
+---
+
+### Conteneurs jetables 
+
+```shell
+$ docker run -it --rm ubuntu bash
+```
+**L'argument `--rm ` indique qu'on ne veut pas conserver le conteneur après son lancement. Il est "jetable".**
+
+## Les commandes de démarrage
+
+```shell
+$ docker run -it --rm alpine bash
+```
+Que se passe-t-il ? Pourquoi ? 
+
+Il faut que la commande demandée existe dans l'image.
+
+```shell
+$ docker run -it --rm alpine sh
 ```
 
-{{% /expand %}}
+Quelles peuvent être les différences entre les images ubuntu et alpine ?
 
-- Lancez un conteneur Debian (`docker run` puis les arguments nécessaires, cf. l'aide `--help`)n avec l'option "mode détaché" et la commande passée au conteneur `echo "Je suis le conteneur basé sur Debian"`. Rien n'apparaît. En effet en mode détaché la sortie standard n'est pas connectée au terminal.
 
-- Lancez `docker logs` avec le nom ou l'id du conteneur. Vous devriez voir le résultat de la commande `echo` précédente.
+### Conteneurs nommés persistants
 
-{{% expand "Résultat :" %}}
+```shell
+$ docker run -d --name mycontainer -it --rm ubuntu bash -c  'while true; do date; sleep 1; done' 
+```
+Que se passe-t-il ? Inspectez la liste des conteneurs ? Que remarquez-vous ? 
 
-```bash
-docker logs <5b91aa9952fa> # n'oubliez pas que l'autocomplétion est activée, il suffit d'appuyer sur TAB !
-=> Debian container
+**`-name` permet de donner un nom au conteneur**
+**`-d` permet de lancer le conteneur en mode **daemon** ou **détaché** et libérer le terminal**
+
+---
+
+## La commande logs 
+
+```shell
+$ docker logs mycontainer
+```
+Que voyez-vous ? 
+
+**La commande logs permet d'obtenir la sortie du conteneur (STDOUT + STDERR)**
+
+```shell
+$ docker logs  mycontainer -f 
+$ docker logs  mycontainer --tail 3 
+$ docker logs  mycontainer -n 3 -t 
+
 ```
 
-{{% /expand %}}
-
-<-- - Réessayez en affichant le résultat cette fois-ci avec le mode *attached* -->
-
-- Affichez la liste des conteneurs en cours d'exécution
-
-{{% expand "Solution :" %}}
-
-```bash
-docker ps
+```shell
+--follow , -f         Follow log output
+--tail , -n    all    Number of lines to show from the end of the logs
+--timestamps , -t     Show timestamps
 ```
+---
 
-{{% /expand %}}
 
-- Affichez la liste des conteneurs en cours d'exécution et arrêtés.
+# Docker exec: Exécuter du code dans un conteneur
 
-{{% expand "Solution :" %}}
+**La commande `docker exec` permet d'exécuter une commande à l'intérieur du conteneur s'il est actif**.
 
-```bash
-docker ps -a
-```
-
-{{% /expand %}}
-
-- Lancez un conteneur debian **en mode détaché** avec la commande `sleep 3600`
-
-- Réaffichez la liste des conteneurs qui tournent
-
-- Tentez de stopper le conteneur, que se passe-t-il ?
+Une utilisation typique est d'introspecter un conteneur en lançant `bash` (ou `sh`).
 
 ```
-docker stop <conteneur>
+docker exec -it <conteneur> /bin/bash
 ```
 
-### Créer et lancer un conteneur
+On peut aussi exécuter une commande temporaire sans entrer en mode interactif.
+
+```
+docker exec <conteneur> su postgres /usr/local/bin/backup_postgres.sh
+```
+
+Plusieurs options disponibles :
+```
+man docker exec 
+```
+
+---
+
+# Une image, des conteneurs
 
 ![](../assets/images/ops-basics-isolation.svg)
 
 - Un conteneur est une instance en cours de fonctionnement ("vivante") d'une image.
 
-```bash
-docker run [-d] [-p port_h:port_c] [-v dossier_h:dossier_c] <image> <commande>
-```
-
-> créé et lance le conteneur
-
 - **L'ordre des arguments est important !**
 - **Un nom est automatiquement généré pour le conteneur à moins de fixer le nom avec `--name`**
-- On peut facilement lancer autant d'instances que nécessaire tant qu'il n'y a **pas de collision** de **nom** ou de **port**.
-
----
-
-### Options docker run
-
-- Les options facultatives indiquées ici sont très courantes.
-  - `-d` permet\* de lancer le conteneur en mode **daemon** ou **détaché** et libérer le terminal
-  - `-p` permet de mapper un _port réseau_ entre l'intérieur et l'extérieur du conteneur, typiquement lorsqu'on veut accéder à l'application depuis l'hôte.
-  - `-v` permet de monter un _volume_ partagé entre l'hôte et le conteneur.
-  - `--rm` (comme _remove_) permet de supprimer le conteneur dès qu'il s'arrête.
-  - `-it` permet de lancer une commande en mode _interactif_ (un terminal comme `bash`).
-  - `-a` (ou `--attach`) permet de se connecter à l'entrée-sortie du processus dans le container.
+- On peut facilement lancer autant d'instances que nécessaire tant qu'il n'y a **pas de collision** de **nom** (notamment)
 
 ---

@@ -1,5 +1,5 @@
 ---
-title: Passer des informations Les secrets Docker
+title: 3.03 Passer des informations Les secrets Docker
 pre: "<b>3.03 </b>"
 weight: 31
 ---
@@ -8,3 +8,9 @@ weight: 31
   - Comprendre les dangers d'exposer les secrets
   - Comprendre les secrets Docker
   - Savoir utiliser les secrets Docker
+
+--- 
+
+# Mauvaise pratique : exposer les secrets d'une application 
+
+Le nombre 

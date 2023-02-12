@@ -1,5 +1,5 @@
 ---
-title: Déployer avec Docker Observabilité des conteneurs
+title: 3.10 Déployer avec Docker Observabilité des conteneurs
 pre: "<b>3.10 </b>"
 weight: 38
 ---
@@ -23,6 +23,6 @@ Avec Elasticsearch, Filebeat et Kibana… grâce aux labels sur les conteneurs D
 
 `HEALTHCHECK` permet de vérifier si l'app contenue dans un conteneur est en bonne santé.
 
-```bash
+```shell
 HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
 ```
