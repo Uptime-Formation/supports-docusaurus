@@ -61,8 +61,6 @@ weight: 33
 
 # Un exemple de fichier Docker Compose
 
-<-- # Remplacer par de la démo : avec codewave ?
-## Ok, lançons Wordpress puis faisons un cluster ELK avec filebeats et les labels pour y envoyer les logs nginx + wordpress. -->
 
 ```yml
 services:
@@ -171,10 +169,11 @@ Les commandes suivantes sont couramment utilisées lorsque vous travaillez avec 
 
 ## Le "langage" de Docker Compose
 
-- N'hésitez pas à passer du temps à explorer les options et commandes de `docker-compose`.
-- [La documentation du langage (DSL) des compose-files](https://docs.docker.com/compose/compose-file/compose-file-v3/) est essentielle.
+**N'hésitez pas à passer du temps à explorer les options et commandes de `docker-compose`.**
 
-- il est aussi possible d'utiliser des variables d'environnement dans Docker Compose : se référer au [mode d'emploi](https://docs.docker.com/compose/compose-file/#variable-substitution) pour les subtilités de fonctionnement
+[La documentation du langage (DSL) des compose-files](https://docs.docker.com/compose/compose-file/compose-file-v3/) est essentielle.
+
+il est aussi possible d'utiliser des variables d'environnement dans Docker Compose : se référer au [mode d'emploi](https://docs.docker.com/compose/compose-file/#variable-substitution) pour les subtilités de fonctionnement
 
 ---
 

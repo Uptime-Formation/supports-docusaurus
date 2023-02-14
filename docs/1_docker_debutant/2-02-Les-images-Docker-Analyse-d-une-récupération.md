@@ -15,6 +15,17 @@ weight: 15
 
 ```shell
 $ docker pull python:3.9
+3.9: Pulling from library/python
+1e4aec178e08: Downloading [=========================================>         ]  45.75MB/55.05MB
+6c1024729fee: Download complete 
+c3aa11fbc85a: Download complete 
+aa54add66b3a: Downloading [================================================>  ]  53.31MB/54.59MB
+9e3a60c2bce7: Downloading [==========>                                        ]  40.86MB/196.9MB
+3b2123ce9d0d: Waiting 
+079055eff04f: Pulling fs layer 
+efbdad4af3b4: Waiting 
+6052bc42f4a6: Waiting 
+
 ```
 On voit que différentes couches sont récupérées individuellement.
 

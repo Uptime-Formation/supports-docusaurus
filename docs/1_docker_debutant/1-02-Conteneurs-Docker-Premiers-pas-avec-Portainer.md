@@ -71,7 +71,7 @@ On peut également y créer un compte gratuit pour pousser et distribuer ses pro
 ```shell
 $ docker volume create portainer_data_2
 $ docker run --detach --name portainer \
-    -p 9000:9001 \
+    -p 9000:9000 \
     -v portainer_data_2:/data \
     -v /var/run/docker.sock:/var/run/docker.sock \
     portainer/portainer-ce
