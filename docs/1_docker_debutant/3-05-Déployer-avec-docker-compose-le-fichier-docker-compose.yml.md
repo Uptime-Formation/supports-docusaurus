@@ -10,38 +10,24 @@ weight: 33
 
 # Docker Compose
 
-- Nous avons pu constater que lancer plusieurs conteneurs liés avec leur mapping réseau et les volumes liés implique des commandes assez lourdes. Cela devient ingérable si l'on a beaucoup d'applications microservice avec des réseaux et des volumes spécifiques.
+**Nous avons pu constater que lancer plusieurs conteneurs liés avec leur mapping réseau et les volumes liés implique des commandes assez lourdes. Cela devient ingérable si l'on a beaucoup d'applications microservice avec des réseaux et des volumes spécifiques.**
 
-- Pour faciliter tout cela et dans l'optique d'**Infrastructure as Code**, Docker introduit un outil nommé **docker-compose** qui permet de décrire de applications multiconteneurs grâce à des fichiers **YAML**.
+Pour faciliter tout cela et dans l'optique d'**Infrastructure as Code**, Docker introduit un outil nommé **docker-compose** qui permet de décrire de applications multiconteneurs grâce à des fichiers **YAML**.
 
-- Pour bien comprendre qu'il ne s'agit que de convertir des options de commande Docker en YAML, un site vous permet de convertir une commande `docker run` en fichier Docker Compose : <https://www.composerize.com/>
+Pour bien comprendre qu'il s'agit au départ uniquement de convertir des options de commande Docker en YAML, un site vous permet de convertir une commande `docker run` en fichier Docker Compose : https://www.composerize.com/
 
-- Le "langage" de Docker Compose : [la documentation du langage (DSL) des compose-files](https://docs.docker.com/compose/compose-file/compose-file-v3/) est essentielle.
+Le code est sur https://github.com/docker/compose, docker-compose est un *fat binary* en go qui pèse seulement ~30 Mo.
+
 ---
+## Le "langage" de Docker Compose
 
-# A quoi ça ressemble, YAML ?
+Documentation 
+* [la documentation du langage (DSL) des compose-files](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+* `man docker-compose`
+**N'hésitez pas à passer du temps à explorer les options et commandes de `docker-compose`.**
 
-```yaml
-- marché:
-    lieu: Marché de la Défense
-    jour: jeudi
-    horaire:
-      unité: "heure"
-      min: 12
-      max: 20
-    fruits:
-      - nom: pomme
-        couleur: "verte"
-        pesticide: avec
+il est aussi possible d'utiliser des variables d'environnement dans Docker Compose : se référer au [mode d'emploi](https://docs.docker.com/compose/compose-file/#variable-substitution) pour les subtilités de fonctionnement
 
-      - nom: poires
-        couleur: jaune
-        pesticide: sans
-    légumes:
-      - courgettes
-      - salade
-      - potiron
-```
 
 ---
 
@@ -54,59 +40,20 @@ weight: 33
 - des listes (tirets)
 - des paires **clé: valeur**
 - Un peu comme du JSON, avec cette grosse différence que le JSON se fiche de l'alignement et met des accolades et des points-virgules
-
+ 
 - **les extensions Docker et YAML dans VSCode vous aident à repérer des erreurs**
+- Les erreurs courantes quotes, et deux-points :
+```yaml
+titre: Un exemple: on va avoir des soucis
+titre: "Un exemple: on va avoir des soucis"
+```
 
 ---
 
-# Un exemple de fichier Docker Compose
+## Exemples de fichier Docker Compose
 
+### Sans build : un wordpress sur le port 80
 
-```yml
-services:
-  postgres:
-    image: postgres:10
-    environment:
-      POSTGRES_USER: rails_user
-      POSTGRES_PASSWORD: rails_password
-      POSTGRES_DB: rails_db
-    networks:
-      - back_end
-
-  redis:
-    image: redis:3.2-alpine
-    networks:
-      - back_end
-
-  rails:
-    build: .
-    depends_on:
-      - postgres
-      - redis
-    environment:
-      DATABASE_URL: "postgres://rails_user:rails_password@postgres:5432/rails_db"
-      REDIS_HOST: "redis:6379"
-    networks:
-      - front_end
-      - back_end
-    volumes:
-      - .:/app
-
-  nginx:
-    image: nginx:latest
-    networks:
-      - front_end
-    ports:
-      - 3000:80
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-
-networks:
-  front_end:
-  back_end:
-```
-
-Un deuxième exemple :
 ```yaml
 services:
   wordpress:
@@ -145,42 +92,89 @@ volumes:
 
 ```
 
+### Avec build : un ruby on rails sur le port 80
+Un deuxième exemple :
+
+
+```yml
+services:
+  postgres:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: rails_user
+      POSTGRES_PASSWORD: rails_password
+      POSTGRES_DB: rails_db
+    networks:
+      - back_end
+  redis:
+    image: redis:3.2-alpine
+    networks:
+      - back_end
+  rails:
+    build: .
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_URL: "postgres://rails_user:rails_password@postgres:5432/rails_db"
+      REDIS_HOST: "redis:6379"
+    networks:
+      - front_end
+      - back_end
+    volumes:
+      - .:/app
+
+  nginx:
+    image: nginx:latest
+    networks:
+      - front_end
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+networks:
+  front_end:
+  back_end:
+```
+
+
 ---
 
 ## Le workflow de Docker Compose
 
 Les commandes suivantes sont couramment utilisées lorsque vous travaillez avec Compose. La plupart se passent d'explications et ont des équivalents Docker directs, mais il vaut la peine d'en être conscient·e :
 
-- `up` démarre tous les conteneurs définis dans le fichier compose et agrège la sortie des logs. Normalement, vous voudrez utiliser l'argument `-d` pour exécuter Compose en arrière-plan.
-
 - `build` reconstruit toutes les images créées à partir de Dockerfiles. La commande up ne construira pas une image à moins qu'elle n'existe pas, donc utilisez cette commande à chaque fois que vous avez besoin de mettre à jour une image (quand vous avez édité un Dockerfile). On peut aussi faire `docker-compose up --build`
 
-- `ps` fournit des informations sur le statut des conteneurs gérés par Compose.
+- `up` démarre tous les conteneurs définis dans le fichier compose et agrège la sortie des logs. Normalement, vous voudrez utiliser l'argument `-d` pour exécuter Compose en arrière-plan.
 
 - `run` fait tourner un conteneur pour exécuter une commande unique. Cela aura aussi pour effet de faire tourner tout conteneur décrit dans `depends_on`, à moins que l'argument `--no-deps` ne soit donné.
 
+- `stop` arrête les conteneurs sans les enlever.
+
+- `ps` fournit des informations sur le statut des conteneurs gérés par Compose.
+
 - `logs` affiche les logs. De façon générale la sortie des logs est colorée et agrégée pour les conteneurs gérés par Compose.
 
-- `stop` arrête les conteneurs sans les enlever.
+- `down` détruit tous les conteneurs définis dans le fichier Compose, ainsi que les réseaux 
 
 - `rm` enlève les contenants à l'arrêt. N'oubliez pas d'utiliser l'argument `-v` pour supprimer tous les volumes gérés par Docker.
 
-- `down` détruit tous les conteneurs définis dans le fichier Compose, ainsi que les réseaux
-
-## Le "langage" de Docker Compose
-
-**N'hésitez pas à passer du temps à explorer les options et commandes de `docker-compose`.**
-
-[La documentation du langage (DSL) des compose-files](https://docs.docker.com/compose/compose-file/compose-file-v3/) est essentielle.
-
-il est aussi possible d'utiliser des variables d'environnement dans Docker Compose : se référer au [mode d'emploi](https://docs.docker.com/compose/compose-file/#variable-substitution) pour les subtilités de fonctionnement
 
 ---
 
 ## Visualisation des applications microservice complexes
 
-- Certaines applications microservice peuvent avoir potentiellement des dizaines de petits conteneurs spécialisés. Le service devient alors difficile à lire dans le compose file.
+Certaines applications microservice peuvent avoir potentiellement des dizaines de petits conteneurs spécialisés. 
 
-- Il est possible de visualiser l'architecture d'un fichier Docker Compose en utilisant [docker-compose-viz](https://github.com/pmsipilot/docker-compose-viz)
+**Le service devient alors difficile à lire dans le compose file.**
 
-- Cet outil peut être utilisé dans un cadre d'intégration continue pour produire automatiquement la documentation pour une image en fonction du code.
+Il est possible de visualiser l'architecture d'un fichier Docker Compose en utilisant docker-compose-viz:
+
+* https://github.com/pmsipilot/docker-compose-viz
+* `sudo apt-get install graphviz`
+* `docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image docker-compose.yml`
+
+
+Cet outil peut être utilisé dans un cadre d'intégration continue pour produire automatiquement la documentation pour une image en fonction du code.

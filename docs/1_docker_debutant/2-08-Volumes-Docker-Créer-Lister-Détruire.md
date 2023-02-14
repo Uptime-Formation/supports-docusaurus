@@ -25,7 +25,7 @@ On crée un volume nommé avec
 
 ```shell 
 $ docker volume create redis_data
-$ docker run --rm -d -v mon_volume:/data redis
+$ docker run --rm -d -v redis_data:/data redis
 ```
 
 Ici le point de montage `/data` est spécifique à l'image `redis`

@@ -1,6 +1,5 @@
 ---
-title: 3.08 Les orchestrateurs aperçu de K8S
-pre: "<b>3.08 </b>"
+title: 3.07 Les orchestrateurs aperçu de K8S
 weight: 36
 ---
 
@@ -39,16 +38,23 @@ L'orchestrateur peut rejeter certaines requêtes invalides.
 
 Les requêtes valides sont traitées de manière asynchrone selon un plan de réalisation ordonné.
 
+**De la sécurité intégrée et intégrable**
+
+K8S utilise du Role Based Access Control pour les utilisateurs, et des service accounts pour accéder à l'API.  
+
+Les ressources sont cloisonnées et limitées via des namespaces de cluster.
+
+Les règles de sécurisation des conteneurs sont définies par les utilisateurs, mais on peut imposer des minimums (ex: no root user, read only, etc.).
+
+Des règles de sécurité réseaux sont définies pour bloquer les flux indésirables.
+
+Et il existe tout un écosystème de solutions dédiées, comme Falco qui surveille au niveau des appels système que rien d'anormal ne se produise, et logge tous les appels.
+
+
+
 # Les principales ressources utilisateurs 
 
 Dans Kubernetes, les utilisateurs utilisent les ressources mises à disposition par l'API  
-
-*  Namespaces : un partitionnement symbolique de tous les objets (ex: par équipe et environnement)
-*  Pods : la partie Conteneur en elle-même, qui lance un ou plusieurs conteneurs de charge utile 
-*  Deployments, ReplicaSet, Jobs, Cronjobs : des concepts qui englobent les pods et augmentent leurs capacités de base
-*  Services, Ingress : Des objets qui permettent d'interconnecter ou exposer des déploiements / pods
-*  Volumes : Le montage de données est manifeste, avec une variété de solutions.
-*  Configuration : La configuration des pods (Config Maps, Secrets) est également manifeste
 
 Tout ou partie de ces ressources est définie dans des fichiers YAML complexes.
 
@@ -127,6 +133,149 @@ Tout ou partie de ces ressources est définie dans des fichiers YAML complexes.
  77       - "2>&1"
 
 ```
+
+## Des exemples 
+
+## Namespaces
+
+Un partitionnement symbolique de tous les objets (ex: par équipe et environnement)
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: team_blue
+spec: {}
+status: {}
+```
+---
+## Pods 
+
+La partie Conteneur en elle-même, qui lance un ou plusieurs conteneurs de charge utile 
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
+---
+
+## Deployments, ReplicaSet, Jobs, Cronjobs 
+Des concepts qui englobent les pods et augmentent leurs capacités de base
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: my-dep
+  name: my-dep
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: my-dep
+  strategy: 
+    type: RollingUpdate
+    maxUnavailable: 2
+    maxSurge: 33%
+  template:
+    metadata:
+      labels:
+        app: my-dep
+    spec:
+      containers:
+      - image: nginx:1.14
+        name: nginx
+        ports:
+        - containerPort: 80
+
+        resources: {}
+status: {}
+```
+---
+
+## Services, Ingress 
+
+Des objets qui permettent d'interconnecter ou exposer des déploiements / pods
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app.kubernetes.io/name: my-dep
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+```
+## Volumes 
+
+Le montage de données est manifeste, avec une variété de solutions.
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-ebs
+spec:
+  containers:
+  - image: registry.k8s.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-ebs
+      name: test-volume
+  volumes:
+  - name: test-volume
+    # This AWS EBS volume must already exist.
+    awsElasticBlockStore:
+      volumeID: "<volume id>"
+      fsType: ext4
+```
+---
+## Configuration 
+
+La configuration des pods (Config Maps, Secrets) est également manifeste
+```yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2016-02-18T18:52:05Z
+  name: log-config
+  namespace: default
+data:
+  log_level: |
+    level=debug 
+    
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  containers:
+    - name: test
+      image: busybox:1.28
+      volumeMounts:
+        - name: config-vol
+          mountPath: /etc/config
+  volumes:
+    - name: config-vol
+      configMap:
+        name: log-config
+        items:
+          - key: log_level
+            path: log_level
+```
+---
 
 # Les outils pratiques (Helm)
 

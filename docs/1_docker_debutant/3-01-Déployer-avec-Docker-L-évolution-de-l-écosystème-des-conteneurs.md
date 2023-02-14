@@ -62,14 +62,17 @@ Sous la forme d'une API versionnée et stable qui aura des corrections de bogues
 Ces moteurs vont du plus simple au plus complexe, selon le besoin des utilisateurs.
 
 * "Daemonless" : Podman, sans démon comme le docker-engine, qui vient avec sa propre suite logicielle (Buildah, Skopeo) qui gère le build et le transfert d'images
-* Gestion simple : Docker
-* Mini-orchestrateurs : k3s, une version simplifiée de Kubernetes
+* Gestion simple avec un daemon : Docker
+* Mini-orchestrateurs : 
+  * k3s, une version simplifiée de Kubernetes
   * microk8s
   * kind (k8s dans docker)
-* Orchestrateurs : Kubernetes, qui nécessite plusieurs serveurs 
+* Orchestrateurs 
+  * Kubernetes, qui nécessite plusieurs serveurs 
   * Mesos
   * rke2
-* Super orchestrateurs : Open Shift (RedHat) qui fournit une surcouche à Kubernetes
+* Super orchestrateurs 
+  * Open Shift (RedHat) qui fournit une surcouche à Kubernetes
 
 **Le rôle de ces moteurs est de prendre en charge les entrées utilisateurs et de fournir un service final**
 

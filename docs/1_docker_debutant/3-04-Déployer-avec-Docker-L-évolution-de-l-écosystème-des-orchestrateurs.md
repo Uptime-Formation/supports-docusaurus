@@ -28,7 +28,6 @@ La solution n'a jamais vraiment décollé car elle n'a jamis résolu les problè
 
 Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour l'avenir.
 
-
 ## Hashicorp Nomad
 
 Projet opensource par une entreprise leader dans le monde du cloud computing (Vagrant, Terraform, Vault)
@@ -61,6 +60,15 @@ Google Cloud et Azure fournissent également des solutions qui visent à réduir
 
 Ils fournissent également les services managés (Bases de données, stockage, réseau) permettant de gérer ses services externes dans un seul lieu.
 
+
+# Openshift
+
+Solution commerciale de RedHat pour faire du Platform As A Service sur une base Kubernetes.
+
+Disponible on premise ou sur de nombreux clouds, OpenShift intègre différents logiciels libres  pour fournir *out of the box* des fonctionnalités avancées, y compris le build d'image automatisé.
+- Ceph pour les volumes 
+- Prometheus pour le monitoring
+- Istio pour le service mesh
 
 
 # Et Docker Compose dans tout ça ? 

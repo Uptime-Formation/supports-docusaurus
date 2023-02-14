@@ -25,7 +25,20 @@ weight: 1
   - Répondre aux questions préalables et éventuelles réticences (normales)
   - Anticiper les problèmes de niveaux différents au sein du groupe / faire des paires
 
+---
 
+# Infrastructure as Code
+
+## Résumé
+
+- on décrit en mode code un état du système. Avantages :
+  - pas de dérive de la configuration et du système (immutabilité)
+  - on peut connaître de façon fiable l'état des composants du système
+  - on peut travailler en collaboration plus facilement (grâce à Git notamment)
+  - on peut faire des tests
+  - on facilite le déploiement de nouvelles instances
+
+---
 ## Le mouvement DevOps
 
 Le DevOps est avant tout le nom d'un mouvement de transformation professionnelle et technique de l'informatique.

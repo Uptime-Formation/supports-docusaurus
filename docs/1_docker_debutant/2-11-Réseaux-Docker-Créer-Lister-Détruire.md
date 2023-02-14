@@ -4,13 +4,9 @@ pre: "<b>2.11 </b>"
 weight: 24
 ---
 ## Objectifs pédagogiques
-  - Savoir utiliser les commandes volume (create
--  ls
--  rm
--  connect
--  prune)
+  - Savoir utiliser les commandes volume (create, ls, rm, connect, prune)
   - Savoir lancer un conteneur Docker en le connectant à un réseau
-  - Savoir faire communiquer deux conteurs Docker
+  - Savoir faire communiquer deux conteneurs Docker
 
 
 
