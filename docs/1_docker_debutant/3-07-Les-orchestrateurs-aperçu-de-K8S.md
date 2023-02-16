@@ -13,7 +13,7 @@ weight: 36
 
 L'infrastructure logicielle de Kubernetes est basé un jeu d'API, implémenté par 2 outils interactifs en ligne de commande 
 
-* kubedam pour les administrateurs
+* kubeadm pour les administrateurs
 * kubectl pour les utilisateurs
 
 De fait il existe des GUI permettant de piloter Kubernetes, comme Lens ou des panels web.
