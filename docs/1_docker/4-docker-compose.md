@@ -170,6 +170,11 @@ Les commandes suivantes sont couramment utilisées lorsque vous travaillez avec 
 - il est aussi possible d'utiliser des variables d'environnement dans Docker Compose : se référer au [mode d'emploi](https://docs.docker.com/compose/compose-file/#variable-substitution) pour les subtilités de fonctionnement
 
 
+## Usage non synchrone de docker-compose
+
+On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. Exemple : https://docs.funkwhale.audio/installation/docker.html#start-funkwhale-service
+
+
 ## Visualisation des applications microservice complexes
 
 - Certaines applications microservice peuvent avoir potentiellement des dizaines de petits conteneurs spécialisés. Le service devient alors difficile à lire dans le compose file.
