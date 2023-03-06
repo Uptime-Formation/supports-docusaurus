@@ -1,7 +1,5 @@
 ---
-title: TP opt. - CI/CD avec Gitlab et ArgoCD 
-draft: false
-weight: 2100
+title: TP optionnel - CI/CD GitOps avec Gitlab et ArgoCD 
 ---
 
 <!-- ## Tester en local (TP3 k8S)

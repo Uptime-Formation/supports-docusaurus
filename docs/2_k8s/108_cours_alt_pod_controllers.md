@@ -1,11 +1,8 @@
 ---
-title: 10 - Cours - Objets Kubernetes Partie 2.
+title: Cours - Les différents contrôleurs pour les pods
 draft: false
-weight: 2060
 ---
 
-
-## Les autres types de Workloads Kubernetes
 
 ![](/img/kubernetes/k8s_objects_hierarchy.png?width=600px)
 

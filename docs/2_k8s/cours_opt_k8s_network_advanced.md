@@ -1,7 +1,7 @@
 ---
-title: 14 -Réseau Kubernetes avancé 
+title: Cours optionnel - Réseau Kubernetes avancé 
 draft: false
-weight: 2100
+# weight: 2100
 ---
 
 ## Le réseau Pod-to-Pod et les CNI plugins

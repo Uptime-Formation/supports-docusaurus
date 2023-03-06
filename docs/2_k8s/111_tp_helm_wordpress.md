@@ -1,7 +1,7 @@
 ---
 title: "TP 6 - Déployer Wordpress avec Helm"
 draft: false
-sidebar_position: 14
+# sidebar_position: 14
 ---
 
 Helm est un "gestionnaire de paquet" ou vu autrement un "outil de templating avancé" pour k8s qui permet d'installer des applications plsu complexe de façon paramétrable :

@@ -8,7 +8,6 @@ weight: 2089
 
 <!-- Suivre ce tutorial : https://sysadmins.co.za/https-using-letsencrypt-and-traefik-with-k3s/ -->
 
-
 1. Installer cert-manager avec la commande `kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml`
 
 ## Créer un certificat Letsencrypt pour notre cluster k3s: version Traefik

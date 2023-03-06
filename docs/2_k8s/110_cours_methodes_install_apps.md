@@ -1,7 +1,6 @@
 ---
 title: Cours 6 - Méthodes pour installer des applications Kubernetes
 draft: false
-sidebar_position: 13
 ---
 
 ### Kustomize

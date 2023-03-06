@@ -27,22 +27,58 @@ sidebar_position: 1
 
 ## Trois transformations profondes de l'informatique
 
-Kubernetes se trouve au coeur de trois transformations profondes techniques, humaines et économiques de l'informatique:
+Kubernetes se trouve au coeur de plusieurs transformations profondes techniques, humaines et économiques de l'informatique:
 
-- Le cloud
+- Le mouvement DevOps et la CI/CD
+- Le "Cloud"
 - La conteneurisation logicielle
-- Le mouvement DevOps
 
-Docker et Kubernetes sont des projets qui symbolise et supporte techniquement ces transformations. D'où leur omniprésence dans les discussions informatiques actuellement.
+Docker (qui est surtout la marque la plus connue pour les conteneurs en général) et Kubernetes sont des projets qui symbolisent et supportent techniquement ces transformations. D'où leur omniprésence dans les discussions informatiques actuellement.
+
+### Le mouvement DevOps
+
+- Dépasser l'opposition culturelle et de métier entre les développeurs et les administrateurs système.
+- Intégrer tout le monde dans une seule équipe et ...
+- Calquer les rythmes de travail sur l'organisation agile du développement logiciel
+- Rapprocher techniquement la gestion de l'infrastructure du développement avec l'infrastructure as code.
+  - Concrètement on écrit des fichiers de code pour gérer les éléments d'infra
+  - l'état de l'infrastructure est plus claire et documentée par le code
+  - la complexité est plus gérable car tout est déclaré et modifiable au fur et à mesure de façon centralisée
+  - l'usage de git et des branches/tags pour la gestion de l'évolution d'infrastructure
+
+## Objectifs du DevOps
+
+- Rapidité (**velocity**) de **déploiement** et **refactorisation** logicielle (organisation agile du développement et livraison jusqu'à plusieurs fois par jour)
+  - Implique l'automatisation du déploiement et ce qu'on appelle la CI/CD c'est à dire une infrastructure de déploiement continu à partir de code.
+- Passage à l'échelle (horizontal scaling) des logiciels et des équipes de développement (nécessaire pour les entreprises du cloud qui doivent servir pleins d'utilisateurs)
+- Meilleure organisation des équipes
+  - meilleure compréhension globale du logiciel et de son installation de production car le savoir est mieux partagé
+  - organisation des équipes par thématique métier plutôt que par spécialité technique (l'équipe scale mieux)
+
+### Le mouvement Cloud Native
+
+Le mouvement **Cloud Native** est relativement récent, il remonte aux années 2010. Le terme a été popularisé en 2015 par la Cloud Native Computing Foundation (CNCF), une organisation à but non lucratif qui a été créée par la Linux Foundation pour fournir une plateforme pour la collaboration et le développement de technologies Cloud Native open source (Kubernetes et son écosystème).
+
+La CNCF vise à promouvoir des applications qui peuvent être déployées et exécutées de manière efficace dans un environnement dynamique, pour tirer pleinement parti des avantages du cloud, tels que la scalabilité, la flexibilité et la résilience. Pour cela la CNCF promeut :
+
+- L'usage des conteneurs qui permettent de créer des unités d'exécution indépendantes qui peuvent être facilement déployées et orchestrées
+
+- Une architecture d'application qui permette notamment la configuration dynamique à partir l'environnement telle que décrite ici : https://12factor.net/
+
+- Les microservices permettent de découper les applications en petits services indépendants qui peuvent être déployés et gérés individuellement.
 
 ### Le Cloud
 
-- Au delà du flou dans l'emploi de ce terme, le cloud est un mouvement de réorganisation technique et économique de l'informatique.
+Au delà du flou dans l'emploi de ce terme, le cloud est un mouvement de réorganisation technique et économique de l'informatique.
+
 - On retourne à la consommation de "temps de calcul" et de services après une "aire du Personnal Computer".
-- Pour organiser cela on définit trois niveaux à la fois techniques et économiques de l'informatique:
+
+- Pour organiser cela on peut définir trois niveaux à la fois techniques et économiques de l'informatique:
   - **Software as a Service**: location de services à travers internet pour les usagers finaux
   - **Plateform as a Service**: location d'un environnement d'exécution logiciel flexible à destination des développeurs
   - **Infrastructure as a Service**: location de resources "matérielles" à la demande pour installer des logiciels sans avoir à maintenir un data center.
+
+Le cloud permet surtout technique la flexibilité et la scalabilité à la demande des resources de base pour nos applications : on peut commander plein de machines et les ajouter à notre cluster. On peut également copier une infra temporairement pour faire des migrations ou tests.
 
 ### Conteneurisation
 
@@ -61,26 +97,6 @@ Les technologies de conteneurisation permettent donc de faire des boîtes isolé
   - au principe d'immutabilité qui implique de jeter les boîtes ( automatiser pour lutter contre la culture prudence). Rend l'infra prédictible.
 
 Les conteneurs sont souvent comparés à l'innovation du porte conteneur pour le transport de marchandise.
-
-### Le mouvement DevOps
-
-- Dépasser l'opposition culturelle et de métier entre les développeurs et les administrateurs système.
-- Intégrer tout le monde dans une seule équipe et ...
-- Calquer les rythmes de travail sur l'organisation agile du développement logiciel
-- Rapprocher techniquement la gestion de l'infrastructure du développement avec l'infrastructure as code.
-  - Concrètement on écrit des fichiers de code pour gérer les éléments d'infra
-  - l'état de l'infrastructure est plus claire et documentée par le code
-  - la complexité est plus gérable car tout est déclaré et modifiable au fur et à mesure de façon centralisée
-  - l'usage de git et des branches/tags pour la gestion de l'évolution d'infrastructure
-
-## Objectifs du DevOps
-
-- Rapidité (celerité) de déploiement logiciel (organisation agile du développement et livraison jusqu'à plusieurs fois par jour)
-  - Implique l'automatisation du déploiement et ce qu'on appelle la CI/CD c'est à dire une infrastructure de déploiement continu à partir de code.
-- Passage à l'échelle (horizontal scaling) des logiciels et des équipes de développement (nécessaire pour les entreprises du cloud qui doivent servir pleins d'utilisateurs)
-- Meilleure organisation des équipes
-  - meilleure compréhension globale du logiciel et de son installation de production car le savoir est mieux partagé
-  - organisation des équipes par thématique métier plutôt que par spécialité technique (l'équipe scale mieux)
 
 ### Apports de Docker pour le DevOps
 

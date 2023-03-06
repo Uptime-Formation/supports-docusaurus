@@ -1,7 +1,6 @@
 ---
-title: 13 - Principes de conception et architecture détaillée de Kubernetes
+title: Cours optionnel - Principes de conception et architecture détaillée de Kubernetes
 draft: false
-weight: 2100
 ---
 
 Le concept de configuration déclarative est l'un des principaux fondements du développement de Kubernetes : un utilisateur déclare un état souhaité du système pour produire un résultat.

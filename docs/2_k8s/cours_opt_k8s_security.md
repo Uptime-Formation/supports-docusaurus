@@ -1,7 +1,7 @@
 ---
-title: Cours - Problématiques de securité Kubernetes
+title: Cours optionnel - Problématiques de securité Kubernetes
 draft: false 
-weight: 2100
+# weight: 2100
 ---
 
 ## Modèles de menace et l'environnement dynamique Kubernetes

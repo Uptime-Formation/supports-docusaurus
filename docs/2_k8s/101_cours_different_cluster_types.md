@@ -1,7 +1,7 @@
 ---
-title: Cours 3 - Architecture de Kubernetes et les différents types de clusters
+title: Cours - Les différents types de clusters
 draft: false
-sidebar_position: 7
+# sidebar_position: 7
 ---
 
 ## Kubernetes
@@ -112,16 +112,45 @@ Pour installer un cluster de développement :
 
 ### Créer un cluster en tant que service (*managed cluster*) chez un fournisseur de cloud.
 
-Tous les principaux fournisseurs de cloud proposent depuis plus ou moins longtemps des solutions de cluster gérées par eux :
+Tous les principaux fournisseurs de cloud proposent depuis plus ou moins longtemps des solutions de cluster gérées par eux (Kaas, Kubernetes as a service):
 
 - Google Cloud Plateform avec Google Kubernetes Engine (GKE) : très populaire car très flexible et l'implémentation de référence de Kubernetes.
-- AWS avec EKS : Kubernetes assez standard mais à la sauce Amazon pour la gestion de l'accès, des loadbalancers ou du scaling.
-- Azure avec AKS : Kubernetes assez standard mais à la sauce Microsoft pour la gestion de l'accès, des loadbalancers ou du scaling.
-- DigitalOcean ou Scaleway : un peu moins de fonctions mais plus simple à appréhender <!-- (nous l'utiliserons) -->
+- AWS avec EKS : Kubernetes à la sauce Amazon pour la gestion de l'accès, des loadbalancers ou du scaling.
+- Azure avec AKS : Kubernetes à la sauce Microsoft.
+- DigitalOcean ou Linode : un peu moins de fonctions mais plus simple à appréhender <!-- (nous l'utiliserons) -->
 
-Pour sa qualité on recommande parfois Google GKE qui est plus ancien. Mais comme les gros fournisseur proposent des serveices éprouvés, il s'agit surtout de faciliter l'intégration avec l'existant:
+Les gros fournisseur proposent tous des services éprouvés, il s'agit surtout de faciliter l'intégration avec l'existant: Si vous utilisez déjà des resources AWS ou Azure il est plus commode de louer chez l'un d'eux votre cluster.
 
-- Si vous utilisez déjà des resources AWS ou Azure il est plus commode de louer chez l'un d'eux votre cluster
+<!-- can you detail the specific integrations of each kaas offer with the other products of the provideer : 
+
+    Google Kubernetes Engine (GKE) :
+
+    Intégration avec la plateforme Google Cloud (GCP) : GKE est étroitement intégré avec d'autres services de Google Cloud, tels que Compute Engine, Cloud Storage et Cloud DNS. GCP fournit également une suite d'outils pour la gestion et la surveillance des clusters GKE, notamment Stackdriver Logging et Monitoring.
+
+    Anthos : Anthos est la plateforme hybride et multi-cloud de Google qui vous permet d'exécuter et de gérer des clusters Kubernetes sur plusieurs clouds et environnements sur site. GKE est un composant clé d'Anthos, et Anthos fournit des fonctionnalités supplémentaires telles que le maillage de services Istio et la plateforme serverless Cloud Run.
+
+    Istio : Istio est un maillage de services qui fournit la gestion de trafic, la sécurité et l'observabilité pour les microservices. GKE fournit une intégration intégrée avec Istio, et vous pouvez utiliser Istio pour gérer le trafic entre les services s'exécutant sur les clusters GKE.
+
+    Microsoft Azure Kubernetes Service (AKS) :
+
+    Intégration avec Azure : AKS est étroitement intégré avec d'autres services Azure, tels que Azure Active Directory, Azure Virtual Network et Azure Monitor. Vous pouvez utiliser Azure pour gérer les clusters AKS, surveiller leurs performances et configurer des alertes.
+
+    Azure DevOps : Azure DevOps est un ensemble d'outils pour la gestion du cycle de vie complet du développement de logiciels. AKS s'intègre à Azure DevOps pour vous permettre de déployer et de gérer facilement des applications Kubernetes.
+
+    Azure Container Registry : Azure Container Registry est un service de registre Docker géré qui offre un moyen sécurisé et évolutif de stocker et de gérer des images de conteneurs. AKS s'intègre à Azure Container Registry pour vous permettre de déployer et de gérer facilement des applications conteneurisées.
+
+    Amazon Elastic Kubernetes Service (EKS) :
+
+    Intégration avec AWS : EKS est étroitement intégré avec d'autres services AWS, tels que Amazon EC2, Amazon VPC et AWS IAM. Vous pouvez utiliser AWS pour gérer les clusters EKS, surveiller leurs performances et configurer des alertes.
+
+    AWS Fargate : AWS Fargate est un moteur de calcul serverless pour les conteneurs qui vous permet d'exécuter des conteneurs sans avoir à gérer l'infrastructure sous-jacente. EKS s'intègre à AWS Fargate pour vous permettre d'exécuter et de gérer facilement des conteneurs sur les clusters EKS.
+
+    AWS App Mesh : AWS App Mesh est un maillage de services qui fournit la gestion de trafic, la sécurité et l'observabilité pour les microservices. EKS fournit une intégration intégrée avec App Mesh, et vous pouvez utiliser App Mesh pour gérer le trafic entre les services s'exécutant sur les clusters EKS.
+
+Ce ne sont que quelques exemples des intégrations proposées par chaque fournisseur de services Kubernetes. Chaque fournisseur dispose de sa propre gamme d'outils et de services qui peuvent être intégrés à Kubernetes pour vous permettre de créer, de déployer et de gérer des applications plus facilement. -->
+
+Fournisseurs français de Kubernetes as a service: OVH, Scaleway
+
 
 ### Installer un cluster de production on premise : l'outil "officiel" `kubeadm`
 
@@ -152,6 +181,7 @@ En réalité utiliser `kubeadm` directement en ligne de commande n'est pas la me
 Le projet kubespray est un installer de cluster kubernetes utilisant Ansible et kubeadm. C'est probablement l'une des méthodes les plus populaires pour véritablement gérer un cluster de production on premise.
 
 Mais la encore il s'agit de ne pas sous-estimer la complexité de la maintenance (comme avec kubeadm).
+
 ## Installer un cluster complètement à la main pour s'exercer
 
 On peut également installer Kubernetes de façon encore plus manuelle pour mieux comprendre ses rouages et composants.
@@ -162,10 +192,12 @@ Il existe également une série de tutoriel pour faire cette installation manuel
 ## Quelques PaaS (Plateforme as a Service) basés sur Kubernetes
 
 - `Rancher`: Un écosystème Kubernetes très complet, assez _opinionated_ et entièrement open-source, non lié à un fournisseur de cloud. Inclut l'installation de stack de monitoring (Prometheus), de logging, de réseau mesh (Istio) via une interface web agréable. Rancher maintient aussi de nombreuses solutions open source, comme par exemple Longhorn pour le stockage distribué.
+
 - `Openshift` : Une version de Kubernetes configurée et optimisée par Red Hat pour être utilisée dans son écosystème. Elle intègre notamment du monitoring et monitoring, Jenkins&Tekton pour le déploiement, un registry d'image etc. Tout est intégré avec l'inconvénient d'être un peu captif·ve de l'écosystème et des services vendus par Red Hat.
 
 <!-- ## Remarque sur les clusters hybrides
 Il est possible de connecter plusieurs clusters ensemble dans le cloud chez plusieurs fournisseurs -->
+
 ### Bibliographie pour approfondir le choix d'une distribution Kubernetes :
 
 - Chapitre 3 du livre `Cloud Native DevOps with Kubernetes` chez Oreilly

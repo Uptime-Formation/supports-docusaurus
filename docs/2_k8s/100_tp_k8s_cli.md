@@ -1,7 +1,7 @@
 ---
-title: TP 3 - Découvrir la cli kubectl et déployer une application
+title: TP - Découvrir la CLI kubectl et déployer une application
 draft: false
-sidebar_position: 6
+# sidebar_position: 6
 ---
 
 ## Découverte de Kubernetes
@@ -155,11 +155,11 @@ Essayez de la même façon d'afficher le nombre de répliques de notre déploiem
 
 Le moyen le plus classique pour avoir une vue d'ensemble des ressources d'un cluster est d'utiliser la Dashboard officielle. Cette Dashboard est généralement installée par défaut lorsqu'on loue un cluster chez un provider.
 
-On peut aussi l'installer dans minikube ou k3s. Nous allons ici préférer le client lourd Lens
+On peut aussi l'installer dans minikube ou k3s. Nous allons ici préférer le client lourd OpenLens
 
-#### Installer Lens
+#### Installer OpenLens
 
-Lens est une interface graphique (un client "lourd") pour Kubernetes. Elle se connecte en utilisant kubectl et la configuration `~/.kube/config` par défaut et nous permettra d'accéder à un dashboard puissant et agréable à utiliser.
+Lens est un logiciel graphique (un client "lourd") pour contrôler Kubernetes. Il se connecte en utilisant kubectl et la configuration `~/.kube/config` par défaut et nous permettra d'accéder à un dashboard puissant et agréable à utiliser.
 
 Récemment Mirantis qui a racheté Lens essaye de fermer l'accès à ce logiciel open source. Il faut donc utiliser le build communautaire à la place du build officiel: https://github.com/MuhammedKalkan/OpenLens/releases
 

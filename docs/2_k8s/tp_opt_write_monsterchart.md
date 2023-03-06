@@ -1,7 +1,7 @@
 ---
 title: TP optionnel - Écrire un chart pour notre application monsterstack
 draft: false
-weight: 2090
+# weight: 2090
 ---
 
 - Récupérez la correction du dernier TP sur le déploiement de la monsterstack avec la commande: `git clone -b tp_monsterstack_final https://github.com/Uptime-Formation/corrections_tp.git tp_monsterchart`.
