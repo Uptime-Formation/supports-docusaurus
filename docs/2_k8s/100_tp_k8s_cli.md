@@ -149,6 +149,14 @@ kubectl get pod demonstration-7645747fc6-f5z55 -o jsonpath='{.spec.containers[0]
 
 Essayez de la même façon d'afficher le nombre de répliques de notre déploiement.
 
+### Des outils CLI supplémentaires
+
+`kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
+
+- pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `sudo snap install kubectx --classic`
+- pour visualiser en temps réel les resources du cluster et leur évolution on installera `watch`
+- pour visualiser les logs d'un déploiement/service on peut utiliser `stern`
+
 ## Au délà de la ligne de commande...
 
 #### Accéder à la dashboard Kubernetes
