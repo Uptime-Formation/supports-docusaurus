@@ -23,8 +23,8 @@ Nous allons d'abord déployer notre application comme un simple **Pod** (non rec
 
 Kubernetes fournit un ensemble de commande pour débugger des conteneurs :
 
-- `kubectl logs <pod-name> -c <conteneur_name>` (le nom du conteneur est inutile si un seul)
-- `kubectl exec -it <pod-name> -c <conteneur_name> -- bash`
+- `kubectl logs <pod-name> -c <conteneur_name>` (le nom du conteneur est inutile si un seul). **Cependant** pour une consultation plus pratique des logs de conteneurs il est conseiller d'utiliser plutôt `stern -t <nomduservicequipointeverslespods>`
+- `kubectl exec -it <pod-name> -c <conteneur_name> -- /bin/sh`
 
 - Explorez le pod avec la commande `kubectl exec -it <pod-name> -c <conteneur_name> -- bash` écrite plus haut.
 
