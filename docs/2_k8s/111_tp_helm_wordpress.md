@@ -1,5 +1,5 @@
 ---
-title: "TP 6 - Déployer Wordpress avec Helm"
+title: "TP - Déployer Wordpress avec Helm"
 draft: false
 # sidebar_position: 14
 ---

@@ -113,7 +113,7 @@ kubectl explain pod.spec.containers
 
 - On peut mettre plusieurs ressources à la suite dans un fichier k8s : cela permet de décrire une installation complexe en un seul fichier
 
-  - par exemple le dashboard Kubernetes [https://github.com/kubernetes/dashboard/blob/master/aio/deploy/recommended.yaml](https://github.com/kubernetes/dashboard/blob/master/aio/deploy/recommended.yaml)
+  - par exemple le dashboard Kubernetes [https://github.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml](https://github.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml)
 
 - L'ordre n'importe pas car les ressources sont décrites déclarativement c'est-à-dire que:
 
