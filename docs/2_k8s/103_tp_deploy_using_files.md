@@ -13,7 +13,7 @@ Dans ce TP nous allons redéployer notre application `demonstration` du TP1 mais
 
 Nous allons d'abord déployer notre application comme un simple **Pod** (non recommandé mais montré ici pour l'exercice).
 
-- Créez un fichier `demo-pod.yaml` avec à l'intérieur le code d'exemple du cours précédent de la partie Pods.
+- Créez un fichier `demo-pod.yaml` avec à l'intérieur le code d'exemple du cours "Objets Fondamentaux" partie "Pods".
 - Appliquez le fichier avec `kubectl apply -f <fichier>`.
 - Constatez dans Lens dans la partie pods que les deux conteneurs du pod sont bien démarrés (deux petits carrés vert à droite de la ligne du pod)
 - Modifiez l'étiquette (`label`) du pod dans la description précédente et réappliquez la configuration. Kubernetes mets à jour le pod.
