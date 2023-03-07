@@ -153,9 +153,11 @@ Essayez de la même façon d'afficher le nombre de répliques de notre déploiem
 
 `kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
 
-- pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `sudo snap install kubectx --classic`
 - pour visualiser en temps réel les resources du cluster et leur évolution on installera `watch`
-- pour visualiser les logs d'un déploiement/service on peut utiliser `stern`
+
+- pour ajouter des plugins à kubectl on peut utiliser `krew`: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+- pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `kubectl krew install ctx`, `kubectl krew install ns`
+- pour visualiser les logs d'un déploiement/service on peut utiliser `stern`: `kubectl krew install stern`
 
 ## Au délà de la ligne de commande...
 

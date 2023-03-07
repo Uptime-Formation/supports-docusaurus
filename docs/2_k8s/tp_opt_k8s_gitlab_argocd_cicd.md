@@ -2,6 +2,11 @@
 title: TP optionnel - CI/CD GitOps avec Gitlab et ArgoCD 
 ---
 
+ArgoCD est un outil de GitOps extrêment pratique et puissant.
+
+Qu'est-ce que le GitOps: https://www.objectif-libre.com/fr/blog/2019/12/17/gitops-tour-horizon-pratiques-outils/
+
+
 <!-- ## Tester en local (TP3 k8S)
 
 Avant de pouvoir déployer notre application automatiquement (Continuous Delivery) il faut s'assurer de pouvoir bien déployer l'application dans K8S en version développement.
@@ -12,56 +17,12 @@ Avant de pouvoir déployer notre application automatiquement (Continuous Deliver
 
 ## Une vue d'ensemble (Schéma) -->
 
-## Installation d'un cluster avec argoCD
+Les prérequis pour ce TP sont:
+- disposer d'un cluster k3s (ou autre cluster mais étapes à adapter)
+- du ingress NGINX
+- d'une façon de générer des certificats https avec Certmanager.
 
-ArgoCD est un outil de GitOps extrêment pratique et puissant.
-
-Qu'est-ce que le GitOps: https://www.objectif-libre.com/fr/blog/2019/12/17/gitops-tour-horizon-pratiques-outils/
-
-
-Mais, dans notre cas, avec un ingress NGINX, il nécessite un accès HTTPS et donc la génération d'un certificat. Une solution est de l'installer dans un cluster accessible publiquement (avec un IP publique) pour pouvoir générer un certificat avec cert-manager et un Challenge ACME HTTP 101. C'est le cas de notre cluster k3s.
-
-Vos serveurs VNC qui sont aussi désormais des clusters k3s ont déjà plusieurs sous-domaines configurés: `<votrelogin>.<soudomaine>.dopl.uk` et `*.<votrelogin>.<soudomaine>.dopl.uk`. Le sous domaine `argocd.<login>.<soudomaine>.dopl.uk` pointe donc déjà sur le serveur (Wildcard DNS).
-
-Ce nom de domaine va nous permettre de générer un certificat HTTPS pour notre application web argoCD grâce à un ingress nginx, le cert-manager de k8s et letsencrypt (challenge HTTP101).
-
-#### Installer le ingress NGINX dans k3s
-
-- Installer l'ingress nginx avec la commande: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml` (pour autres méthodes ou problèmes voir : https://kubernetes.github.io/ingress-nginx/deploy/)
-
-- Vérifiez l'installation avec `kubectl get svc -n ingress-nginx ingress-nginx-controller` : le service `ingress-nginx-controller` devrait avoir une IP externe.
-
-#### Installer Cert-manager dans k3s
-
-- Pour installer cert-manager lancez : `kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml`
-
-- Il faut maintenant créer une ressource de type `ClusterIssuer` pour pourvoir émettre (to issue) des certificats.
-
-- Créez une ressource comme suit (soit dans Lens avec `+` soit dans un fichier à appliquer ensuite avec `kubectl apply -f`):
-
-```yaml
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    # You must replace this email address with your own.
-    # Let's Encrypt will use this to contact you about expiring
-    # certificates, and issues related to your account.
-    email: cto@doxx.fr
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      # Secret resource that will be used to store the account's private key.
-      name: letsencrypt-prod-account-key
-    # Add a single challenge solver, HTTP01 using nginx
-    solvers:
-    - http01:
-        ingress:
-          class: nginx
-```
-
-#### Installer Argocd
+L'installation:
 
 - Effectuer l'installation avec la première méthode du getting started : https://argo-cd.readthedocs.io/en/stable/getting_started/
 
