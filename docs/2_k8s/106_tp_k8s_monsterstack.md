@@ -245,7 +245,7 @@ spec:
 
 ### Configuration de l'application avec des variables d'environnement simples
 
-- Notre application frontend peut être configurée en mode DEV ou PROD. Pour cela elle attend une variable d'environnement `CONTEXT` pour lui indiquer si elle doit se lancer en mode `PROD` ou en mode `DEV`. Ici nous mettons l'environnement `DEV` en ajoutant (aligné avec la livenessProbe):
+- Notre application frontend peut être configurée en mode DEV ou PROD. Pour cela elle attend une variable d'environnement `CONTEXT` pour lui indiquer si elle doit se lancer en mode `PROD` ou en mode `DEV`. Ici nous mettons l'environnement `DEV` en ajoutant (aligné à la hauteur du i de image):
 
 ```yaml
 env:
