@@ -7,8 +7,9 @@ draft: false
 
 Tous les objets Kubernetes sont rangés dans différents espaces de travail isolés appelés `namespaces`.
 
-Cette isolation permet 3 choses :
+Cette isolation permet plusieurs choses :
 
+- isoler les resources pour éviter les conflits de nom, par exemple quand on veut déployer plusieurs fois la même application (le meme code yaml) sans changer le nom des resources (comme ajouter un préfixe/sufixe).
 - ne voir que ce qui concerne une tâche particulière (ne réfléchir que sur une seule chose lorsqu'on opère sur un cluster)
 - créer des limites de ressources (CPU, RAM, etc.) pour le namespace
 - définir des rôles et permissions sur le namespace qui s'appliquent à toutes les ressources à l'intérieur.

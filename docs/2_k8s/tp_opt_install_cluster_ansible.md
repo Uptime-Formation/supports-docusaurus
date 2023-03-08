@@ -7,7 +7,6 @@ draft: false
 
 ## Kubeadm : l'opérateur de cluster -->
 
-
 ## `Kubernetes the hard way` avec Ansible
 
 ![](/img/kubernetes/shema-persos/k8s-archi.jpg)
@@ -224,35 +223,6 @@ voir TP monitoring et série de tutorial dans ce TP pour plus avancé
 <!-- ### Installer BKPR
 
 https://github.com/vmware-archive/kube-prod-runtime/blob/master/docs/quickstart-generic.md -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- ## Liste de prérequis pour un cluster de production

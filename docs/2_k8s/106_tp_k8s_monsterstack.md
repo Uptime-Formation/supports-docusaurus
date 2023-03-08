@@ -15,8 +15,6 @@ Elle est composée :
 - d'un service de backend qui génère des images (un avatar de monstre correspondant à une chaîne de caractères)
 - et d'un datastore `redis` servant de cache pour les images de l'application
 
-Nous allons également utiliser le builder kubernetes `skaffold` pour déployer l'application en mode développement : l'image du frontend `frontend` sera construite à partir du code source présent dans le dossier `app` et automatiquement déployée dans le cluster (`minikube` ou `k3s`).
-
 ## Etudions le code et testons avec `docker-compose`
 
 - Le frontend est une application web python (flask) qui propose un petit formulaire et lance une requete sur le backend pour chercher une image et l'afficher.
@@ -29,9 +27,15 @@ Passons maintenant à Kubernetes.
 
 ## Déploiements pour le backend d'image (`imagebackend`) et le datastore `redis`
 
-Maintenant nous allons également créer un déploiement pour `imagebackend`:
+En vous inspirant du TP précédent créez des `deployments` pour `imagebackend` et `redis` sachant que:
+- l'image docker pour `imagebackend` est `amouat/dnmonster:1.0` qui fonctionne sur le port 8080.
+- l'image officielle redis est une image connue et bien documentée du docker hud (hub.docker.com). Lancez ici simplement l'image avec une configuration minimale comme dans le docker-compose.yml. Nous discuterons plus tard de comment déployer ce type d'application stateful de façon plus fiable et robuste.
+- Combien de réplicats mettre pour l'imagebackend et le redis ?
 
-- Ouvrez `imagebackend.yaml` dans le dossier `k8s-deploy` et collez-y le code suivant :
+
+<details><summary>Correction</summary>
+
+- Complétez `imagebackend.yaml` dans le dossier `k8s-deploy` :
 
 `imagebackend.yaml` :
 
@@ -97,57 +101,23 @@ spec:
 
 - Appliquez ces ressources avec `kubectl` et vérifiez dans `Lens` que les 5 + 1 réplicats sont bien lancés.
 
-## Envoyer les images dans le cluster : quel workflow de développement ?
-
-Au moment de lancer dans kubernetes la 3e partie de l'application, nous rencontrons un problème pratique : l'image à déployer est construite à partir d'un Dockerfile, elle est ensuite disponible dans le stock de nos images docker en local. Mais notre cluster (minikube ou autre) n'a pas accès par défaut à ces images : résultat nous pouvons bien construire et lancer l'image du frontend avec `docker build` et `docker run -p 5000:5000 frontend` mais nous ne pouvons pas utiliser cette image dans un fichier `deployment` avec `image: frontend` car le cluster ne saura pas ou la trouver => `ErrImagePull`
-
-Nous devons donc trouver comment envoyer l'image dans le cluster et idéalement de façon efficace.
-
-- La première méthode est de pousser l'image sur un registry par exemple DockerHub. Ensuite si nous faisons référence dans le déploiement à `<votre_hub_login>/frontend` ou `<addresse_registry>/frontend` le cluster devrait pouvoir télécharger l'image. Cette méthode est cependant trop lente pour le développement car il faudrait lancer plusieurs commandes à chaque modification du code ou des fichiers k8s.
-
-- Une méthode plus rapide est d'utiliser `minikube` et son intégration avec Docker tel qu'expliqué ici: https://minikube.sigs.k8s.io/docs/handbook/pushing/#1-pushing-directly-to-the-in-cluster-docker-daemon-docker-env. Une fois la commande `eval $(minikube docker-env)` lancée les commande type `docker build` contruiront l'image directement dans le cluster.
-
-- Une solution puissante et générique mais un peu plus complexe pour avoir un workflow développement confortable et compatible avec `minikube` mais aussi tout autre distribution kubernetes est `skaffold` combiné à un registry d'images. Avec cette méthode `skaffold` surveille automatiquement nos modification de développement et reconstruira/redéploiera l'image à chaque fois en quelques secondes
-
-<details><summary>version Minikube</summary>
-
-- Lancez la commande `eval $(minikube docker-env)` qui vas indiquer à la cli docker d'utiliser le daemon présent à l'intérieur du cluster minikube, notamment pour construire l'image.
-
-- Lancez un build docker `docker build -t frontend .`. La construction va être effectué directement dans le cluster.
-
-- Vérifiez que l'image `frontend` est bien présente dans le cluster avec `docker image list`
-
 </details>
 
-<details><summary>version Skaffold</summary>
+## Déploiement du `frontend` manuellement
 
-- Vérifiez que vous n'êtes pas dans l'environnement minikube docker-env avec `env | grep DOCKER` qui doit ne rien renvoyer.
-- Installez `skaffold` en suivant les indications ici: `https://skaffold.dev/docs/install/`
-- Créez ou modifiez un fichier `skaffold.yaml` avec le contenu :
+(cf TP développer dans Kubernetes pour de meilleures méthodes de déploiement)
 
-```yaml
-apiVersion: skaffold/v1
-kind: Config
-build:
-  artifacts:
-  - image: registry.kluster.ptych.net/frontend # change with your registry and log to it with docker login
-deploy:
-  kubectl:
-    manifests:
-      - k8s-deploy-dev/*.yaml
-```
+- Créez un compte (gratuit et plutôt pratique) sur le Docker Hub si vous n'en avez pas encore.
+- Buildez l'image `frontend` avec la ligne de commande `docker build -t frontend .` dans le dossier de projet. `docker image list` pour voir le résultat
 
-- Identifiez-vous sur le registry avec `docker login registry.kluster.ptych.net` et en utilisant le login du formateur.
+Pour accéder à l'image dans le cluster nous allons la poussez sur le registry Docker Hub (une solution basique parmis plein d'autres) pour cela:
 
-- Lancez le build, push, et le déploiement du imagebackend et du redis avec `skaffold dev --tail=false`
+- Lancez la commande `docker login docker.io` et utilisez votre compte précédemment créé (ou simplement `docker login` car docker se loggue automatiquement à sa plateforme par défaut).
+- Tagguez l'image `frontend` avec `docker tag ...` avec un nouveau tag précisant le serveur et l'utilisateur par exemple `docker tag frontend docker.io/myuser/frontend:1.0`
+- Créez un déploiement pour le frontend en réutilisant ce tag dans la section image.
+- déployez avec `kubectl apply` pour tester.
 
-</details>
-
-## Déploiement du `frontend`
-
-Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
-
-<details><summary>version Minikube</summary>
+<details><summary>Correction: </summary>
 
 Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
 
@@ -174,8 +144,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend
-          imagePullPolicy: Never
+          image: docker.io/<votreuserdockerhhubacompleter>/frontend:1.0
           ports:
             - containerPort: 5000
 ```
@@ -184,47 +153,93 @@ spec:
 
 </details>
 
-<details><summary>version Skaffold</summary>
 
-Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
+## Gérer la communication réseau de notre application avec des `Services`
+
+Les services K8s sont des endpoints réseaux qui envoient le trafic automatiquement vers un ensemble de pods désignés par certains labels. Ils sont un peu la pierre angulaire des applications microservices qui sont composées de plusieurs sous parties elles même répliquées.
+
+Pour créer un objet `Service`, utilisons le code suivant, à compléter :
 
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: frontend
+  name: <nom_service>
   labels:
     app: monsterstack
 spec:
+  ports:
+    - port: <port>
   selector:
-    matchLabels:
-      app: monsterstack
-      partie: frontend
-  strategy:
-    type: Recreate
-  replicas: 3
-  template:
-    metadata:
-      labels:
-        app: monsterstack
-        partie: frontend
-    spec:
-      containers:
-        - name: frontend
-          image: registry.kluster.ptych.net/frontend
-          ports:
-            - containerPort: 5000
-      imagePullSecrets:
-        - name: registry-credential
+    app: <app_selector>
+    partie: <tier_selector>
+  type: <type>
+---
 ```
 
-- Pour pouvoir tirer l'image depuis le cluster il faut ajouter le login sous forme d'un secret dans Kubernetes : `kubectl create secret docker-registry registry-credential --docker-server=registry.kluster.ptych.net --docker-username=elie --docker-password=<thepasspword>`
+Ajoutez le code précédent au début de chaque fichier déploiement. Complétez pour chaque partie de notre application :
 
-- Relancez `skaffold dev --tail=false` si nécessaire.
+- le nom du service et le nom de la `partie` par le nom de notre programme (`frontend`, `imagebackend` et `redis`)
+- le port par le port du service
+<!-- - pourquoi pas selector = celui du deployment? -->
+- les selectors `app` et `partie` par ceux du groupe de pods correspondant.
 
-</details>
+Le type sera : `ClusterIP` pour `imagebackend` et `redis`, car ce sont des services qui n'ont à être accédés qu'en interne, et `LoadBalancer` pour `frontend`.
 
-- Testez le fonctionnement du frontend avec la commande `kubectl port-forward ...` ou avec le port-forward de Lens.
+- Appliquez à nouveau.
+- Listez les services avec `kubectl get services`.
+- Visitez votre application dans le navigateur avec `minikube service frontend`.
+
+## Exposer notre application à l'extérieur avec un `Ingress` (~ reverse proxy)
+
+- Pour **Minikube** : Installons le contrôleur Ingress Nginx avec `minikube addons enable ingress`.
+
+- Pour **k3s** : Installer l'ingress nginx avec la commande: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml` Puis vérifiez l'installation avec `kubectl get svc -n ingress-nginx ingress-nginx-controller` : le service `ingress-nginx-controller` devrait avoir une IP externe.
+
+- Pour les autres types de cluster (**cloud** ou **manuel**), lire la documentation sur les prérequis pour les objets Ingress et installez l'ingress controller appelé `ingress-nginx` : <https://kubernetes.io/docs/concepts/services-networking/ingress/#prerequisites>.
+
+- Si vous êtes dans k3s, avant de continuer, vérifiez l'installation du contrôleur Ingress Nginx avec `kubectl get svc -n ingress-nginx ingress-nginx-controller` : le service `ingress-nginx-controller` devrait avoir une IP externe.
+
+
+### Utilisation de l'ingress
+
+Un contrôleur Ingress (**Ingress controller**) est une implémentation de reverse proxy dynamique (car ciblant et s'adaptant directement aux objets services k8s) configurée pour s'interfacer avec un cluster k8s.
+
+Une **ressource Ingress** est le fichier de configuration pour paramétrer le reverse proxy nativement dans Kubernetes.
+
+- Repassez le service `frontend` en mode `ClusterIP`. Le service n'est plus accessible sur un port. Nous allons utiliser l'ingress à la place pour afficher la page.
+
+- Ajoutez également l'objet `Ingress` suivant dans le fichier `monsterstack-ingress.yaml` :
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monsterstack
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: monsterstack.local # à changer si envie/besoin
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 5000
+```
+
+- Récupérez l'ip de votre cluster (minikube avec `minikube ip`, pour k3 en allant observer l'objet `Ingress` dans `Lens` dans la section `Networking`. Sur cette ligne, récupérez l'ip).
+
+- Ajoutez la ligne `<ip-cluster> monsterstack.local` au fichier `/etc/hosts` avec `sudo nano /etc/hosts` puis CRTL+S et CTRL+X pour sauver et quitter.
+
+- Visitez la page `http://monsterstack.local` pour constater que notre Ingress (reverse proxy) est bien fonctionnel.
+
+<!-- Pour le moment l'image de monstre ne s'affiche pas car la sous route de récup d'image /monster de notre application ne colle pas avec l'ingress que nous avons défini. TODO trouver la syntaxe d'ingress pour la faire marcher -->
 
 ## Paramétrer notre déploiement
 
@@ -239,7 +254,17 @@ env:
 ```
 - Généralement la valeur d'une variable est fournie au pod à l'aide d'une ressource de type `ConfigMap` ou `Secret` ce que nous verrons par la suite.
 
-- Configurez de même les variables `IMAGEBACKEND_DOMAIN` et `REDIS_DOMAIN` comme dans le docker-compose.
+- Configurez de même les variables `IMAGEBACKEND_DOMAIN` et `REDIS_DOMAIN` comme dans le docker-compose et trouvez comment modifier les hostnames associés aux services.
+
+<details><summary>Correction: </summary>
+
+Pour modifier le hostname on peut soit changer le nom du service soit utiliser le parametre `ClusterIP` du service pour y associer un nom de domaine (cela peut impacter les autres applications qui tentent de communiquer avec le service).
+
+Voir la correction github à la fin de la page
+
+</details>
+
+### Quelques autres paramétrages...
 
 <details><summary>Facultatif: Santé du service avec les Probes</summary>
 
@@ -276,9 +301,7 @@ Cependant une application peut être en train de tourner mais indisponible pour 
 
 La **readinessProbe** est un test qui s'assure que l'application est prête à répondre aux requêtes en train de tourner. S'il n'est pas rempli le pod est marqué comme non prêt à recevoir des requêtes et le `service` évitera de lui en envoyer.
 
-- Pendant que `skaffold dev --tail=false` tourne, on peut tester mettre volontairement port 3000 pour la livenessProbe et constater que k8s redémarre les conteneurs frontend un certain nombre de fois avant d'abandonner.
-
-- On peut le constater avec `kubectl describe deployment frontend` dans la section évènement ou avec `Lens` en bas du panneau latéral droite d'une ressource.
+- on peut tester mettre volontairement port 3000 pour la livenessProbe et constater que k8s redémarre les conteneurs frontend un certain nombre de fois avant d'abandonner. On peut le constater avec `kubectl describe deployment frontend` dans la section évènement ou avec `Lens` en bas du panneau latéral droite d'une ressource.
 
 </details>
 
@@ -303,110 +326,6 @@ Nos pods auront alors **la garantie** de disposer d'un dixième de CPU (100/1000
 Documentation : https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
 
 </details>
-
-## Gérer la communication réseau de notre application avec des `Services`
-
-Les services K8s sont des endpoints réseaux qui balancent le trafic automatiquement vers un ensemble de pods désignés par certains labels. Ils sont un peu la pierre angulaire des applications microservices qui sont composées de plusieurs sous parties elles même répliquées.
-
-Pour créer un objet `Service`, utilisons le code suivant, à compléter :
-
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: <nom_service>
-  labels:
-    app: monsterstack
-spec:
-  ports:
-    - port: <port>
-  selector:
-    app: <app_selector>
-    partie: <tier_selector>
-  type: <type>
----
-```
-
-Ajoutez le code précédent au début de chaque fichier déploiement. Complétez pour chaque partie de notre application :
-
-<!-- - le nom du service et le nom du tier par le nom de notre programme (`frontend` et `imagebackend`) -->
-
-- le nom du service et le nom de la `partie` par le nom de notre programme (`frontend`, `imagebackend` et `redis`)
-- le port par le port du service
-<!-- - pourquoi pas selector = celui du deployment? -->
-- les selectors `app` et `partie` par ceux du pod correspondant.
-
-Le type sera : `ClusterIP` pour `imagebackend` et `redis`, car ce sont des services qui n'ont à être accédés qu'en interne, et `LoadBalancer` pour `frontend`.
-
-- Appliquez à nouveau avec `skaffold run` ou `skaffold dev --tail=false`.
-- Listez les services avec `kubectl get services`.
-- Visitez votre application dans le navigateur avec `minikube service frontend`.
-- Supprimez éventuellement l'application avec `skaffold delete`.
-
-## Exposer notre application à l'extérieur avec un `Ingress` (~ reverse proxy)
-
-- Pour **Minikube** : Installons le contrôleur Ingress Nginx avec `minikube addons enable ingress`.
-
-- Pour **k3s** : Installer l'ingress nginx avec la commande: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml` Puis vérifiez l'installation avec `kubectl get svc -n ingress-nginx ingress-nginx-controller` : le service `ingress-nginx-controller` devrait avoir une IP externe.
-
-- Pour les autres types de cluster (**cloud** ou **manuel**), lire la documentation sur les prérequis pour les objets Ingress et installez l'ingress controller appelé `ingress-nginx` : <https://kubernetes.io/docs/concepts/services-networking/ingress/#prerequisites>.
-
-
-- Si vous êtes dans k3s, avant de continuer, vérifiez l'installation du contrôleur Ingress Nginx avec `kubectl get svc -n ingress-nginx ingress-nginx-controller` : le service `ingress-nginx-controller` devrait avoir une IP externe.
-
-Il s'agit d'une implémentation de reverse proxy dynamique (car ciblant et s'adaptant directement aux objets services k8s) basée sur nginx configurée pour s'interfacer avec un cluster k8s.
-
-- Repassez le service `frontend` en mode `ClusterIP`. Le service n'est plus accessible sur un port. Nous allons utiliser l'ingress à la place pour afficher la page.
-
-- Ajoutez également l'objet `Ingress` suivant dans le fichier `monsterstack-ingress.yaml` :
-
-```yaml
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: monsterstack
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: nginx
-spec:
-  rules:
-    - host: monsterstack.local # à changer si envie/besoin
-    
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: frontend
-              servicePort: 5000
-```
-
-- Ajoutez ce fichier avec `skaffold run` ou `dev`. Il y a une erreur l'API (ie la syntaxe) de kubernetes a changé depuis l'écriture du TP et il faudrait réécrire ce fichier ingress pour intégrer de petites modifications de syntaxe.
-
-- Pour corriger ce warning remplacez l'`apiVersion` par `networking.k8s.io/v1`. La syntaxe de la `spec` a légèrement changée depuis la v1beta1, modifiez comme suit:
-
-```yaml
-spec:
-  rules:
-    - host: monsterstack.local # à changer si envie/besoin
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend
-                port:
-                  number: 5000
-```
-
-<!-- TODO changer la correction pour intégrer la bonne syntaxe et renommer l'ancienne en old-->
-
-- Récupérez l'ip de minikube avec `minikube ip`, (ou alors allez observer l'objet `Ingress` dans `Lens` dans la section `Networking`. Sur cette ligne, récupérez l'ip de minikube en `192.x.x.x.`).
-
-- Ajoutez la ligne `<ip-minikube> monsterstack.local` au fichier `/etc/hosts` avec `sudo nano /etc/hosts` puis CRTL+S et CTRL+X pour sauver et quitter.
-
-- Visitez la page `http://monsterstack.local` pour constater que notre Ingress (reverse proxy) est bien fonctionnel.
-<!-- Pour le moment l'image de monstre ne s'affiche pas car la sous route de récup d'image /monster de notre application ne colle pas avec l'ingress que nous avons défini. TODO trouver la syntaxe d'ingress pour la faire marcher -->
 
 ## Correction du TP
 
