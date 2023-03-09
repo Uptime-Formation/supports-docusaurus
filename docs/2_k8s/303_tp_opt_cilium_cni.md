@@ -1,0 +1,19 @@
+---
+title: TP optionnel - Installer Cilium - observer et limiter le traffic 
+---
+
+Cilium est un des CNI les plus puissants avec Calico. Il permet notamment d'observer finement le traffic, le chiffrer et de le filtrer en temps réel au niveau 3,4 et 7 avec des Network Policies et autres règles avancées.
+
+Dans ce TP nous allons l'installer dans notre cluster k3s et suivre les tutoriels d'exemple officiels pour découvrir l'observabilité et configurer quelques network policies (firewalling kubernetes) pour limiter le traffic.
+
+
+## Configurer k3s pour préparer l'installation de Cilium
+
+K3s s'installe par défaut avec `flannel` le CNI plugin vanilla et simple de kubernetes. Pour le remplacer par cilium nous allons d'abord le désactiver (pour plus d'info voir la doc https://docs.cilium.io/en/stable/installation/k3s/)
+
+- Sur votre serveur/noeud k3s, créez un fichier `/etc/rancher/k3s/config.yaml` avec à l'intérieur les clés suivantes:
+
+```yaml
+flannel-backend: 'none'
+disable-network-policy: true
+```

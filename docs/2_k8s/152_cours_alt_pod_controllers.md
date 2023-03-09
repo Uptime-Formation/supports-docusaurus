@@ -41,6 +41,31 @@ Les jobs sont utiles pour les choses que vous ne voulez faire qu'une seule fois,
 
 Comme des jobs, mais se lancent à un intervalle régulier, comme les `cron` sur les systèmes unix.
 
+#### Exemple de Cronjob pour un backup avec Velero
+
+Voici un exemple de Job Kubernetes pour effectuer un Job régulier. Par exemple un backup Velero.
+
+```yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: daily-job
+spec:
+  schedule: "0 0 * * *" # Planifie la tâche tous les jours à minuit
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: my-container
+            image: my-image:latest
+            command: ["/bin/sh"]
+            args: ["-c", "echo 'Hello, World!'"]
+          restartPolicy: OnFailure
+
+```
+
+
 ### Des déploiements plus stables et précautionneux : les StatefulSets
 
 L'objet `StatefulSet` est relativement récent dans Kubernetes.
@@ -59,23 +84,48 @@ En général, on utilise des StatefulSets quand on veut :
 
 Article récapitulatif des fonctionnalités de base pour applications stateful: https://medium.com/capital-one-tech/conquering-statefulness-on-kubernetes-26336d5f4f17
 
-## Paramétrer ses Pods
+Exemple très minimal avec Cassandra: 
 
-### Les ConfigMaps 
-
-D'après les recommandations de développement [12factor](https://12factor.net), la configuration de nos programmes doit venir de l'environnement. L'environnement est ici Kubernetes.
-
-Les objets ConfigMaps permettent d'injecter dans des pods des ensemble clés/valeur de configuration en tant que volumes/fichiers de configuration ou variables d'environnement.
-
-### les Secrets
-
-Les Secrets se manipulent comme des objets ConfigMaps, mais ils sont chiffrés et faits pour stocker des mots de passe, des clés privées, des certificats, des tokens, ou tout autre élément de config dont la confidentialité doit être préservée.
-Un secret se créé avec l'API Kubernetes, puis c'est au pod de demander à y avoir accès.
-
-Il y a 3 façons de donner un accès à un secret :
-- le secret est un fichier que l'on monte en tant que volume dans un conteneur (pas nécessairement disponible à l'ensemble du pod). Il est possible de ne jamais écrire ce secret sur le disque (volume `tmpfs`).
-- le secret est une variable d'environnement du conteneur.
-
-Pour définir qui et quelle app a accès à quel secret, on peut utiliser les fonctionnalités "RBAC" de Kubernetes.
-
-
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cassandra
+spec:
+  selector:
+    matchLabels:
+      app: cassandra
+  serviceName: cassandra
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: cassandra
+    spec:
+      containers:
+      - name: cassandra
+        image: cassandra:3.11.10
+        env:
+        - name: CASSANDRA_SEEDS
+          value: "cassandra-0.cassandra.default.svc.cluster.local,cassandra-1.cassandra.default.svc.cluster.local,cassandra-2.cassandra.default.svc.cluster.local"
+        - name: CASSANDRA_CLUSTER_NAME
+          value: "my-cassandra-cluster"
+        - name: CASSANDRA_DC
+          value: "dc1"
+        - name: CASSANDRA_RACK
+          value: "rack1"
+        ports:
+        - containerPort: 9042
+          name: cql
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/cassandra/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+```
