@@ -60,12 +60,3 @@ En vous inspirant de la documentation officielle : https://kubernetes.io/docs/co
 
 - Modifiez cette section `env` pour récupérer les valeurs de la configMap avec le paramètre `valueFrom` comme dans l'exemple.
 
-# Facultatif : Paramétrer notre application avec Kustomize
-
-Kustomize est un outil de paramétrage et mutation d'application kubernetes fonctionnant sur le mode du patching (voir cours).
-
-Clonons et commentons un exemple d'usage de kustomize pour notre application : `git clone -b tp_monsterstack_correction_kustomize https://github.com/Uptime-Formation/corrections_tp.git tp_monsterstack_correction_kustomize`
-
-Resources sur kustomize:
-- https://skryvets.com/blog/2019/05/15/kubernetes-kustomize-json-patches-6902/
-- https://elatov.github.io/2021/08/using-kustomize/
