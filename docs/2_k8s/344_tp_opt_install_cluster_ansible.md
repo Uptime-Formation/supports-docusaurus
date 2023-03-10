@@ -215,26 +215,5 @@ voir TP monitoring et série de tutorial dans ce TP pour plus avancé
 - https://www.talkingquickly.co.uk/installing-keycloak-kubernetes-helm
 - https://www.talkingquickly.co.uk/setting-up-oidc-login-kubernetes-kubectl-with-keycloak
 
+### Installer Rancher ?
 
-
-
-
-
-<!-- ### Installer BKPR
-
-https://github.com/vmware-archive/kube-prod-runtime/blob/master/docs/quickstart-generic.md -->
-
-
-<!-- ## Liste de prérequis pour un cluster de production
-### Infrastructure du cluster
-
-- Exécuter un control plane hautement disponible : Vous pouvez y parvenir en exécutant les composants du control plane sur trois nœuds ou plus. Une autre bonne pratique recommandée est de déployer les composants maîtres Kubernetes et etcd sur deux groupes de nœuds distincts. Cela permet généralement de faciliter les opérations etcd, telles que les mises à niveau et les sauvegardes, et de diminuer le rayon des défaillances du control plane. De plus, pour les grands clusters Kubernetes, cela permet à etcd de bénéficier d'une ressources en l'exécutant sur certains types de nœuds qui répondent à ses besoins d'E/S étendus. Enfin, évitez de déployer des pods sur les nœuds du control plane.
-
-- Exécutez un groupe de workers hautement disponibles : Vous pouvez y parvenir en exécutant un groupe ou plus de nœuds workers avec trois instances ou plus. Si vous exécutez ces groupes de workers en utilisant un fournisseur de cloud, vous devez les déployer dans un groupe d'auto-scaling et dans différentes availability zones.
-
-- Une autre condition pour garantir la haute disponibilité même sous une charge anormalement élevée et/ou pendant les opération de mise à jour est de déployer l'auto-scaler de cluster de Kubernetes, qui permet aux groupes de workers de s'agrandir et se réduire automatiquement en fonction des besoins.
-
-
-TODO :
-
-Diagnostic: parler de dnsutils et comment debugger le DNS: https://stackoverflow.com/questions/52109039/nslookup-cant-resolve-kubernetes-default -->

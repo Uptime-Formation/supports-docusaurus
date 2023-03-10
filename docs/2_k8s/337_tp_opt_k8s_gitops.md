@@ -30,7 +30,6 @@ Les deux étapes de déploiement (dev et prod) du pipeline nécessitent de pouss
 
 - On peut ensuite déclencer le stage `deploy-prod` manuellement dans le pipeline, vérifier que l'application est healthy dans ArgoCD (debugger sinon) puis visiter `https://monster.<votre_sous_domaine>`.
 
-
 ### Idées d'amélioration
 
 - Déplacer le code de déploiement dans un autre dépôt que le code d'infrastructure. Le pipeline de devra cloner le dépôt d'infrastructure, templater avec kustomize la bonne version de l'image dans le bon environnement. Pousser le code d'infrastructure sur le dépôt d'infrastructure. Corriger l'application ArgoCD pour monitorer le dépôt d'infrastructure.

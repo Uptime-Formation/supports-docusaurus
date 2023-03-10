@@ -12,7 +12,7 @@ Sous Linux les conteneurs (quelle que soit la runtime choisie, Docker, container
 
 Les pods sont composés de plusieurs conteneurs qui partagent le même namespace réseau. Au moment de la création d'un pod, le premier conteneur créé est appelé `pause`, il est vide mais sert de support à la création de l'interface réseau virtuelle pour le pod. Les conteneurs démarrés ensuite récupèrent cette interface commune. On peut constater la création de ce conteneur en utilisant la cli docker ou ctr.
 
-Dans Kubernetes cette interface virtuelle de pod chaque est créée et routée automatiquement par le plugin CNI (Container Network Interface, une norme standard qui permet à toutes les runtime de conteneurs et tous les plugins d'être compatibles.).
+Dans Kubernetes cette interface virtuelle de chaque pod est créée et routée automatiquement par le plugin CNI (Container Network Interface, une norme standard qui permet à toutes les runtime de conteneurs et tous les plugins d'être compatibles.).
 
 Ce plugin doit être présent dans le cluster pour pouvoir automatiser la communication entre les pods. À l'installation (manuelle) du cluster on configure donc un CIDR pour les pods généralement un /16, et un plugin CNI.
 
