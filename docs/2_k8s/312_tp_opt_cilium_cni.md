@@ -20,7 +20,7 @@ disable-network-policy: true
 
 - Vous devez ensuite redémarrer le serveur avec `sudo systemctl restart k3s`
 
-On peut constater avec `kubectl get node ...` et `kubectl describe node ...` que le noeud pas en Statut NotReady et que les fonctionnalité réseaux ne sont plus assurer
+On peut constater avec `kubectl get node ...` et `kubectl describe node ...` que le noeud passe ensuite dans en status NotReady et que les fonctionnalité réseaux ne sont plus assure
 
 
 ## Installer Cilium

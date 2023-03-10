@@ -54,7 +54,7 @@ kubectl apply -f app-v1.yml
 - Utilisez le service `NodePort` pour accéder au service `goprom-metrics` dans votre navigateur. Quelles informations récupère-t-on sur cette route ?
 
 - Pour tester le service `prometheus-server` nous avons besoin de le mettre en mode NodePort (et non ClusterIP par défaut). Modifiez le service dans Lens pour changer son type.
-- Exposez le service avec Minikube (n'oubliez pas de préciser le namespace monitoring).
+- Exposez le service avec un NodePort (n'oubliez pas de préciser le namespace monitoring).
 - Vérifiez que prometheus récupère bien les métriques de l'application avec la requête PromQL : `sum(rate(http_requests_total{app="goprom"}[5m])) by (version)`.
 
 - Quelle est la section des fichiers de déploiement qui indique à prometheus ou récupérer les métriques ?
