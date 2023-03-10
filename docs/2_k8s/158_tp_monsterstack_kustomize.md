@@ -1,6 +1,8 @@
 ---
 title: "TP - Paramétrer notre application monsterstack avec Kustomize"
+draft: false
 ---
+
 
 Kustomize est un outil de paramétrage et mutation d'application kubernetes fonctionnant sur le mode du patching (voir cours).
 

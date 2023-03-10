@@ -21,158 +21,52 @@ Prometheus est un serveur de métriques c'est à dire qu'il enregistre des infor
 
 Une très bonne série d'articles à jour à propos de Prometheus/Graphana et AlertManager dans kubernetes et les concept de l'observability : https://www.augmentedmind.de/2021/09/05/observability-prometheus-guide/
 
-### Installer Prometheus avec Helm
+### Installer Prometheus et Grafana via kube-prometheus
 
-Installez Helm si ce n'est pas déjà fait. Sur Ubuntu : `sudo snap install helm --classic`
+Actuellement la méthode officielle conseillée pour installer Prometheus et sa webUI grafana est d'employé l'opérateur officiel `Prometheus Operator` packagé dans une stack complète appelée `kube-prometheus`: https://github.com/prometheus-operator/kube-prometheus
 
-- Créons un namespace pour prometheus et grafana : `kubectl create namespace monitoring`
+Une façon commode de déployer cette stack est d'utiliser le chart officiel : https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 
-- Ajoutez le dépot de chart **Prometheus** et **kube-state-metrics**: `helm repo add prometheus-community https://prometheus-community.github.io/helm-charts` puis `helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics` puis mise à jours des dépots helm `helm repo update`.
-
-- Installez ensuite le chart prometheus :
-
-```bash
-helm install \
-  --namespace=monitoring \
-  --version=15.10.1 \
-  prometheus \
-  prometheus-community/prometheus
-```
-
-
-
-Le chart officiel installe par défaut en plus de Prometheus, `kube-state-metrics` qui est une intégration automatique de kubernetes et prometheus.
-
-Une fois le chart installé vous pouvez visualisez les informations dans Lens, dans la premiere section du menu de gauche `Cluster`.
-
-### Installer et configurer Grafana 
-
-Grafana est une interface de dashboard de monitoring facilement intégrable avec Prometheus. Elle va nous permettre d'afficher un histogramme en temps réel du nombre de requêtes vers l'application.
-
-Il faut créer un secret Kubernetes pour stocker le login admin de grafana.
-
-```bash
-cat <<EOF | kubectl apply -n monitoring -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: monitoring
-  name: grafana-auth
-type: Opaque
-data:
-  admin-user: $(echo -n "admin" | base64 -w0)
-  admin-password: $(echo -n "unsecure@grafana" | base64 -w0)
-EOF
-```
-
-Ensuite, installez le chart Grafana en précisant quelques paramètres:
-
-```
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update
-helm install \
-  --namespace=monitoring \
-  --version=6.31.1 \
-  --set=admin.existingSecret=grafana-auth \
-  --set=service.type=NodePort \
-  --set=service.nodePort=32001 \
-  grafana \
-  grafana/grafana
-```
-
-##### Version ArgoCD avec Ingress
+- Comme précédemment déployez cette stack via ArgoCD avec le manifeste suivant:
 
 ```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-prometheus-stack
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: kube-prometheus-stack
   namespace: argocd
 spec:
   destination:
-        namespace: monitoring
+    namespace: kube-prometheus-stack
     server: https://kubernetes.default.svc
-  project: default
+  project: tooling
   source:
-    repoURL: https://grafana.github.io/helm-charts
-    chart: grafana
-    targetRevision: 6.1.17
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 43.1.1
     helm:
       values: |
-        service:
-          type: NodePort
-          nodePort: 32001
-        admin:
-          existingSecret: grafana-auth
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: grafana-admin-ingress
-  namespace: monitoring
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-spec:
-  tls:
-  - hosts:
-    - grafana.<votrenom>.k8s.dopl.uk
-    secretName: grafana-tls
-  rules:
-  - host: grafana.<votrenom>.k8s.dopl.uk
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: grafana
-            port:
-              number: 80
+        grafana:
+          enabled: true
+          ingress:
+            enabled: true
+            path: /
+            hosts:
+              - grafana.<stagiaire>.<labdomain>
+            tls:
+              - hosts:
+                - grafana.<stagiaire>.<labdomain>
+                secretName: grafana-tls-cert
+            annotations:
+              kubernetes.io/tls-acme: "true"
+              kubernetes.io/ingress.class: nginx
+              cert-manager.io/cluster-issuer: letsencrypt-prod
 ```
-
-Maintenant Grafana est installé vous pouvez y acccéder via le NodePort du service ou via l'ingress.
-Pour vous connectez utilisez le login du secret créé précédemment et utilisé pour l'installation.
-
-- Un fois connecté , il faut connecter Grafana à Prometheus, pour ce faire ajoutez une `DataSource` avec les paramètres suivants:
-
-```
-Name: prometheus
-Type: Prometheus
-Url: http://prometheus-server
-Access: Server
-```
-
-### Déployer une stack de logging simple : Loki dans grafana
-
-
-##### version ArgoCD
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: loki
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    repoURL: https://grafana.github.io/helm-charts
-    chart: loki
-    targetRevision: 2.12.2
-    helm:
-      values: ""
-```
-
-- Après l'installation vous devriez pouvoir ajouter une DataSource de type `Loki` avec l'adresse suivante: `http://loki:3100`
-
-(voir documentation : https://grafana.com/docs/loki/next/operations/grafana/)
-
-- Il est possible d'installer une dashboard de logging 
 
 ### Déployer notre application d'exemple (goprom) et la connecter à prometheus
 
