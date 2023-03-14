@@ -13,7 +13,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="terraform-static-dynamic-architecture.svg">
+   sodipodi:docname="terraform-static-dynamic-architecture.svg"
+   inkscape:export-filename="/home/alban/Documents/projets/RackFlow/80-99 Formation/supports-docusaurus/static/img/terraform/static-dynamic-infrastructure.png"
+   inkscape:export-xdpi="120.0089"
+   inkscape:export-ydpi="120.0089">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -23,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.6582616"
-     inkscape:cx="259.70119"
-     inkscape:cy="592.29702"
+     inkscape:zoom="0.67105285"
+     inkscape:cx="274.0394"
+     inkscape:cy="573.5398"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
