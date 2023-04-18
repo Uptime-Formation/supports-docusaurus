@@ -1,10 +1,14 @@
 ---
-title: "TP 6 - Déployer Wordpress avec Helm"
+title: "6 TP - Déployer Wordpress avec Helm"
 draft: false
 sidebar_position: 14
 ---
+--- 
+## Objectifs pédagogiques 
+- Utiliser Helm pour déployer son application
+--- 
 
-Helm est un "gestionnaire de paquet" ou vu autrement un "outil de templating avancé" pour k8s qui permet d'installer des applications plsu complexe de façon paramétrable :
+Helm est un "gestionnaire de paquet" ou vu autrement un "outil de templating avancé" pour Kubernetes qui permet d'installer des applications plsu complexe de façon paramétrable :
 
 - Pas de duplication de code
 - Possibilité de créer du code générique et flexible avec pleins de paramètres pour le déploiement.
@@ -151,3 +155,6 @@ Vous pouvez visiter le blog à l'adresse: `https://wordpress.<votrelogin>.k8s.do
 ### Solution
 
 Le dépôt Git contenant la correction de ce TP et des précédents est accessible avec cette commande : `git clone -b all_corrections https://github.com/Uptime-Formation/corrections_tp.git` -->
+--- 
+## Objectifs pédagogiques 
+- Utiliser Helm pour déployer son application

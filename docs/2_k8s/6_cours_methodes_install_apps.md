@@ -1,16 +1,25 @@
 ---
-title: Cours 6 - Méthodes pour installer des applications Kubernetes
+title: 6 - Méthodes pour installer des applications Kubernetes
 draft: false
 sidebar_position: 13
 ---
+--- 
+## Objectifs pédagogiques 
+- Comprendre les méthodes Kustomize et Helm
+- Comprendre l'intérêt des CRD
+
+--- 
 
 ### Kustomize
 
-L'outil `kustomize` sert à paramétrer et faire varier la configuration d'une installation Kubernetes en fonction des cas.
+**L'outil `kustomize` sert à paramétrer et faire varier la configuration d'une installation Kubernetes en fonction des cas.**
 
-- Intégré directement dans `kubectl` depuis quelques années il s'agit de la façon la plus simple et respectueuse de la philosophie déclarative de Kubernetes de le faire.
+Intégré directement dans `kubectl` depuis quelques années il s'agit de la façon la plus simple et respectueuse de la philosophie déclarative de Kubernetes de le faire.
 
-Par exemple lorsqu'on a besoin de déployer une même application dans 3 environnements de `dev`, `prod` et `staging` il serait dommage de ne pas factoriser le code. On écrit alors une version de base des manifestes kubernetes commune aux différents environnements puis on utilise `kustomize` pour appliquer des patches sur les valeurs.
+
+---
+
+**Par exemple lorsqu'on a besoin de déployer une même application dans 3 environnements de `dev`, `prod` et `staging` il serait dommage de ne pas factoriser le code. On écrit alors une version de base des manifestes kubernetes commune aux différents environnements puis on utilise `kustomize` pour appliquer des patches sur les valeurs.**
 
 Plus généralement cet outil rassemble plein de fonctionnalité pour supporter les variations de manifestes :
 - ajout de préfixes ou suffixes aux noms de resources
@@ -20,11 +29,35 @@ Plus généralement cet outil rassemble plein de fonctionnalité pour supporter 
 
 Documentation : https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 
-Kustomize est très adapté pour une variabilité pas trop importante des installations d'une application, par exemple une entreprise qui voudrait déployer son application dans quelques environnements internes avec un dispositif de Continuous Delivery. Il a l'avantage de garder le code de base lisible et maintenable et d'éviter les manipulations impératives/séquentielles.
+---
 
-- Pour utiliser kustomise on écrit un fichier `kustomization.yaml` à côté des manifestes et patchs et on l'applique avec `kubectl -k chemin_vers_kustomization`.
 
-- Il est aussi très utile de pouvoir visualisé le resultat du patching avant de l'appliquer avec : `kubectl kutomize chemin_vers_kustomization`
+**Kustomize est très adapté pour une variabilité pas trop importante des installations d'une application, par exemple une entreprise qui voudrait déployer son application dans quelques environnements internes avec un dispositif de Continuous Delivery.** 
+
+Il a l'avantage de garder le code de base lisible et maintenable et d'éviter les manipulations impératives/séquentielles.
+
+---
+
+**Pour utiliser kustomise on écrit un fichier `kustomization.yaml` à côté des manifestes et patchs.**
+
+Pour l'appliquer :
+
+```shell
+
+$ kubectl -k chemin_vers_kustomization
+
+```
+
+---
+
+**Il est aussi très utile de pouvoir visualisé le resultat du patching avant de l'appliquer.**
+
+```shell
+
+$ kubectl kustomize chemin_vers_kustomization
+
+```
+
 
 Mais lorsqu'on a besoin de faire varier énormément les manifestes selon de nombreux cas, par exemple lorsqu'on distribue une application publiquement et qu'on veut permettre à l'utilisateur de configurer dynamiquement à peut près tous les aspects d'une installation, kustomize n'est pas adapté.
 
@@ -45,9 +78,15 @@ Il existe des _stores_ de charts Helm, le plus conséquent d'entre eux est https
 
 Observons un exemple de Chart : https://artifacthub.io/packages/helm/minecraft-server-charts/minecraft
 
-Un des aspects les plus visible côté utilistateur d'un chart est la liste, souvent très étendue, des paramètres d'installation du chart. Il s'agit d'un dictionnaire YAML de paramètres sur plusieurs niveaux. Ils ont presque tous une valeur par defaut qui peut être surchargée à l'installation.
+Un des aspects les plus visible côté utilistateur d'un chart est la liste, souvent très étendue, des paramètres d'installation du chart.
 
-Plutôt que d'installer un chart à l'aveugle il est préférable d'effectuer un templating/dry-run du chart avec un ensemble de paramètre pour étudier les resources kubernetes qui seront créées à son installation: voir dans la suite et le TP. (ou d'utiliser un outil de déploiement et supervision d'applications comme ArgoCD)
+Il s'agit d'un dictionnaire YAML de paramètres sur plusieurs niveaux.
+
+Ils ont presque tous une valeur par defaut qui peut être surchargée à l'installation.
+
+Plutôt que d'installer un chart à l'aveugle il est préférable d'effectuer un templating/dry-run du chart avec un ensemble de paramètre pour étudier les resources kubernetes qui seront créées à son installation: voir dans la suite et le TP.
+
+(ou d'utiliser un outil de déploiement et supervision d'applications comme ArgoCD)
 
 ### Quelques commandes Helm:
 
@@ -82,7 +121,9 @@ Un opérateur désigne toute extension de Kubernetes qui respecte ces principes.
 
 Les Custom Resources Definitions (CRDs) sont les nouveaux types de resources ajoutés pour étendre l'API
 
-- On peut lister toutes les resources (custom ou non) dans kubectl avec `kubectl api-resources -o wide`. les CRDs sont aussi affichées dans la dernière section du menu Lens.
+- On peut lister toutes les resources (custom ou non) dans kubectl avec `kubectl api-resources -o wide`.
+
+les CRDs sont aussi affichées dans la dernière section du menu Lens.
 - On peut utiliser `kubectl explain` sur ces noms de resources pour découvrir les types qu'on ne connait pas
 
 doc: https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
@@ -101,7 +142,9 @@ Les opérateurs sont souvent répertoriés sur le site: https://operatorhub.io/
 
 ![](/img/kubernetes/k8s_crd.png)
 
-Avec les opérateurs il est possible d'ajouter des nouvelles fonctionnalités quasi-natives à notre Cluster. Ce mode d'extensibilité est un des points qui fait la force et la relative universalité de Kubernetes.
+Avec les opérateurs il est possible d'ajouter des nouvelles fonctionnalités quasi-natives à notre Cluster.
+
+Ce mode d'extensibilité est un des points qui fait la force et la relative universalité de Kubernetes.
 
 
 ## Écrire un opérateur
@@ -117,6 +160,15 @@ L'écriture d'opérateurs est un sujet avancé mais très intéressant de Kubern
 
 - Ils peuvent être développés avec un framework Go ou Ansible
 
-Il est important de comprendre que le développement et la maintenance d'un opérateur est une tâche très lourde. Elle est probablement superflue pour la plupart des cas. Écrire un chart fait principalement sens pour une entreprise ou un fournisseur de solution qui voudrait optimiser un morceau de logique opérationnelle crucial et éventuellement vendre cette nouvelle solution a de nombreux clients.
+Il est important de comprendre que le développement et la maintenance d'un opérateur est une tâche très lourde.
+
+Elle est probablement superflue pour la plupart des cas.
+
+Écrire un chart fait principalement sens pour une entreprise ou un fournisseur de solution qui voudrait optimiser un morceau de logique opérationnelle crucial et éventuellement vendre cette nouvelle solution a de nombreux clients.
 
 Voir : https://thenewstack.io/kubernetes-when-to-use-and-when-to-avoid-the-operator-pattern/
+
+--- 
+## Objectifs pédagogiques 
+- Comprendre les méthodes Kustomize et Helm
+- Comprendre l'intérêt des CRD
