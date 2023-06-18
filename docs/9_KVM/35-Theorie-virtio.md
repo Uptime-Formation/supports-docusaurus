@@ -1,0 +1,1 @@
+![](/img/kvm/kvm-virtio.png)

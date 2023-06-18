@@ -1,0 +1,238 @@
+
+# Introduction
+- Objectifs d'un système d'exploitation
+- Gestion de ressources
+- Partager des ressources entre plusieurs applications, systèmes...
+- Notion de virtualisation
+- Quelle granularité ?
+- Disques
+- Système d'exploitation
+- Machines physiques...
+- Historique
+- VM (Virtual Machine)
+- VMware
+- UML
+- XEN
+- Les différentes techniques de virtualisation sur Linux
+- Définitions
+- Conteneurs
+- Machines virtuelles
+- Hyperviseurs
+- Virtualisation matérielle
+- Présentation de KVM (Kernel-based Virtual Machine)
+- Principe et architecture (module intégré dans le noyau Linux et base QEMU)
+- Positionnement par rapport aux autres solutions de virtualisation
+- Prérequis matériels et logiciels
+
+# Présentation QEMU
+- Principe de QEMU et architecture
+- Deux modes de fonctionnement
+- Code compilé pour un processeur
+- Emulation d'une machine physique
+- Etude des options de lancement de QEMU
+- Consoles des machines vituelles
+- Graphiques (console VNC, Spice...)
+- Consoles en mode texte
+
+# Exemples de travaux pratiques (à titre indicatif)
+
+# Ateliers : installation et lancement d'une image
+
+# Installation de KVM
+- Optimisation, gestion de la mémoire
+- Gestion des images :
+- Création d'images
+- Différents supports possibles
+- Options de lancement
+- Gestion du matériel :
+  - Architectures supportées
+  - Processeurs
+  - Mémoire
+  - Périphériques de stockage
+  - Audio
+  - Vidéo
+  - USB
+  - Bluetooth...
+- Configuration du réseau : différents modes possibles (user, tap, bridge...)
+  - Exemples de travaux pratiques (à titre indicatif)
+  - Ateliers :
+  - Installation avec un noyau contenant les modules KVM
+  - Commandes info, check, resize, convert
+  - Configuration réseau sur les images créées aux chapitres précédents
+
+# Migration d'images
+- Le besoin
+- Sauvegarde / chargement de machines virtuelles (à l'arrêt ou en fonctionnement)
+- Limites par rapport aux processeurs
+- Snapshots et migrations : principe de fonctionnement
+- Mise en oeuvre et option de la commande "migrate"
+- Paramètres (bande passante)
+- Migration vers un fichier : sauvegarde puis restauration
+
+# Administration
+- Les outils de gestion de machines virtuelles KVM :
+- UVMM
+- Virsh
+- Virt-manager
+- Présentation de Proxmox et mise en oeuvre :
+- Gestion de machines virtuelles
+- Création de clusters Proxmox
+- Méthode de migration
+
+--- 
+
+# Introduction
+- Les différentes techniques de virtualisation
+- Définitions : conteneurs, machines virtuelles, hyperviseurs,virtualisation matérielle
+- Présentation de kvm : Kernel-based Virtual Machine
+- Principe et architecture : module intégré dans le noyau Linux, base QEMU
+- Positionnement par rapport aux autres solutions de virtualisation
+- Prérequis matériels et logiciels
+
+# Présentation QEMU
+- Deux modes de fonctionnement : code compilé pour un processeur, émulation d'une machine physique
+
+# Installation de kvm
+- Deux configurations possibles :depuis un noyau Linux de version supérieure à 2.6.25 et contenant les modules kvm ou avec recompilation du noyau
+- Optimisation, gestion de la mémoire
+
+
+# Mise en oeuvre
+- Création, installation et exécution d'une image
+- Les images préconfigurées
+- Réalisation de snapshots
+- Configuration du réseau
+
+# Migration d'images
+- Le besoin
+- Sauvegarde/chargement de machines virtuelles : à l'arrêt ou en fonctionnement
+- Limites par rapport aux processeurs
+- Prérequis
+- Mise en oeuvre : la commande migrate
+- Paramètres (bande passante)
+- Migration vers un fichier : sauvegarde puis restauration
+
+# Administration
+- Les outils de gestion de machines virtuelles kvm : UVMM, virsh, virt-manager
+- Travaux pratiques avec libvirt
+
+- Présentation de proxmox et mise en oeuvre : gestion de machines virtuelles, création de clusters proxmox.  Méthode de migration 
+
+Réseaux virtuels avec VDE
+- Présentation de VDE : Virtuel Distributed Ethernet
+- Installation, configuration : création des interfaces "tap"
+- Travaux pratiques : connexion de deux réseaux via  un routeur virtuel, création des interfaces TAP et des switchs VDE
+- Configuration des switchs avec Unixterm
+
+---
+
+
+
+Schema d’ensemble de l’infrastructure proposée par KVM
+Définition
+Matériels émulés "Virtio"
+Ballooning
+KSM
+
+Les composants de la virtualisation
+Base
+
+QEMU
+libvirt
+
+guestfstools
+
+Installation
+Installation d’un hyperviseur
+Installation d’outils supplémentaires
+Fichiers de libvirt
+
+Configuration - /etc/libvirt
+Fichiers créés - /var/lib/libvirt
+Fichiers temporaires - /var/run/libvirt
+Journaux - /var/log/libvirt
+Configuration utilisateur
+
+Aller plus loin dans la configuration
+
+Service libvirtd
+Contrôle d’accès avec Policykit
+Nested KVM
+
+Se connecter à un hyperviseur distant avec ssh
+
+Interfaces de gestions
+Gestion des machines virtuelles avec virt-manager
+Gestion des machines virtuelles avec virsh
+
+Lister les invités
+
+Cockpit
+
+Ajout d’un nouvel invité
+Ajout avec virt-manager
+Ajout avec virt-install
+
+Injection de fichier dans l’initrd d’install (preseed)
+VM avec une MAC assignée à la création
+
+vCPUs
+
+vCPU hotplug
+vCPU pinning
+
+memory : ballooning, hotplug
+
+Ballooning
+Hotplug
+
+UEFI
+Spice
+
+Réseau
+Définition d’une interface réseau d’un domaine
+Définition d’un réseau avec NAT
+dhcp/dns fourni par la libvirt
+Modification à la volée
+libnss-libvirt, libnss-libvirt-guest
+Configuration réseau bridge
+bridge OVS
+
+Stockage
+pool
+
+Création avec virt-manager
+Création avec virsh
+pool iscsi
+
+volume
+
+Gérer les volumes avec virsh
+Volume partagé entre VM
+Chiffrement
+Chiffrement QCOW2 (obselete)
+Chiffrement LUKS
+
+virtfs
+
+Monitoring
+virt-manager
+kvm_stat
+virsh
+virt-top
+
+Sauvegardes et snapshots
+sauvegarde
+snapshot
+
+Clonage de machines virtuelles
+Migration vers un autre hôte KVM
+Installation d’un nouvel hyperviseur
+Migration à chaud
+Migration à froid
+
+Outils et troubleshooting
+guestfs tools
+virt-rescue
+guestfish
+virt-resize
