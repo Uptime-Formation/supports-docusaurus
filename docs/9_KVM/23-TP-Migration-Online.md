@@ -1,4 +1,17 @@
-# TP Migration Online 
+# TP: Migration Online 
+
+## Objectifs pédagogiques
+
+## Objectifs pédagogiques
+
+**Pratiques**
+
+- Opérer des instances KVM via ses IHM
+  - Démarrer un nouvel OS invité (VM)
+
+**Stratégiques**
+
+- Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
 
 **Pour migrer une instance sans stockage partagé, utilisez les étapes suivantes:**
 

@@ -1,3 +1,12 @@
+# Theorie : KVM en production
+
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les contraintes opérationnelles de KVM en production
+
+--- 
 
 ## Le stockage
 

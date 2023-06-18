@@ -1,10 +1,30 @@
-# TP Virsh
+# TP : IHM Virsh
+
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les IHM permettant de piloter KVM
+
+**Pratiques**
+
+- Opérer des instances KVM via ses IHM
+  - Démarrer un nouvel OS invité (VM)
+  - Configurer le réseau dans KVM (NAT, libvirt, bridge, etc.)
+
+**Stratégiques**
+
+- Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
 
 **Pour récupérer des informations sur les machines virtuelles (VM) sur votre hôte et leurs configurations, utilisez une ou plusieurs des commandes suivantes.**
 
 ### Aide 
 
 ```shell
+# Plus de 260 commandes disponibles dans virsh
+$ virsh help
+
+# Dont plus de 100 rien que pour le "domain"
 $ virsh help domain  
 ```
 
@@ -111,6 +131,10 @@ $ virsh undefine guest1
 ```
 
 ---
+
+## Créer une VM
+
+Virt
 
 ```shell
 $  virt-install --install fedora29 --unattended --graphics none 

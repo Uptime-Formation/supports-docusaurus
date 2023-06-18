@@ -1,5 +1,11 @@
 # Théorie : Avantages de la virtualisation
 
+## Objectifs pédagogiques
+
+**Stratégiques**
+
+- Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
+
 ---
 ## Amélioration de la sécurité 
 

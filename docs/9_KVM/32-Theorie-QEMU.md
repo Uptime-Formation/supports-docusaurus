@@ -1,6 +1,13 @@
 # Theorie : QEMU
 
-![](/img/kvm/kvm-qemu-tcg.png)
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les spécificités de la virtualisation KVM
+- Connaître les IHM permettant de piloter KVM
+
+![](../../static/img/kvm/kvm-qemu-tcg.png)
 
 ---
 
@@ -21,7 +28,7 @@ Lorsque QEMU émule directement les processeurs, il est capable d'exécuter des 
 
 ---
 
-![](/img/kvm/qemu-modes-copyright-mk68k.info.png)
+![](../../static/img/kvm/qemu-modes-copyright-mk68k.info.png)
 
 **QEMU est également capable de fournir une virtualisation d'API d'espace utilisateur pour les interfaces de noyau Linux et BSD.**
 

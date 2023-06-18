@@ -1,6 +1,18 @@
 # TP: LVM 
 
-![](/img/kvm/kvm-lvm.png)
+## Objectifs pédagogiques
+
+**Pratiques**
+
+- Installer KVM et ses IHM
+- Opérer des instances KVM via ses IHM
+  - Maîtriser le stockage (pool, volume, chiffrement, virtfs)
+
+**Stratégiques**
+
+- Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
+
+![](../../static/img/kvm/kvm-lvm.png)
 
 ## LVM : Logical Volume Manager
 

@@ -1,5 +1,12 @@
 # Théorie : QEMU et les montages 
 
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les spécificités de la virtualisation KVM
+- Connaître les contraintes opérationnelles de KVM en production
+
 ---
 
 ## Verrouillage du fichier image disque

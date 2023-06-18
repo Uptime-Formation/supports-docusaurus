@@ -1,16 +1,16 @@
-# Formation KVM
+# Introduction
 
-![](/img/kvm/kvm-logo.png)
+![](../../static/img/kvm/kvm-logo.png)
 
 ## Objectifs pédagogiques
 
-Théoriques
+**Théoriques**
 
 - Connaître les spécificités de la virtualisation KVM
 - Connaître les IHM permettant de piloter KVM
 - Connaître les contraintes opérationnelles de KVM en production
 
-Pratiques
+**Pratiques**
 
 - Installer KVM et ses IHM
 - Créer des images système pour KVM
@@ -19,7 +19,7 @@ Pratiques
   - Configurer le réseau dans KVM (NAT, libvirt, bridge, etc.)
   - Maîtriser le stockage (pool, volume, chiffrement, virtfs)
 
-Stratégiques
+**Stratégiques**
 
 - Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
 
@@ -45,7 +45,7 @@ Stratégiques
 - Choisir une image 
 - Choisir les paramètres de virtualisation  
 - Démarrer l'instance KVM  
-- Installer le système à partir de l'image de base  
+- Lancer le système à partir d'un disque (boot ISO ou import)  
 - S'y connecter 
 - Configurer un service sur l'instance
 - Valider que le service fonctionne

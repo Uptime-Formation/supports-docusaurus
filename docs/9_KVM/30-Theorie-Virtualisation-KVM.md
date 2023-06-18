@@ -1,6 +1,13 @@
 # Théorie : La virtualisation
 
-![](/img/kvm/kvm-hyperviseur-level-1-2.png)
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les spécificités de la virtualisation KVM
+
+
+![](../../static/img/kvm/kvm-hyperviseur-level-1-2.png)
 
 ---
 
@@ -70,7 +77,7 @@ Le support de la virtualisation peut être intégré au processeur ou assisté p
 
 ### Virtualisation de serveurs : native vs hosted
 
-![](/img/kvm/kvm-differences-hyperviseur.jpg)
+![](../../static/img/kvm/kvm-differences-hyperviseur.jpg)
 @ blog.nexthope
 
 ---
@@ -108,7 +115,7 @@ Dans les faits, les type 1 sont désormais associés aux systèmes qui lancent d
 
 ### Aperçu historique 
 
-![](/img/kvm/kvm-virtualisation-history.png)
+![](../../static/img/kvm/kvm-virtualisation-history.png)
 
 - 1960 Émergence de la virtualisation sur mainframes (IBM : labos de recherche)
 - 1970 Usage de a virtualisation pour les mainframes CP/CMS (IBM : grands comptes) 
@@ -128,7 +135,7 @@ Dans les faits, les type 1 sont désormais associés aux systèmes qui lancent d
 
 ### VMware / ESX.
 
-![](/img/kvm/kvm-virt-type-vmware.png)
+![](../../static/img/kvm/kvm-virt-type-vmware.png)
 
 
 * solution historique, reconnue 
@@ -140,7 +147,7 @@ Dans les faits, les type 1 sont désormais associés aux systèmes qui lancent d
 
 ### Xen (Linux)
 
-![](/img/kvm/kvm-virt-type-xen.png)
+![](../../static/img/kvm/kvm-virt-type-xen.png)
 
 * Solution reconnue
 * Solution libre (Rappel des 4 libertés !)
@@ -156,7 +163,7 @@ Dans les faits, les type 1 sont désormais associés aux systèmes qui lancent d
 
 ###  KVM (Linux)
 
-![](/img/kvm/kvm-virt-type-kvm.png)
+![](../../static/img/kvm/kvm-virt-type-kvm.png)
 
 *  Solution Libre 
 * IHM ligne de commande et autres de virt-manager à Proxmox

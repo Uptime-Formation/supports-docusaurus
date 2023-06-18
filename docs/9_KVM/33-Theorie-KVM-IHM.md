@@ -1,15 +1,12 @@
 # Théorie: Les IHM KVM
 
-
 ## Objectifs pédagogiques
 
-Théoriques
+**Théoriques**
 
+- Connaître les spécificités de la virtualisation KVM
 - Connaître les IHM permettant de piloter KVM
 
-Pratiques
-
-- Installer KVM et ses IHM
 
 Stratégiques
 
@@ -31,7 +28,7 @@ On va identifier celles qui sont aujourd'hui parmi les plus pertinentes dans le 
 
 
 ## L’API libvirt
-![](/img/kvm/kvm-libvirt.jpg)
+![](../../static/img/kvm/kvm-libvirt.jpg)
 
 **libvirt est une bibliothèque, une API, un daemon et des outils en logiciel libre de gestion de la virtualisation.**
 
@@ -115,7 +112,7 @@ virt-xml-validate          validate libvirt XML files against a schema
 
 ## Cockpit 
 
-![](/img/kvm/kvm-cockpit-logo.jpg)
+![](../../static/img/kvm/kvm-cockpit-logo.jpg)
 
 **Cockpit est projet sponsorisé par RedHat.**
 
@@ -145,7 +142,7 @@ De la sorte, toutes les opérations menées via Cockpit sont visualisables dans 
 ## Proxmox
 
 
-![](/img/kvm/kvm-proxmox-logo.png)
+![](../../static/img/kvm/kvm-proxmox-logo.png)
 
 
 **La plateforme de gestion de virtualisation open-source Proxmox Virtual Environment est éditée par la société Proxmox Server Solutions GmbH fondée en 2005.** 
@@ -180,7 +177,7 @@ Le fonctionnement natif en cluster simplifie la prise en charge de services dist
 
 ## OpenStack 
 
-![](/img/kvm/kvm-openstack-logo.jpg)
+![](../../static/img/kvm/kvm-openstack-logo.jpg)
 
 **OpenStack est un ensemble de logiciels open source permettant de déployer des infrastructures de cloud computing (infrastructure en tant que service).** 
 
@@ -192,7 +189,7 @@ L'ambition d'OpenStack est de fournir un ensemble de services en Private Cloud, 
 
 ---
 
-![](/img/kvm/kvm-openstack-map.png)
+![](../../static/img/kvm/kvm-openstack-map.png)
 
 **OpenStack possède une architecture modulaire composée de plusieurs projets corrélés (Nova, Swift, Glance...) qui permettent de contrôler les différentes ressources des machines virtuelles telles que la puissance de calcul, le stockage ou encore le réseau inhérent au centre de données sollicité.**
 

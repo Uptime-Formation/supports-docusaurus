@@ -1,4 +1,15 @@
-# TP Migration Offline 
+# TP: Migration Offline 
+
+## Objectifs pédagogiques
+
+**Pratiques**
+
+- Opérer des instances KVM via ses IHM
+  - Démarrer un nouvel OS invité (VM)
+
+**Stratégiques**
+
+- Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
 
 ## Prérequis 
 

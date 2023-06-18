@@ -1,4 +1,4 @@
-# TP: Cockpit
+# TP: IHM Cockpit
 
 ---
 
@@ -9,7 +9,7 @@
 
 ## Cockpit
 
-![](/img/kvm/kvm-cockpit.png)
+![](../../static/img/kvm/kvm-cockpit.png)
 
 **Cockpit est un outil d'administration de serveur parrainé par Red Hat, axé sur la fourniture d'une interface moderne et conviviale pour gérer et administrer des serveurs.** 
 

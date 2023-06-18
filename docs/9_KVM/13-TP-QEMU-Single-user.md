@@ -1,6 +1,14 @@
 # TP: QEMU Single user 
 
-## Objectifs Pédagogiques 
+
+
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les spécificités de la virtualisation KVM
+- Connaître les IHM permettant de piloter KVM
+
 
 **Apprendre à utiliser QEMU pour lancer un processus basé sur une autre architecture.**
 
@@ -74,7 +82,7 @@ $ sudo apt install libc6:armhf
 
 ## Test de l'environnement d'émulation
 
-Nous utiliserons le paquet "hello" ARM Debian pour tester le nouvel environnement.
+**Nous utiliserons le paquet "hello" ARM Debian pour tester le nouvel environnement.**
 
 Installez le paquet hello et lancez-le.
 
@@ -92,15 +100,17 @@ $ hello
 
 ## Confirmer l'utilisation de QEMU
 
-Nous allons utiliser l'utilitaire strace pour afficher les appels systèmes effectués par la commande.
+**Nous allons utiliser l'utilitaire strace pour afficher les appels systèmes effectués par la commande.**
+
+Identifier quels appels systèmes et quelles données affichées indiquent l'usage de `binfmt`.
 
 ``` 
 
 $ sudo apt install strace
 $ strace hello
-# Il devrait afficher "Bonjour, le monde !".
 
 ``` 
+
 
 --- 
 

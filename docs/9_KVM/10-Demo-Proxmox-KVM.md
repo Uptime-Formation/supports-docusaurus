@@ -1,8 +1,16 @@
 # Demo: Proxmox  
 
+## Objectifs pédagogiques
+
+**Théoriques**
+
+- Connaître les spécificités de la virtualisation KVM
+- Connaître les IHM permettant de piloter KVM
+
+
 ## Proxmox 
 
-![](/img/kvm/kvm-proxmox-logo.png)
+![](../../static/img/kvm/kvm-proxmox-logo.png)
 
 **Proxmox Virtual Environnement est une solution de virtualisation libre (licence AGPLv3) basée sur l'hyperviseur Linux KVM, et offre aussi une solution de conteneurs avec LXC.**
 
@@ -25,7 +33,7 @@ Documentation :
 - Choisir une image 
 - Choisir les paramètres de virtualisation  
 - Démarrer l'instance KVM  
-- Installer le système à partir de l'image de base  
+- Lancer le système à partir d'un disque (boot ISO ou import)  
 - S'y connecter en SSH
 - Configurer un service sur l'instance
 - Valider que le service fonctionne
