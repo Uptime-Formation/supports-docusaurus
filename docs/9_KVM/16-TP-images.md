@@ -140,5 +140,16 @@ $ virt-install \
 # Ou kill le PID ex: killall -9 virsh
 $ virsh console debian12
 
+
+```
+
+## Modification a posteriori de l'image 
+
+**On peut faire d'autres modifications dans l'image a posteriori**
+
+```shell
+
+$ virt-customize -a /var/lib/libvirt/images/centosstream-8.qcow2 --root-password password:foobar
+
 ```
 

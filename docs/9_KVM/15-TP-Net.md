@@ -11,7 +11,10 @@
 **Stratégiques**
 
 - Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
+
 ## Réseau par défaut
+
+**Un réseau est crée par défaut lorsque vous installez QEMU**
 
 ```shell
 $ apt install qemu qemu-kvm libvirt-clients libvirt-daemon-system virtinst bridge-utils virt-manager
@@ -35,6 +38,8 @@ $ cat /etc/libvirt/qemu/networks/default.xml
 
 ## Création du réseau : fichier de configuration
 
+**On va créer un autre réseau qui prendra en charge le routage directement.**
+
 ```shell
 cat <<EOF > routed225.xml
 <network>
@@ -56,6 +61,8 @@ EOF
 
 ## Création du réseau
 
+**Avec virsh on va charger ce nouveau réseau.**
+
 ```shell
 
 $ virsh net-define routed225.xml
@@ -64,11 +71,33 @@ $ virsh net-autostart routed225
 
 ```
 
----
+--- 
 
-## 
+## Des règles iptables ont été crées 
 
 ```shell
+
+
+$ iptable-save
+
+```
+## S'assurer que l'hote est OK pour forwarder les paquets
+
+```shell
+
+$ cat  /proc/sys/net/ipv4/ip_forward 
+$ sudo sysctl -w net.ipv4.ip_forward=1
+$ iptables -P FORWARD ACCEPT
+
+```
+
+---
+
+## Démarrer une machine dans ce réseau
+
+```shell
+
+$ virt-builder centos-8.0 -o /var/lib/libvirt/images/centosstream-8.qcow2
 
 $ virt-install \
     --name centos \
@@ -83,10 +112,23 @@ $ virt-install \
 ```
 ---
 
-## 
+## En cas de problèmes...
+
+**On peut utiliser différentes solutions pour débugger le réseau.**
+
 
 ```shell
 
-$ iptables -t nat -A POSTROUTING -j MASQUERADE
+# S'assurer que les règles de NAT MASQUERADE sont OK
+$ iptables-save
+$ iptables -t nat -s 192.168.225.0/25 ! -o 192.168.225.0/25 -A POSTROUTING -j MASQUERADE
+
+# Utiliser tcpdump 
+$ apt install tcpdump
+$ tcpdump -i any host 1.1.1.1
+root@guest: ping 1.1.1.1
+
 
 ```
+
+---

@@ -102,8 +102,12 @@ Ces informations sont en particulier :
 **Clique sur le bouton de création d'une nouvelle machine.** 
 
 * Donner un nom à la machine ex: guest1
-* Choisir une mise à disposition via une URL
-  * http://ftp.debian.org/debian/dists/buster/main/installer-amd64/current/images/cdrom/
+* Choisir une mise à disposition 
+  * via une ISO
+  * OU via une URL
+    * **Debian** https://deb.debian.org/debian/dists/stable/main/installer-amd64/
+    * **Suse** https://download.opensuse.org/pub/opensuse/distribution/leap/42.3/repo/oss/
+* Choisir le type de distribution adapté
 * Choisir les options par défaut
 * Lancer la création de la machine : une nouvelle fenêtre apparaît
 

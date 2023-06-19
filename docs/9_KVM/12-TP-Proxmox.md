@@ -122,7 +122,7 @@ $ apk add openssh
 - Ajouter du réseau via la ligne de commande 
 ```shell
 $ ip a add  10.10.10.10${numéro de machine}/24 dev eth0
-$ ip r set default via 10.10.10.1
+$ ip r add default via 10.10.10.1
 ```
 - OU Ajouter du réseau via le système de fichiers
 ```shell
@@ -137,6 +137,11 @@ iface eth0 inet static
 EOF
 $ ifup eth0
 $ ping 1.1.1.1
+```
+
+- Ajouter un resolver DNS
+`````shell
+
 $ echo "nameserver 10.10.10.1" > /etc/resolv.conf
 $ getent ahosts google.com
 ```
@@ -150,8 +155,7 @@ $ getent ahosts google.com
 
 ```shell
 
-# ex: stagiaire@nicolasp.kvm.rackform.eu -p 20102
-$ ssh stagiaire@<USER>.<DOMAIN_FORMATION> -p 20<ID>
+$ ssh <user@><PROXMOX> -p 22<ID>
 
 
 ```
@@ -173,7 +177,6 @@ $ apt install cockpit
 ```shell
 $ setup-apkrepos
 $ apk add nginx 
-$ vi /etc/nginx/nginx.conf
 # Changer le numéro de port 80 en 9090
 $ vi /etc/nginx/http.d/default.conf
 $ echo "auto lo" > /etc/network/interfaces
@@ -187,7 +190,7 @@ Problème : Comment joindre le service depuis l'extérieur ?
 
 ```shell
 
-$ curl http://<USER>.<DOMAIN_FORMATION>:90{id}
+$ curl http://<USER>.<DOMAIN_FORMATION>:9{id}
 
 ```
 ---

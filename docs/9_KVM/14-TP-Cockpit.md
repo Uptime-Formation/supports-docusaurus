@@ -34,11 +34,11 @@ $ apt install -y cockpit cockpit-machines pwgen
 
 ```shell
 
-> https://<ip machine>:XXX
+> https://<nom de domaine de votre machine>:9090
 
 ```
 
-Utilisez votre compte utilisateur stagiaire:devopsXXX
+**Utilisez votre compte utilisateur stagiaire:devopsXXX**
 
 Quels sont vos droits ? 
 
