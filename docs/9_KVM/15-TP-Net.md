@@ -44,7 +44,7 @@ $ cat /etc/libvirt/qemu/networks/default.xml
 cat <<EOF > routed225.xml
 <network>
   <name>routed225</name>
-  <forward mode='route' dev='br0'/>
+  <forward mode='route' dev='{INTERFACE:ens2?}'/>
   <bridge name='virbr225' stp='on' delay='2'/>
   <ip address='192.168.225.1' netmask='255.255.255.0'>
     <dhcp>
@@ -121,7 +121,7 @@ $ virt-install \
 
 # S'assurer que les règles de NAT MASQUERADE sont OK
 $ iptables-save
-$ iptables -t nat -s 192.168.225.0/25 ! -o 192.168.225.0/25 -A POSTROUTING -j MASQUERADE
+$ iptables -t nat -s 192.168.225.0/24 -A POSTROUTING -j MASQUERADE
 
 # Utiliser tcpdump 
 $ apt install tcpdump
