@@ -43,7 +43,7 @@ spec:
   destination:
     namespace: kube-prometheus-stack
     server: https://kubernetes.default.svc
-  project: tooling
+  project: default
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
