@@ -1,8 +1,9 @@
 ---
-title: "6 TP - Déployer Wordpress avec Helm"
+title: "TP - Déployer Wordpress avec Helm"
 draft: false
-sidebar_position: 14
+# sidebar_position: 14
 ---
+
 --- 
 ## Objectifs pédagogiques 
 - Utiliser Helm pour déployer son application
@@ -49,7 +50,7 @@ On peut écraser certains de ces paramètres dans un nouveau fichier par exemple
 - Visitez le code des charts de votre choix en clonant le répertoire Git des Charts officielles Bitnami et en l'explorant avec VSCode :
 
 ```bash
-git clone https://github.com/bitnami/charts/
+git clone https://github.com/bitnami/charts/ --depth 1
 code charts
 ```
 
@@ -76,7 +77,7 @@ service:
 
 ingress:
   enabled: true
-  hostname: wordpress.<stagiaire>.k8s.dopl.uk # replace with your hostname pointing on the cluster ingress loadbalancer IP
+  hostname: wordpress.<stagiaire>.<labdomain> # replace with your hostname pointing on the cluster ingress loadbalancer IP
   tls: true
   certManager: true
   annotations:
@@ -87,74 +88,3 @@ ingress:
 - En utilisant ces paramètres, plutôt que d'installer le chart, nous allons faire le rendu (templating) des fichiers ressource générés par le chart: `helm template wordpress-tp bitnami/wordpress --values=values.yaml > wordpress-tp-manifests.yaml`.
 
 On peut maintenant lire dans ce fichier les objets kubernetes déployés par le chart et ainsi apprendre de nouvelles techniques et syntaxes. En le parcourant on peut constater que la plupart des objets abordés pendant cette formation y sont présent plus certains autres.
-
-<!-- 
-## ArgoCD pour installer et visualiser en live les ressources de notre chart
-
-Argocd permet d'installer des applications qui peuvent être soit des dossiers de manifestes kubernetes simple, soit des dossiers contenant une `kustomization.yaml` soit des charts Helm. Une application Argocd peut être créée dans l'interface web ou être déclarée elle-même grâce à un fichier manifeste de type:
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-```
-
-Ce n'est pas une ressource de base mais bien une `CustomResourceDefinition` car ArgoCD est un opérateur d'applications. Nous allons créer un tel manifeste.
-
-- Ouvrez le fichier `wordpress-chart-argocd-app.yaml` et collez à l'intérieur:
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: wordpress
-  namespace: argocd
-spec:
-  destination:
-    namespace: default
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: wordpress
-    targetRevision: 11.0.5
-    helm:
-      values: |
-        wordpressUsername: elie
-        wordpressPassword: myunsecurepassword
-        wordpressBlogName: Kubernetes example blog
-
-        replicaCount: 1
-
-        service:
-          type: ClusterIP
-
-        ingress:
-          enabled: true
-          hostname: wordpress.elie.k8s.dopl.uk
-          pathType: Prefix
-          tls: true
-          certManager: true
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-            kubernetes.io/ingress.class: nginx
-```
-
-- Appliquez ce fichier avec `kubectl apply -f`.
-
-- Visitez la page `https://argocd.<votrelogin>.k8s.dopl.uk`.
-
-Une application wordpress est apparue
-
-- Visitez la, en particulier les `desired manifests` de quelques resources.
-- Synchronisez l'application pour installer le chart avec `Sync`.
-
-En une minute ou deux, l'application est installée et l'ingress avec son certificat devrait être généré.
-
-Vous pouvez visiter le blog à l'adresse: `https://wordpress.<votrelogin>.k8s.dopl.uk`
-
-### Solution
-
-Le dépôt Git contenant la correction de ce TP et des précédents est accessible avec cette commande : `git clone -b all_corrections https://github.com/Uptime-Formation/corrections_tp.git` -->
---- 
-## Objectifs pédagogiques 
-- Utiliser Helm pour déployer son application

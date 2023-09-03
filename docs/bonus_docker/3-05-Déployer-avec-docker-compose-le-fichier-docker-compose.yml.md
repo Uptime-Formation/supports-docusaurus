@@ -162,7 +162,14 @@ Les commandes suivantes sont couramment utilisées lorsque vous travaillez avec 
 - `rm` enlève les contenants à l'arrêt. N'oubliez pas d'utiliser l'argument `-v` pour supprimer tous les volumes gérés par Docker.
 
 
+<<<<<<<< HEAD:docs/bonus_docker/3-05-Déployer-avec-docker-compose-le-fichier-docker-compose.yml.md
 ---
+========
+## Usage non synchrone de docker-compose
+
+On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. Exemple : https://docs.funkwhale.audio/installation/docker.html#start-funkwhale-service
+
+>>>>>>>> 20230106.kubernetes.supports.dopl.uk:docs/bonus_docker/4-docker-compose.md
 
 ## Visualisation des applications microservice complexes
 

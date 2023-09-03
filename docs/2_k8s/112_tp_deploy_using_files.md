@@ -1,7 +1,7 @@
 ---
 draft: false
-title: "4-1 TP - Déployer en utilisant des fichiers ressource et Lens"
-sidebar_position: 9
+title: "TP - Déployer en utilisant des fichiers ressource yaml"
+# sidebar_position: 9
 ---
 
 --- 
@@ -39,7 +39,11 @@ On visualisera le résultat dans `Lens`.
 
 Nous allons d'abord déployer notre application comme un simple **Pod** (non recommandé mais montré ici pour l'exercice).
 
----
+- Créez un fichier `demo-pod.yaml` avec à l'intérieur le code d'exemple du cours "Objets Fondamentaux" partie "Pods".
+- Appliquez le fichier avec `kubectl apply -f <fichier>`.
+- Constatez dans Lens dans la partie pods que les deux conteneurs du pod sont bien démarrés (deux petits carrés vert à droite de la ligne du pod)
+- Modifiez l'étiquette (`label`) du pod dans la description précédente et réappliquez la configuration. Kubernetes mets à jour le pod.
+- Modifier le nom du conteneur `rancher-demo` (et pas du pod) et réappliquez la configuration. Que se passe-t-il ?
 
 
 **Créez un fichier `demo-pod.yaml` avec à l'intérieur le code utilisé dans le cours précédent.**

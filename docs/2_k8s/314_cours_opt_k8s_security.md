@@ -1,7 +1,7 @@
 ---
-title: Cours - Problématiques de securité Kubernetes
+title: Cours optionnel - Problématiques de securité Kubernetes
 draft: false 
-weight: 2100
+# weight: 2100
 ---
 
 ## Modèles de menace et l'environnement dynamique Kubernetes
@@ -15,6 +15,31 @@ Notamment, la question de la taille du cluster et de ses usagers compte beaucoup
 Mais généralement et sans devenir paranoïaque il est important de réaliser à quel point un cluster Kubernetes est un environnement dynamique qui implique de nombreux vecteurs d'attaque potentiels : si un attaquant peut passer d'un conteneur à l'autre par des mouvement latéraux sur le réseau (ce qui est possible par défaut) du cluster il pourra plus facilement trouver un conteneur suffisament unsecure pour éventuellement prendre le contrôle du noeud ou du cluster, ce qui est dramatique à grande échelle.
 
 Face à ce type de menace l'idée de sécuriser simplement l'accès au cluster de l'extérieur n'est pas suffisant. Il faut considérer également la sécurité dynamique interne au cluster.
+
+## Quelques vecteurs d'attaque classiques
+
+Il existe plusieurs types classiques de vecteurs d'attaque qui peuvent être utilisés pour compromettre un cluster Kubernetes :
+
+- Misconfigured authentication and authorization - Si les mécanismes d'authentification et d'autorisation dans Kubernetes ne sont pas correctement configurés, un attaquant pourrait potentiellement accéder au cluster en exploitant des identifiants faibles ou compromis.
+
+- Vulnerable or malicious container images - Si une image de conteneur en cours d'exécution dans un cluster Kubernetes contient une vulnérabilité ou un code malveillant, un attaquant pourrait potentiellement l'utiliser pour prendre le contrôle de l'hôte ou du réseau sous-jacent.
+
+- Unsecured API server - Le serveur API Kubernetes est un composant critique du cluster, et s'il n'est pas correctement sécurisé, un attaquant pourrait potentiellement accéder à des informations sensibles ou même prendre le contrôle de l'ensemble du cluster.
+
+- Insecure network traffic - Si le trafic réseau entre les composants ou les nœuds Kubernetes n'est pas correctement chiffré ou authentifié, un attaquant pourrait potentiellement intercepter ou modifier le trafic pour accéder à des informations sensibles ou exécuter une attaque Man-in-the-Middle (MitM).
+
+- Excessive privileges - Si un utilisateur ou un compte de service dans Kubernetes dispose de privilèges excessifs ou est en mesure d'escalader ses privilèges, un attaquant pourrait potentiellement utiliser cet accès pour prendre le contrôle du cluster.
+
+- Malicious or misconfigured plugins - Si un plugin utilisé par Kubernetes pour le stockage, le réseau ou d'autres services est malveillant ou mal configuré, un attaquant pourrait potentiellement l'utiliser pour accéder au cluster ou exécuter du code malveillant.
+
+- Social engineering - Les attaquants peuvent tenter d'utiliser des tactiques d'ingénierie sociale, telles que le phishing ou le spear-phishing, pour accéder à des identifiants ou des informations sensibles qui peuvent être utilisés pour compromettre le cluster.
+
+Il est important d'être conscient de ces vecteurs d'attaque et de prendre des mesures pour les atténuer :
+
+- mise en place d'authentification et d'autorisation solides
+- utilisation d'images de conteneurs sécurisées
+- chiffrement du trafic réseau
+- configuration minutieuse des plugins et des privilèges. Des audits de sécurité réguliers et une surveillance peuvent également aider à identifier les vulnérabilités potentielles et à atténuer les risques avant qu'ils ne puissent être exploités par des attaquants.
 
 ## Sécuriser l'API avec le Role-Based Access Control (RBAC)
 
