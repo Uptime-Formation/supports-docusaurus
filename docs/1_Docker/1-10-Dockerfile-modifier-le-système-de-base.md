@@ -11,7 +11,7 @@ weight: 11
 
 ![](../assets/images/ops-images-dockerfile.svg)
 
-# Un dockerfile de test
+## Un dockerfile de test
 
 Éxécuter les commandes suivantes.
 ```shell
@@ -31,7 +31,7 @@ CMD ["sh", "-c", "echo Hello World"]
 
 ---
 
-## Instruction `WORKDIR`
+### Instruction `WORKDIR`
 
 ```dockerfile
 WORKDIR /path/to/workdir
@@ -44,7 +44,7 @@ L'instruction WORKDIR peut être utilisée plusieurs fois dans un Dockerfile. Si
 
 ---
 
-## Dockerfile in progress 1/5
+### Dockerfile in progress 1/5
 
 ```Dockerfile
 # notre image de base
@@ -59,7 +59,7 @@ CMD ["sh", "-c", "ls /srv"]
 ---
 
 
-## Instruction `RUN`
+### Instruction `RUN`
 
 
 ```dockerfile
@@ -71,7 +71,7 @@ RUN ["executable", "param1", "param2"] (exec form)
 L'image validée résultante sera utilisée pour l'étape suivante dans le Dockerfile.
 
 ---
-## Dockerfile in progress 2/5
+### Dockerfile in progress 2/5
 
 ```Dockerfile
 # our base image
@@ -85,7 +85,7 @@ RUN apt update && apt install -y python3
 CMD ["sh", "-c", "ls /srv"]
 ```
 ---
-## Instruction `COPY`
+### Instruction `COPY`
 
 ```dockerfile
 COPY [--chown=<user>:<group>] <src>... <dest>
@@ -95,7 +95,7 @@ COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 **Copie les nouveaux fichiers ou répertoires depuis src et les ajoute au système de fichiers du conteneur au chemin dest.**
 
 ---
-## Dockerfile in progress 3/5
+### Dockerfile in progress 3/5
 
 ```Dockerfile
 # our base image
@@ -117,7 +117,7 @@ CMD ["sh", "-c", "ls /srv"]
 La construction reprend depuis la dernière étape modifiée. Sinon, la construction utilise les layers précédents, qui avaient été mis en cache par le Docker Engine.
 
 ---
-## Instruction `ADD`
+### Instruction `ADD`
 
 ```dockerfile
 ADD [--chown=<user>:<group>] [--checksum=<checksum>] <src>... <dest>
@@ -127,7 +127,7 @@ ADD [--chown=<user>:<group>] [--checksum=<checksum>] <src>... <dest>
 Généralement utilisé pour ajouter le code du logiciel en cours de développement et sa configuration au conteneur.
 
 ---
-## Dockerfile in progress 4/5
+### Dockerfile in progress 4/5
 
 ```Dockerfile
 # our base image
@@ -146,7 +146,7 @@ CMD ["sh", "-c", "ls /srv"]
 ```
 ---
 
-## Instruction `USER`
+### Instruction `USER`
 
 ```dockerfile
 USER <user>[:<group>]
@@ -157,7 +157,7 @@ USER <UID>[:<GID>]
 L'utilisateur spécifié est utilisé pour les instructions RUN et, lors de l'exécution, exécute les commandes ENTRYPOINT et CMD appropriées.
 
 ---
-## Dockerfile in progress 5/5
+### Dockerfile in progress 5/5
 
 ```Dockerfile
 # our base image
@@ -185,7 +185,7 @@ CMD ["python3", "-m", "http.server", "8000"]
 
 ---
 
-# Dockerfile pour une application web flask
+## TP - Dockerfile pour une application web flask
 
 
 - Récupérez d’abord une application Flask exemple en la clonant :
@@ -243,6 +243,7 @@ COPY ./ /microblog
 ```
 
 ### Ne pas faire tourner l'app en root
+
 - Avec l'aide du [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/), faire en sorte que l'app `microblog` soit exécutée par un utilisateur appelé `microblog`.
 
 ```Dockerfile
@@ -264,7 +265,7 @@ Une fois dans le conteneur lancez:
 - Avec `ps aux`, le serveur est-il lancé ? 
 - Avec `docker run --rm -it microblog ` que se passe-t-il ?
 
-## Le dockerfile final
+## Correction: le dockerfile final
 
 ```dockerfile
 FROM python:3.9
