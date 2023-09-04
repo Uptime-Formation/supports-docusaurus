@@ -81,7 +81,7 @@ Q: Que se passerait-il si on ne donnait pas la 2e commande ?
 
 ### build = Dockerfile -> Image
 
-La commande duild est l'opération qui "prépare le plat", et le met dans un format "consommable".  
+La commande `build` est l'opération qui "prépare le plat", et le met dans un format "consommable".  
 
 La commande pour est :
 

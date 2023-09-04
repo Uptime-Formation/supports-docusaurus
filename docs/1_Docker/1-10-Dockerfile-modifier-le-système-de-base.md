@@ -47,13 +47,13 @@ L'instruction WORKDIR peut être utilisée plusieurs fois dans un Dockerfile. Si
 ## Dockerfile in progress 1/5
 
 ```Dockerfile
-# our base image
+# notre image de base
 FROM ubuntu
 
 WORKDIR /srv
 
-# run the application
-CMD ["sh", "-c", "echo Hello World"]
+# La commande par défaut lancée dans le conteneur
+CMD ["sh", "-c", "ls /srv"]
 ```
 
 ---
@@ -81,8 +81,8 @@ WORKDIR /srv
 
 RUN apt update && apt install -y python3  
 
-# run the application
-CMD ["sh", "-c", "echo Hello World"]
+# La commande par défaut lancée dans le conteneur
+CMD ["sh", "-c", "ls /srv"]
 ```
 ---
 ## Instruction `COPY`
@@ -105,10 +105,12 @@ WORKDIR /srv
 
 RUN apt update && apt install -y python3  
 
+# Cette commande copie index.html depuis le contexte de build dans /srv dans le conteneur
+# index.html doit exister dans votre dossier de projet
 COPY index.html /srv
 
-# run the application
-CMD ["sh", "-c", "echo Hello World"]
+# La commande par défaut lancée dans le conteneur
+CMD ["sh", "-c", "ls /srv"]
 ```
 **Après avoir ajouté ces instructions, lors du build, que remarque-t-on ?**
 
@@ -139,8 +141,8 @@ COPY index.html /srv
 
 ADD https://www.gnu.org/licenses/gpl-3.0.txt /srv/licence.txt
 
-# run the application
-CMD ["sh", "-c", "echo Hello World"]
+# La commande par défaut lancée dans le conteneur
+CMD ["sh", "-c", "ls /srv"]
 ```
 ---
 
@@ -169,12 +171,14 @@ COPY index.html /srv
 
 ADD https://www.gnu.org/licenses/gpl-3.0.txt /srv/licence.txt
 
+# creation de l'utilisateur car USER ne le cree pas pour nous
 RUN useradd -d /srv -ms /bin/bash app
 
+# changement d'utilisateur pour la suite des instructions Dockerfile (en particulier la CMD)
 USER app
 
-# run the application
-CMD ["sh", "-c", "echo Hello World"]
+# La commande par défaut lancée dans le conteneur
+CMD ["sh", "-c", "ls /srv"]
 ```
 
 ---
@@ -205,11 +209,18 @@ Avec Docker, les projets sont déjà isolés dans des conteneurs. Nous allons do
 - Une fois la construction terminée lancez le conteneur.
 - Le conteneur s’arrête immédiatement. En effet il ne contient aucune commande bloquante et nous n'avons précisé aucune commande au lancement.
 
-- Fournisser un nouveau contenu au Dockerfile
+:::tip Remarque
+
+On pourrait ici être tenté d'installer python et pip (installeur de dépendance python) comme suit:
+
 ```Dockerfile
 RUN apt-get update -y
 RUN apt-get install -y python3-pip
 ``` 
+Cette étape, qui aurait pu être nécessaire dans un autre contexte : en partant d'un linux vide comme `ubuntu` est ici inutile car l'image officielle python contient déjà ces éléments.
+:::
+
+
 
 - Reconstruisez votre image. Si tout se passe bien, poursuivez.
 

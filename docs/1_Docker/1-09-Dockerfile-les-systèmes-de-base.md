@@ -86,7 +86,7 @@ L'intérêt ensuite est que l'image est disponible préconfigurée pour construi
 
 C'est grâce à cette fonctionnalité que Docker peut être considéré comme un outil d'_infrastructure as code_.
 
-On peut également prendre une sorte de "capture" du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <image>` et `docker push`.
+On peut également prendre une sorte de "capture" du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <conteneur> <repo/image_name>:<tag/version>` et `docker push`.
 
 ---
 
