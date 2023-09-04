@@ -167,6 +167,8 @@ WORKDIR /srv
 
 RUN apt update && apt install -y python3  
 
+# Cette commande copie index.html depuis le contexte de build dans /srv dans le conteneur
+# index.html doit exister dans votre dossier de projet
 COPY index.html /srv
 
 ADD https://www.gnu.org/licenses/gpl-3.0.txt /srv/licence.txt
@@ -177,8 +179,8 @@ RUN useradd -d /srv -ms /bin/bash app
 # changement d'utilisateur pour la suite des instructions Dockerfile (en particulier la CMD)
 USER app
 
-# La commande par défaut lancée dans le conteneur
-CMD ["sh", "-c", "ls /srv"]
+# Mettons à jour la commande pour servir notre page index.html avec python httpserver
+CMD ["python3", "-m", "http.server", "8000"]
 ```
 
 ---
