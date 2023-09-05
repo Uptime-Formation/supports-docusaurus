@@ -1,5 +1,5 @@
 ---
-title: 2.01 Docker en pratique Les strates du système de fichier
+title: 2.03 Docker en pratique Les strates du système de fichier
 pre: "<b>2.01 </b>"
 weight: 14
 ---

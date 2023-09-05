@@ -1,5 +1,5 @@
 ---
-title: 2.03 Les images Docker Créer Lister Détruire
+title: 2.01 Les images Docker Créer Lister Détruire
 pre: "<b>2.03 </b>"
 weight: 16
 ---
@@ -8,6 +8,7 @@ weight: 16
   - Savoir identifier les images
   - Connaître les bonnes pratiques (Dockerfile, nettoyage, etc.)
   
+![](../assets/images/docker-cycle.jpg)
 ---
 
 ## Documentation 
