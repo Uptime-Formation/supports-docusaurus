@@ -35,10 +35,12 @@ Elle fonctionne comme un type de documentation entre la personne qui construit l
 
 **Pour publier réellement le port lors de l'exécution du conteneur, utilisez l'indicateur -p lors de l'exécution du docker pour publier et mapper un ou plusieurs ports, ou l'indicateur -P pour publier tous les ports exposés et les mapper aux ports de niveau supérieur.**
 
-On publie le port grâce à la syntaxe `-p port_de_l_hote:port_du_container`.
+On publie le port grâce à la syntaxe `-p [ip_interface:]port_de_l_hote:port_du_container`.
 
 ```shell
-$ docker run --rm -d --name "test_nginx" -p 8000:80 nginx
+$ docker run --rm -d --name "test_nginx" -p 8000:80 nginx # ouvre le port par défaut sur 0.0.0.0 toutes les interfaces
+$ # ou bien plus securisé
+$ docker run --rm -d --name "test_nginx" -p 127.0.0.1:8000: 80 nginx
 $ curl http://localhost:8000
 $ docker logs test_nginx
 ```

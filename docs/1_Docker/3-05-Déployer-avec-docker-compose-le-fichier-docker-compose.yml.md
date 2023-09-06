@@ -8,7 +8,7 @@ weight: 33
   - Comprendre le format de fichier YAML
   - Savoir identifier les directives principales du fichier docker-compose.yml
 
-# Docker Compose
+## Docker Compose
 
 **Nous avons pu constater que lancer plusieurs conteneurs liés avec leur mapping réseau et les volumes liés implique des commandes assez lourdes. Cela devient ingérable si l'on a beaucoup d'applications microservice avec des réseaux et des volumes spécifiques.**
 
@@ -19,6 +19,7 @@ Pour bien comprendre qu'il s'agit au départ uniquement de convertir des options
 Le code est sur https://github.com/docker/compose, docker-compose est un *fat binary* en go qui pèse seulement ~30 Mo.
 
 ---
+
 ## Le "langage" de Docker Compose
 
 Documentation 
@@ -31,7 +32,7 @@ il est aussi possible d'utiliser des variables d'environnement dans Docker Compo
 
 ---
 
-## Syntaxe
+### Syntaxe
 
 - Alignement ! (**2 espaces** !!)
 - ALIGNEMENT !! (comme en python)
@@ -52,9 +53,12 @@ titre: "Un exemple: on va avoir des soucis"
 
 ## Exemples de fichier Docker Compose
 
+Une belle source d'exemples +- officielle: https://github.com/docker/awesome-compose
+
 ### Sans build : un wordpress sur le port 80
 
 ```yaml
+version: 3.3
 services:
   wordpress:
     depends_on:
@@ -93,10 +97,11 @@ volumes:
 ```
 
 ### Avec build : un ruby on rails sur le port 80
+
 Un deuxième exemple :
 
-
 ```yml
+version: 3.3
 services:
   postgres:
     image: postgres:10
@@ -138,40 +143,56 @@ networks:
   back_end:
 ```
 
-
 ---
 
-## Le workflow de Docker Compose
+## Utiliser Docker compose
+
+### Les commandes
+
+:::tip
+
+Docker compose était un programme indépendant de Docker proposant un executable `docker-compose` à part. Depuis quelques temps cet outil a été intégré comme un plugin de la CLI Docker, le **Compose Plugin**.
+
+On écrit maintenant les commandes compose comme une sous commande de docker: `docker compose up`
+
+:::
 
 Les commandes suivantes sont couramment utilisées lorsque vous travaillez avec Compose. La plupart se passent d'explications et ont des équivalents Docker directs, mais il vaut la peine d'en être conscient·e :
 
-- `build` reconstruit toutes les images créées à partir de Dockerfiles. La commande up ne construira pas une image à moins qu'elle n'existe pas, donc utilisez cette commande à chaque fois que vous avez besoin de mettre à jour une image (quand vous avez édité un Dockerfile). On peut aussi faire `docker-compose up --build`
+- `build` reconstruit toutes les images créées à partir de Dockerfiles. La commande up ne construira pas une image à moins qu'elle n'existe pas, donc utilisez cette commande à chaque fois que vous avez besoin de mettre à jour une image (quand vous avez édité un Dockerfile). On peut aussi faire `docker compose up --build`
 
 - `up` démarre tous les conteneurs définis dans le fichier compose et agrège la sortie des logs. Normalement, vous voudrez utiliser l'argument `-d` pour exécuter Compose en arrière-plan.
 
 - `run` fait tourner un conteneur pour exécuter une commande unique. Cela aura aussi pour effet de faire tourner tout conteneur décrit dans `depends_on`, à moins que l'argument `--no-deps` ne soit donné.
 
 - `stop` arrête les conteneurs sans les enlever.
-
 - `ps` fournit des informations sur le statut des conteneurs gérés par Compose.
 
 - `logs` affiche les logs. De façon générale la sortie des logs est colorée et agrégée pour les conteneurs gérés par Compose.
 
-- `down` détruit tous les conteneurs définis dans le fichier Compose, ainsi que les réseaux 
+- `down` détruit tous les conteneurs définis dans le fichier Compose, ainsi que les réseaux. Pour détruire les volumes et ainsi réinitialisé toutes les données on peut ajouter l'option `-v`. 
 
-- `rm` enlève les contenants à l'arrêt. N'oubliez pas d'utiliser l'argument `-v` pour supprimer tous les volumes gérés par Docker.
+- `rm` supprime les conteneurs à l'arrêt. On peut aussi utiliser l'argument `-v` pour supprimer tous les volumes gérés par Docker.
+
+### Le workflow de développement Docker Compose
+
+Compose est un outil d'infrastructure as code declaratif : à chaque fois qu'on lance `docker compose up` seul les conteneurs ayant changé dans le code sont mis à jour en fonction de la description dans le `docker-compose.yml`
+
+workflow de base:
+
+- lire/ecrire le code du `docker-compose.yml`
+- facultatif: `docker compose build` si besoin pour reconstruire les images docker ayant changé
+- facultatif: exécuter les taches de préparation avec `docker compose up <db>` pour monter seulement certains conetenrus et `docker compose run <conteneur> <commande>` pour préparer par exemple une base de donnée. voir section usage non synchrone plus bas.
+- `docker compose up -d` va créer tous les conteneurs
+- `docker compose ps` et `docker compose logs` pour vérifier que tout se passe bien dans les conteneurs
+- `docker compose down` tout arrêter quand on a fini de développer avec `-v` en plus si il faut nettoyer les données.
 
 
-<<<<<<<< HEAD:docs/bonus_docker/3-05-Déployer-avec-docker-compose-le-fichier-docker-compose.yml.md
----
-========
-## Usage non synchrone de docker-compose
+### Usage non synchrone de docker-compose
 
 On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. Exemple : https://docs.funkwhale.audio/installation/docker.html#start-funkwhale-service
-
->>>>>>>> 20230106.kubernetes.supports.dopl.uk:docs/bonus_docker/4-docker-compose.md
-
-## Visualisation des applications microservice complexes
+d
+### Visualisation des applications microservice complexes
 
 Certaines applications microservice peuvent avoir potentiellement des dizaines de petits conteneurs spécialisés. 
 
@@ -182,6 +203,5 @@ Il est possible de visualiser l'architecture d'un fichier Docker Compose en util
 * https://github.com/pmsipilot/docker-compose-viz
 * `sudo apt-get install graphviz`
 * `docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image docker-compose.yml`
-
 
 Cet outil peut être utilisé dans un cadre d'intégration continue pour produire automatiquement la documentation pour une image en fonction du code.
