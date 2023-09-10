@@ -1,3 +1,16 @@
+---
+title: "Formation KVM"
+author: [Uptime Formation]
+date: "{%DATE%}"
+keywords: [KVM, Devops]
+titlepage: true
+titlepage-color: "66ccff"
+titlepage-text-color: "3366ff"
+titlepage-rule-color: "3366ff"
+titlepage-rule-height: 4
+book: true
+...
+
 # Introduction
 
 ![](../../static/img/kvm/kvm-logo.png)
