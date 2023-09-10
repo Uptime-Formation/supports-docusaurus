@@ -106,7 +106,7 @@ Masque      255.255.255.0
 
 **Pour Alpine**
 
-![](../../static/img/qwerty-keyboard.jpg)
+![](../assets/images/kvm/qwerty-keyboard.jpg)
 - Installer un clavier en français (clavier QWERTY par défaut)
 ```shell
 $ apk add --update kbd-bkeymaps

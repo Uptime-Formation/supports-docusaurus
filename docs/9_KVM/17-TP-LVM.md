@@ -12,7 +12,7 @@
 
 - Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
 
-![](../../static/img/kvm/kvm-lvm.png)
+![](../assets/images/kvm/kvm-lvm.png)
 
 ## LVM : Logical Volume Manager
 

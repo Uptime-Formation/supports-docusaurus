@@ -1,0 +1,11 @@
+
+To fix :
+
+- pour alpine il faut utiliser setup-alpine pour l'installation
+- pour glusterfs, la recette peut planter à la création du volume, débugger ça
+
+To create
+- monitoring
+- Revert proxy
+- images packer
+

@@ -7,7 +7,7 @@
 - Connaître les spécificités de la virtualisation KVM
 - Connaître les IHM permettant de piloter KVM
 
-![](../../static/img/kvm/kvm-qemu-tcg.png)
+![](../assets/images/kvm/kvm-qemu-tcg.png)
 
 ---
 
@@ -28,7 +28,7 @@ Lorsque QEMU émule directement les processeurs, il est capable d'exécuter des 
 
 ---
 
-![](../../static/img/kvm/qemu-modes-copyright-mk68k.info.png)
+![](../assets/images/kvm/qemu-modes-copyright-mk68k.info.png)
 
 **QEMU est également capable de fournir une virtualisation d'API d'espace utilisateur pour les interfaces de noyau Linux et BSD.**
 

@@ -28,7 +28,7 @@ On va identifier celles qui sont aujourd'hui parmi les plus pertinentes dans le 
 
 
 ## L’API libvirt
-![](../../static/img/kvm/kvm-libvirt.jpg)
+![](../assets/images/kvm/kvm-libvirt.jpg)
 
 **libvirt est une bibliothèque, une API, un daemon et des outils en logiciel libre de gestion de la virtualisation.**
 
@@ -112,7 +112,7 @@ virt-xml-validate          validate libvirt XML files against a schema
 
 ## Cockpit 
 
-![](../../static/img/kvm/kvm-cockpit-logo.jpg)
+![](../assets/images/kvm/kvm-cockpit-logo.jpg)
 
 **Cockpit est projet sponsorisé par RedHat.**
 
@@ -142,7 +142,7 @@ De la sorte, toutes les opérations menées via Cockpit sont visualisables dans 
 ## Proxmox
 
 
-![](../../static/img/kvm/kvm-proxmox-logo.png)
+![](../assets/images/kvm/kvm-proxmox-logo.png)
 
 
 **La plateforme de gestion de virtualisation open-source Proxmox Virtual Environment est éditée par la société Proxmox Server Solutions GmbH fondée en 2005.** 
@@ -177,7 +177,7 @@ Le fonctionnement natif en cluster simplifie la prise en charge de services dist
 
 ## OpenStack 
 
-![](../../static/img/kvm/kvm-openstack-logo.jpg)
+![](../assets/images/kvm/kvm-openstack-logo.jpg)
 
 **OpenStack est un ensemble de logiciels open source permettant de déployer des infrastructures de cloud computing (infrastructure en tant que service).** 
 
@@ -189,7 +189,7 @@ L'ambition d'OpenStack est de fournir un ensemble de services en Private Cloud, 
 
 ---
 
-![](../../static/img/kvm/kvm-openstack-map.png)
+![](../assets/images/kvm/kvm-openstack-map.png)
 
 **OpenStack possède une architecture modulaire composée de plusieurs projets corrélés (Nova, Swift, Glance...) qui permettent de contrôler les différentes ressources des machines virtuelles telles que la puissance de calcul, le stockage ou encore le réseau inhérent au centre de données sollicité.**
 

@@ -24,7 +24,7 @@ On compare souvent les conteneurs aux machines virtuelles.
 Mais ce sont de grosses simplifications parce qu'on en a un usage similaire : isoler des process.
 
 
-![](../../static../../static/img/vm_vs_containers.png)
+![](../assets/images/kvm/vm_vs_containers.png)
 
 - **VM** : une abstraction complète pour simuler des machines
 

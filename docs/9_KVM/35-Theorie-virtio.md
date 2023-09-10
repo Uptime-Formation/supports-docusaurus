@@ -1,3 +1,4 @@
+# Théorie: virtio
 
 ## Objectifs pédagogiques
 
@@ -10,7 +11,7 @@
 - Savoir choisir KVM comme outil d'architecture en fonction de critères rationnels.
 
 
-![](../../static/img/kvm/kvm-virtio.png)
+![](../assets/images/kvm/kvm-virtio.png)
 
 
 hvm 
@@ -31,7 +32,7 @@ En un mot, virtio est une couche d'abstraction sur les appareils dans un hypervi
 
 ## Virtualisation complète vs paravirtualisation
 
-![](../../static/img/kvm/kvm-paravirtualization.gif)
+![](../assets/images/kvm/kvm-paravirtualization.gif)
 
 Commençons par une présentation rapide de deux types distincts de schémas de virtualisation : la virtualisation complète et la paravirtualisation. 
 
@@ -115,12 +116,12 @@ L'API virtio s'appuie sur une simple abstraction de tampon pour encapsuler les b
 ---
 
 ## Architecture des drivers virtio
-![](../../static/img/kvm/kvm-virtio-architecture.gif)
+![](../assets/images/kvm/kvm-virtio-architecture.gif)
 
 
 ---
 ## Scheduling dans virtio
-![](../../static/img/kvm/kvm-virtio-scheduling.png)
+![](../assets/images/kvm/kvm-virtio-scheduling.png)
 
 ---
 
