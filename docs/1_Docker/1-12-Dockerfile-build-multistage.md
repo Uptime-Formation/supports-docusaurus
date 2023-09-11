@@ -3,12 +3,11 @@ title: "1.12 Dockerfile : build multistage"
 pre: "<b>1.12 </b>"
 weight: 13
 ---
+
 ## Objectifs pédagogiques
   - Savoir compiler un binaire dans un builder
   - Savoir utiliser les commandes COPY ... FROM ...
 
-
----
 
 # Optimiser la création d'images : la suite 
 
@@ -28,7 +27,6 @@ C'est pouquoi dans le build on commence par lancer une mise à jour (ex: apt upd
 
 On aura généralement besoin de l'exécutable produit.
 
----
 
 ## Les multi-stage builds
 
@@ -36,14 +34,12 @@ On aura généralement besoin de l'exécutable produit.
 
 Par ailleurs, il existe une limite du nombre de couches maximum par image (42 layers). Souvent on enchaînait les commandes en une seule pour économiser des couches (souvent, les commandes `RUN` et `ADD`), en y perdant en lisibilité.
   
----
 
 **Maintenant on peut utiliser les multistage builds.**
 
 Avec les multi-stage builds, on peut utiliser plusieurs instructions `FROM` dans un Dockerfile. Chaque instruction `FROM` utilise une base différente.
 On sélectionne ensuite les fichiers intéressants (des fichiers compilés par exemple) en les copiant d'un stage à un autre.
   
----
 
 **Exemple de `Dockerfile` utilisant un multi-stage build**  
 
@@ -61,9 +57,9 @@ COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
 CMD ["./app"]
 ```
 
----
 
-## _Facultatif :_ Un multi-stage build avec distroless comme image de base de prod
+
+## TP avancé : Un multi-stage build avec distroless comme image de base de prod
 
 Chercher la documentation sur les images distroless. 
 Quel est l'intérêt ? Quels sont les cas d'usage ? 
@@ -86,17 +82,6 @@ La doc:
 
  On peut alors constater que pour une application nodejs, même le minimum du minimum dans une image c'est déjà un joyeux bordel difficile à auditer: (confs linux + locales + ssl + autre + votre node_modules avec plein de lib + votre app)
 
----
+## TP: Essayer les builds multistage parallélisés
 
-##  _Facultatif_ : construire une image "à la main"
-
-Avec `docker commit`, trouvons comment ajouter une couche à une image existante.
-La commande `docker diff` peut aussi être utile.
-
-
-```shell
-docker run --name debian-updated -d debian apt-get update
-docker diff debian-updated 
-docker commit debian-updated debian:updated
-docker image history debian:updated 
-```
+- Tutoriel : https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/

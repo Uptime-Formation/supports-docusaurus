@@ -5,6 +5,7 @@ weight: 32
 ---
 
 ## Objectifs pédagogiques
+
   - Comprendre les enjeux qui mènent à de l'orchestration de conteneurs
   - Connaître les différentes solutions actuelles
   
@@ -24,9 +25,12 @@ Ses performances à l'échelle sont inégalées, jusqu'à 5 000 noeuds et 300 00
 
 Docker swarm est la solution de Docker pour exécuter Docker sur plusieurs hôtes.
 
-La solution n'a jamais vraiment décollé car elle n'a jamis résolu les problèmes complexes et d'échelle de la production.
+La solution n'a jamais vraiment décollé car elle n'a pas résolu résolu les problèmes complexes et d'échelle de la production : 
 
-Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour l'avenir.
+Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour l'avenir: https://github.com/BretFisher/ama/discussions/189
+
+En gros, le principal problème d'utiliser Swarm aujourd'hui est l'effondrement de son écosystème de plugins maintenus. Par exemple il n'y a plus vraiment de solution de volume réseau.
+
 
 ## Hashicorp Nomad
 
@@ -59,7 +63,6 @@ Face au succès grandissant de Kubernetes, Amazon Kubernetes Service est apparu,
 Google Cloud et Azure fournissent également des solutions qui visent à réduire la dépendance technique.
 
 Ils fournissent également les services managés (Bases de données, stockage, réseau) permettant de gérer ses services externes dans un seul lieu.
-
 
 # Openshift
 

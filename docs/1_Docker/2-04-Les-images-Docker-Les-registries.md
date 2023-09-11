@@ -18,11 +18,12 @@ On peut installer des **registries privés**.
 
 On utilise alors `docker login <adresse_repo>` pour se logger au registry et le nom du registry dans les `tags` de l'image.
 
-Exemples de registries privés  :
+Exemples de registries privés en Saas  :
   - **Docker Hub** fournit un service payant, comme Azure, Google, etc.
-  - **gcr.io : Google Registry**
-  - **quay.io : RedHat Registry**
+  - **gcr.io : Google Registry** : Le service d'images
+  - **quay.io : RedHat Registry** : Propose des scans de sécurité de série pour toutes les images open sources poussées.
   - **Gitlab** fournit un registry très intéressant car intégré dans leur workflow DevOps.
+  - **Github** idem.
 
 On premise:
   - **Docker Registry** correctement configuré est une solution pour les besoins simples. 
@@ -32,7 +33,7 @@ On premise:
 ---
 
 
-## Installer un Registry privé
+## TP - installer un Registry privé de base
 
 Utiliser la commande search pour chercher dans le dockerhub des images.
 
@@ -86,8 +87,6 @@ Extrayez l'image localhost:5000/my-ubuntu de votre registre local.
 $ docker pull localhost:5000/my-ubuntu
 ```
 
----
-
 ## _Facultatif :_  push sur le Docker Hub
 
 Cette manipulation requiert la création d'un compte sur [le Docker Hub](https://hub.docker.com/).
@@ -100,3 +99,10 @@ docker tag microblog:latest <your-docker-registry-account>/microblog:latest
 docker push <your-docker-registry-account>/microblog:latest
 ```
 
+## TP Avancé - pousser notre image sur Quay.io pour bénéficier du scan de securité
+
+- Créez un compte sur Quay
+- suivez les instruction de login
+- Poussez votre image sur le registry pour lire les CVE (identifiants et descriptifs de failles connues)
+
+ https://developers.redhat.com/blog/2019/06/26/using-quay-io-to-find-vulnerabilities-in-your-container-images

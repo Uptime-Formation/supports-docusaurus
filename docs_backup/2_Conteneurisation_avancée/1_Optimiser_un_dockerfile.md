@@ -20,11 +20,11 @@ Cependant, les économies de temps réelles ne proviennent pas vraiment d'une CI
 
 Comment maintenez-vous la taille de votre image petite ?
 
-    N'installez que les dépendances nécessaires à votre application et rien de plus.
-    Utilisez une image de base légère. Ne choisissez pas Ubuntu comme image de base lorsque vous pouvez utiliser Alpine Linux, par exemple, qui est plus petite.
-    Chaque layer que vous ajoutez augmente la taille de votre image. Essayez d'utiliser le moins de layers possible.
-    N'installez pas de dépendances seulement pour les supprimer ensuite.
-    Si vous devez installer des fichiers, utilisez les plus petits quand c'est possible.
+- N'installez que les dépendances nécessaires à votre application et rien de plus.
+- Utilisez une image de base légère. Ne choisissez pas Ubuntu comme image de base lorsque vous pouvez utiliser Alpine Linux, par exemple, qui est plus petite.
+- Chaque layer que vous ajoutez augmente la taille de votre image. Essayez d'utiliser le moins de layers possible.
+- N'installez pas de dépendances seulement pour les supprimer ensuite.
+- Si vous devez installer des fichiers, utilisez les plus petits quand c'est possible.
 
 # Lisibilité : organisez les Instructions Multi-lignes
 
@@ -56,9 +56,7 @@ RUN apt-get update && apt-get install -y \
    libsqlite4-dev
 ```
 
-
 Les deux instructions Docker incluent des dépendances inutiles : cowsay. 
-
 
 # Identifiez les Layers Mémorisables et Combinez-les
 
@@ -101,7 +99,7 @@ WORKDIR /app
 ....
 ```
 
-## Analysez Votre Image
+## Analysez Votre Image pour la sécurité
 
 Les applications empaquetées dans des conteneurs ne sont pas immunisées contre les vulnérabilités de sécurité. Votre application sera rarement composée uniquement du code que vous avez écrit vous-même. Elle aura des dépendances et des bibliothèques écrites par d'autres personnes. Plus vous avez de dépendances, plus la surface d'attaque est large. Vous ne saurez peut-être jamais à quel point votre image Docker est vulnérable à moins de les scanner. Docker utilise le moteur Snyk pour fournir des services de balayage des vulnérabilités que vous pouvez utiliser avec la commande "docker scan" comme suit :
 
@@ -144,49 +142,7 @@ COPY ... # copier votre code source, qui change le plus, dans la layer supérieu
 
 ## Les Builds multistage
 
-Un build multistage est une méthode d'organisation de vos instructions Docker de manière à ce que l'image finale soit aussi petite que possible et ne contienne que ce dont vous avez besoin. Les applications ont souvent des dépendances qui ne sont pas nécessaires pendant l'exécution de l'application. Ces dépendances peuvent inclure la bibliothèque que vous utilisez pour lint le code, le compilateur, les factices et les frameworks de test. Ces dépendances sont appelées dépendances de développement, et vous devriez les éviter dans votre build de production. Dans le passé, les gens contournaient souvent le problème d'inclure des dépendances de développement dans un build de production en ayant des Dockerfiles distincts pour le build de test et le build de production. Mais cela entraîne une duplication de code et la complexité de la gestion de plusieurs Dockerfiles qui ne diffèrent que légèrement. C'est là que le build multistage aide. Vous pouvez avoir des instructions pour plusieurs images tout en copiant uniquement les layers nécessaires d'une image à l'autre.
 
-```Dockerfile
-
-# Étape de build commune
-
-FROM node:14.14.0-alpine3.12 as base
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
-EXPOSE 8000
-
-# Étape de build de production
-
-FROM node:14.14.0-alpine3.12 as production-build
-COPY package*.json ./
-RUN npm install --only=production
-
-COPY --from=0 /app/build/ ./build/
-
-ENV NODE_ENV production
-RUN npm ci --only=production
-
-CMD ["npm", "run", "start"]
-```
-
-## Les build multistage parallélisés de Buildkit
-
-- https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/
-
-## Utilisez l'Image Docker Officielle Comme Image de Base
-
-Docker Inc. sponsorise une équipe dédiée responsable de l'examen et de la publication de tout le contenu dans les référentiels Docker officiels. En général, les Dockerfiles de ces images sont bien écrits et suivent les meilleures pratiques. Docker Inc. s'assure également que les correctifs et les correctifs sont appliqués à ces images en temps opportun.
-
-Au lieu de dupliquer le travail en créant votre propre image de base, vous pouvez profiter du travail de maintenance en cours. Il y a des moments où vous devriez déroger à une image Docker officielle, par exemple lorsque vous avez besoin de créer une image optimisée pour votre cas d'utilisation. S'il n'y a aucune raison impérieuse d'utiliser des images Docker non officielles comme image de base, vous devriez toujours utiliser les images Docker officielles.
-
-# N'oubliez Pas les Instructions LABEL et EXPOSE
+## N'oubliez Pas les Instructions LABEL et EXPOSE
 
 Docker comprend également un ensemble d'instructions comme EXPOSE et LABEL qui faciliteront votre vie et celle des personnes travaillant avec vos images. Si votre conteneur expose un port, soyez explicite à ce sujet et précisez ce qu'il expose. Enfin, utilisez des étiquettes (labels) pour rendre vos images plus descriptives.

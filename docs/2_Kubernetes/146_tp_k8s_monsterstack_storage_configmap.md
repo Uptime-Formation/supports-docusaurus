@@ -4,10 +4,6 @@ title: "TP - Ajouter une persistance et une configMap à notre application"
 # sidebar_position: 12
 ---
 
---- 
-## Objectifs pédagogiques 
-- Utiliser la persistance des données 
----
 ## Persister les données de Redis
 
 Actuellement le Redis de notre application ne persiste aucune donnée. On peut par exemple constater que le compteur de visite de la page est réinitialisé à chaque réinstallation.

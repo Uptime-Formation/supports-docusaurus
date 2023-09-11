@@ -9,7 +9,6 @@ weight: 10
   - Savoir trouver et choisir les systèmes de base
   - Savoir utiliser les commandes FROM ... AS ...
 
----
 
 ## Instruction `FROM`
 
@@ -23,7 +22,6 @@ Le Dockerhub fournit une liste des images de base "officielles" :
 
 > https://hub.docker.com/search?q=&type=image&image_filter=official
 
----
 
 **Il y a généralement 2 chemins que l'on peut suivre.**
 
@@ -31,7 +29,6 @@ Le Dockerhub fournit une liste des images de base "officielles" :
   * Debian-based (Debian, Ubuntu, ...)
   * RHEL-based (CentOs, Rocky, ...)
   * Alpine
----
 
 2. Soit on veut déployer une solution standard, et dans ce cas on utilise une image dédiés:
   * langage (python, nodejs, ...)
@@ -41,8 +38,6 @@ Le Dockerhub fournit une liste des images de base "officielles" :
   * services (prometheus, registry, ...)
   * autres (busybox, hello-world, ...)
 
-
----
 
 ## Optimiser la création d'images
 
@@ -58,9 +53,13 @@ De plus on télécharge souvent les images depuis un registry, ce qui consomme d
 
 > La principale **bonne pratique** dans la construction d'images est de **limiter leur taille (mais pas forcément au détriment de tout)**.
 
----
+## Plus avancé - Optimiser pour la CI/CD
 
-## Limiter la taille d'une image
+Alors qu'une image Docker de 1 Go en développement local est insignifiante en termes de consommation d'espace, les inconvénients deviennent apparents dans les pipelines CI/CD, où vous pourriez avoir besoin de récupérer une image spécifique plusieurs fois pour exécuter des tâches. Alors que la bande passante et l'espace disque sont bon marché, le temps ne l'est pas. Chaque minute supplémentaire ajoutée au temps de CI s'accumule pour devenir conséquente.
+
+Par exemple, chaque minute ou deux de temps de construction supplémentaire qui peut être optimisée pourrait s'ajouter au fil du temps pour représenter des heures de temps perdues chaque année
+
+## Comment limiter la taille d'une image
 
 Choisir une image Linux de base **minimale**:
 
@@ -71,34 +70,35 @@ mais une image trop rudimentaire (`busybox`) est difficile à débugger et peu b
 Par exemple `python3` est fourni en version `python:alpine` (99 Mo), `python:3-slim` (179 Mo) et `python:latest` (918 Mo).
 
 
-## Plus avancé : bien choisir son image de base
+## Créer des conteneurs personnalisés
 
-Beaucoup de personnes utilisent des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`). Mais ce choix a aussi ses inconvénients:
-- https://pythonspeed.com/articles/alpine-docker-python/
-
-Les images basées sur `debian-slim` et redhat `ubi-micro` sont a peine plus lourde et probablement plus solide/sécurisées et polyvalentes.
-
-Pour s'y retrouver on peut se référer à ce comparatif assez complet (bien que pro-redhat) : https://crunchtools.com/comparison-linux-container-images/
-
----
-
-# Créer des conteneurs personnalisés
-
-Il n'est pas nécessaire de partir d'une image Linux vierge pour construire un conteneur.
-
-On peut utiliser la directive `FROM` avec n'importe quelle image.
+Il n'est pas nécessaire de partir d'une image Linux vierge pour construire un conteneur. On peut utiliser la directive `FROM` avec n'importe quelle image.
 
 De nombreuses applications peuvent être configurées en étendant une image officielle
 _Exemple : une image Wordpress déjà adaptée à des besoins spécifiques._
 
 L'intérêt ensuite est que l'image est disponible préconfigurée pour construire ou mettre à jour une infrastructure, ou lancer plusieurs instances (plusieurs containers) à partir de cette image.
 
-C'est grâce à cette fonctionnalité que Docker peut être considéré comme un outil d'_infrastructure as code_.
+C'est aussi grâce à cette fonctionnalité que Docker peut être considéré comme un outil d'_infrastructure as code_.
 
 On peut également prendre une sorte de "capture" du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <conteneur> <repo/image_name>:<tag/version>` et `docker push`.
 
----
-
-### Une image plus simple
+### TP : Une image plus simple
 
 A l'aide de l'image `python:3.9-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
+
+## Avancé : bien choisir son image de base un choix complexe
+
+Beaucoup de personnes utilisent des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`). Mais ce choix a aussi ses inconvénients:
+- https://pythonspeed.com/articles/alpine-docker-python/
+
+Les images basées sur `debian-slim` et redhat `ubi-micro` sont a peine plus lourde et probablement plus solide/sécurisées et polyvalentes.
+
+A mentionner: les images de base distroless : un projet de Google des images linux Debian de base mais sans tout ce qui fait la distribution (notamment apt) => a utiliser pour injecter les elements prébuildé dans un build multistage.
+
+- avantage encore plus léger et moins de surface d'attaque
+- images plus difficiles à patcher pour des failles car on ne peut pas utiliser le travail de la distribution
+
+Pour s'y retrouver on peut se référer à ce comparatif assez complet (bien que pro-redhat) : https://crunchtools.com/comparison-linux-container-images/
+
+Pour entrer dans les détails d'une image on peut installer et utiliser https://github.com/wagoodman/dive. C'est souvent nécessaire quand on optimiser au maximum son image d'avoir conscience de tous les fichiers

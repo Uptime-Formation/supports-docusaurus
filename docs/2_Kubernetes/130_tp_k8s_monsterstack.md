@@ -4,30 +4,11 @@ draft: false
 # sidebar_position: 10
 ---
 
---- 
-## Objectifs pédagogiques 
-- Installer une application un peu complexe 
-- Utiliser un système de build avec Kubernetes
-
----
-
-## Contraintes du TP 
-
-- Accompagnement moyen
-- Durée attendue : de 60 à 120 minutes 
----
 ## Une application d'exemple en 3 parties
 
-Récupérez le projet de base en clonant la correction du TP2: 
+Récupérez le projet de base en clonant la correction du TP2: `git clone -b tp_monsterstack_base https://github.com/Uptime-Formation/corrections_tp.git tp3`
 
-```shell
-
-$ git clone -b tp_monsterstack_base https://github.com/Uptime-Formation/corrections_tp.git tp4-2
-
-```
-
-**Ce TP va consister à créer des objets Kubernetes pour déployer une application microservices (plutôt simple) : `monsterstack`.**
-
+Ce TP va consister à créer des objets Kubernetes pour déployer une application microservices (plutôt simple) : `monsterstack`.
 Elle est composée :
 
 - d'un frontend en Flask (Python),
@@ -36,23 +17,13 @@ Elle est composée :
 
 ## Etudions le code et testons avec `docker-compose`
 
-**Le frontend est une application web python (flask) qui propose un petit formulaire et lance une requete sur le backend pour chercher une image et l'afficher.**
+- Le frontend est une application web python (flask) qui propose un petit formulaire et lance une requete sur le backend pour chercher une image et l'afficher.
+- Il est construit à partir du `Dockerfile` présent dans le dossier `TP3`.
+- Le fichier `docker-compose.yml` est utile pour faire tourner les trois services de l'application dans docker rapidement (plus simple que kubernetes)
 
-Il est construit à partir du `Dockerfile` présent dans le dossier `TP3`.
-
-Le fichier `docker-compose.yml` est utile pour faire tourner les trois services de l'application dans docker rapidement (plus simple que kubernetes)
-
-**Pour lancer l'application il suffit d'exécuter:** 
-```shell
-
-$ docker-compose up
-
-```
+Pour lancer l'application il suffit d'exécuter: `docker-compose up`
 
 Passons maintenant à Kubernetes.
-
----
-
 
 ## Déploiements pour le backend d'image (`imagebackend`) et le datastore `redis`
 
@@ -69,8 +40,6 @@ En vous inspirant du TP précédent créez des `deployments` pour `imagebackend`
 `imagebackend.yaml` :
 
 ```yaml
-# file: imagebackend.yaml
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -97,18 +66,11 @@ spec:
           ports:
             - containerPort: 8080
               name: imagebackend
-
-# EOF
 ```
 
----
-
-
-Ensuite, configurons le deuxième deployment `redis.yaml`:
+- Ensuite, configurons le deuxième deployment `redis.yaml`:
 
 ```yaml
-# file: redis.yaml
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -135,12 +97,7 @@ spec:
           ports:
             - containerPort: 6379
               name: redis
-
-# EOF
 ```
-
----
-
 
 - Appliquez ces ressources avec `kubectl` et vérifiez dans `Lens` que les 5 + 1 réplicats sont bien lancés.
 
@@ -165,8 +122,6 @@ Pour accéder à l'image dans le cluster nous allons la poussez sur le registry 
 Ajoutez au fichier `frontend.yml` du dossier `k8s-deploy` le code suivant:
 
 ```yaml
-# file: frontend.yaml
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -192,8 +147,6 @@ spec:
           image: docker.io/<votreuserdockerhhubacompleter>/frontend:1.0
           ports:
             - containerPort: 5000
-
-# EOF
 ```
 
 - Appliquez ce fichier avec `kubectl` et vérifiez que le déploiement frontend est bien créé.
@@ -320,30 +273,29 @@ Voir la correction github à la fin de la page
 - Ajoutons des healthchecks au conteneur dans le pod avec la syntaxe suivante (le mot-clé `livenessProbe` doit être à la hauteur du `i` de `image:`) :
 
 ```yaml
-...
-    livenessProbe:
-      tcpSocket: # si le socket est ouvert c'est que l'application est démarrée
-        port: 5000
-      initialDelaySeconds: 5 # wait before firt probe
-      timeoutSeconds: 1 # timeout for the request
-      periodSeconds: 10 # probe every 10 sec
-      failureThreshold: 3 # fail maximum 3 times
-    readinessProbe:
-      httpGet:
-        path: /healthz # si l'application répond positivement sur sa route /healthz c'est qu'elle est prête pour le traffic
-        port: 5000
-        httpHeaders:
-          - name: Accept
-            value: application/json
-      initialDelaySeconds: 5
-      timeoutSeconds: 1
-      periodSeconds: 10
-      failureThreshold: 3
+livenessProbe:
+  tcpSocket: # si le socket est ouvert c'est que l'application est démarrée
+    port: 5000
+  initialDelaySeconds: 5 # wait before firt probe
+  timeoutSeconds: 1 # timeout for the request
+  periodSeconds: 10 # probe every 10 sec
+  failureThreshold: 3 # fail maximum 3 times
+readinessProbe:
+  httpGet:
+    path: /healthz # si l'application répond positivement sur sa route /healthz c'est qu'elle est prête pour le traffic
+    port: 5000
+    httpHeaders:
+      - name: Accept
+        value: application/json
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 10
+  failureThreshold: 3
 ```
 
 La **livenessProbe** est un test qui s'assure que l'application est bien en train de tourner. S'il n'est pas rempli le pod est automatiquement redémarré en attendant que le test fonctionne.
 
-Ainsi, Kubernetes sera capable de savoir si notre conteneur applicatif fonctionne bien, quand le redémarrer. C'est une bonne pratique pour que le `replicaset` Kubernetes sache quand redémarrer un pod et garantir que notre application se répare elle même (self-healing).
+Ainsi, k8s sera capable de savoir si notre conteneur applicatif fonctionne bien, quand le redémarrer. C'est une bonne pratique pour que le `replicaset` Kubernetes sache quand redémarrer un pod et garantir que notre application se répare elle même (self-healing).
 
 Cependant une application peut être en train de tourner mais indisponible pour cause de surcharge ou de mise à jour par exemple. Dans ce cas on voudrait que le pod ne soit pas détruit mais que le traffic évite l'instance indisponible pour être renvoyé vers un autre backend `ready`.
 
@@ -360,14 +312,13 @@ La **readinessProbe** est un test qui s'assure que l'application est prête à r
 - Ajoutons aussi des contraintes sur l'usage du CPU et de la RAM, en ajoutant à la même hauteur que `env:` :
 
 ```yaml
-    ...
-    resources:
-      requests:
-        cpu: "100m" # 10% de proc
-        memory: "50Mi"
-      limits:
-        cpu: "300m" # 30% de proc
-        memory: "200Mi"
+resources:
+  requests:
+    cpu: "100m" # 10% de proc
+    memory: "50Mi"
+  limits:
+    cpu: "300m" # 30% de proc
+    memory: "200Mi"
 ```
 
 Nos pods auront alors **la garantie** de disposer d'un dixième de CPU (100/1000) et de 50 mégaoctets de RAM. Ce type d'indications permet de remplir au maximum les ressources de notre cluster tout en garantissant qu'aucune application ne prend toute les ressources à cause d'un fuite mémoire etc.

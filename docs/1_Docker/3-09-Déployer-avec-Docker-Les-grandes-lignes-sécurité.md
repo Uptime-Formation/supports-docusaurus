@@ -108,7 +108,8 @@ Cela divise efficacement les privilèges root en unités plus petites et distinc
 
 * Un conteneur privilégié est _root_ sur la machine !
 * Toujours utiliser des user non root
-* Monter au maximum en read only (un fichier binaire pirate est visible au milieu d'images)
+<!-- * Monter au maximum en read only (un fichier binaire pirate est visible au milieu d'images) -->
+* Faire des scan de sécurité des images et cluster par exemple avec : https://github.com/aquasecurity/trivy
 
 --- 
 

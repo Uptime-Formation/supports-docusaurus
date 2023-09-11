@@ -8,9 +8,9 @@ weight: 28
   - comprendre les composants nécessaires pour un système de conteneurs
   - connaître les alternatives à Docker
 
-# *Docker is dead?* Temps pour l'anatomie
+# *Docker is dead?* Un petit temps pour l'anatomie
 
-On a vu que Docker a été normalisé par la Linux Foundation.
+Docker a été normalisé par la Linux Foundation.
 
 **C'est un moyen pour faire évoluer la technologie alors que l'entreprise Docker n'a pas trouvé de voie commerciale viable.**
 
@@ -34,6 +34,8 @@ La partie Container Runtimes a été normalisée comme on l'a vu.
  
 ## containerd : le runtime haut
 
+https://www.docker.com/blog/what-is-containerd-runtime/
+
 Le rôle de containerd est de fournir des éléments de haut niveau nécessaire à l'exécution des conteneurs. 
 
 * Prise en charge de la gestion des images, push et pull 
@@ -46,11 +48,13 @@ Sous la forme d'une API versionnée et stable qui aura des corrections de bogues
 
 ## runc : le runtime bas
 
-* Un format de configuration formellement spécifié, standardisé par l'Open Container Project sous les auspices de la Linux Foundation.
+https://www.docker.com/blog/runc/
+
+* Un format de configuration formellement spécifié, standardisé par l'Open Container Initiative sous les auspices de la Linux Foundation.
 * Prise en charge des espaces de noms (namespaces) Linux
 * Prise en charge des fonctionnalités de sécurité disponibles sous Linux : groupes de contrôle (cgroups), suppression de capacités (capabilities), Selinux, Apparmor, seccomp, pivot_root, suppression d'uid/gid, etc.
 * Prise en charge multi architectures y compris Arm, Sparc, et d'autres 
-* Profils de performances portables.
+<!-- * Profils de performances portables. -->
 
 **En somme un standard robuste et évolutif, depuis 2015.**
 
@@ -74,7 +78,7 @@ Ces moteurs vont du plus simple au plus complexe, selon le besoin des utilisateu
 * Super orchestrateurs 
   * Open Shift (RedHat) qui fournit une surcouche à Kubernetes
 
-**Le rôle de ces moteurs est de prendre en charge les entrées utilisateurs et de fournir un service final**
+**Le rôle de ces moteurs est de prendre en charge les entrées utilisateurs et de fournir un service final de gestion des conteneurs**
 
 On dispose ainsi d'une boîte à outils permettant de choisir des solutions adaptées aux besoins.
 
@@ -94,14 +98,18 @@ De la même manière l'idée est de normaliser le fonctionnement pour éviter le
 
 # Open Container Initiative (OCI)
 
-De nombreuses solutions ont émergé de cette spécification.
+De nombreuses solutions ont émergé de cette organisation.
+
+https://www.docker.com/blog/demystifying-open-container-initiative-oci-specifications/
+
+Les images OCI sont une spécification bien faite avec un manifeste standardisé et évolutif => Docker a fait converger le format des images Docker avec cette spécification.
 
 Des solutions simples :
 * runc
 * crun
 * runhcs (windows OCI compliant)
 
-Des solutions qui ajoutent de la sécurité en allant "vers les Machines Virtuelles"
+Grace au format d'image : des solutions qui ajoutent de la sécurité en allant "vers les Machines Virtuelles"
 * [firecracker-containerd](https://github.com/firecracker-microvm/firecracker-containerd) qui fournit des VMs légères 
 * [gvisor](https://github.com/google/gvisor) qui fournit un kernel léger
 
