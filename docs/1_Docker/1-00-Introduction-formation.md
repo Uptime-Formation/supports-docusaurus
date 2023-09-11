@@ -25,7 +25,6 @@ weight: 1
   - Répondre aux questions préalables et éventuelles réticences (normales)
   - Anticiper les problèmes de niveaux différents au sein du groupe / faire des paires
 
----
 
 # Infrastructure as Code
 
@@ -38,7 +37,6 @@ weight: 1
   - on peut faire des tests
   - on facilite le déploiement de nouvelles instances
 
----
 ## Le mouvement DevOps
 
 Le DevOps est avant tout le nom d'un mouvement de transformation professionnelle et technique de l'informatique.

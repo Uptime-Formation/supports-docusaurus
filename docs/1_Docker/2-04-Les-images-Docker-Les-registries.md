@@ -19,10 +19,15 @@ On peut installer des **registries privés**.
 On utilise alors `docker login <adresse_repo>` pour se logger au registry et le nom du registry dans les `tags` de l'image.
 
 Exemples de registries privés  :
-  - **Docker Registry** est une solution.  
-  - **Gitlab** fournit un registry très intéressant car intégré dans leur workflow DevOps.
   - **Docker Hub** fournit un service payant, comme Azure, Google, etc.
-  - **JFrog Artifactory**, **Quay**, **Harbor** sont des solutions libres complètes
+  - **gcr.io : Google Registry**
+  - **quay.io : RedHat Registry**
+  - **Gitlab** fournit un registry très intéressant car intégré dans leur workflow DevOps.
+
+On premise:
+  - **Docker Registry** correctement configuré est une solution pour les besoins simples. 
+  - **JFrog Artifactory** un registry d'artefact au dela des images de conteneurs
+  - **Harbor** un solutions libre et puissante du CNCF.
 
 ---
 

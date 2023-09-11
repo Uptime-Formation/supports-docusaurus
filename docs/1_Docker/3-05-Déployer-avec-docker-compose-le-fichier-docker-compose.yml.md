@@ -58,7 +58,7 @@ Une belle source d'exemples +- officielle: https://github.com/docker/awesome-com
 ### Sans build : un wordpress sur le port 80
 
 ```yaml
-version: 3.3
+version: '3.3'
 services:
   wordpress:
     depends_on:
@@ -101,7 +101,7 @@ volumes:
 Un deuxième exemple :
 
 ```yml
-version: 3.3
+version: '3.3'
 services:
   postgres:
     image: postgres:10
@@ -190,8 +190,10 @@ workflow de base:
 
 ### Usage non synchrone de docker-compose
 
-On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. Exemple : https://docs.funkwhale.audio/installation/docker.html#start-funkwhale-service
-d
+On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. 
+
+Exemple : https://docs.funkwhale.audio/administrator/installation/docker.html#set-up-funkwhale
+
 ### Visualisation des applications microservice complexes
 
 Certaines applications microservice peuvent avoir potentiellement des dizaines de petits conteneurs spécialisés. 

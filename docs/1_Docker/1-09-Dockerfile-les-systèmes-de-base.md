@@ -3,6 +3,7 @@ title: "1.09 Dockerfile : les systèmes de base"
 pre: "<b>1.09 </b>"
 weight: 10
 ---
+
 ## Objectifs pédagogiques
 
   - Savoir trouver et choisir les systèmes de base
@@ -55,7 +56,7 @@ Le principe de Docker est justement d'avoir des images légères car on va crée
 
 De plus on télécharge souvent les images depuis un registry, ce qui consomme de la bande passante.
 
-> La principale **bonne pratique** dans la construction d'images est de **limiter leur taille au maximum**.
+> La principale **bonne pratique** dans la construction d'images est de **limiter leur taille (mais pas forcément au détriment de tout)**.
 
 ---
 
@@ -67,9 +68,17 @@ Une image `ubuntu` complète pèse déjà presque une soixantaine de mégaoctets
 
 mais une image trop rudimentaire (`busybox`) est difficile à débugger et peu bloquer pour certaines tâches à cause de binaires ou de bibliothèques logicielles qui manquent (compilation par exemple).
 
-Souvent on utilise des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`).
-
 Par exemple `python3` est fourni en version `python:alpine` (99 Mo), `python:3-slim` (179 Mo) et `python:latest` (918 Mo).
+
+
+## Plus avancé : bien choisir son image de base
+
+Beaucoup de personnes utilisent des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`). Mais ce choix a aussi ses inconvénients:
+- https://pythonspeed.com/articles/alpine-docker-python/
+
+Les images basées sur `debian-slim` et redhat `ubi-micro` sont a peine plus lourde et probablement plus solide/sécurisées et polyvalentes.
+
+Pour s'y retrouver on peut se référer à ce comparatif assez complet (bien que pro-redhat) : https://crunchtools.com/comparison-linux-container-images/
 
 ---
 

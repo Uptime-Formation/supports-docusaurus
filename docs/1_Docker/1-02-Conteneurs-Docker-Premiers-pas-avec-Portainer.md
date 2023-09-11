@@ -6,6 +6,7 @@ chapter: true
 ---
 
 ## Objectifs pédagogiques 
+
   - Connaître les outils permettant d'interagir avec docker
   - Lancer son premier conteneur
 
@@ -32,7 +33,6 @@ Portainer est un portail web pour gérer une installation Docker via une interfa
 - On va exposer le port de cette application web en cliquant sur `Publish all exposed network ports to random host ports`
 - Et on peut visiter la page affichée 
 ---
-
 
 # Docker Hub : télécharger des images
 

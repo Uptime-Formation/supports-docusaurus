@@ -24,3 +24,27 @@ Utilisez le menu de gauche pour parcourir les cours et TP.
 - Est-ce vraiment nécessaire ? Normalement non car le site (un snapshot unique pour la formation) va rester en ligne pendant des années.
 
 - Pour le moment le site de support doit être imprimé page par page avec la fonction d'impression pdf du navigateur
+
+## Problèmes avec le snap firefox
+
+<!-- ```sh
+$ sudo add-apt-repository ppa:mozillateam/ppa
+
+
+$ echo '
+Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001
+
+Package: firefox
+Pin: version 1:1snap1-0ubuntu2
+Pin-Priority: -1
+' | sudo tee /etc/apt/preferences.d/mozilla-firefox
+
+
+$ sudo snap remove firefox
+
+
+$ sudo apt install firefox
+
+``` -->

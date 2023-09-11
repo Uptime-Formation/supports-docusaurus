@@ -7,18 +7,15 @@ weight: 2
 ## Objectifs pédagogiques 
   - Présenter tous les objectifs pédagogiques
   - Évaluer les parties les plus difficiles
----
 
 ## Les grandes orientations pédagogiques
 - Exposer les évolutions du monde des conteneurs et du déploiement automatisé
 - Exposer l'état du secteur des conteneurs et les alternatives (docker is dead?)
 - Associer au maximum la pratique aux contenus théoriques avec des objectifs simples et clairs
----
 
 # Les moyens
 - Fournir des postes individuels virtualisés
 - Fournir un dépôt GIT "fil rouge" pour le code 
----
 
 ## 3 jours de formation
 * Jour 1: **Pourquoi Docker**

@@ -10,7 +10,9 @@ weight: 34
 
 
 
-# `identidock` : une application Flask qui se connecte à `redis`
+## Mise en pratique : écrire un fichier compose pas à pas 
+
+### `identidock` : une application Flask qui se connecte à `redis`
 
 Démarrez un nouveau projet dans VSCode (créez un dossier appelé `identidock` et chargez-le avec la fonction _Add folder to workspace_)
 
@@ -88,7 +90,8 @@ if __name__ == '__main__':
 ```
 
 `uWSGI` est un serveur python de production très adapté pour servir notre serveur intégré Flask, nous allons l'utiliser.
----
+
+### Le Dockerfile
 
 Dockerisons maintenant cette nouvelle application avec le Dockerfile suivant :
 
@@ -105,14 +108,13 @@ USER uwsgi
 CMD ["uwsgi", "--http", "0.0.0.0:5000", "--wsgi-file", "/app/identidock.py", \
 "--callable", "app", "--stats", "0.0.0.0:9191"]
 ```
----
+
 Observons le code du Dockerfile ensemble s'il n'est pas clair pour vous. 
 
 Construire l'application, pour l'instant avec `docker build`, la lancer.
 Vérifiez avec `ps aux` que le serveur est bien lancé.
 Poussez l'image sur le registry local.
 
----
 
 ### Le fichier Docker Compose
 
@@ -125,7 +127,7 @@ services:
     ports:
       - "5000:5000"
 ```
----
+
 **Plusieurs remarques**
 
   - La première ligne après `services` déclare le conteneur de notre application
@@ -133,17 +135,15 @@ services:
   - `build: .` indique que l'image d'origine de notre conteneur est le résultat de la construction d'une image à partir du répertoire courant (équivaut à `docker build -t identidock .`)
   - La ligne suivante décrit le mapping de ports entre l'extérieur du conteneur et l'intérieur.
 
----
 **Lancez le service (pour le moment mono-conteneur) avec `docker compose up`**
 
 Notez que cette commande sous-entend `docker compose build`.
 
 Visitez la page web de l'app.
 
----
-Ajoutons maintenant un deuxième conteneur. 
+### Ajoutons maintenant un deuxième conteneur
 
-Nous allons tirer parti d'une image déjà créée qui permet de récupérer une "identicon". 
+Nous allons tirer parti d'une image "dnmonster" déjà existante sur docker hub. Elle permet de récupérer une "identicon". 
 
 Ajoutez à la suite du fichier Compose **_(attention aux indentations !)_** :
 
@@ -164,10 +164,12 @@ services:
   dnmonster:
     image: amouat/dnmonster:1.0
 ```
----
+
+### Mettre nos conteneurs dans un réseau dédié
+
 Enfin, nous déclarons aussi un réseau appelé `identinet` pour y mettre les deux conteneurs de notre application.
 
-Il faut déclarer ce réseau à la fin du fichier.
+Il faut d'abord déclarer le réseau à la fin du fichier.
 
 ```yaml
 networks:
@@ -175,21 +177,20 @@ networks:
     driver: bridge
 ```
 
-Sans spécifier le driver réseau, c'est celui par défaut qui est utilisé. 
+Sans spécifier le driver réseau, `bridge` celui utilisé par défaut, donc la 3e ligne est facultative ici.
 
----
-
-Il faut aussi mettre nos deux services `identidock` et `dnmonster` sur le même réseau en ajoutant **deux fois** ce bout de code où c'est nécessaire :
+Il faut ensuite aussi mettre nos deux services `identidock` et `dnmonster` sur le même réseau en ajoutant **deux fois** le bout de code suivant pour chaque service/conteneur :
 
 ```yaml
 networks:
   - identinet
 ```
----
+
+### Un conteneur de stockage pour nos données
 
 Ajoutons également un conteneur `redis`.
 
-Cette base de données sert à mettre en cache les images et à ne pas les recalculer à chaque fois.
+Cette "base de données" sert à mettre en cache les images et à ne pas les recalculer à chaque fois.
 
 ```yml
 redis:
@@ -198,7 +199,7 @@ redis:
     - identinet
 ```
 
----
+### Résultat finale
 
 `docker-compose.yml` final :
 
@@ -226,12 +227,12 @@ networks:
   identinet:
     driver: bridge
 ```
----
+
+
 **Lancez l'application et vérifiez que le cache fonctionne en cherchant les messages dans les logs de l'application.**
 
 N'hésitez pas à passer du temps à explorer les options et commandes de `docker-compose`, ainsi que [la documentation officielle du langage des Compose files](https://docs.docker.com/compose/compose-file/). 
 
----
 
 ###  Le Docker Compose de `microblog`
 
@@ -245,7 +246,6 @@ Indice : chercher "flask hot reload" et penser aux volumes
 
 Avancé : Trouver comment configurer une base de données Postgres pour une app Flask (c'est une option de SQLAlchemy).
 
----
 ### D'autres services
 
 **On lancer un pad HedgeDoc (ou autre logiciel de votre choix).**
