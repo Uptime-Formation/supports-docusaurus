@@ -78,7 +78,7 @@ Au delà du flou dans l'emploi de ce terme, le cloud est un mouvement de réorga
   - **Plateform as a Service**: location d'un environnement d'exécution logiciel flexible à destination des développeurs
   - **Infrastructure as a Service**: location de resources "matérielles" à la demande pour installer des logiciels sans avoir à maintenir un data center.
 
-Le cloud permet surtout technique la flexibilité et la scalabilité à la demande des resources de base pour nos applications : on peut commander plein de machines et les ajouter à notre cluster. On peut également copier une infra temporairement pour faire des migrations ou tests.
+Le cloud permet surtout techniquement la flexibilité et la scalabilité à la demande des resources de base pour nos applications : on peut commander plein de machines et les ajouter à notre cluster. On peut également copier une infra temporairement pour faire des migrations ou tests.
 
 ### Conteneurisation
 

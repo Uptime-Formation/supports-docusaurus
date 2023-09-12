@@ -1,6 +1,6 @@
 ---
-title: "1.10 Dockerfile TP : conteneuriser une application flask"
-pre: "<b>1.10 TP</b>"
+title: "1.11 Dockerfile TP : conteneuriser une application flask"
+pre: "<b>1.11 TP</b>"
 weight: 11
 ---
 
@@ -83,7 +83,28 @@ Une fois dans le conteneur lancez:
 - Avec `ps aux`, le serveur est-il lancé ? 
 - Avec `docker run --rm -it microblog ` que se passe-t-il ?
 
+
+## TP Finir le Dockerfile précédent (il manquait la CMD)
+
+
+- Ajoutons la section de démarrage à la fin du Dockerfile, on va utuliser un script appelé `boot.sh` déjà présent dans le projet qu'on a cloné:
+
+```Dockerfile
+CMD ["./boot.sh"]
+```
+
+- Reconstruisez l'image et lancez un conteneur basé sur l'image en ouvrant le port `5000` avec la commande : `docker run -p 5000:5000 microblog`
+
+- Naviguez dans le navigateur à l’adresse `localhost:5000` pour admirer le prototype microblog.
+
+- Lancez un deuxième container cette fois avec : `docker run -d -p 5001:5000 microblog`
+
+- Une deuxième instance de l’app est maintenant en fonctionnement et accessible à l’adresse `localhost:5001`
+
 ## Correction: le dockerfile final
+
+<details><summary>correction:</summary>
+<p>
 
 ```dockerfile
 FROM python:3.9
@@ -98,3 +119,6 @@ RUN  useradd -ms /bin/bash -d /microblog microblog
 RUN chown -R microblog:microblog ./
 USER microblog
 ```
+
+</p>
+</details>

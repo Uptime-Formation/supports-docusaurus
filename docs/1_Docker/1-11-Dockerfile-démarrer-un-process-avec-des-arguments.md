@@ -93,7 +93,7 @@ Vois aussi cowsay plus bas comme outils pour décorer du texte avec Docker. On p
 ```Dockerfile
 FROM python:3.9
 ENTRYPOINT ["/usr/bin/python3"]
-CMD ['-c' 'print("je peux executer du python directement")']
+CMD ['-c', 'print("je peux executer du python directement")']
 ```
 
 Dans ce cas :
@@ -102,28 +102,12 @@ Dans ce cas :
 
 => on a une sorte d'"outil" rapide comme le cas 2 mais il a une valeur par défaut pour ses arguments qu'on peut surcharger
 
----
+<!-- --- -->
 
 
-## TP Finir le Dockerfile précédent (il manquait la CMD)
 
 
-- Ajoutons la section de démarrage à la fin du Dockerfile, on va utuliser un script appelé `boot.sh` déjà présent dans le projet qu'on a cloné:
-
-```Dockerfile
-CMD ["./boot.sh"]
-```
-
-- Reconstruisez l'image et lancez un conteneur basé sur l'image en ouvrant le port `5000` avec la commande : `docker run -p 5000:5000 microblog`
-
-- Naviguez dans le navigateur à l’adresse `localhost:5000` pour admirer le prototype microblog.
-
-- Lancez un deuxième container cette fois avec : `docker run -d -p 5001:5000 microblog`
-
-- Une deuxième instance de l’app est maintenant en fonctionnement et accessible à l’adresse `localhost:5001`
-
-
----
+<!-- --- -->
 
 ## _Facultatif :_ Faire parler la vache
 
