@@ -3,6 +3,7 @@ title: 2.07 Volumes Docker Monter des fichiers en ligne de commande
 pre: "<b>2.07 </b>"
 weight: 20
 ---
+
 ## Objectifs pédagogiques
   - Comprendre le montage dans les systèmes de fichier Linux
   - Savoir monter un volume dans un conteneur Docker
@@ -16,8 +17,6 @@ Un volume est utile pour tout ce qui est "stateful" dans un conteneur :
 * stockages de base de données
 * certificats SSL
 * etc.
-
-
 
 # Bind mounting
 

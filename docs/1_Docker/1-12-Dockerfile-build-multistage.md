@@ -82,6 +82,6 @@ La doc:
 
  On peut alors constater que pour une application nodejs, même le minimum du minimum dans une image c'est déjà un joyeux bordel difficile à auditer: (confs linux + locales + ssl + autre + votre node_modules avec plein de lib + votre app)
 
-## TP: Essayer les builds multistage parallélisés
+## TP avancé: Essayer les builds multistage parallélisés
 
 - Tutoriel : https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/

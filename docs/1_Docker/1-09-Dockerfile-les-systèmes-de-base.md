@@ -53,11 +53,11 @@ De plus on télécharge souvent les images depuis un registry, ce qui consomme d
 
 > La principale **bonne pratique** dans la construction d'images est de **limiter leur taille (mais pas forcément au détriment de tout)**.
 
-## Plus avancé - Optimiser pour la CI/CD
-
 Alors qu'une image Docker de 1 Go en développement local est insignifiante en termes de consommation d'espace, les inconvénients deviennent apparents dans les pipelines CI/CD, où vous pourriez avoir besoin de récupérer une image spécifique plusieurs fois pour exécuter des tâches. Alors que la bande passante et l'espace disque sont bon marché, le temps ne l'est pas. Chaque minute supplémentaire ajoutée au temps de CI s'accumule pour devenir conséquente.
 
 Par exemple, chaque minute ou deux de temps de construction supplémentaire qui peut être optimisée pourrait s'ajouter au fil du temps pour représenter des heures de temps perdues chaque année
+
+
 
 ## Comment limiter la taille d'une image
 

@@ -22,8 +22,6 @@ Solutions :
 - Des réseaux dynamiques par défaut automatiques (DHCP mais surtout DNS automatiques)
 - Des volumes (partagés ou non, distribués ou non) montés dans les conteneurs
 
-
-
 ### L'instruction `VOLUME` dans un `Dockerfile`
 
 ```dockerfile

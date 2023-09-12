@@ -17,7 +17,9 @@ Quelques références:
 Est le (nouveau) builder par défaut de Docker depuis quelques années.
 
 - Très performant, parallélisé, cache intelligent dans des multistage builds.
-- Peut faire des builds multiplateforme avec buildx
+- Peut être étendu et configuré avec le nouveau gestionnaire **buildx** pour notamment:
+    - faire des builds multiplateforme
+    - gérer les cache distant pour une CI/CD : https://docs.docker.com/build/cache/backends/registry/
 
 - Inconvénient : pour les CI/CD il faut du Docker in Docker qui pas idéal en terme de sécurité voire impossible dans certains contextes (un cluster K8s sans docker).
 
@@ -39,6 +41,7 @@ Le gros avantage est de pouvoir builder avec n'importe quelle runtime de contene
 
 - Tutoriel d'intro: https://www.baeldung.com/ops/kaniko
 
+- Gestion du cache avec Kaniko : https://cloud.google.com/build/docs/optimize-builds/kaniko-cache
 
 ## Buildah
 
