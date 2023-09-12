@@ -27,7 +27,7 @@ Utilisez le menu de gauche pour parcourir les cours et TP.
 
 ## Problèmes avec le snap firefox
 
-<!-- ```sh
+```sh
 $ sudo add-apt-repository ppa:mozillateam/ppa
 
 
@@ -47,4 +47,4 @@ $ sudo snap remove firefox
 
 $ sudo apt install firefox
 
-``` -->
+```
