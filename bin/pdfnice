@@ -1,0 +1,25 @@
+#!/bin/bash
+
+panic(){ echo "$@"; exit 1;}
+
+
+[[ -z "$1" ]] && panic "Missing arg #1: markdown filename"
+[[ -z "$2" ]] && panic "Missing arg #2: pdf filename"
+LIST=()
+ARGS=$#
+for filename in "$@"; do
+    extension=${filename##*.} 
+    if [[ "${extension^^}" == "PDF" ]];then
+        OUT=$filename
+    
+    elif [[ "${extension^^}" == "MD" ]];then
+        [[ ! -f "$filename" ]] && echo "$file doesn't exist" && continue
+        LIST+=($filename)
+    else
+        echo "$filename is not a valid file" 
+    fi
+done
+
+[[ -z "$OUT" ]] && panic "Missing arg : pdf filename"
+
+pandoc -f markdown --pdf-engine=xelatex --template eisvogel -V linkcolor=blue -V header-includes:'\usepackage[export]{adjustbox} \let\includegraphicsbak\includegraphics \renewcommand*{\includegraphics}[2][]{\includegraphicsbak[frame,#1]{#2}}' -t pdf "${LIST[@]}" -o "$OUT"
