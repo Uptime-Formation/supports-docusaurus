@@ -1,22 +1,25 @@
 #!/bin/bash
 
-APP_PATH=$( cd $(dirname $0) && pwd )
-
-cd "$APP_PATH"
+which pdfnice || { echo "!!! Missing pdfnice! Please use the bin/pdfnice script at the root of the project" : exit 1 ; }
 
 set -e 
 
-rm -f _pdf/*md 
-cp *md _pdf/
-cd _pdf
+PDF_NAME="Terraform.pdf"
+APP_PATH=$( cd $(dirname $0) && pwd )
+TMPDIR=$(cd "${APP_PATH}" && mkdir -p _pdf && echo "${APP_PATH}/_pdf")
+
+cd "$APP_PATH"
+
+rm -f "${TMPDIR}"/*md 
+cp *md "${TMPDIR}/"
+cd "${TMPDIR}"
 # ls ../../../static
-sed -i -r "s=(../../static/)=../\1=" *md
-#grep static *md
+sed -i -r "s=/img/=../../../static/img/=" *md
 
 DATE=$(date +"%d/%m/%Y")
 LIST=()
 for file in *\.md; do
-  pdfname=${file/.md/}.pdf
+  pdfname="${file/.md/}.pdf"
   if [[ "$file" == "01-Introduction.md" ]]; then
     sed -i -r "s=%DATE%=$DATE=" $file
   else
@@ -43,13 +46,9 @@ EOF
 done
 
 echo Uniting pdffiles
-pdfunite ${LIST[@]} kvm.pdf
+pdfunite ${LIST[@]} ${PDF_NAME}
 
+mv ${PDF_NAME} "${APP_PATH}"
+echo "File available : ${APP_PATH}/${PDF_NAME}"
 
-# ~/bin/pdfnice *.md Uptime-formation-kvm.pdf
-
-#set -e 
-#rm -f "${APP_PATH}/_pdf/*md"
-#cp "${APP_PATH}/"*md "${APP_PATH}/_pdf/"
-#sed -i "s=/img/=../../static/img=" "${APP_PATH}/_pdf/"*md
-#~/bin/pdfnice "${APP_PATH}/_pdf/"*.md ${APP_PATH}/out.pdf
+rm -rf ${TMPDIR}
