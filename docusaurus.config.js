@@ -8,7 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Formation DevOps',
   
-
+  // ...
+  plugins: ['./src/plugins/symlinks'],
   tagline: '',
   url: 'https://docker.uptime-formation.fr',
   baseUrl: '/',
