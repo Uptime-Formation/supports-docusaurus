@@ -113,8 +113,9 @@ spec:
 Pour accéder à l'image dans le cluster nous allons la poussez sur le registry Docker Hub (une solution basique parmis plein d'autres) pour cela:
 
 - Lancez la commande `docker login docker.io` et utilisez votre compte précédemment créé (ou simplement `docker login` car docker se loggue automatiquement à sa plateforme par défaut).
-- Tagguez l'image `frontend` avec `docker tag ...` avec un nouveau tag précisant le serveur et l'utilisateur par exemple `docker tag frontend docker.io/myuser/frontend:1.0`
-- Créez un déploiement pour le frontend en réutilisant ce tag dans la section image.
+- Tagguez l'image `frontend` avec `docker tag ...` avec un nouveau repository:tag précisant le serveur et l'utilisateur par exemple `docker tag frontend docker.io/myuser/frontend:1.0`
+- Poussez l'image sur le registry avec `docker push <repository:tag>`
+- Créez un déploiement pour le frontend en réutilisant ce repository:tag dans la section image.
 - déployez avec `kubectl apply` pour tester.
 
 <details><summary>Correction: </summary>

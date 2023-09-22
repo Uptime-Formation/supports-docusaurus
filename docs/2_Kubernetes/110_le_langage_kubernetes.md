@@ -25,8 +25,6 @@ La commande inverse `kubectl delete -f object.yaml` permet de détruire un objet
 
 Lorsqu'on vient d'appliquer une description on peut l'afficher dans le terminal avec `kubectl apply -f myobj.yaml view-last-applied`
 
-Globalement Kubernetes garde un historique de toutes les transformations des objets : on peut explorer, par exemple avec la commande `kubectl rollout history deployment`.
-
 ## Parenthèse : Le YAML
 
 Kubernetes décrit ses ressources en YAML. A quoi ça ressemble, YAML ?
@@ -107,6 +105,7 @@ On peut aller observer les paramètres en ligne de commande avec la commande `ku
 ```bash
 kubectl explain pod
 kubectl explain pod.spec.containers
+kubectl explain deploy --recursive
 ```
 
 ### Description de plusieurs ressources

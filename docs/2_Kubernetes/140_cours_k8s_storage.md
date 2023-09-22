@@ -69,6 +69,11 @@ Quand un conteneur a besoin d'un volume, il crée une *PersistentVolumeClaim* : 
 
 Le provisionning de `PersistentVolume` peut être manuel (on crée un objet `PersistentVolume` en amont ou non. Dans le second cas la création d'un `PersistentVolumeClaim` mène directement à la création d'un volume si possible)
 
+### Liens externes
+
+- https://developers.redhat.com/articles/2022/10/06/kubernetes-storage-concepts
+- https://bluexp.netapp.com/blog/cvo-blg-5-types-of-kubernetes-volumes-and-how-to-work-with-them
+
 ### Backup de volume
 
 Il existe plusieurs méthodes pour effectuer des sauvegardes de données persistantes dans Kubernetes : 

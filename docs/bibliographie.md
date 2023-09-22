@@ -64,6 +64,8 @@ Sur MetalLB, les autres vidéos de la chaîne sont très bien :
 
 ## Sécurité de Kubernetes
 
+- Oreilly : Container Security
+
 - [xmco-actusecu-51-dossier_kubernetes (fr)](http://repository.root-me.org/Exploitation - Système/FR - xmco-actusecu-51-dossier_kubernetes.pdf)
 - [hacking_and_hardening_kubernetes_by_example_v2 (en)](http://repository.root-me.org/Exploitation - Système/EN - hacking_and_hardening_kubernetes_by_example_v2.pdf)
 - [ht-w02_hacking_and_hardening_kubernetes (en)](http://repository.root-me.org/Exploitation - Système/EN - ht-w02_hacking_and_hardening_kubernetes.pdf)

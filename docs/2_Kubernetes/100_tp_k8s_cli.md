@@ -153,7 +153,7 @@ Essayez de la même façon d'afficher le nombre de répliques de notre déploiem
 
 `kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
 
-- pour visualiser en temps réel les resources du cluster et leur évolution on installera `watch`
+- pour visualiser en temps réel les resources du cluster et leur évolution on installera `watch` ou plus confortable `viddy`
 
 - pour ajouter des plugins à kubectl on peut utiliser `krew`: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 - pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `kubectl krew install ctx`, `kubectl krew install ns`

@@ -57,8 +57,6 @@ COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
 CMD ["./app"]
 ```
 
-
-
 ## TP avancé : Un multi-stage build avec distroless comme image de base de prod
 
 Chercher la documentation sur les images distroless. 
