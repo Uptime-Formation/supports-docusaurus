@@ -1,0 +1,5 @@
+# our base image
+FROM alpine:3.5
+
+# run the application
+CMD ["sh", "-c", "echo hello World"]
