@@ -23,7 +23,7 @@ Kustomize est très adapté pour une variabilité pas trop importante des instal
 
 - Pour utiliser kustomise on écrit un fichier `kustomization.yaml` à côté des manifestes et patchs et on l'applique avec `kubectl -k chemin_vers_kustomization`.
 
-- Il est aussi très utile de pouvoir visualisé le resultat du patching avant de l'appliquer avec : `kubectl kutomize chemin_vers_kustomization`
+- Il est aussi très utile de pouvoir visualisé le resultat du patching avant de l'appliquer avec : `kubectl kustomize chemin_vers_kustomization`
 
 Mais lorsqu'on a besoin de faire varier énormément les manifestes selon de nombreux cas, par exemple lorsqu'on distribue une application publiquement et qu'on veut permettre à l'utilisateur de configurer dynamiquement à peut près tous les aspects d'une installation, kustomize n'est pas adapté.
 
