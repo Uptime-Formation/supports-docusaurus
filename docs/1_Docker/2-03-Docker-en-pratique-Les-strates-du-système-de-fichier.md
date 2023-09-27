@@ -33,7 +33,7 @@ weight: 14
 
 Pour simplifier, chaque instruction du Dockerfile crée une nouvelle couche.
 
-Si une couche est déjà utilisée, elle est mise en cache et ne nécessite pas de 
+Si une couche est déjà utilisée, elle est mise en cache et ne nécessite pas qu'on la regénère à chaque fois.
 
 Au lancement d'un container, le Docker Engine rajoute une nouvelle couche de filesystem "normal" read/write par dessus la pile des couches de l'image.
 

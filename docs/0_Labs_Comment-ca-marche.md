@@ -39,9 +39,9 @@ Ces identifiants sont :
 Avec ces identifiants, les stagiaires accèdent à leur machine:
 * **en SSH**
   * accès par le nom de domaine individuel ex: `sacha.brx2022.uptime-formation.fr`
-  * login : prénom de la personne. ex: `sacha`
+  * login : stagiaire 
   * mdp : fourni dans le mail 
-  * accès : `ssh sacha@sacha.brx2022.uptime-formation.fr`
+  * accès : `ssh stagiaire@sacha.brx2022.uptime-formation.fr`
 
 * **au serveur VNC** 
   * accès par le nom de domaine commun ex: `vnc.brx2022.uptime-formation.fr`

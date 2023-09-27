@@ -10,7 +10,7 @@ weight: 22
 
 # Un petit rappel sur les ports (et le réseau)
 
-**Les ports des protocules TCP et UDP dans Linux ont quelques propriétés particulière.**
+**Les ports des protocoles TCP et UDP dans Linux ont quelques propriétés particulière.**
 
 Seul l'utilisateur root a le droit d'ouvrir des ports inférieurs à 1024, indiquant que le service est autorisé par un administrateur système.
 
