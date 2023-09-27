@@ -20,7 +20,7 @@ Désormais Docker tend à devenir un modèle de système qui est amélioré et i
 
 ## Comment ça marche Docker?
 
-![](https://www.docker.com/wp-content/uploads/974cd631-b57e-470e-a944-78530aaa1a23-1.jpg)
+![](/img/docker/docker-daemon-architecture.jpg)
 
 On voit qu'il y a plusieurs couches distinctes
 * ILM / interfaces utilisateurs (docker, docker-compose) et autres, pour gérer le cycle de vie des conteneurs 
@@ -90,7 +90,7 @@ Désormais K8S utilise uniquement des Container Runtime compatible Container Run
 
 Pour comprendre ce cas d'usage "canonique", voyons comment Docker et Kubernetes interagissaient.
 
-![](https://miguelminoldo.files.wordpress.com/2022/08/image-1.png)
+![](/img/docker/docker-docker-to-containerd.png)
 
 En dehors de containerd, `cri-o` est l'alternative développée au sein du projet Kubernetes.
 
