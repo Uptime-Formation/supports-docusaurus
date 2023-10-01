@@ -129,9 +129,11 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
 
 :::
 
+
+<!-- 
 ### Les jauges (gauges)
 
 
 Gauges can be used to track
 the number of calls in progress and determine when the last one was
-completed.
+completed. -->

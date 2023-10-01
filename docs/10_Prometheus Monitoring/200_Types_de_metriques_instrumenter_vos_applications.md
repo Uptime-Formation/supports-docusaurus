@@ -70,7 +70,7 @@ Pour fonctionner les histogrammes utilisent un ensemble de **buckets** c'est à 
 On les définis généralement par paquets autour des valeurs limites qui nous intéressent et pour couvrir tout le registre de valeur possible. Par exemple dans le cas de la latence prévu dans un SLA (service level agrement) s'il s'agit de s'assurer d'un taux de requête inférieur à 300 ms on définira quelques limites de buckets[0.1,0.2,0.3,.45] en plus d'autres valeurs allant de 0.01 à 10s.
 
 Pour plus de détails, la documentation : https://prometheus.io/docs/practices/histograms/
-
+<!-- 
 
 ### Convention pour le nommage des métriques
 
@@ -122,7 +122,7 @@ Utilization, Saturation, and Errors. Utilization is how full your service is,
 saturation is the amount of queued work, and errors is self-explanatory. If
 
 
-
+ -->
 
 
 

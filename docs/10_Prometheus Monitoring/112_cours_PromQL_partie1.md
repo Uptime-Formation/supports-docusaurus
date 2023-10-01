@@ -1,5 +1,5 @@
 ---
-title: Cours - Le langage de requête PromQL partie 1
+title: Cours - Le langage de requête PromQL - partie 1
 draft: false
 # sidebar_position: 6
 ---
@@ -86,10 +86,10 @@ PromQL permet d'interroger des données historiques et de les combiner/comparer 
 node_network_receive_bytes_total offset 7d
 ```
 
-La requête suivante renverrait les points où la surcharge actuelle de GC dépasse la surcharge de GC datant d'une heure par un facteur de 1,5x.
+La requête suivante renverrait les points où la surcharge actuelle de garbage collector(gc) dépasse la surcharge de gc datant d'une heure par un facteur de 1,02.
 
 ```
-go_memstats_gc_cpu_fraction > 1.5 * (go_memstats_gc_cpu_fraction offset 1h)
+go_memstats_gc_cpu_fraction > 1.02 * (go_memstats_gc_cpu_fraction offset 1h)
 ```
 
 Les opérations `>` et `*` sont expliquées ci-dessous.
@@ -112,7 +112,7 @@ Maintenant, le graphique devient correct :
 
 Que signifie `[5m]` dans la requête ? Il s'agit de la durée (`d`) --- 5 minutes dans notre cas --- à prendre en compte lors du calcul du taux par seconde pour chaque point du graphique. Le calcul simplifié du taux pour chaque point ressemble à `(Vcurr-Vprev)/(Tcurr-Tprev)`, où `Vcurr` est la valeur au point actuel --- `Tcurr`, `Vprev` est la valeur au point `Tprev=Tcurr-d`.
 
-Si cela semble trop compliqué, il suffit de se rappeler --- une valeur `d` plus élevée lisse le graphique, tandis qu'une valeur `d` plus faible apporte plus de bruit au graphique. 
+Si cela semble trop compliqué, il suffit de se rappeler --- une valeur `d` plus élevée lisse le graphique, tandis qu'une valeur `d` plus faible donne plus de précision mais aussi plus de bruit au graphique. 
 
 ```
 rate(node_network_receive_bytes_total)
