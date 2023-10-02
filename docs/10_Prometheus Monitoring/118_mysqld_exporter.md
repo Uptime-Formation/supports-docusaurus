@@ -18,7 +18,7 @@ Puis dans le prompt mysql:
 
 - `mysql> GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'prometheus'@'127.0.0.1';`
 
-- créez le fichier `~/my.cnf` avec à l'intérieur:
+- créez le fichier `~/.my.cnf` avec à l'intérieur:
 
 ```ini
 [client]
