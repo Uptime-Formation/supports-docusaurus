@@ -61,9 +61,9 @@ Même s'il sont plus économiques, il est déconseillé d'utiliser les Summary e
 
 Un résumé (`Summary`) fournit la latence/taille moyenne d'un type d'évènement, mais que faire pour avoir quelques chose de plus précis statistiquement par exemple un quantile ? Il faut pour cela pouvoir compter les demandes inférieure à cette limite. 
 
-Les quantiles indiquent quelle proportion d'événements ont une taille inférieure à une valeur donnée. Par exemple, un quantile de 0,95 équivalant à 200 ms signifie que 95 % des demandes ont pris moins de 200 ms.
+Les quantiles ici indiquent quelle proportion d'événements ont une taille inférieure à une valeur donnée. Par exemple, un quantile de 0,95 équivalant à 200 ms signifie que 95 % des demandes ont pris moins de 200 ms.
 
-Les quantiles sont utiles lorsqu'il s'agit de raisonner sur l'expérience réelle de l'utilisateur final. En effet, si par exemple le navigateur d'un utilisateur envoie 10 demandes à votre application, c'est la plus lente d'entre elles qui détermine la latence visible et dans ce cas, le 90e percentile capture cette latence.
+Les quantiles sont utiles lorsqu'il s'agit de raisonner sur l'expérience réelle de l'utilisateur final. En effet, si par exemple le navigateur d'un utilisateur envoie 10 demandes à votre application, c'est la plus lente d'entre elles qui détermine la latence visible et dans ce cas, le 95e percentile capture cette latence.
 
 Pour fonctionner les histogrammes utilisent un ensemble de **buckets** c'est à dire des "réservoirs" pour classer les évènements en différentes classes prédéfinies. Ces limites de buckets/classes doivent être fournies par les développeurs instrumentant l'application.
 
