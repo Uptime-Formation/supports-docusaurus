@@ -43,7 +43,7 @@ Affichez ensuite l'évolution de ce temps CPU utilisateur avec un graphique (év
 rate(node_cpu_seconds_total{mode="user"}[5m])
 ```
 
-Affichez seulement le temps du premier cpu.
+Affichez seulement le temps des deux premier cpu.
 
 ```promQL
 rate(node_cpu_seconds_total{mode="system", cpu=~"0|1", instance="localhost:8080"}[5m])
