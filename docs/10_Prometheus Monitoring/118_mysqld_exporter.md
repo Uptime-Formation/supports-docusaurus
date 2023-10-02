@@ -18,7 +18,7 @@ Puis dans le prompt mysql:
 
 - `mysql> GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'prometheus'@'127.0.0.1';`
 
-- créez le fichier `~/.my.cnf` avec à l'intérieur:
+- créez le fichier `~/.my.cnf` dans avec à l'intérieur:
 
 ```ini
 [client]
@@ -27,7 +27,7 @@ password = my-secret-prom-pw
 host = 127.0.0.1
 ```
 
-- Téléchargez l'exporter mysql sur la page de téléchargement prometheus puis lancez le.
+- Téléchargez l'exporter mysql sur la page de téléchargement prometheus puis lancez le avec l'option `--config.my-cnf="~/.my.cnf"`.
 
 - visitez la route de métrique pour vérifier le bon fonctionnement de l'exporteur
 
