@@ -50,7 +50,7 @@ scrape_configs:
 ## Découverte de service Hetzner cloud:
 
 ```yaml
-  - job_name: hetzner_service_discovery
+  - job_name: hcloud_node
     hetzner_sd_configs:
       - role: "hcloud"
         bearer_token: "HmukFn0BnOt469VaWYGLKObtZcCjPbx0Oz2yI5PrtBxDsT1Pevs532A2obWoc6NJ"
@@ -60,77 +60,34 @@ scrape_configs:
 - Utilisez cet exemple de configuration pour venir scraper les serveur hcloud montés par le formateur
 
 
-## Relabelling : grouper et modifier les étiquettes/metadonnées de nos metriques
+## Relabelling : filtrer nos cible et éditer leurs caractéristiques et labels
 
+
+- https://grafana.com/blog/2022/03/21/how-relabeling-in-prometheus-works/
+
+- Ajoutez la config de `relabeling` suivante à notre job hetzner:
 
 ```yaml
-scrape_configs:
- - job_name: file
-   file_sd_configs:
-    - files:
-       - '*.json'
-   relabel_configs:
-    - source_labels: [team]
-      regex: infrascrape_configs:
- - job_name: file
-   file_sd_configs:
-    - files:
-       - '*.json'
-   relabel_configs:
-    - source_labels: [team]
-      regex: infra|monitoring
-      action: keep
-
-scrape_configs:
- - job_name: file
-   file_sd_configs:
-    - files:
-       - '*.json'
-   relabel_configs:
-    - source_labels: [job, team]
-      regex: prometheus;monitoring
-      action: drop
-      action: keep
-
-scrape_configs:
- - job_name: file
-   file_sd_configs:
-    - files:
-       - '*.json'
-   relabel_configs:
-    - source_labels: [team]
-      regex: infra
-      action: keep
-    - source_labels: [team]
-      regex: monitoring
-      action: keep
-
-scrape_configs:
- - job_name: file
-   file_sd_configs:
-    - files:
-       - '*.json'
-   relabel_configs:
-    - source_labels: [team]
-      regex: infra|monitoring
-      action: keep
-
-scrape_configs:
- - job_name: file
-   file_sd_configs:
-    - files:
-       - '*.json'
-   relabel_configs:
-    - source_labels: [job, team]
-      regex: prometheus;monitoring
-      action: drop
+  - job_name: hcloud_node
+    ...
+    relabel_configs:
+      - source_labels: [__meta_hetzner_server_name]
+        regex: '(.*)'
+        replacement: '${1}'
+        target_label: instance
+      - source_labels: [__meta_hetzner_server_id]
+        regex: '(.*)'
+        replacement: 'node${1}'
+        target_label: node_id
+        action: replace
+      - source_labels: [__meta_hetzner_server_name]
+        regex: 'prometheus-monitored-0'
+        action: drop
 ```
 
+Cette config:
+  - remplace l'étiquette instance avec le nom du server
+  - ajoute une étiquette node_id générée avec une regex à partir du meta label hetzner de la découverte de service
+  - supprime du scraping le premier serveur basé sur son nom
 
-Basé sur ces exemples:
-
-- trouvez comment supprimer les étiquettes automatiques de Hetzner cloud
-
-- Ajouter une étiquette pour grouper les nodes localhost et hetznercloud ensemble
-
-- Ajoutez une étiquette `team: dev` sur les instances locales et `team: prod` sur les instances hetzner
+Essayez d'activer et désactiver les 3 items de relabel config.

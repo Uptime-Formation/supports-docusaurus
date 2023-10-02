@@ -26,6 +26,7 @@ rate(node_network_receive_bytes_total[5m]) * 8
 ```
 
 De plus, cela permet d'effectuer de
+
 ```
 rate(node_network_receive_bytes_total[5m]) * 8
 ```
@@ -76,9 +77,7 @@ Dans ce cas, le résultat contiendrait 1 pour les comparaisons vraies et 0 pour 
 
 ## Fonctions d'agrégation et de regroupement
 
-PromQL permet d'[agré
-
-ger et de regrouper des séries temporelles](https://prometheus.io/docs/prometheus/latest/querying/operators/#aggregation-operators). Les séries temporelles sont regroupées par l'ensemble d'étiquettes donné, puis la fonction d'agrégation donnée est appliquée à chaque groupe. Par exemple, la requête suivante renverrait le trafic entrant total par toutes les interfaces réseau groupées par instances (nœuds avec `node_exporter` installé) :
+PromQL permet d'agréger et de regrouper des séries temporelles](https://prometheus.io/docs/prometheus/latest/querying/operators/#aggregation-operators). Les séries temporelles sont regroupées par l'ensemble d'étiquettes donné, puis la fonction d'agrégation donnée est appliquée à chaque groupe. Par exemple, la requête suivante renverrait le trafic entrant total par toutes les interfaces réseau groupées par instances (nœuds avec `node_exporter` installé) :
 
 ```
 sum(rate(node_network_receive_bytes_total[5m])) by (instance)

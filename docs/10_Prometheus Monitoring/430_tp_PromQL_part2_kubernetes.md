@@ -4,7 +4,6 @@ draft: false
 # sidebar_position: 6
 ---
 
-
 Dans ce TP nous allons creuser plus loin les requêtes PromQL avec des aggregations, fonctions, calculs dans le contexte de l'observation d'un cluster Kubernetes.
 
 Kubernetes est un peu le Linux du cloud : c'est la solution (ou plutôt le "noyau" de solution) open source pour créer des clouds applicatifs (conteneurs applicatifs). Prometheus est la solution de référence pour monitorer les clouds de conteneurs car il est très adapté aux environnements dynamiques ou les "cibles" de la surveillance vont et viennent.

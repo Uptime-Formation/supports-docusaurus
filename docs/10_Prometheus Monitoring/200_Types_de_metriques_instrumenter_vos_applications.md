@@ -70,59 +70,31 @@ Pour fonctionner les histogrammes utilisent un ensemble de **buckets** c'est à 
 On les définis généralement par paquets autour des valeurs limites qui nous intéressent et pour couvrir tout le registre de valeur possible. Par exemple dans le cas de la latence prévu dans un SLA (service level agrement) s'il s'agit de s'assurer d'un taux de requête inférieur à 300 ms on définira quelques limites de buckets[0.1,0.2,0.3,.45] en plus d'autres valeurs allant de 0.01 à 10s.
 
 Pour plus de détails, la documentation : https://prometheus.io/docs/practices/histograms/
-<!-- 
-
-### Convention pour le nommage des métriques
-
-METRIC SUFFIXES
-You may have noticed that the example counter metrics all ended with
-_total, while there is no such suffix on gauges. This is a convention
-within Prometheus that makes it easier to identify what type of metric
-you are working with.
-With OpenMetrics, this suffix is mandated. As the prometheus_client
-Python library is the reference implementation for OpenMetrics, if you
-do not add the suffix, the library will add it for you.
-In addition to _total, the _count, _sum, and _bucket suffixes
-also have other meanings and should not be used as suffixes in your
-metric names to avoid confusion.
-It is also strongly recommended that you include the unit of your metric
-at the end of its name. For example, a counter for bytes processed might
-be myapp_requests_processed_bytes_total.
 
 
-### Approaching Instrumentation
+### 3 Modèles d'instrumentation
 
-Now that you know how to use instrumentation, it is important to know
-where and how much you should apply it.
-What Should I Instrument?
-When instrumenting, you will usually be looking to either instrument
-services or libraries.
-Service instrumentation
-Broadly speaking, there are three types of services, each with their own key
-metrics: online-serving systems, offline-serving systems, and batch jobs.
-Online-serving systems are those where either a human or another service is
-waiting on a response. These include web servers and databases. The key
-metrics to include in service instrumentation are the request rate, latency,
-and error rate. Having request rate, latency, and error rate metrics is
-sometimes called the RED method, for Rate, Errors, and Duration. These
-metrics are not just useful to you from the server side, but also the client
-side. If you notice that the client is seeing more latency than the server, you
-might have network issues or an overloaded client.
-TIP
-When instrumenting duration, don’t be tempted to exclude failures. If you were to
-include only successes, then you might not notice high latency caused by many slow but
-failing requests.
-Offline-serving systems do not have someone waiting on them. They
-usually batch up work and have multiple stages in a pipeline with queues
-between them. A log processing system is an example of an offline-serving
-system. For each stage you should have metrics for the amount of queued
-work, how much work is in progress, how fast you are processing items,
-and errors that occur. These metrics are also known as the USE method, for
-Utilization, Saturation, and Errors. Utilization is how full your service is,
-saturation is the amount of queued work, and errors is self-explanatory. If
+De manière générale, il existe trois types de services, chacun avec ses propres indicateurs clés : les systèmes en ligne, les systèmes hors ligne et les travaux par lots.
 
 
- -->
+#### les services
 
+Les services sont ceux où soit un humain, soit un autre service attend une réponse : serveurs web, bases de données.
 
+Les indicateurs clés à inclure dans l'instrumentation de service sont le taux de requêtes, la latence et le taux d'erreur. Disposer des mesures de taux de requêtes, de latence et de taux d'erreur
 
+=> la méthode RED, pour Rate (Taux), Errors (Erreurs) et Duration (Durée).
+
+#### Services "offlines"
+
+D'autres services ("hors ligne") n'ont personne qui attend après eux. Ils regroupent généralement le travail et ont plusieurs étapes dans un pipeline avec des files d'attente entre elles. Un système de traitement de logs est un exemple.
+
+Pour chaque étape, vous devriez avoir des indicateurs pour la quantité de travail en file d'attente, la quantité de travail en cours, la vitesse à laquelle vous traitez les éléments et les erreurs qui surviennent. 
+
+=> méthode USE, pour Utilization (Utilisation), Saturation et Errors (Erreurs). L'utilisation montre à quel point votre service est rempli, la saturation est la quantité de travail en file d'attente, et les erreurs sont explicites.
+
+#### Batch Jobs
+
+Les travaux par lots (batch jobs) sont le troisième type de service, et ils ressemblent aux systèmes hors ligne. Cependant, les travaux par lots fonctionnent régulièrement, tandis que les systèmes hors ligne fonctionnent en continu.
+
+Comme les travaux par lots ne sont pas toujours en cours d'exécution, les scraper ne fonctionne pas très bien, donc des techniques comme le Pushgateway sont utilisées pour pousser les métriques plus spécifiques de ces jobs.

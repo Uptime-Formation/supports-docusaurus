@@ -106,7 +106,7 @@ Cependant la fréquence d'erreur n'a pas vraiment de sens dans l'absolu indépen
 
 </details>
 
-:::tip Compter une valeur non entière
+#### Compter une valeur non entière
 
 On peut incrémenter un compteur d'une valeur non unitaire ou même non entière comme dans l'exemple suivant :
 
@@ -127,13 +127,126 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
       self.wfile.write(f"Un vente de {sale_value}€ a été effectuée.".encode())
 ```
 
-:::
+
+## Les Jauges
+
+Les jauges sont une capture instantanée d'un état actuel. Alors que pour les compteurs, la vitesse à laquelle il augmente est ce qui vous préoccupe, pour les jauges, c'est la valeur actuelle de la jauge. En conséquence, les valeurs peuvent augmenter ou diminuer.
+
+Exemples de jauges comprennent :
+
+- Le nombre d'éléments dans une file d'attente
+- L'utilisation de la mémoire d'un cache
+- Nombre de fils d'exécution actifs (threads)
+- La dernière fois qu'un enregistrement a été traité
+- Le nombre moyen de demandes par seconde au cours de la dernière minute
 
 
-<!-- 
-### Les jauges (gauges)
+
+Les jauges ont trois principales méthodes que vous pouvez utiliser : `inc`, `dec` et `set`. Similairement aux méthodes sur les compteurs, inc et dec augmentent ou diminuent la valeur d'une jauge d'une valeur.
+
+Essayez le code suivant:
 
 
-Gauges can be used to track
-the number of calls in progress and determine when the last one was
-completed. -->
+```python
+import time
+from prometheus_client import Gauge
+
+INPROGRESS = Gauge('app_request_inprogress',
+        'Nombre de requetes en cours.')
+LAST = Gauge('app_request_last_time_seconds',
+        "La dernière fois qu'une requete a été servie.")
+
+class MyHandler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        INPROGRESS.inc()
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Salut !")
+        LAST.set(time.time())
+        INPROGRESS.dec()
+```
+
+Autre version avec un peu de sucre syntaxique Python:
+
+
+```python
+from prometheus_client import Gauge
+
+INPROGRESS = Gauge('app_request_inprogress',
+        'Nombre de requetes en cours.')
+LAST = Gauge('app_request_last_time_seconds',
+        "La dernière fois qu'une requete a été servie.")
+
+class MyHandler(http.server.BaseHTTPRequestHandler):
+    @INPROGRESS.track_inprogress()
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"salut !")
+        LAST.set_to_current_time()
+```
+
+## Un Summary pour la latence moyenne
+
+```python
+import time
+from prometheus_client import Summary
+
+LATENCY = Summary('app_latency_seconds',
+        'Time for a request')
+
+class MyHandler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        start = time.time()
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"salut !")
+        LATENCY.observe(time.time() - start)
+```
+
+`app_latency_seconds_count` est le nombre d'appels "observe" qui ont été effectués. Ainsi, `rate(app_latency_seconds_count[1m])` dans le navigateur d'expressions retourne le taux par seconde des requêtes.
+
+`app_latency_seconds_sum` est la somme des valeurs passées à "observe", donc `rate(app_latency_seconds_sum[1m])` est le temps passé à répondre aux requêtes par seconde.
+
+Si vous divisez ces deux expressions, vous obtenez la latence moyenne sur la dernière minute :
+
+```
+  rate(app_latency_seconds_sum[1m])
+/
+  rate(app_latency_seconds_count[1m])
+```
+
+## Un Histogramme pour les quantile de latence
+
+L'instrumentation pour les histogrammes est proche de celle des summary: La méthode `observe()` vous permet de faire d'enregistrer des évènement avec leur valeurs manuelles, et un décorateur de fonction permettent de faciliter l'utilisation.
+
+
+```python
+from prometheus_client import Histogram
+
+LATENCY = Histogram('app_latency_seconds',
+        'Temps pour une requête')
+
+class MyHandler(http.server.BaseHTTPRequestHandler):
+    @LATENCY.time()
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Salut")
+```
+
+Ce code produira un ensemble de séries temporelles avec le nom `app_latency_seconds_bucket`. Un histogramme a un ensemble de buckets, tels que 1 ms, 10 ms, et 25 ms. L'histogramme fonctionne en suivant le nombre d'événements qui tombent dans chaque bucket.
+
+Ensuite, la fonction PromQL `histogram_quantile` permet de calculer un quantile à partir des buckets. Par exemple :
+
+`histogram_quantile(0.95, rate(app_latency_seconds_bucket[1m]))`
+
+Le taux (rate) est nécessaire car les séries temporelles des buckets sont des compteurs.
+
+Les buckets par défaut couvrent une plage de latences de 1 ms à 10 s. Pour ajouter un bucket personnalisé on fournit une liste triée :
+
+```python
+LATENCY = Histogram('app_latency_seconds',
+        'Temps pour une requête.',
+        buckets=[0.0001, 0.0002, 0.0005, 0.001, 0.01, 0.1])
+```
