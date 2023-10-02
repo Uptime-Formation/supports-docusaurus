@@ -40,7 +40,7 @@ node_cpu_seconds_total{mode="user"}
 Affichez ensuite l'évolution de ce temps CPU utilisateur avec un graphique (évalué à 5 minutes)
 
 ```promQL
-rate(node_cpu_seconds_total{mode="user")
+rate(node_cpu_seconds_total{mode="user"}[5m])
 ```
 
 Affichez seulement le temps du premier cpu.
