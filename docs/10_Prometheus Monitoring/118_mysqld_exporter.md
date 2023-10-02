@@ -4,9 +4,15 @@ draft: false
 # sidebar_position: 6
 ---
 
-- `docker run -it --net=host --rm mysql mysql -h 127.0.0.1 -P 3306 -uroot -pmy-secret-pw`
+<!-- - `docker run -it --net=host --rm mysql mysql -h 127.0.0.1 -P 3306 -uroot -pmy-secret-pw` -->
 
-Pour lancer mysql et ouvrir le prompt. Puis dans le prompt mysql
+Lancer un conteneur mysql et se connecter au client à l'interieur:
+
+- `docker run -d --net=host --rm -e MYSQL_ROOT_PASSWORD=unsecure --name mysql mysql`
+
+- `docker exec -it mysql mysql -h 127.0.0.1 -P 3306 -uroot -punsecure`
+
+Puis dans le prompt mysql:
 
 - `mysql> CREATE USER 'prometheus'@'127.0.0.1' IDENTIFIED BY 'my-secret-prom-pw' WITH MAX_USER_CONNECTIONS 3;`
 

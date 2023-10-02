@@ -35,7 +35,7 @@ On peut exprimer les cibles au format JSON ce qui est plus pratique à générer
 ]
 ```
 
-Dans la configuration de prometheus:
+Dans la configuration de prometheus remplaçez les statics configs existantes par:
 
 ```yaml
 scrape_configs:
@@ -45,7 +45,7 @@ scrape_configs:
        - '*.json'
 ```
 
-Changez la configuration actuelle de nos cibles (prometheus et 3 nodes) basée sur un fichier json
+- Complétez la configuration json de nos cibles pour refléter les deux jobs supprimés ddu `prometheus.yml` (prometheus et 3 nodes).
 
 ## Découverte de service Hetzner cloud:
 
