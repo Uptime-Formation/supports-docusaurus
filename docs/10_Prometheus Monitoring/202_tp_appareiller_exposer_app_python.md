@@ -301,7 +301,7 @@ Vous pouvez créer un script `poll_app.sh` pour faire des requêtes automatiquem
 ```bash
 for i in {1..10000}
 do
-    curl "localhost:8001"
+    curl "localhost:8000"
     sleep(0.5)
 done
 ```
@@ -309,12 +309,12 @@ done
 
 Vous pouvez tester les requêtes suivantes dans Prometheus et essayer des graphs:
 
-- example_app_total
-- rate(example_app_total)
-- example_app_exceptions_total
-- rate(example_app_exceptions_total[5m])
-- rate(example_app_latency_count[5m])
-- rate(example_app_latency_sum[5m])
-- rate(example_app_latency_sum[5m]) / rate(example_app_latency_count[5m])
-- example_app_latency_seconds_bucket
-- histogram_quantile(0.95, example_app_latency_seconds_bucket)
+- `example_app_total`
+- `rate(example_app_total)`
+- `example_app_exceptions_total`
+- `rate(example_app_exceptions_total[5m])`
+- `rate(example_app_latency_count[5m])`
+- `rate(example_app_latency_sum[5m])`
+- `rate(example_app_latency_sum[5m]) / rate(example_app_latency_count[5m])`
+- `example_app_latency_seconds_bucket`
+- `histogram_quantile(0.95, example_app_latency_seconds_bucket)`
