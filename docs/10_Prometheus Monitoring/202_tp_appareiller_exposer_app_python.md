@@ -47,7 +47,7 @@ On obtient ainsi comme pour le node_exporter une liste des metriques disponibles
     - job_name: example
       static_configs:
         - targets:
-          - localhost:8000
+          - localhost:8001
 ```
 
 On peut ensuite visiter Prometheus à l'adresse http://localhost:9090/.
