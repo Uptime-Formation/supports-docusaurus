@@ -250,3 +250,71 @@ LATENCY = Histogram('app_latency_seconds',
         'Temps pour une requête.',
         buckets=[0.0001, 0.0002, 0.0005, 0.001, 0.01, 0.1])
 ```
+
+
+## Une correction possible pour le TP:
+
+`app.py`:
+
+```python
+from prometheus_client import Gauge, Counter, Histogram, start_http_server
+import http.server
+import random, time
+
+REQUESTS = Counter('example_app_total', "Nombre de requete sur notre application d'exemple")
+LATENCY = Histogram('example_app_latency_seconds', 'Temps pour une requête')
+# INPROGRESS = Gauge('example_app_request_inprogress',  'Nombre de requetes en cours.')
+# LAST = Gauge('example_app_request_last_time_seconds',        "La dernière fois qu'une requete a été servie.")
+EXCEPTIONS = Counter('example_app_exceptions_total', "Nombre d'exceptions pendant l'éxecution de l'app d'exemple")
+
+class MyHandler(http.server.BaseHTTPRequestHandler):
+    # @INPROGRESS.track_inprogress()
+    @LATENCY.time()
+    def do_GET(self):
+        with EXCEPTIONS.count_exceptions():
+
+            if random.random() < 0.2:
+                raise Exception
+
+            if random.random() < 0.05:
+                time.sleep(3)
+            
+            if random.random() < 0.1:
+                time.sleep(0.4)
+
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"salut !")
+
+            # LAST.set_to_current_time()
+            REQUESTS.inc()
+
+if __name__ == "__main__":
+    start_http_server(8001)
+    server = http.server.HTTPServer(('localhost', 8000), MyHandler)
+    server.serve_forever()
+```
+
+
+Vous pouvez créer un script `poll_app.sh` pour faire des requêtes automatiquement sur votre application:
+
+```bash
+for i in {1..10000}
+do
+    curl "localhost:8001"
+    sleep(0.5)
+done
+```
+
+
+Vous pouvez tester les requêtes suivantes dans Prometheus et essayer des graphs:
+
+- example_app_total
+- rate(example_app_total)
+- example_app_exceptions_total
+- rate(example_app_exceptions_total[5m])
+- rate(example_app_latency_count[5m])
+- rate(example_app_latency_sum[5m])
+- rate(example_app_latency_sum[5m]) / rate(example_app_latency_count[5m])
+- example_app_latency_seconds_bucket
+- histogram_quantile(0.95, example_app_latency_seconds_bucket)
