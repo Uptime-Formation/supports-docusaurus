@@ -53,7 +53,7 @@ route:
 
   routes: # other routes
   - matchers:
-    - severity =~ "(ticket|pager)"
+    - severity =~ "(ticket|page)"
     receiver: python_webhook_2
 
 # Here, if an alert with a severity label of page-regionfail is firing,
