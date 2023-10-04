@@ -72,12 +72,15 @@ receivers:
 - name: 'python_webhook_2'
   webhook_configs:
     - url: 'http://localhost:5001'
-
-templates:
-- './notif_template.tmpl'
 ```
 
-<!-- - Créez un fichier de template pour les notifications: `notif_template.tmpl`
+<!-- 
+
+# templates:
+# - './notif_template.tmpl'
+```
+
+- Créez un fichier de template pour les notifications: `notif_template.tmpl`
 
 Les webhooks ne supportent pas les templates
 
