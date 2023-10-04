@@ -69,17 +69,17 @@ receivers:
 - name: 'python_webhook_1'
   webhook_configs:
     - url: 'http://localhost:5000' # adresse d'une application flask pour visualiser le webhook
-      text: '{{ template "notif_template" . }}'
 - name: 'python_webhook_2'
   webhook_configs:
     - url: 'http://localhost:5001'
-      text: '{{ template "notif_template" . }}'
 
 templates:
 - './notif_template.tmpl'
 ```
 
-- Créez un fichier de template pour les notifications: `notif_template.tmpl`
+<!-- - Créez un fichier de template pour les notifications: `notif_template.tmpl`
+
+Les webhooks ne supportent pas les templates
 
 ```
 {{ define "notif_template" }}
@@ -98,7 +98,7 @@ Dashboard: {{ .Annotations.dashboard }}&region={{ .Labels.region }}
 {{ end }}
 
 {{ end }}
-```
+``` -->
 
 - Créer deux petites applications `webhook1.py`, `webhook2.py` python pour recevoir et visualiser les deux webhooks (changez le port 5000 à 5001 pour la deuxième):
 
