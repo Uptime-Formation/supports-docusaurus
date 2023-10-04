@@ -7,7 +7,7 @@ Un tableau de bord est un ensemble de graphiques, de tableaux et d'autres visual
 
 En creusant davantage, vous pourriez avoir un tableau de bord pour des sous-systèmes particuliers ou chaque service.
 
-Grafana est un outil populaire avec lequel vous pouvez construire de tels tableaux de bord pour de nombreux systèmes de surveillance et non de surveillance, y compris Graphite, InfluxDB, Jaeger, Elasticsearch et PostgreSQL.
+Grafana est un outil populaire avec lequel vous pouvez construire de tels tableaux de bord pour de nombreux systèmes de surveillance, logging, tracing ou autre : Graphite, InfluxDB, Jaeger, Elasticsearch et PostgreSQL.
 
 ## Docker Installation simple
 
