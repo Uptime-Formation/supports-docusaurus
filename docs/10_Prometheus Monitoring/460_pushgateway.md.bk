@@ -1,6 +1,12 @@
 
 # Prometheus Push Gateway via Docker with some Python job
 
+Le PushGateway est un service qui permet aux programmes de pousser leurs métriques plutôt que d'attendre que prometheus vienne les récupérer. Ce système est dédié aux jobs et programmes a durée de vie courte. Il faut l'utiliser seulement quand nécessaire car il ne respecte pas l'architecture normale de Prometheus.
+
+- Documentation: https://prometheus.io/docs/practices/pushing/
+
+## Mise en pratique
+
 To get Grafana, Prometheus and a Push Gateway you can use the below:
 
 ```yaml

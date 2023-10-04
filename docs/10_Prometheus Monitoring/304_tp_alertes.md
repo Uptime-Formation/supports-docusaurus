@@ -69,35 +69,35 @@ receivers:
 - name: 'python_webhook_1'
   webhook_configs:
     - url: 'http://localhost:5000' # adresse d'une application flask pour visualiser le webhook
-      text: >
-        {{ .Alerts | len }} alerts:
-        {{ range .Alerts }}
-        {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
-        {{ if eq .Annotations.wiki "" -}}
-        Wiki: http://wiki.local/{{ .Labels.alertname }}
-        {{- else -}}
-        Wiki: http://wiki.local/{{ .Annotations.wiki }}
-        {{- end }}
-        {{ if ne .Annotations.dashboard "" -}}
-        Dashboard: {{ .Annotations.dashboard }}&region={{ .Labels.region }}
-        {{- end }}
-        {{ end }}
+      text: '{{ template "notif_template" . }}'
 - name: 'python_webhook_2'
   webhook_configs:
     - url: 'http://localhost:5001'
-      text: >
-        {{ .Alerts | len }} alerts:
-        {{ range .Alerts }}
-        {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
-        {{ if eq .Annotations.wiki "" -}}
-        Wiki: http://wiki.local/{{ .Labels.alertname }}
-        {{- else -}}
-        Wiki: http://wiki.local/{{ .Annotations.wiki }}
-        {{- end }}
-        {{ if ne .Annotations.dashboard "" -}}
-        Dashboard: {{ .Annotations.dashboard }}&region={{ .Labels.region }}
-        {{- end }}
-        {{ end }}
+      text: '{{ template "notif_template" . }}'
+
+templates:
+- './notif_template.tmpl'
+```
+
+- Créez un fichier de template pour les notifications: `notif_template.tmpl`
+
+```
+{{ define "notif_template" }}
+
+{{ .Alerts | len }} alerts:
+{{ range .Alerts }}
+{{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+{{ if eq .Annotations.wiki "" -}}
+Wiki: http://wiki.local/{{ .Labels.alertname }}
+{{- else -}}
+Wiki: http://wiki.local/{{ .Annotations.wiki }}
+{{- end }}
+{{ if ne .Annotations.dashboard "" -}}
+Dashboard: {{ .Annotations.dashboard }}&region={{ .Labels.region }}
+{{- end }}
+{{ end }}
+
+{{ end }}
 ```
 
 - Créer deux petites applications `webhook1.py`, `webhook2.py` python pour recevoir et visualiser les deux webhooks (changez le port 5000 à 5001 pour la deuxième):
@@ -128,3 +128,7 @@ if __name__ == '__main__':
 - Si vous déclenchez les alertes du cours avec les labels severity: page ou ticket vous devriez recevoir des notifications sur les webhook python
 
 - Expérimentez avec les labels sur les alertes et les routes pour essayer d'activer l'inhibition décrite dans la section correspondante du `alertmanager.yml`
+
+## Organiser les templates de notification
+
+- https://prometheus.io/docs/alerting/latest/notification_examples/
