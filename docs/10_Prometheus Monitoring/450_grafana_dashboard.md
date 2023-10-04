@@ -13,7 +13,7 @@ Grafana est un outil populaire avec lequel vous pouvez construire de tels tablea
 
 Vous pouvez télécharger Grafana depuis le site web de Grafana. Le site comprend des instructions d'installation, mais si vous utilisez Docker, par exemple, vous utiliseriez :
 
-- `docker run -d --name=grafana -p 3000:3000 grafana/grafana:9.1.6`
+- `docker run -d --name=grafana --net=host grafana/grafana:9.1.6`
 
 Ce TP est basé sur Grafana 9.1.6 : vous pouvez utiliser une version plus récente, mais soyez conscient que ce que vous verrez différera légèrement.
 
