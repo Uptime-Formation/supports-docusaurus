@@ -15,6 +15,30 @@ Pour chaque exemple d'alerte sauf les deux dernières (FDsNearLimit et les annot
 - Essayez de déclencher l'alerte
 - Essayez ensuite de résoudre l'alerte
 
+## Correction:
+
+- `prometheus.rules.yml`:
+
+```yaml
+groups:
+- name: node-rules
+  rules:
+  - record: job:up:avg
+    expr: avg without(instance, group)(up{job="node"})
+
+  - alert: UnServeurArrete
+    expr: up{job="node"} == 0
+    for: 45s # short delay pour le tp
+    labels:
+      severity: ticket
+
+  - alert: PlusieursServeursArretes
+    expr: job:up:avg{job="node"} < 0.5
+    for: 30s # short delay pour le tp
+    labels:
+      severity: page
+```
+
 ## Configurer Alertmanager avec un webhook
 
 - Téléchargez alertmanager sur la page de téléchargement de prometheus et décompressez le.
@@ -53,17 +77,17 @@ route:
 
   routes: # other routes
   - matchers:
-    - severity =~ "(ticket|page)"
+    - severity =~ "(page|error)"
     receiver: python_webhook_2
 
 # Here, if an alert with a severity label of page-regionfail is firing,
 # it will suppress all your alerts with the same region label that have a severity label of page
 inhibit_rules:
  - source_matchers:
-     - severity = page-regionfail
-   target_matchers:
      - severity = page
-   equal: ['region'] 
+   target_matchers:
+     - severity = ticket
+   equal: ['job']
 
 receivers:
 - name: 'python_webhook_1'
