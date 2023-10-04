@@ -306,7 +306,6 @@ do
 done
 ```
 
-
 Vous pouvez tester les requêtes suivantes dans Prometheus et essayer des graphs:
 
 - `example_app_total`
