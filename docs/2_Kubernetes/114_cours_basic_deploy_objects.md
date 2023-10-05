@@ -242,4 +242,7 @@ Les Services sont de trois types principaux :
 
 - `LoadBalancer`: expose le service en externe à l’aide d'un Loadbalancer de fournisseur de cloud. Les services NodePort et ClusterIP, vers lesquels le Loadbalancer est dirigé sont automatiquement créés.
 
+## Quelques ressources plus avancées:
+
 https://nigelpoulton.com/explained-kubernetes-service-ports/
+https://nigelpoulton.com/demystifying-kubernetes-service-discovery/
