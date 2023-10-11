@@ -74,35 +74,36 @@ Avec l'aide de la [documentation Traefik sur Let's Encrypt et Docker Compose](ht
 Remplacer le service `reverse-proxy` précédent par :
 
 ```yaml
-reverse-proxy:
-    image: "traefik:v2.3"
-    container_name: "traefik"
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myresolver.acme.email=postmaster@domain.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "443:443"
-      - "8080:8080"
-    volumes:
-      - "./letsencrypt:/letsencrypt"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
-whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`user.place.domain.tld`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-
+services:
+    reverse-proxy:
+        image: "traefik:v2.3"
+        container_name: "traefik"
+        command:
+          #- "--log.level=DEBUG"
+          - "--api.insecure=true"
+          - "--providers.docker=true"
+          - "--providers.docker.exposedbydefault=false"
+          - "--entrypoints.websecure.address=:443"
+          - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+          #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+          - "--certificatesresolvers.myresolver.acme.email=postmaster@domain.com"
+          - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+        ports:
+          - "443:443"
+          - "8080:8080"
+        volumes:
+          - "./letsencrypt:/letsencrypt"
+          - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    
+    whoami:
+        image: "traefik/whoami"
+        container_name: "simple-service"
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.whoami.rule=Host(`user.place.domain.tld`)"
+          - "traefik.http.routers.whoami.entrypoints=websecure"
+          - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    
 
 ```
 

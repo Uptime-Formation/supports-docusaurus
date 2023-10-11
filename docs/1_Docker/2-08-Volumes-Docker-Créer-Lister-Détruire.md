@@ -4,7 +4,7 @@ pre: "<b>2.08 </b>"
 weight: 21
 ---
 ## Objectifs pédagogiques
-  - Savoir utiliser les commandes volume (create, ls, rm, prune)
+  - Savoir utiliser les commandes network (create, ls, rm, prune)
   - Savoir monter des volumes de persistance locaux et distants
 
 

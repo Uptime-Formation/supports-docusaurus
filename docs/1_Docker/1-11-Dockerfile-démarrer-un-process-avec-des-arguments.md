@@ -93,7 +93,7 @@ Vois aussi cowsay plus bas comme outils pour décorer du texte avec Docker. On p
 ```Dockerfile
 FROM python:3.9
 ENTRYPOINT ["/usr/bin/python3"]
-CMD ['-c', 'print("je peux executer du python directement")']
+CMD ["-c", "print('je peux executer du python directement')"]
 ```
 
 Dans ce cas :
