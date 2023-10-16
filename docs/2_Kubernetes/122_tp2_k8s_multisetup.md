@@ -1,8 +1,7 @@
 ---
 title: TP - Plusieurs installations simples de Kubernetes
-draft: false
 # weight: 2025
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 ## Une 2e installation: `k3s` sur votre VPS

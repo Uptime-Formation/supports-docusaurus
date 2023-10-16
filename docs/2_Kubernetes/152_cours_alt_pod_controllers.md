@@ -1,7 +1,7 @@
 ---
 title: Cours - Les différents contrôleurs pour les pods
 draft: false
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 ![](/img/kubernetes/k8s_objects_hierarchy.png?width=600px)

@@ -1,7 +1,7 @@
 ---
 draft: false
 title: Cours - Le réseau dans Kubernetes
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 
