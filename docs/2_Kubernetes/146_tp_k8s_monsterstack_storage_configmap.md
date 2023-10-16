@@ -2,6 +2,7 @@
 draft: false
 title: "TP - Ajouter une persistance et une configMap à notre application"
 # sidebar_position: 12
+sidebar_class_name: hidden
 ---
 
 ## Persister les données de Redis

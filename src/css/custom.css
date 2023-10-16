@@ -34,3 +34,7 @@ hr {
 h1 {
   font-size: 2.6em;
 }
+
+.hidden {
+  display: none !important;
+}

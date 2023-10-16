@@ -1,6 +1,7 @@
 ---
 title: "TP - Paramétrer notre application monsterstack avec Kustomize"
 draft: false
+sidebar_class_name: hidden
 ---
 
 

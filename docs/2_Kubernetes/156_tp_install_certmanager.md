@@ -2,6 +2,7 @@
 draft: false
 title: "TP - Installer l'operateur Certmanager pour les certificats Letsencrypt"
 # sidebar_position: 12
+sidebar_class_name: hidden
 ---
 
 Nous aimerions héberger des sites proprement en HTTPS, mais pour cela nous avons besoin de pouvoir:

@@ -2,6 +2,7 @@
 title: "TP - Développer directement dans un cluster Kubernetes"
 draft: false
 # sidebar_position: 10
+sidebar_class_name: hidden
 ---
 
 ## Quel workflow de développement ?
