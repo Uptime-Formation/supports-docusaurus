@@ -30,8 +30,8 @@ Qu'est-ce que la surveillance (monitoring) dans ce contexte ? On peut extraire q
 3. **Trending** (surveillance des tendance) : Les alertes et le débogage se produisent généralement sur des échelles de temps de l'ordre de quelques minutes à quelques heures. Bien que moins urgent, la capacité à voir comment vos systèmes sont utilisés et comment ils évoluent au fil du temps est également utile. Le trending peut influencer les décisions de conception et les processus tels que la planification de capacité (nombre et tailles des machines de l'infrastructure notamment).
 
 4. **Plumbing** ("Plomberie") : Tous les systèmes de surveillance sont des pipelines de traitement des données, ce n'est pas strictement de la surveillance (monitoring), mais c'est très lié. Il faut pouvoir filtrer et rediriger les données de surveillance vers d'autres partie de votre infrastructure (CI/CD), audit de sécurité etc.
-<!-- 
-## Petite histoire du Monitoring
+
+<!-- ## Petite histoire du Monitoring
 
 La surveillance est passé par différentes solutions durant les dernières années. Pendant longtemps, la solution dominante a été une combinaison de Nagios et de Graphite, ou de leurs variantes.
 
@@ -75,5 +75,3 @@ Les alertes peuvent être définies à l'aide du même langage de requête PromQ
 - En tant que système basé sur les métriques, Prometheus ne convient pas au stockage de journaux d'événements ou d'événements individuels. Ce n'est pas non plus le meilleur choix pour des données à haute cardinalité, telles que des adresses e-mail ou des noms d'utilisateur.
 
 - Prometheus est conçu pour la surveillance opérationnelle, où des imprécisions sont acceptables : il fait des compromis et préfère fournir des données globalement pertinentes plutôt que d'entraver la surveillance en attendant des données parfaites.
-
-# Architecture de Prometheus
