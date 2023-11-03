@@ -1,5 +1,7 @@
-
-# Bibliographie - Promehetheus Observability
+---
+title: Bibliographie - Prometheus Observability
+sidebar_class_name: hidden
+---
 
 
 
