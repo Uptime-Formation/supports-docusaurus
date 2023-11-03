@@ -1,4 +1,7 @@
-# Agrégation et types de métriques
+---
+title: Cours - Agrégation et types de métriques
+sidebar_class_name: hidden
+---
 
 ## Jauge
 

@@ -1,5 +1,7 @@
-
-# Instant Vector, Range Vector et subquery
+---
+title: Cours - Instant Vector, Range Vector et subquery
+sidebar_class_name: hidden
+---
 
 ### Instant Vector
 

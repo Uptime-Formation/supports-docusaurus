@@ -1,7 +1,6 @@
 ---
 title: Cours - Le langage de requête PromQL - partie 2
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 ### Anatomie d'un requête PromQL

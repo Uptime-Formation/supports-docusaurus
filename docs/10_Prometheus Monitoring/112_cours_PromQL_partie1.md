@@ -1,7 +1,6 @@
 ---
 title: Cours - Le langage de requête PromQL - partie 1
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) est un langage de requête pour le [système de monitoring Prometheus](https://prometheus.io/). Il est conçu pour créer des requêtes puissantes mais simples pour les graphiques, les alertes ou les séries temporelles dérivées (également appelées [règles d'enregistrement](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/)). PromQL est conçu à partir de zéro et n'a aucune similarité avec d'autres langages de requête utilisés dans les bases de données de séries temporelles, tels que [SQL dans TimescaleDB](https://www.timescale.com/), [InfluxQL](https://docs.influxdata.com/influxdb/v1.7/query_language/) ou [Flux](https://github.com/influxdata/flux).

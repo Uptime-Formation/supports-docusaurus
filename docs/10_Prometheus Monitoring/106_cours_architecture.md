@@ -1,7 +1,6 @@
 ---
 title: Cours - Architecture de Prometheus
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Prometheus découvre les cibles à collecter (scraper) à partir de ses méchanisme de découverte de services (Service Discovery).

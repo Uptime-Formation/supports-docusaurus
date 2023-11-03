@@ -1,7 +1,6 @@
 ---
 title: Cours - Les types de métriques pour surveiller son application
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Pour profiter d'un monitoring efficace avec Prometheus les applications doivent participer à produire et exposer les métriques pertinentes. Ces métriques doivent être conçues pour pouvoir comprendre le comportement de l'application.

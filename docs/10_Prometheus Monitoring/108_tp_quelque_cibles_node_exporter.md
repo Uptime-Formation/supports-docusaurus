@@ -1,7 +1,6 @@
 ---
 title: TP - Découverte de Prometheus partie 2
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Ce TP est la suite du premier TP.

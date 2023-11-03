@@ -1,5 +1,7 @@
-
-# Vector matching et opérateurs
+---
+title: Cours - Vector matching et opérateurs
+sidebar_class_name: hidden
+---
 
 Lorsque vous avez un scalaire et un vecteur instantané, il est clair que le scalaire peut être appliqué à chaque échantillon du vecteur. Avec deux vecteurs instantanés, quels échantillons doivent s'appliquer à quels autres échantillons ? Cette mise en correspondance des vecteurs instantanés c'est le `vector matching`.
 

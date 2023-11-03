@@ -1,7 +1,6 @@
 ---
 title: TP - Installation simple et découverte de Prometheus
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Dans ce TP nous allons explorer comment installer, configurer et utiliser une instance simple de Prometheus. Vous allez télécharger et exécuter Prometheus localement, le configurer pour collecter des données sur lui-même et sur une application exemple, puis travailler avec des requêtes, des règles et des graphiques pour utiliser les séries temporelles collectées.

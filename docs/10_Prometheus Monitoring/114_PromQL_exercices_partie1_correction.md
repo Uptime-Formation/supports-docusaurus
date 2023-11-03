@@ -1,7 +1,6 @@
 ---
 title: Exercices PromQL partie 1 - Correction
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Nous allons utiliser le `node_exporter` pour appliquer quelques requêtes. Assurez-vous d'avoir correctement configuré le Node Exporter et que vos métriques sont disponibles dans votre serveur Prometheus avant de les exécuter.

@@ -1,7 +1,6 @@
 ---
 title: TP - Mysqld exporter
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 <!-- - `docker run -it --net=host --rm mysql mysql -h 127.0.0.1 -P 3306 -uroot -pmy-secret-pw` -->

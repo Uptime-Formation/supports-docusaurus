@@ -1,5 +1,7 @@
-
-# Dashboarding avec Grafana
+---
+title: Cours - Dashboarding avec Grafana
+sidebar_class_name: hidden
+---
 
 Lorsque vous recevez une alerte ou souhaitez vérifier les performances de vos systèmes, les tableaux de bord sont le premier point de contact. N'est pas conçu pour être utilisé comme un tableau de bord.
 

@@ -1,7 +1,6 @@
 ---
 title: TP - Blackbox exporter
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 # Blackbox exporter

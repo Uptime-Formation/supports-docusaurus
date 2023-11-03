@@ -1,7 +1,6 @@
 ---
 title: TP - appareiller une application pour Prometheus
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Dans ce TP nous allons essayer et commenter plusieurs code minimaux d'application qui démontrent comment créer les différents types de métrique de base pour un application web (nombre et moyenne au fil du temps des requêtes, nombre d'exceptions déclenchées dans une portion de code, latence, etc).

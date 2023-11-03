@@ -1,7 +1,6 @@
 ---
 title: Cours - Introduction au monitoring Prometheus
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Prometheus est un système de monitoring (surveillance) open source basé sur les métriques. Il est très populaire aujourd'hui en particulier dans le contexte des clouds applicatifs ou il est la solution de référence.

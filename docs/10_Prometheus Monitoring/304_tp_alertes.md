@@ -1,7 +1,6 @@
 ---
 title: TP - Créer et déclencher des alertes
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Ce TP vise à mettre en pratique les exemple d'alerte du cours sur nos trois `node_exporter` du TP1 et configurer les notifications depuis une instance de alertmanager

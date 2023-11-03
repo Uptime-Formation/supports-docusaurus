@@ -1,7 +1,6 @@
 ---
 title: TP - Service Discovery et relabeling.
-draft: false
-# sidebar_position: 6
+sidebar_class_name: hidden
 ---
 
 Ce TP plutôt cours va illustrer une découverte de services pour lister les machines:
