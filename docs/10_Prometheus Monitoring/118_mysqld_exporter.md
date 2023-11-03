@@ -1,6 +1,6 @@
 ---
 title: TP - Mysqld exporter
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 <!-- - `docker run -it --net=host --rm mysql mysql -h 127.0.0.1 -P 3306 -uroot -pmy-secret-pw` -->
@@ -13,7 +13,7 @@ Lancer un conteneur mysql et se connecter au client à l'interieur:
 
 Puis dans le prompt mysql:
 
-- `mysql> CREATE USER 'prometheus'@'127.0.0.1' IDENTIFIED BY 'my-secret-prom-pw' WITH MAX_USER_CONNECTIONS 3;`
+- `mysql> CREATE USER 'prometheus'@'127.0.0.1' IDENTIFIED BY 'prom-password' WITH MAX_USER_CONNECTIONS 3;`
 
 - `mysql> GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'prometheus'@'127.0.0.1';`
 
@@ -22,7 +22,7 @@ Puis dans le prompt mysql:
 ```ini
 [client]
 user = prometheus
-password = my-secret-prom-pw
+password = prom-password
 host = 127.0.0.1
 ```
 

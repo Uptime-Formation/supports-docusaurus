@@ -1,6 +1,6 @@
 ---
 title: Cours - Alertes
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 Les alertes sont l'un des éléments constitutifs de la surveillance, permettant d'informer un être humain en cas de problème.

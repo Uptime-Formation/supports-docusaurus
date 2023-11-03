@@ -3,7 +3,9 @@ title: Cours - Dashboarding avec Grafana
 sidebar_class_name: hidden
 ---
 
-Lorsque vous recevez une alerte ou souhaitez vérifier les performances de vos systèmes, les tableaux de bord sont le premier point de contact. N'est pas conçu pour être utilisé comme un tableau de bord.
+
+
+<!-- Lorsque vous recevez une alerte ou souhaitez vérifier les performances de vos systèmes, les tableaux de bord sont le premier point de contact. N'est pas conçu pour être utilisé comme un tableau de bord.
 
 Un tableau de bord est un ensemble de graphiques, de tableaux et d'autres visualisations de vos systèmes. Vous pourriez avoir un tableau de bord pour le trafic global, les services qui reçoivent combien de trafic et avec quelle latence. Pour chacun de ces services, vous auriez probablement un tableau de bord de sa latence, erreurs, taux de requêtes, nombre d'instances, utilisation du CPU, utilisation de la mémoire et métriques spécifiques au service.
 
@@ -101,4 +103,4 @@ Dans la réalité, vous baseriez probablement le modèle sur l'étiquette d'inst
 
 Vous avez peut-être remarqué que lorsque vous changez la valeur de la variable, les paramètres de l'URL changent, et de même si vous utilisez les contrôles de temps. Cela vous permet de partager des liens de tableau de bord ou d'avoir vos alertes liées à un tableau de bord avec juste les bonnes valeurs de variable, comme le montre "Notification templates". Il y a une icône "Share dashboard" en haut de la page que vous pouvez utiliser pour créer les URL et prendre des instantanés des données du tableau de bord. Les instantanés sont parfaits pour les post-mortems et les rapports de panne, lorsque vous voulez préserver l'aspect du tableau de bord.
 
-
+ -->

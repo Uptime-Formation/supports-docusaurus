@@ -1,6 +1,6 @@
 ---
 title: TP - Découverte de Prometheus partie 2
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 Ce TP est la suite du premier TP.
@@ -94,3 +94,6 @@ scrape_configs:
 ```
 
 Accédez au navigateur d'expressions et vérifiez que Prometheus dispose désormais d'informations sur les séries temporelles exposées par ces points d'accès exemples, telles que `node_cpu_seconds_total`.
+
+
+Source: documentation officielle Prometheus sous licence CC by SA

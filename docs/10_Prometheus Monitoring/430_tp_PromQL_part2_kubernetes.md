@@ -1,6 +1,6 @@
 ---
 title: TP - PromQL 2 - Détecter des anomalies sur un Cluster Kubernetes
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 Dans ce TP nous allons creuser plus loin les requêtes PromQL avec des aggregations, fonctions, calculs dans le contexte de l'observation d'un cluster Kubernetes.

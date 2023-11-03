@@ -1,6 +1,6 @@
 ---
 title: Cours - Le langage de requête PromQL - partie 2
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 ### Anatomie d'un requête PromQL
@@ -121,3 +121,6 @@ Il y a un piège courant lors de la combinaison des résultats d'expressions : 
 ```
 sum(a) or sum(b)
 ```
+
+
+source : https://valyala.medium.com/promql-tutorial-for-beginners-9ab455142085

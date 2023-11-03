@@ -1,9 +1,9 @@
 ---
 title: Cours - Architecture de Prometheus
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
-Prometheus découvre les cibles à collecter (scraper) à partir de ses méchanisme de découverte de services (Service Discovery).
+Prometheus découvre les cibles à collecter (scraper) à partir de ses méchanismes de découverte de services (Service Discovery).
 
 Ces cibles peuvent être vos propres applications instrumentées ou des applications tierces que vous pouvez collecter à l'aide d'un exporter (exporter).
 
@@ -11,82 +11,106 @@ Les données collectées sont stockées, et vous pouvez les utiliser dans des ta
 
 ![](https://www.augmentedmind.de/wp-content/uploads/2021/09/prometheus-official-architecture.png)
 
+
+## Les Exporters
+
+- Tout le code que vous utilisez n'est pas forcément accessible. Dans ce cas l'instrumentation directe n'est pas possible.
+
+- Un exporter est un proxy déployé juste à côté de l'application dont on souhaite obtenir les métriques. Il prend des requêtes de Prometheus, recueille les données requises à partir de l'application, les transforme dans le format correct.
+
+<!-- Contrairement à l'instrumentation directe que vous utiliseriez pour le code que vous contrôlez, les exporters utilisent un style différent d'instrumentation connu sous le nom de *collecteurs personnalisés* ou *ConstMetrics*. -->
+
+- La communauté Prometheus a déjà développé de nombreux exporters : l'exporter dont vous avez besoin existe probablement déjà et peut être utilisé avec peu d'effort.
+
+<!-- Si l'exporter ne dispose pas d'une métrique qui vous intéresse, vous pouvez toujours envoyer une demande de fusion pour l'améliorer, ce qui le rendra meilleur pour la personne suivante qui l'utilisera. -->
+
+
 ## Bibliothèques clientes
 
-Les métriques ne surgissent généralement pas automatiquement à partir des applications ; quelqu'un doit ajouter l'instrumentation qui les produit. C'est là que les bibliothèques clientes (client libraries) interviennent. Avec généralement seulement deux ou trois lignes de code, vous pouvez à la fois définir une métrique et ajouter votre instrumentation souhaitée directement dans le code que vous contrôlez. Cela est appelé **instrumentation directe**.
+- Pour avoir des métriques quelqu'un doit ajouter l'instrumentation qui les produit. C'est le role des bibliothèques clientes (client libraries). Avec seulement deux ou trois lignes de code, vous pouvez à la fois définir une métrique et ajouter l'instrumentation dans le code que vous contrôlez.
 
-Il existe des bibliothèques clientes pour tous les langages majeurs.
+- Il existe des bibliothèques clientes pour tous les langages et exécutions majeurs.
 
-Les bibliothèques clientes se chargent de tous les détails techniques tels que la sécurité au niveau des threads, la comptabilité et le formatage texte d'exposition (soit Prometheus soit format OpenMetrics) en réponse aux requêtes HTTP.
+<!-- Le projet Prometheus propose des bibliothèques clientes officielles en Go, Python, Java/JVM, Ruby et Rust. Il existe également diverses bibliothèques clientes tierces, telles que pour C#/.Net, Node.js, Haskell et Erlang. -->
 
-- Comme la surveillance basée sur les métriques ne suit pas chaque événement individuel, l'utilisation de la mémoire de la bibliothèque cliente n'augmente pas avec le nombre d'événements. La mémoire consommée est plutôt liée au nombre de métriques que vous avez.
+- Les bibliothèques clientes se chargent de tous les détails techniques tels que la sécurité au niveau des threads le formattage et ajoute très peu de charge à votre application.
 
-- Certaines métriques, telles que l'utilisation du CPU et les statistiques de collecte des déchets, sont généralement fournies par défaut par les bibliothèques clientes, en fonction de la bibliothèque et de l'environnement d'exécution.
+<!-- , la comptabilité et la production du texte Prometheus et/ou du format d'exposition OpenMetrics en réponse aux requêtes HTTP.
 
-Les bibliothèques clientes ne sont pas limitées à produire des métriques dans les formats de texte Prometheus et OpenMetrics. Prometheus est un écosystème ouvert, et les mêmes API utilisées pour générer le format texte peuvent être utilisées pour produire des métriques dans d'autres formats ou les acheminer vers d'autres systèmes d'instrumentation.
+Comme la surveillance basée sur les métriques ne suit pas les événements individuels, l'utilisation de la mémoire de la bibliothèque cliente n'augmente pas avec le nombre d'événements. La mémoire est plutôt liée au nombre de métriques que vous avez. -->
 
-Il est aussi possible de prendre des métriques d'autres systèmes d'instrumentation et de les intégrer dans une bibliothèque cliente Prometheus, si vous n'avez pas encore tout converti en instrumentation Prometheus.
+<!-- Si l'une des dépendances de bibliothèque de votre application comporte une instrumentation Prometheus, elle sera automatiquement détectée. Ainsi, en instrumentant une bibliothèque clé telle que votre client RPC, vous pouvez obtenir une instrumentation pour celle-ci dans toutes vos applications.
 
-## Prometheus exporters
+Certaines métriques, telles que l'utilisation du CPU et les statistiques de collecte des déchets, sont généralement fournies par défaut par les bibliothèques clientes, en fonction de la bibliothèque et de l'environnement d'exécution. -->
 
-Tout le code que vous exécutez n'est pas forcément du code que vous pouvez contrôler ou auquel vous pouvez même avoir accès, et donc l'ajout d'une instrumentation directe n'est pas nécessairement une option. Par exemple, il est peu probable que les noyaux de systèmes d'exploitation commencent à produire des métriques au format Prometheus via HTTP de sitôt.
+<!-- Les bibliothèques clientes ne sont pas limitées à produire des métriques dans les formats de texte Prometheus et OpenMetrics. Prometheus est un écosystème ouvert, et les mêmes API utilisées pour générer le format texte peuvent être utilisées pour produire des métriques dans d'autres formats ou les acheminer vers d'autres systèmes d'instrumentation. -->
 
-De tels logiciels ont souvent une interface à travers laquelle vous pouvez accéder aux métriques. Il peut s'agir d'un format ad hoc nécessitant une analyse et une gestion personnalisées, comme c'est le cas pour de nombreuses métriques Linux, ou d'une norme bien établie telle que SNMP pour le réseau.
+Il est possible de prendre des métriques d'autres systèmes d'instrumentation et de les intégrer dans une bibliothèque cliente Prometheus, si vous n'avez pas encore tout converti en instrumentation Prometheus.
 
-Un exporter est un logiciel que vous déployez juste à côté de l'application dont vous souhaitez obtenir les métriques. Il prend des requêtes de Prometheus, recueille les données requises à partir de l'application, les transforme dans le format correct, et enfin les renvoie en réponse à Prometheus. Vous pouvez considérer un exporter comme un petit proxy un-à-un, convertissant les données entre l'interface de métriques d'une application et le format d'exposition Prometheus.
+## La Découverte de services
 
-Compte tenu de la taille de la communauté Prometheus, il est probable que l'exporter dont vous avez besoin pour un logiciel standard existe déjà.
+- Une fois que toutes les applications sont instrumentées et que vos exporters sont en cours d'exécution, Prometheus doit savoir où les chercher.
 
-## Découverte de services
+C'est ainsi que Prometheus saura quoi surveiller et pourra remarquer si quelque chose qu'il est censé surveiller ne répond pas.
 
-La découverte de service  dynamique est une des caractéristique centrale du modèle `pull` de Prometheus
+- Dans des environnements dynamiques, vous ne pouvez pas simplement fournir une liste d'applications et d'adresses car elle deviendra obsolète : la découverte de service est un système qui permet à prometheus de récupérer dynamiquement les cibles à scrapper.
 
-Une fois que vous avez toutes vos applications instrumentées et que vos exporters sont en cours d'exécution, Prometheus doit savoir où ils se trouvent. C'est ainsi que Prometheus saura quoi surveiller et pourra remarquer si quelque chose qu'il est censé surveiller ne répond pas.
+- Il existe probablement déjà une base de données de vos machines, de vos applications et de leurs fonctions par exemple dans un fichier d'inventaire pour Ansible, l'API du fournisseur de cloud ou dans des étiquettes et des annotations dans Kubernetes.
 
-Dans un environnement dynamique comme un cloud IaC ou un cloud applicatif, vous ne pouvez pas simplement fournir une liste d'applications et d'exporters une fois, car elle deviendra obsolète très vite (minutes). C'est là que la découverte de services intervient.
+- Prometheus propose des intégrations avec de nombreux mécanismes de découverte de services courants, tels que Kubernetes, et les principaux fournisseurs de cloud. Il existe également des intégrations génériques pour s'adapter aux cas plus spécifiques (fichier et HTTP).
 
-Il existe probablement déjà une source de données décrivant de vos machines et vos applications. Elle peut être dans un fichier d'inventaire pour Ansible, basée sur des tags de vos instances EC2, dans des étiquettes et des annotations dans Kubernetes, ou simplement stockée dans votre wiki de documentation.
+- Enfin pour régler le problème d'adapter Prometheus à votre architecture spécifique (quel role à un serveur précis et comment doit-il être traité) il existe une fonction de *relabeling* qui permet de changer dynamiquement les métadonnées et étiquettes associées à vos cibles.
 
-Prometheus propose des intégrations avec de nombreux mécanismes de découverte de services courants, tels que Kubernetes, EC2 et Consul. Il existe également une intégration générique pour ceux dont la configuration est un peu hors des sentiers battus (voir "Fichier" et "HTTP").
+<!-- Cela laisse cependant un problème. Le simple fait que Prometheus ait une liste de machines et de services ne signifie pas que nous savons comment ils s'intègrent dans votre architecture. Par exemple, vous pourriez utiliser l'étiquette `Name` d'EC2 pour indiquer quelle application s'exécute sur une machine, tandis que d'autres pourraient utiliser une étiquette appelée `app`.
 
-Il reste cependant un problème classique de compatibilité de la découverte de services. Par exemple, vous pourriez utiliser l'étiquette `Name` d'EC2 pour indiquer quelle application s'exécute sur une machine, tandis que d'autres voudraient utiliser une étiquette appelée `app` : Prometheus vous permet de configurer comment les labels de la découverte de services sont associées aux cibles de surveillance et à leurs étiquettes à l'aide de *relabeling* -> changement dynamique des labels selon des règles au moment de la découverte de service : cela permettra d'uniformiser les données dans votre base de donnée Prometheus.
+Comme chaque organisation le fait légèrement différemment, Prometheus vous permet de configurer comment les métadonnées de la découverte de services sont associées aux cibles de surveillance et à leurs étiquettes à l'aide de *relabeling*. -->
 
-## La collecte de donnée (Scraping)
+## Scraping
 
-La découverte de services et le *relabeling* nous donnent une liste de cibles à surveiller. Maintenant, Prometheus doit récupérer les métriques. Prometheus le fait en envoyant une requête HTTP appelée *scrape*. La réponse à la requête est analysée et ingérée dans le stockage. Plusieurs métriques utiles sont également ajoutées, telles que le succès du *scrape* et la durée du processus. Les *scrapes* se produisent régulièrement ; en général, vous les configurez pour se produire toutes les 10 à 60 secondes pour chaque cible.
+- Prometheus récupère les métriques en envoyant une requête HTTP appelée *scrape*.
 
-## Stockage
+- La réponse est analysée et ingérée dans le stockage et plusieurs métriques décrivant le scrape sont ajoutées, telles que le succès et la durée du processus. 
 
-Prometheus stocke les données localement dans une base de données spéciale. Les systèmes distribués sont difficiles à rendre fiables, c'est pourquoi Prometheus n'essaie pas de faire de clustering. En plus de la fiabilité, cela rend Prometheus plus facile à exécuter.
+- Les *scrapes* sont lancés régulièrement : en général on les configure pour se produire toutes les 10 à 60 secondes pour chaque cible.
 
-Au fil des ans, le stockage a connu plusieurs révisions, avec le système de stockage de Prometheus 2.0 étant la troisième itération. Le système de stockage peut gérer l'ingestion de millions d'échantillons par seconde, ce qui permet de surveiller des milliers de machines avec un seul serveur Prometheus: l'algorithme de compression utilisé peut atteindre 1,3 octet par échantillon sur des données du monde réel.
+## Règles d'enregistrement (recording rules)
 
-## Tableaux de bord Grafana (Dashboards)
+Bien que PromQL et le moteur de stockage soient puissants et efficaces, l'agrégation de métriques provenant de milliers de machines à chaque fois que vous générez un graphique peut devenir un peu lent.
 
-Prometheus dispose de plusieurs API HTTP qui vous permettent à la fois de demander des données brutes et d'évaluer des requêtes PromQL. Ces API peuvent être utilisées pour produire des graphiques et des tableaux de bord.
+- Parfois des requêtes complexes a grande échelles peuvent être un peu lentes : les règles d'enregistrement permettent aux expressions PromQL d'être évaluées régulièrement et leurs résultats ingérés dans le moteur de stockage.
 
-Prometheus lui-même fournit un "expression browser" permettant de dessiner des graphiques simples mais ce n'est pas un système de dashboards général.
+- La requête gourmande est en quelque sort précalculée.
 
-Il est recommandé d'utiliser Grafana pour les dashboards. Il possède de nombreuses fonctionnalités, notamment une prise en charge officielle de Prometheus en tant que source de données. Il peut produire une grande variété de tableaux de bord.
+## Les règles d'alertes (alerting rules)
 
-## Recording Rules et alertes
+- Les règles d'alerte, proche des recording rules évaluent régulièrement des expressions PromQL et déclenche une alerte dès que la requête possède des résultat.
 
-Bien que PromQL et le moteur de stockage soient puissants et efficaces, l'agrégation de métriques provenant de milliers de machines à chaque fois que vous générez un graphique peut devenir un peu lent. Les **recording rules** permettent de générer de nouvelles données/formatages ingérés dans le moteur de stockage à partir d'expression promQL arbitraires => elle seront ensuite disponibles directement pour économiser des resources au moment de la récupération.
-
-Les règles d'alerte sont une autre forme de règles : évaluent également régulièrement des expressions PromQL, et tout résultat de ces expressions devient une alerte. Les alertes sont envoyées à l'Alertmanager. C'est une façon très dynamique est puissante d'exprimer et envoyer les anomalies sur votre système.
+- Les alertes sont ensuite envoyées à l'Alertmanager.
 
 ## Gestion des alertes
 
-L'Alertmanager reçoit les alertes des serveurs Prometheus et les transforme en notifications. Les notifications peuvent inclure des e-mails, des applications de chat comme Slack et des services tels que PagerDuty.
+- L'Alertmanager reçoit les alertes d'un ou plusieur serveurs Prometheus et les transforme en notifications : e-mails, chat comme Slack et des services tels que PagerDuty.
 
-L'Alertmanager ne se contente pas de transformer les alertes en notifications une à une. Les alertes proches ou dupliquées peuvent être regroupées en une seule notification, filtrées pour réduire les alertes intempestives, et différentes règles de routage et de notification peuvent être configurées pour chacune des équipes d'une organisation.
+- Les alertes doivent être peu nombreuse et pertinentes : Alermanager peut grouper les alertes connexes en une seule notification, limiter pour réduire les alertes intempestives, et différentes règles de routage et de notification peuvent être configurées pour chaque équipe.
 
-Les alertes peuvent également être mises en sourdine, pour suspendre un problème dont vous êtes déjà au courant à l'avance ou lorsque vous savez qu'une maintenance est prévue.
+- Les alertes peuvent être mises en sourdine, peut-être pour suspendre un problème dont vous êtes déjà au courant à l'avance lorsque vous savez qu'une maintenance est prévue.
 
-Le rôle de l'Alertmanager s'arrête à l'envoi de notifications ; pour gérer les réponses humaines aux incidents, vous devez utiliser des services tels que PagerDuty et des systèmes de suivi des tickets.
+## Stockage
 
-## Stockage à long terme
+- Prometheus stocke les données localement dans une base de données custom qui ne peut pas être clusterisée ce qui la rend plus fiable facile à exécuter.
 
-Comme Prometheus stocke des données uniquement sur la machine locale, vous êtes limité par l'espace disque disponible sur cette machine. Bien que vous vous préoccupiez généralement uniquement des données les plus récentes pendant environ une journée, pour une planification de capacité à long terme, une période de rétention plus longue est souhaitable.
+- Le moteur de stockage a connu plusieurs révisions. Le système de stockage de Prometheus 2.0 étant la troisième itération. Le système de stockage peut gérer l'ingestion de millions d'échantillons par seconde, ce qui permet de surveiller des milliers de machines avec un seul serveur Prometheus.
 
-Prometheus n'offre pas de solution de stockage cluster pour stocker des données sur plusieurs machines, mais il existe des API de lecture et d'écriture à distance qui permettent à d'autres systèmes de se connecter et de prendre en charge ce rôle. Cela permet d'exécuter des requêtes PromQL de manière transparente à la fois sur des données locales et distantes.
+- L'algorithme de compression utilisé peut atteindre 1,3 octet par échantillon sur des données du monde réel.
+
+<!-- ## Tableaux de bord
+
+Prometheus dispose de plusieurs API HTTP qui vous permettent à la fois de demander des données brutes et d'évaluer des requêtes PromQL. Ces API peuvent être utilisées pour produire des graphiques et des tableaux de bord. Out of the box, Prometheus fournit l'expression browser. Il utilise ces API et convient pour des requêtes ad hoc et des explorations de données, mais ce n'est pas un système de tableau de bord général.
+
+Il est recommandé d'utiliser Grafana pour les tableaux de bord. Il possède de nombreuses fonctionnalités, notamment une prise en charge officielle de Prometheus en tant que source de données. Il peut produire une grande variété de tableaux de bord, comme celui présenté dans la **figure 1-2**. Grafana prend en charge la communication avec plusieurs serveurs Prometheus, même au sein d'un seul panneau de tableau de bord. -->
+
+### Stockage à long terme
+
+- Prometheus stocke des données uniquement sur la machine locale : on est limité par l'espace disque disponible sur un machine. Bien qu'on ne se préoccupe  généralement uniquement des données les plus récentes (une journée), pour faire du trending, une période de rétention plus longue est souhaitable.
+
+- Prometheus n'offre pas de solution de stockage cluster pour stocker des données sur plusieurs machines, mais il existe des API de lecture et d'écriture à distance qui permettent à d'autres systèmes (Thanos par exemple) de s'en charger : cela permet d'exécuter des requêtes PromQL de manière transparente à la fois sur des données locales et distantes.

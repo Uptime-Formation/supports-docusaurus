@@ -1,6 +1,6 @@
 ---
 title: TP - Blackbox exporter
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 # Blackbox exporter

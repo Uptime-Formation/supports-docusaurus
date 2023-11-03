@@ -5,7 +5,17 @@ sidebar_class_name: hidden
 
 Les `recording_rules` sont des règles à ajouter à la configuration de Prometheus pour créer de nouvelles données. En particulier elles permettent d'agréger des requêtes en nouvelles séries temporelles.
 
-Bien que ce ne soit pas un problème dans nos exemples simples, les requêtes PromQL qui agrègent des milliers de séries temporelles (time series) peuvent devenir lentes lorsqu'elles sont calculées à la volée. Pour rendre cela plus efficace, Prometheus peut préenregistrer des expressions en nouvelles séries temporelles persistantes via des *règles d'enregistrement* configurées. Disons que nous souhaitons enregistrer le taux par seconde du temps CPU (`node_cpu_seconds_total`) moyenné sur tous les CPU par instance (en préservant les dimensions `job`, `instance` et `mode`) tel que mesuré sur une fenêtre de 5 minutes. Nous pourrions écrire cela de la manière suivante :
+Bien que ce ne soit pas un problème dans nos exemples simples, les requêtes PromQL qui agrègent des milliers de séries temporelles (time series) peuvent devenir lentes lorsqu'elles sont calculées à la volée.
+
+Pour rendre cela plus efficace, Prometheus peut préenregistrer des expressions en nouvelles séries temporelles persistantes via des *recording rules* configurées.
+Disons que nous souhaitons enregistrer :
+
+- le taux par seconde du temps CPU (`node_cpu_seconds_total`)
+- en moyenne sur tous les CPU par instance
+- en préservant les dimensions `job`, `instance` et `mode`
+-  sur une fenêtre de 15 minutes.
+
+Nous pourrions écrire cela de la manière suivante :
 
 ```
 avg by (job, instance, mode) (rate(node_cpu_seconds_total[5m]))
@@ -13,7 +23,7 @@ avg by (job, instance, mode) (rate(node_cpu_seconds_total[5m]))
 
 Essayez de créer un graphique avec cette expression.
 
-Pour enregistrer les séries temporelles résultant de cette expression dans une nouvelle métrique appelée `job_instance_mode:node_cpu_seconds:avg_rate5m`, créez un fichier avec la règle d'enregistrement suivante et enregistrez-le sous le nom `prometheus.rules.yml` :
+Pour enregistrer les séries temporelles résultant de cette expression dans une nouvelle métrique appelée `job_instance_mode:node_cpu_seconds:avg_rate5m`, créez un fichier avec la règle d'enregistrement suivante et enregistrez-le sous le nom `prom-rules.yml` :
 
 ```yaml
 groups:
@@ -35,7 +45,7 @@ global:
     monitor: 'codelab-monitor'
 
 rule_files:
-  - 'prometheus.rules.yml'
+  - 'prom-rules.yml'
 
 scrape_configs:
   - job_name: 'prometheus'
@@ -61,7 +71,7 @@ scrape_configs:
           group: 'canary'
 ```
 
-Rechargez ma nouvelle configuration de Prometheus et vérifiez qu'une nouvelle série temporelle avec le nom de métrique `job_instance_mode:node_cpu_seconds:avg_rate5m` est désormais disponible en interrogeant le navigateur d'expressions ou en créant un graphique.
+Rechargez cette nouvelle configuration de Prometheus et vérifiez qu'une nouvelle série temporelle avec le nom de métrique `job_instance_mode:node_cpu_seconds:avg_rate5m` est désormais disponible en interrogeant le navigateur d'expressions ou en créant un graphique.
 
 ### Bonnes pratiques pour nommer les règles
 
