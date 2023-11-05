@@ -8,7 +8,7 @@ weight: 30
   - Savoir utiliser la directive ENV dans un Dockerfile
   - Savoir passer des variables d'environnement à un conteneur
 
----
+<!-- --- -->
 
 # Les variables d'environnement 
 
@@ -21,7 +21,8 @@ Les variables d'environnement UNIX sont des variables dont les valeurs sont déf
 
 Les variables d'environnement sont constituées de paires de noms et de valeurs, et vous pouvez en créer autant que vous le souhaitez pour qu'elles soient disponibles à titre de référence à un moment donné.
 
----
+<!-- --- -->
+
 **Tout process a généralement des variables d'environnement.** 
 
 ```shell
@@ -31,7 +32,7 @@ $ sudo cat /proc/self/environ | tr "\0" "\n"
 
 **Avancé** : En remplaçant `self` par un `pid` vous pouvez voir les variables d'environnement de tout process.
 
----
+<!-- --- -->
 
 Les variables d'environnement sont des variables "shell", elles ont toujours la forme
 
@@ -47,7 +48,7 @@ $ env -i sh -c "env"
 $ env -i sh -c "export VAR=VALUE; printenv"
 ```
 
----
+<!-- --- -->
 
 **Les variables d'environnement sont une façon recommandée de configurer vos applications Docker.**
 
@@ -60,7 +61,7 @@ ENV <key>=<value> <key2>=<value2>
 ENV <key> <value>
 ```
 
----
+<!-- --- -->
 
 **On peut utiliser des variables d'environnement dans les Dockerfiles. La syntaxe est `${...}`.*
 
@@ -76,7 +77,9 @@ COPY \$DEST /srv # COPY $DEST /srv
 C'est un bon moyen de définir une seule fois une information redondante dans le Dockerfile (ex: un tag).
 
 Se référer au [mode d'emploi](https://docs.docker.com/engine/reference/builder/#environment-replacement) pour la logique plus précise de fonctionnement des variables.
----
+
+<!-- --- -->
+
 ## En ligne de commande 
 
 **On peut également définir les variables d'environnement en ligne de commande.**
@@ -85,7 +88,8 @@ Se référer au [mode d'emploi](https://docs.docker.com/engine/reference/builder
 $ docker run --env VAR=VALUE ubuntu env
 ```
 
---- 
+<!-- --- -->
+
 # Impact sur le code 
 
 **Une fois admis qu'il faut utiliser des variables d'environnement pour configurer un service, il faut l'intégrer aux applications.**

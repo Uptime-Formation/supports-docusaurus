@@ -2,6 +2,7 @@
 title: 3.03 Passer des informations Les secrets Docker
 pre: "<b>3.03 </b>"
 weight: 31
+sidebar_class_name: hidden
 ---
 
 ## Objectifs pédagogiques

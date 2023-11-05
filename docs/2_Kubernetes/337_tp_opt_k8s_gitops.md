@@ -1,5 +1,6 @@
 ---
-title: TP optionnel - CI/CD GitOps avec ArgoCD 
+title: TP optionnel - CI/CD GitOps avec ArgoCD
+sidebar_class_name: hidden
 ---
 
 Refactoring in progress... à prendre comme des pistes de travail.

@@ -71,7 +71,8 @@ RUN ["executable", "param1", "param2"] (exec form)
  
 L'image validée résultante sera utilisée pour l'étape suivante dans le Dockerfile.
 
----
+<!-- --- -->
+
 ### Dockerfile in progress 2/5
 
 ```Dockerfile
@@ -85,7 +86,7 @@ RUN apt update && apt install -y python3
 # La commande par défaut lancée dans le conteneur
 CMD ["sh", "-c", "ls /srv"]
 ```
----
+<!-- --- -->
 ### Instruction `COPY`
 
 ```dockerfile
@@ -95,7 +96,7 @@ COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 
 **Copie les nouveaux fichiers ou répertoires depuis src et les ajoute au système de fichiers du conteneur au chemin dest.**
 
----
+<!-- --- -->
 ### Dockerfile in progress 3/5
 
 ```Dockerfile
@@ -117,7 +118,8 @@ CMD ["sh", "-c", "ls /srv"]
 
 La construction reprend depuis la dernière étape modifiée. Sinon, la construction utilise les layers précédents, qui avaient été mis en cache par le Docker Engine.
 
----
+<!-- --- -->
+
 ### Instruction `ADD`
 
 ```dockerfile
@@ -128,6 +130,7 @@ ADD [--chown=<user>:<group>] [--checksum=<checksum>] <src>... <dest>
 Généralement utilisé pour ajouter le code du logiciel en cours de développement et sa configuration au conteneur.
 
 <!-- --- -->
+
 ### Dockerfile in progress 4/5
 
 ```Dockerfile

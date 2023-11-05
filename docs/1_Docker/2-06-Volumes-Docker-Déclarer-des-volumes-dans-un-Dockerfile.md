@@ -3,6 +3,7 @@ title: 2.06 Volumes Docker Déclarer des volumes dans un Dockerfile
 pre: "<b>2.06 </b>"
 weight: 19
 ---
+
 ## Objectifs pédagogiques
   - Savoir utiliser la commande VOLUME
   - Comprendre la persistance de données

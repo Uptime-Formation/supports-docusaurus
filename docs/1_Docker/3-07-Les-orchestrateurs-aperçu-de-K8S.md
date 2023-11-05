@@ -1,6 +1,7 @@
 ---
 title: 3.07 Les orchestrateurs aperçu de K8S
 weight: 36
+sidebar_class_name: hidden
 ---
 
 ## Objectifs pédagogiques

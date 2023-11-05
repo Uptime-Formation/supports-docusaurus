@@ -18,7 +18,7 @@ Pour bien comprendre qu'il s'agit au départ uniquement de convertir des options
 
 Le code est sur https://github.com/docker/compose, docker-compose est un *fat binary* en go qui pèse seulement ~30 Mo.
 
----
+<!-- --- -->
 
 ## Le "langage" de Docker Compose
 
@@ -30,7 +30,7 @@ Documentation
 il est aussi possible d'utiliser des variables d'environnement dans Docker Compose : se référer au [mode d'emploi](https://docs.docker.com/compose/compose-file/#variable-substitution) pour les subtilités de fonctionnement
 
 
----
+<!-- --- -->
 
 ### Syntaxe
 
@@ -49,7 +49,7 @@ titre: Un exemple: on va avoir des soucis
 titre: "Un exemple: on va avoir des soucis"
 ```
 
----
+<!-- --- -->
 
 ## Exemples de fichier Docker Compose
 
@@ -143,7 +143,7 @@ networks:
   back_end:
 ```
 
----
+<!-- --- -->
 
 ## Utiliser Docker compose
 
@@ -194,7 +194,7 @@ On peut également exécuter des tâches une par une dans les conteneurs du dock
 
 Exemple : https://docs.funkwhale.audio/administrator/installation/docker.html#set-up-funkwhale
 
-### Visualisation des applications microservice complexes
+<!-- ### Visualisation des applications microservice complexes
 
 Certaines applications microservice peuvent avoir potentiellement des dizaines de petits conteneurs spécialisés. 
 
@@ -206,4 +206,4 @@ Il est possible de visualiser l'architecture d'un fichier Docker Compose en util
 * `sudo apt-get install graphviz`
 * `docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image docker-compose.yml`
 
-Cet outil peut être utilisé dans un cadre d'intégration continue pour produire automatiquement la documentation pour une image en fonction du code.
+Cet outil peut être utilisé dans un cadre d'intégration continue pour produire automatiquement la documentation pour une image en fonction du code. -->

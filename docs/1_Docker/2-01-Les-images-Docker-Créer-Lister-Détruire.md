@@ -3,20 +3,23 @@ title: 2.01 Les images Docker Créer Lister Détruire
 pre: "<b>2.03 </b>"
 weight: 16
 ---
+
 ## Objectifs pédagogiques
   - Savoir utiliser les commandes image de base (pull, ls, history, inspect, tag, prune)
   - Savoir identifier les images
   - Connaître les bonnes pratiques (Dockerfile, nettoyage, etc.)
   
 ![](../assets/images/docker-cycle.jpg)
----
+
+
+<!-- --- -->
 
 ## Documentation 
 
 * `docker image --help`
 * https://docs.docker.com/engine/reference/commandline/images/
   
----
+<!-- --- -->
 
 # Les opérations sur les images 
 
@@ -28,7 +31,7 @@ docker images
 docker image ls
 ```
   
----
+<!-- --- -->
 
 ## Construire : build 
 
@@ -39,7 +42,7 @@ Elle dispose de très nombreuses options qu'il est intéressant de connaître à
 ```shell
 $ man docker-image-build
 ```  
----
+<!-- --- -->
 
 ## Télécharger : pull et push  
 
@@ -52,7 +55,7 @@ On les reverra dans la partie suivantes concernant les registres.
 $ man docker-image-pull
 ```
   
----
+<!-- --- -->
 
 ## Détruire : rm et prune
 
@@ -68,7 +71,7 @@ $ docker image rm  nging:1.14
 $ docker image pull busybox
 $ docker image prune
 ```  
----
+<!-- --- -->
 
 
 ## Identifier : tag
@@ -90,7 +93,7 @@ Notez que par défaut si aucun numéro de version n'est fourni, docker utilise p
 
 Bonne pratique : de ne pas s'appuyer sur ce mécanisme de `latest`. Pourquoi ?
   
----
+<!-- --- -->
 
 ## Analyser : history et  inspect
 
@@ -99,7 +102,7 @@ Ces commandes offrent une vision historique ou technique de l'image, permettant 
 - Supprimez une image
 - Que fait la commande `docker image prune -a` ?
   
----
+<!-- --- -->
 
 ## Exporter/Importer : save, load et import
 
