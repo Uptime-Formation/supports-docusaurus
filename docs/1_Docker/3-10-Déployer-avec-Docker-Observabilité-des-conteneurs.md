@@ -43,13 +43,13 @@ services:
       start_period: 20s
       timeout: 10s
 ```
----
+<!-- --- -->
 
 ### Du monitoring avec *cAdvisor* et *Prometheus*
 
 Suivre ce tutoriel pour du monitoring des conteneurs Docker : <https://prometheus.io/docs/guides/cadvisor/> -->
 
----
+<!-- --- -->
 ## Gérer les logs des conteneurs
 
 Avec Elasticsearch, Filebeat et Kibana… grâce aux labels sur les conteneurs Docker
@@ -130,7 +130,7 @@ networks:
   logging-network:
     driver: bridge
 ```
----
+<!-- --- -->
 
 Démarrez les conteneurs.
 
@@ -149,7 +149,7 @@ L'index nécessaire à Kibana est créé, vous pouvez vous rendre dans la partie
 
 Il est temps de faire un petit `docker stats` pour découvrir l'utilisation du CPU et de la RAM de vos conteneurs !
 
----
+<!-- --- -->
 ### _Avancé :_ Ajouter un nœud Elasticsearch
 
 **À l'aide de la documentation Elasticsearch et/ou en adaptant de bouts de code Docker Compose trouvés sur internet, ajoutez et configurez un nœud Elastic.** 

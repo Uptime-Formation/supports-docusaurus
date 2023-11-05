@@ -44,7 +44,7 @@ Mais ce sont de grosses simplifications parce qu'on en a un usage similaire : is
 
 **Les deux technologies peuvent utiliser un système de quotas pour l'accès aux ressources matérielles (accès en lecture/écriture sur le disque, sollicitation de la carte réseau, du processeur).**
 
----
+<!-- --- -->
 
 # Docker Origins : genèse du concept de **conteneur**
 
@@ -66,7 +66,7 @@ Implémenté principalement par le programme `chroot` [*change root* : changer d
   - des appels système
   - du processeur (CPU)
 
----
+<!-- --- -->
 
 ### Les _namespaces_ (espaces de noms)
 
@@ -80,7 +80,7 @@ Ils  cloisonnent
 - Control group : les cgroups sont un "arbre" dont l'enfant peut voir uniquement sa partie
 - Time Namespace : avoir un temps différent du parent
 
----
+<!-- --- -->
 
 ## Les capabilities 
 
@@ -102,7 +102,7 @@ En d'autres termes, cet utilisateur est autorisé à faire (presque) n'importe q
 Cela divise efficacement les privilèges root en unités plus petites et distinctes. Chacune de ces unités peut alors être indépendamment attribuée à des processus. De cette façon, l'ensemble complet des privilèges est réduit et diminue les risques d'exploitation.
 
 
----
+<!-- --- -->
 
 ## Bonnes pratiques 
 
@@ -111,7 +111,7 @@ Cela divise efficacement les privilèges root en unités plus petites et distinc
 <!-- * Monter au maximum en read only (un fichier binaire pirate est visible au milieu d'images) -->
 * Faire des scan de sécurité des images et cluster par exemple avec : https://github.com/aquasecurity/trivy
 
---- 
+<!-- ---  -->
 
 ## Renforcer la sécurité
 - Mettre des règles  des _cgroups_ corrects : `ulimit -a`

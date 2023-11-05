@@ -102,8 +102,6 @@ whoami:
       - "traefik.http.routers.whoami.rule=Host(`user.place.domain.tld`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-
-
 ```
 
 Il faut remplacer l'e-mail `postmaster@mydomain.com` par un autre ne terminant pas par `mydomain.com`).
