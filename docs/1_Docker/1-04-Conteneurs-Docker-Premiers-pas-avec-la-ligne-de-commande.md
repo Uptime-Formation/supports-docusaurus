@@ -10,7 +10,7 @@ weight: 5
   - Savoir utiliser les commandes ps, run, logs, exec
 
 
----
+<!-- --- -->
 
 # Mentalité :
 ![](../assets/images/changingThings.jpg)
@@ -18,7 +18,7 @@ weight: 5
 **Il faut aussi prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.**
 
 
----
+<!-- --- -->
 
 # Installation de Docker
 **Docker est préinstallé sur vos machines par simplicité, ce sera à vous de l'installer dans l'environnement de travail de votre choix en fonction de vos besoins et des systèmes que vous utiliserez.**
@@ -29,7 +29,7 @@ Par rapport aux applications avec interface, la ligne de commande permet d'appre
 
 Une interface comme Portainer est utile, mais elle expose beaucou (trop) de fonctionnalités au départ.
 
----
+<!-- --- -->
 
 # Un peu de documentation
 
@@ -40,8 +40,8 @@ Une interface comme Portainer est utile, mais elle expose beaucou (trop) de fonc
 - `docker --help`
 - `man docker`
 - `man docker run`
----
-## Lancer un conteneur "Hello world"
+<!-- --- -->
+<!-- ## Lancer un conteneur "Hello world"
 
 ```shell
 $ docker run hello-world
@@ -68,9 +68,9 @@ En l'occurence c'est une commande Docker.
 ```shell"
 "hello-world"" est le nom d'une image Docker sur le DockerHub 
 ```
-cf. [https://hub.docker.com/_/hello-world/](https://hub.docker.com/_/hello-world/)
+cf. [https://hub.docker.com/_/hello-world/](https://hub.docker.com/_/hello-world/) -->
 
----
+<!-- --- -->
 
 ## Docker Hub, chercher une image
 
@@ -82,7 +82,7 @@ On nomme cela un registry, on y reviendra.
 
 Par exemple cherchez l'image "ubuntu" sur le Docker Hub.
 
----
+<!-- --- -->
 
 ## Pour vérifier l'installation
 
@@ -96,11 +96,12 @@ docker ps -a # affiche  également les conteneurs arrêtés
 
 Que remarquez-vous ? Quels conteneurs docker sont en train de tourner ?
 
----
+<!-- --- -->
 
 ## Lancer un conteneur avec passages d'arguments
 
-### Les bases 
+### Les bases
+
 ```shell
 $ docker run -it ubuntu 
 ```
@@ -114,14 +115,14 @@ Lancez de nouveau un `docker ps -a`. Que voyez-vous ?
 
 Lancez la commande sans mode interactif. Que se passe-t-il ?
 
----
+<!-- --- -->
 
 ### Conteneurs jetables 
 
 ```shell
 $ docker run -it --rm ubuntu bash
 ```
-**L'argument `--rm ` indique qu'on ne veut pas conserver le conteneur après son lancement. Il est "jetable".**
+**L'argument `--rm ` indique qu'on ne veut pas conserver le conteneur après son arrêt (lorsque le processus principal s'arrête). Il est "jetable".**
 
 ## Les commandes de démarrage
 
@@ -149,7 +150,7 @@ Que se passe-t-il ? Inspectez la liste des conteneurs ? Que remarquez-vous ?
 **`-name` permet de donner un nom au conteneur**
 **`-d` permet de lancer le conteneur en mode **daemon** ou **détaché** et libérer le terminal**
 
----
+<!-- --- -->
 
 ## La commande logs 
 
@@ -172,7 +173,7 @@ $ docker logs  mycontainer -n 3 -t
 --tail , -n    all    Number of lines to show from the end of the logs
 --timestamps , -t     Show timestamps
 ```
----
+<!-- --- -->
 
 
 # Docker exec: Exécuter du code dans un conteneur
@@ -196,7 +197,7 @@ Plusieurs options disponibles :
 man docker exec 
 ```
 
----
+<!-- --- -->
 
 # Une image, des conteneurs
 
@@ -208,4 +209,4 @@ man docker exec
 - **Un nom est automatiquement généré pour le conteneur à moins de fixer le nom avec `--name`**
 - On peut facilement lancer autant d'instances que nécessaire tant qu'il n'y a **pas de collision** de **nom** (notamment)
 
----
+<!-- --- -->

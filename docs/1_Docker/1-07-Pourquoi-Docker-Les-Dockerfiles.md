@@ -7,7 +7,7 @@ weight: 8
   - Savoir comparer un Dockerfile à d'autres solutions d'IAC (Ansible, puppet)
   - Analyser les avantages et inconvénients de cette solution
 
----
+<!-- --- -->
 
 ## Analogie
 
@@ -21,7 +21,7 @@ On va opposer ça avec la "cuisine maison", qui nécessite
 
 Et qui peut être bonne ou mauvaise selon la qualité des cuisines, des ingrédients, etc.
 
----
+<!-- --- -->
 
 ## Les pratiques d'Infrastructure As Code 
 

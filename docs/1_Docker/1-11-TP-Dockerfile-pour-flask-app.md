@@ -41,9 +41,6 @@ Cette étape, qui aurait pu être nécessaire dans un autre contexte : en partan
 :::
 
 
-
-- Reconstruisez votre image. Si tout se passe bien, poursuivez.
-
 - Pour installer les dépendances python et configurer la variable d'environnement Flask ajoutez:
 
 ```Dockerfile
@@ -84,8 +81,7 @@ Une fois dans le conteneur lancez:
 - Avec `docker run --rm -it microblog ` que se passe-t-il ?
 
 
-## TP Finir le Dockerfile précédent (il manquait la CMD)
-
+## Ajouter le CMD
 
 - Ajoutons la section de démarrage à la fin du Dockerfile, on va utuliser un script appelé `boot.sh` déjà présent dans le projet qu'on a cloné:
 
@@ -118,6 +114,7 @@ COPY ./ /microblog
 RUN  useradd -ms /bin/bash -d /microblog microblog 
 RUN chown -R microblog:microblog ./
 USER microblog
+CMD ["./boot.sh"]
 ```
 
 </p>
