@@ -5,7 +5,6 @@ weight: 38
 sidebar_class_name: hidden
 ---
 
-
 ## Retour sur la CI/CD
 
 La CI/CD fait partie de DevOps (la fusion des équipes de développement et d'exploitation) et combine les pratiques de l'intégration continue et de la livraison continue.
@@ -87,7 +86,14 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 
 ### Code de base
 
-clone ?
+`git clone -b tp_gitlab_monsterstack_deploy https://github.com/Uptime-Formation/corrections_tp.git`
+
+
+### Stage Linting (vérification syntaxique du code)
+
+```yaml
+
+```
 
 ### Stage Unit testing
 
@@ -98,17 +104,8 @@ clone ?
 Template de build Docker de gitlab:
 
 ```yaml
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Docker.gitlab-ci.yml
-
 # Build a Docker image with CI/CD and push to the GitLab registry.
 # Docker-in-Docker documentation: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
-#
-# This template uses one generic job with conditional builds
-# for the default branch and all other (MR) branches.
-
 docker-build:
   # Use the official docker image.
   image: docker:cli

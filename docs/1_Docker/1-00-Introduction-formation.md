@@ -2,6 +2,7 @@
 title: 1.00 Introduction Formation
 pre: "<b>1.00 </b>"
 weight: 1
+sidebar_class_name: hidden
 ---
 
 
