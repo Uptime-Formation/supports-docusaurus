@@ -111,9 +111,7 @@ CMD ["uwsgi", "--http", "0.0.0.0:5000", "--wsgi-file", "/app/identidock.py", \
 
 Observons le code du Dockerfile ensemble s'il n'est pas clair pour vous. 
 
-Construire l'application, pour l'instant avec `docker build`, la lancer.
-Vérifiez avec `ps aux` que le serveur est bien lancé.
-Poussez l'image sur le registry local.
+Construire l'application, pour l'instant avec `docker build ...`, la lancer.
 
 
 ### Le fichier Docker Compose
