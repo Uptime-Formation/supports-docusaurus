@@ -3,6 +3,7 @@ title: 2.11 Réseaux Docker Créer Lister Détruire
 pre: "<b>2.11 </b>"
 weight: 24
 ---
+
 ## Objectifs pédagogiques
   - Savoir utiliser les commandes volume (create, ls, rm, connect, prune)
   - Savoir lancer un conteneur Docker en le connectant à un réseau
@@ -10,7 +11,7 @@ weight: 24
 
 
 
-# Pourquoi du réseau ? Pour relier des conteneurs
+## Pourquoi du réseau ? Pour relier des conteneurs
 
 Le cas classique est l'application web connectée à une base de donnée.
 
@@ -22,7 +23,7 @@ Le cas classique est l'application web connectée à une base de donnée.
   - avec l'option `--network` de `docker run`
   - avec l'instruction `networks:` dans un docker composer
 
-# Les commandes network 
+### Les commandes network 
 
 ```bash
 $ docker create
