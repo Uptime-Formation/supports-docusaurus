@@ -42,7 +42,7 @@ $ man docker-network-create
 
 ## Docker networking en action
 
-**Pour expérimenter avec le réseau nous allons lancer une petite application nodejs d'exemple (moby-counter) qui fonctionne avec une file (_queue_) redis (comme une base de données mais pour stocker des paires clé/valeur simples).**
+Pour expérimenter avec le réseau nous allons **lancer une petite application nodejs d'exemple (moby-counter)** qui fonctionne avec une file (_queue_) **redis** (comme une base de données mais pour stocker des paires clé/valeur simples).**
 
 Récupérons les images depuis Docker Hub:
 
@@ -83,7 +83,8 @@ Comment notre application se connecte-t-elle au conteneur redis ? Elle utilise c
 var port = opts.redis_port || process.env.USE_REDIS_PORT || 6379;
 var host = opts.redis_host || process.env.USE_REDIS_HOST || "redis";
 ```
-**En résumé par défaut notre application se connecte sur l'hôte `redis` avec le port `6379`**
+
+En résumé par défaut **notre application se connecte sur l'hôte `redis` avec le port `6379`**
 
 <!-- --- -->
 
@@ -112,9 +113,11 @@ C'est comme ça que le conteneur connaît l'adresse IP de `redis`.
 <!-- --- -->
 
 Pour s'en assurer interrogeons le serveur DNS de notre réseau `moby-network` en lançant la commande `nslookup redis` grâce à `docker exec` :
+
 ```shell
 $ docker exec moby-counter nslookup redis
 ```
+
 <!-- --- -->
 
 **Créez un deuxième réseau `moby-network2`**
@@ -126,9 +129,7 @@ $ docker run -d --name moby-counter2 --network moby-network2 \
   -p 9090:80 russmckendrick/moby-counter`
 ```
 
-Lorsque vous pingez `redis` depuis cette nouvelle instance `moby-counter2`
-
-Qu'obtenez-vous ? Pourquoi ?
+Lorsque vous pingez `redis` depuis cette nouvelle instance `moby-counter2` Qu'obtenez-vous ? Pourquoi ?
 
 <!-- --- -->
 
