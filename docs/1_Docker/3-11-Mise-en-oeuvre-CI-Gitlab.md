@@ -6,7 +6,7 @@ sidebar_class_name: hidden
 
 ## Retour sur la CI/CD
 
-La CI/CD fait partie de DevOps (la fusion des équipes de développement et d'exploitation) et combine les pratiques de l'intégration continue et de la livraison continue.
+La CI/CD fait partie du DevOps (la fusion des équipes de développement et d'exploitation) et combine les pratiques de l'intégration continue et de la livraison continue.
 
 - Elle automatise une grande partie, voire l'ensemble de l'intervention humaine manuelle traditionnellement nécessaire pour mettre en production un nouveau code issu d'une validation, englobant les phases de build, de test (y compris les tests d'intégration, les tests unitaires et les tests de régression), de déploiement, ainsi que souvent le provisionnement de l'infrastructure nécessaire.
 
@@ -101,7 +101,7 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 
 ## Stage `check` : vérifier rapidement les erreurs du code
 
-Dans Gitlab pour configurer une CI/CD il suffit de créer à la racine du projet un fichier `.gitlab-ci.yml`. Il définit un ensemble d'étapes (Jobs) regroupés en Stages
+Dans Gitlab pour configurer une CI/CD il suffit de créer à la racine du projet un fichier `.gitlab-ci.yml`. Il définit un ensemble d'étapes (Jobs) regroupés en Stages qui forment un pipeline d'automatisation.
 
 - Créez ce fichier.
 
