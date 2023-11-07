@@ -184,7 +184,7 @@ networks:
   - identinet
 ```
 
-### Un conteneur de stockage pour nos données
+### Un conteneur de cache pour nos données
 
 Ajoutons également un conteneur `redis`.
 
@@ -197,7 +197,7 @@ redis:
     - identinet
 ```
 
-### Résultat finale
+### Résultat final
 
 `docker-compose.yml` final :
 
