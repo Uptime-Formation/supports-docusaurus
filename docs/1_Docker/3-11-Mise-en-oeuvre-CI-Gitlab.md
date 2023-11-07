@@ -38,7 +38,7 @@ Un avantage secondaire est que vous n'avez pas à attendre longtemps pour obteni
 
 Les processus courants de validation du code commencent par une analyse de code statique qui vérifie la qualité du code. Une fois que le code passe les tests statiques, les routines CI automatisées empaquettent et compilent le code pour des tests automatisés supplémentaires. Les processus CI doivent disposer d'un système de gestion de version qui suit les changements afin que vous connaissiez la version du code utilisée.
 
-## Qu'est-ce que la livraison continue (continuous delivery) ?
+### Qu'est-ce que la livraison continue (continuous delivery) ?
 
 La livraison continue est une pratique de développement logiciel qui fonctionne en conjonction avec la CI pour automatiser le provisionnement de l'infrastructure et le processus de mise en production de l'application.
 
@@ -46,7 +46,7 @@ Une fois que le code a été testé et buildé dans le cadre du processus CI, la
 
 Avec la CD, le logiciel est construit de manière à pouvoir être déployé en production à tout moment. Ensuite, vous pouvez déclencher manuellement les déploiements ou passer au déploiement continu, où les déploiements sont également automatisés.
 
-## Qu'est-ce que le déploiement continu (continuous deployment) ?
+### Qu'est-ce que le déploiement continu (continuous deployment) ?
 
 Le déploiement continu permet aux organisations de déployer automatiquement leurs applications, éliminant ainsi le besoin d'intervention humaine. 
 
@@ -83,50 +83,28 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 - https://docs.gitlab.com/ee/topics/build_your_application.html
 
 
+## TP - Mise en oeuvre d'une CI/CD avec Gitlab et Docker
+
+(sans **continuous deployment K8s** => suite dans le TP k8s Gitlab à venir)
+
 ### Code de base
 
 `git clone -b tp_gitlab_monsterstack_deploy https://github.com/Uptime-Formation/corrections_tp.git`
 
 
-### Stage Linting (vérification syntaxique du code)
+## Stage `check` : vérifier rapidement les erreurs du code
+
+### Job Linting (vérification syntaxique du code)
 
 ```yaml
 
 ```
 
-### Stage Unit testing
+### Job Unit testing
 
 
 ### Stage Docker build avec Docker in Docker
 
 
-Template de build Docker de gitlab:
 
-```yaml
-# Build a Docker image with CI/CD and push to the GitLab registry.
-# Docker-in-Docker documentation: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
-docker-build:
-  # Use the official docker image.
-  image: docker:cli
-  stage: build
-  services:
-    - docker:dind
-  variables:
-    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  # All branches are tagged with $DOCKER_IMAGE_NAME (defaults to commit ref slug)
-  # Default branch is also tagged with `latest`
-  script:
-    - docker build --pull -t "$DOCKER_IMAGE_NAME" .
-    - docker push "$DOCKER_IMAGE_NAME"
-    - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
-        docker push "$CI_REGISTRY_IMAGE:latest"
-      fi
-  # Run this job in a branch where a Dockerfile exists
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - Dockerfile
+## Références
