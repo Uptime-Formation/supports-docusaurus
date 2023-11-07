@@ -89,22 +89,87 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 
 ### Code de base
 
-`git clone -b tp_gitlab_monsterstack_deploy https://github.com/Uptime-Formation/corrections_tp.git`
+- `git clone -b tp_monsterstack_gitlab_docker_base https://github.com/Uptime-Formation/corrections_tp.git`
 
+### Créer un projet Gitlab
+
+- Créez un compte sur Gitlab (gratuit)
+- Ajoutez la clé `~/.ssh/id_stagiaire.pub` (ou une nouvelle crée avec `ssh-keygen`) à votre compte (vous pourrez l'enlever à la fin du TP)
+- Créez un projet privé `monsterstack_app` par exemple
+- Ajoutez un remote git au dépot git avec `git remote add gitlab <ssh_url_du_projet>`
+- Poussez le projet avec `git push gitlab` et vérifiez sur la page du projet que votre code est bien poussé.
 
 ## Stage `check` : vérifier rapidement les erreurs du code
 
-### Job Linting (vérification syntaxique du code)
+Dans Gitlab pour configurer une CI/CD il suffit de créer à la racine du projet un fichier `.gitlab-ci.yml`. Il définit un ensemble d'étapes (Jobs) regroupés en Stages
+
+- Créez ce fichier.
+
+- Ajoutez au début une liste de stages dans l'ordre de leur exécution:
 
 ```yaml
-
+stages:
+  - check
+  - build-integration
+  - deliver-staging
 ```
+
+### Job Linting (vérification syntaxique du code)
+
+Nous allons maintenant créer un job très simple sur le modèle:
+
+```yaml
+<nom_job>:
+  stage: <stage_job>
+  image: <image_docker_de_base>
+  script:
+    - <commande_1>
+    - <commande_2>
+    - ...
+```
+
+- Ajoutez le job `linting` faisant partie du stage `check` basé sur l'image docker: `python:3.10-slim`.
+
+Ce Job doit vérifier simplement qu'il n'y a pas d'erreurs grossières dans le code de notre logiciel en utilisant la librairie `pyflakes`:
+
+- Ajoutez une commande pour installer pyflakes avec `pip install pyflakes`
+- Ajoutez une commande pour lancer pyflakes avec `pyflakes app/*.py`
+
+- Créez un commit et poussez votre code `git push gitlab` pour vérifier que le pipeline fonctionne (s'il échoue vous devriez reçevoir un mail sur l'adresse mail de votre compte)
+- Allez voir dans l'interface gitlab section `Build > pipelines` comment s'est déroulé le pipeline
 
 ### Job Unit testing
 
+Créez un nouveau Job `unit-testing` également dans le stage `check` basé également sur l'image python précédente. Il devrait lancez les tests unitaires avec la suite de commandes:
 
-### Stage Docker build avec Docker in Docker
+```yaml
+  - cd app
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.dev.txt
+  - python -m unittest tests/unit.py
+```
+
+- Poussez le résultat avec un nouveau commit
+
+Constatez le déroulement du nouveau Job du pipeline :  qu'a-t-il de particulier ?
+
+Que teste le fichier `unit.py` ?
+
+### Stage build integration
+
+
 
 
 
 ## Références
+
+<!-- ### Doc Gitlab
+
+- ... -->
+
+#### Tutos exemple:
+
+- https://mohammed-abouzahr.medium.com/integration-test-starter-with-ci-5037410817ee
+- https://spin.atomicobject.com/2021/06/07/integration-testing-gitlab/
+- 
