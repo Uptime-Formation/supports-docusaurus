@@ -152,6 +152,6 @@ Il est temps de faire un petit `docker stats` pour découvrir l'utilisation du C
 <!-- --- -->
 ### _Avancé :_ Ajouter un nœud Elasticsearch
 
-**À l'aide de la documentation Elasticsearch et/ou en adaptant de bouts de code Docker Compose trouvés sur internet, ajoutez et configurez un nœud Elastic.** 
+**À l'aide de la documentation Elasticsearch et/ou en adaptant des bouts de code Docker Compose trouvés sur internet, ajoutez et configurez un nœud Elastic.** 
 
 Toujours à l'aide de la documentation Elasticsearch, vérifiez que ce nouveau nœud communique bien avec le premier.
