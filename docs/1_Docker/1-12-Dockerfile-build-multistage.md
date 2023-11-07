@@ -83,3 +83,68 @@ La doc:
 ## TP avancé: Essayer les builds multistage parallélisés
 
 - Tutoriel : https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/
+
+
+<details><summary>correction:</summary>
+<p>
+
+```dockerfile
+# Stage 1
+FROM node:20 AS base
+
+RUN mkdir -p /app
+WORKDIR /app
+COPY package*.json /app/
+
+# prod deps install
+RUN npm install --omit=dev
+
+# Stage 2
+# Even lighter and more secure than node-alpine
+FROM gcr.io/distroless/nodejs20-debian11
+
+# use the unpriviledge user from distroless images
+
+WORKDIR /app
+COPY --chown=nonroot:nonroot index.js /app
+COPY --chown=nonroot:nonroot --from=base /app/node_modules /app/node_modules
+
+ENV NODE_ENV="production"
+EXPOSE 3000
+
+USER nonroot
+CMD ["index.js"]
+```
+
+</p>
+</details>
+
+
+```Dockerfile
+# Stage 1
+FROM node:20 AS base
+
+RUN mkdir -p /app
+WORKDIR /app
+COPY index.js /app/
+COPY package*.json /app/
+
+# prod deps install
+RUN npm install --omit=dev
+
+# Stage 2
+# Even lighter and more secure than node-alpine
+FROM gcr.io/distroless/nodejs20-debian11
+
+# use the unpriviledge user from distroless images
+
+WORKDIR /app
+COPY --chown=nonroot:nonroot --from=base /app/index.js /app
+COPY --chown=nonroot:nonroot --from=base /app/node_modules /app/node_modules
+
+ENV NODE_ENV="production"
+EXPOSE 3000
+
+USER nonroot
+CMD ["index.js"]
+```

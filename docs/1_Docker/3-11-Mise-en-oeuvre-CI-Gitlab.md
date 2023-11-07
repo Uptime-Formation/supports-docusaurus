@@ -1,6 +1,5 @@
 ---
 title: 3.11 - Mettre en oeuvre une CI/CD Docker+Gitlab
-pre: "<b>3.10 </b>"
 weight: 38
 sidebar_class_name: hidden
 ---

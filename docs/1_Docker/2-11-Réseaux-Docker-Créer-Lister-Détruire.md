@@ -24,26 +24,34 @@ Le cas classique est l'application web connectée à une base de donnée.
 
 # Les commandes network 
 
+```bash
 $ docker create
 $ docker ls
 $ docker rm
 $ docker connect
 $ docker prune
+```
 
 **Documentation** :
+
+```bash
 $ man docker-network-create
+```
+
 - [https://docs.docker.com/network/](https://docs.docker.com/network/)
 
-# Docker networking en action
+## Docker networking en action
 
 **Pour expérimenter avec le réseau nous allons lancer une petite application nodejs d'exemple (moby-counter) qui fonctionne avec une file (_queue_) redis (comme une base de données mais pour stocker des paires clé/valeur simples).**
 
 Récupérons les images depuis Docker Hub:
+
 ```shell
 $ docker image pull redis:alpine
 $ docker image pull russmckendrick/moby-counter
 ```
----
+
+<!-- --- -->
 
 **Lancez la commande `ip -br a` pour lister vos interfaces réseau**
 
@@ -52,13 +60,15 @@ Pour connecter les deux applications créons un réseau manuellement:
 ```shell
 $ docker network create moby-network
 ```
----
+
+<!-- --- -->
 
 Docker implémente ces réseaux virtuels en créant des interfaces. Lancez la commande `ip -br a` de nouveau et comparez. Qu'est-ce qui a changé ?
 
----
+<!-- --- -->
 
 **Maintenant lançons les deux applications en utilisant notre réseau**
+
 
 ```shell
 $ docker run -d --name redis --network <réseau> redis:alpine
@@ -75,10 +85,9 @@ var host = opts.redis_host || process.env.USE_REDIS_HOST || "redis";
 ```
 **En résumé par défaut notre application se connecte sur l'hôte `redis` avec le port `6379`**
 
----
+<!-- --- -->
 
-
-**Explorons un peu notre réseau Docker.**
+### Explorons un peu notre réseau Docker.
 
 Exécutez (`docker exec`) la commande `ping -c 3 redis` à l'intérieur de notre conteneur applicatif (`moby-counter` donc). 
 
@@ -88,7 +97,7 @@ Quelle est l'adresse IP affichée ?
 $ docker exec moby-counter ping -c3 redis
 ```
 
---- 
+<!-- ---  -->
 
 Affichez le contenu des fichiers `/etc/hosts` du conteneur (c'est la commande `cat` couplée avec `docker exec`). 
 
@@ -100,18 +109,19 @@ C'est comme ça que le conteneur connaît l'adresse IP de `redis`.
 
 **Qu'est-ce que Docker fournit qui permet que ce ping fonctionne ?**
 
----
+<!-- --- -->
 
 Pour s'en assurer interrogeons le serveur DNS de notre réseau `moby-network` en lançant la commande `nslookup redis` grâce à `docker exec` :
 ```shell
 $ docker exec moby-counter nslookup redis
 ```
----
+<!-- --- -->
 
 **Créez un deuxième réseau `moby-network2`**
 
 Créez une deuxième instance de l'application dans ce réseau.
-```shell
+
+```bash
 $ docker run -d --name moby-counter2 --network moby-network2 \
   -p 9090:80 russmckendrick/moby-counter`
 ```
@@ -120,7 +130,7 @@ Lorsque vous pingez `redis` depuis cette nouvelle instance `moby-counter2`
 
 Qu'obtenez-vous ? Pourquoi ?
 
----
+<!-- --- -->
 
 **Vous ne pouvez pas avoir deux conteneurs avec les mêmes noms comme nous l'avons déjà découvert.**
 
@@ -130,14 +140,15 @@ Ce qui signifie que nous pouvons toujours utiliser le nom de domaine `redis`.
 
 Pour ce faire nous devons spécifier l'option `--network-alias` :
 
-Créons un deuxième redis avec le même domaine: 
+Créons un deuxième redis avec le même domaine:
+
 ```shell
 $ docker run -d --name redis2 --network moby-network2 --network-alias redis redis:alpine`
 ```
 
 Lorsque vous pingez `redis` depuis cette nouvelle instance de l'application, quelle IP obtenez-vous ?
 
----
+<!-- --- -->
 
 Récupérez comme auparavant l'adresse IP du nameserver local pour `moby-counter2`.
 
@@ -151,7 +162,7 @@ $ docker network inspect moby-network2
 ```
   Notez la section IPAM (IP Address Management).
 
----
+<!-- --- -->
 
 Arrêtons nos conteneurs et faisons le ménage 
 
