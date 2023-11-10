@@ -105,6 +105,10 @@ spec:
 
 ## Déploiement du `frontend` manuellement
 
+Comment déployer dans le cluster une image buildée en local, comme c'est le cas pour notre frontend ? `docker build ...` ne rendra en effet pas directement l'image disponible dans le cluster car ce dernier n'a rien à voir avec le démon Docker présent sur notre machine.
+
+La façon simple et manuelle de déployer notre image est de la pousser manuellement sur un registry (serveur d'images conteneur) par exemple Docker hub mais ça pourrait étre gitlab, quay ou un registry auto-hébergé.
+
 (cf TP développer dans Kubernetes pour de meilleures méthodes de déploiement)
 
 - Créez un compte (gratuit et plutôt pratique) sur le Docker Hub si vous n'en avez pas encore.

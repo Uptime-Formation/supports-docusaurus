@@ -1,7 +1,7 @@
 ---
 title: 3.11 - Mettre en oeuvre une CI/CD Docker+Gitlab
 weight: 38
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 ## Retour sur la CI/CD
@@ -52,7 +52,7 @@ Le déploiement continu permet aux organisations de déployer automatiquement le
 
 Avec le déploiement continu, les équipes DevOps définissent à l'avance les critères de mise en production du code, et lorsque ces critères sont satisfaits et validés, le code est déployé dans l'environnement de production. Cela permet aux organisations d'être plus agiles et de mettre de nouvelles fonctionnalités entre les mains des utilisateurs plus rapidement.
 
-### Pourquoi Docker est central pour la CI
+### Pourquoi Docker est central pour la CI ?
 
 - Les pipelines d'automatisation doivent tourner dans un environnement contrôlé qui contient toutes les dépendances nécessaires
 - Historiquement avec par exemple Jenkins on utilisait des serveurs dédiés "fixes" provisionnés avec les dépendances nécessaires au boulot des pipelines.
@@ -70,13 +70,13 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 - C'est l'approche de Gitlab qui fournit du pipeline as a service par défault basé sur un cloud de conteneur.
 - Jenkins installé avec le plugin Docker ou Kubernetes permet également d'utiliser des conteneurs pour les différentes étapes (stages) d'un pipeline.
 
-### Pourquoi Kubernetes 
+### Pourquoi Kubernetes ?
 
 - Kubernetes est le cloud de conteneurs open source de référence il est donc très **adapté au déploiement d'un système de pipeline à la demande** (par exemple des Gitlab Runners ou le plugin Kubernetes de Jenkins) pour faire l'intégration et la livraison continue (les deux premières étapes de la CI/CD).
 
-- Kubernetes introduit le déploiement déclaratif qui simplifie standardise et rend reproductible le déploiement d'applications conteneurisées : il est recommmander pour faciliter un déploiement complètement automatique (continuous deployment) proposant un système de rollback fiable.
+- Kubernetes introduit le déploiement déclaratif qui simplifie, standardise et rend reproductible le déploiement d'applications conteneurisées : k8s est recommmandé pour faciliter un déploiement complètement automatique (continuous deployment) proposant un système de modification atomique fiable d'applications complexe (idéalement adaptées à l'architecture microservice/ cloud native).
 
-- K8s propose des fonctionnalités d'authorisation (RBAC, network policies) qui permettent de bien sécuriser l'infrastructure de CI/CD.
+- K8s propose des fonctionnalités d'authorisation (RBAC, network policies, etc...) qui permettent de bien sécuriser l'infrastructure de CI/CD.
 
 ### Présentation de Gitlab CI/CD
 
@@ -156,11 +156,124 @@ Constatez le déroulement du nouveau Job du pipeline :  qu'a-t-il de particulier
 
 Que teste le fichier `unit.py` ?
 
-### Stage build integration
+## Stage build integration
 
+Le stage `check` a pour but d'être rapide et de tester rapidement la qualité du code et l'absence de régressions directes (si une partie du code est cassée). On pourrait même activer une quality gate et refuser le push dans certaines conditions.
 
+Cependant pour tout logiciel certaines parties ne peuvent être testée qu'avec tous les composants du logiciel. C'est le role des tests d'intégration de vérifier qu'au dela des fonctions isolées (units) les différents composants fonctionnent bien ensemble.
 
+Pour les tests d'intégration nous avons généralement besoin des différents morceaux/services composant une application. Dans ce cas la conteneurisation (Docker) rentre en jeu d'une nouvelle façon. elle permet de provisionner rapidement les différentes parties d'une application dans un pipeline Gitlab et de les connecter comme avec un Docker compose.
 
+### Job `integration-testing`
+
+- Créez ce nouveau job dans le stage `build-integration` avec comme image `python:3.10-slim`
+- Ajoutez une section `services` comme suit:
+
+```yaml
+...
+  stage: ...
+  image: ...
+  services:
+    - name: <image_name>
+      alias: <container_domain_name>
+    - name: <image_name>
+      alias: <container_domain_name>
+  script:
+  ...
+```
+
+Cette section est une fonctionnalité de Gitlab qui permet de connecter de nouveaux conteneurs au conteneur principal du pipeline (décrit vie `image:`). Pour chaque conteneur de service ajouté, `name` est le nom de l'image à utilisé et `alias` est le nom de domaine à assigner au conteneur pour que les requêtes venants des autres services puisse le trouver et aboutir (comme les DNS de Docker et K8s). 
+
+Pour notre application il nous faut:
+  - `amouat/dnmonster:1.0` comme indiqué dans le déploiement de imagebackend avec l'alias / domain `imagebackend`
+  - `redis:latest` avec comme domaine `redis`
+
+- Complétez la section.
+
+Maintenant que les nouveaux conteneurs sont configurés nous pouvons déclencher les tests vérifiant l'intégration des parties de notre application avec les commandes :
+
+```yaml
+  - cd app
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.dev.txt
+  - python -m unittest tests/integration.py
+```
+
+- Poussez le code et allez observer le pipeline.
+
+### Job `docker-build`
+
+Une fois l'application validé a minima via le stage `check` il semble raisonnable de construire l'image de conteneur de notre application pour pouvoir l'utiliser plus tard et notamment la déployer.
+
+Ajoutez le Job suivant au pipeline:
+
+```yaml
+docker-build:
+  stage: build-integration
+  # Use the official docker image.
+  image: docker:cli
+  services:
+    - docker:dind
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$DOCKER_IMAGE_NAME" .
+    # All branches are tagged with $DOCKER_IMAGE_NAME (defaults to commit ref slug)
+    - docker push "$DOCKER_IMAGE_NAME"
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile
+```
+
+- Quelles sont les étapes du build ?
+- Quel est la version/tag utilisée pour l'image ?
+- Une fois ce code poussé allez voir le pipeline
+
+### Stage/Job `deliver-staging`, publier l'application pour une préprod
+
+L'image construite à l'étape précédente est une image de travail dont la version est basée sur le commit qui a servit à la concevoir. C'est un artefact temporaire attendant une validation plus approfondie. Si elle réussi l'image sera publiée sinon elle sera vite supprimée.
+
+Cette image pourra être utilisé pour un déploiement de test ou simplement pour effectuer des tests plus poussés en conditions a peu près réaliste (analyse de sécurité, déploiement dans un cluster et tests fonctionnels sur l'interface par exemple, idéalement automatisés par exemple avec Selenium ou autre solution).
+
+Une fois d'autres tests effectués on peut délivrer l'application, c'est à dire la publier en tant qu'image de référence soit pour la production ou juste une préproduction (`staging`). Pour publier notre image en `staging` ajoutez l'étape suivante au pipeline.
+
+```yaml
+docker-deliver-staging:
+  stage: deliver-staging
+  # Use the official docker image.
+  image: docker:cli
+  services:
+    - docker:dind
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    # Staging branch generates a `staging` image
+    - docker pull "$DOCKER_IMAGE_NAME"
+    - docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:staging"
+    - docker push "$CI_REGISTRY_IMAGE:staging"
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: $CI_COMMIT_BRANCH == "staging"
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile
+```
+
+- Qu'est-ce qui déclenche la construction de cette image ?
+- Que fait cette étape précisément ?
+
+## Conclusion
+
+Ce TP présente un exemple de pipeline Gitlab et Docker illustrant de façon simplifié un workflow de continous integration et delivery.
+
+Pour la suite on devrait utiliser par exemple Kubernetes pour déployer l'application en la poussant dans un cluster ou en mode GitOps en publiant
 
 ## Références
 
