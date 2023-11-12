@@ -1,4 +1,4 @@
-# Théorie : Avantages de la virtualisation
+# 1.7 Avantages de la virtualisation
 
 ## Objectifs pédagogiques
 

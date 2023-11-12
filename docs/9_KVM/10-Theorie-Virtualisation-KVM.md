@@ -1,4 +1,4 @@
-# Théorie : La virtualisation
+# 1.10 Théorie de la virtualisation
 
 ## Objectifs pédagogiques
 
@@ -118,7 +118,8 @@ Dans les faits, les type 1 sont désormais associés aux systèmes qui lancent d
 ![](../assets/images/kvm/kvm-virtualisation-history.png)
 
 - 1960 Émergence de la virtualisation sur mainframes (IBM : labos de recherche)
-- 1970 Usage de a virtualisation pour les mainframes CP/CMS (IBM : grands comptes) 
+- 1970 Usage de a virtualisation pour les mainframes CP/CMS (IBM : grands comptes)
+- 1974 [Exigences pour la virtualisation de Popek and Goldberg](https://en.wikipedia.org/wiki/Popek_and_Goldberg_virtualization_requirements)
 - 1980 Émergence de la virtualisation sur systèmes UNIX  
 - 1985 Processeurs Intel 386 avec virtualisation 8086 (16 bit)
 - 1990 Usage de la  virtualisation sur systèmes UNIX

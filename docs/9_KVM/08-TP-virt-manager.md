@@ -1,4 +1,4 @@
-# TP : IHM virt-manager 
+# 1.7 TP : IHM virt-manager 
 
 ## Objectifs pédagogiques
 
@@ -12,39 +12,6 @@
 
 ---
 
-
-
-## Lancez virt-manager
-
-
-**Virt-Manager est une application fenêtrée pour gérer les machines virtuelles.** 
-
-Localement ou à distance, elle offre la possibilité de 
-- contrôler le cycle de vie des machines existantes (bootup / arrêt, pause, suspendre / restaurer)
-- fournir de nouvelles machines virtuelles 
-- gérer les réseaux virtuels, 
-- accéder à la console graphique des machines virtuelles 
-- afficher les performances
-
----
-
-**virt-manager fait partie de la même suite d'outil que virt-builder ou virt-install**
-- `virt-install` fournit un moyen facile de provisionner les systèmes d'exploitation dans des machines virtuelles.
-
-- `virt-viewer` est une interface d'interface utilisateur légère pour interagir avec l'affichage graphique du système d'exploitation virtualisé. Il peut afficher VNC ou SPICE, et utilise LibVirt pour rechercher les détails de la connexion graphique.
-
-- `virt-clone` pour cloner les invités inactifs existants. Il copie les images de disque et définit une configuration avec un nouveau nom, UUID et l'adresse MAC pointant vers les disques copiés.
-
-- `virt-xml` pour éditer facilement le domaine LibVirt XML à l'aide des options de ligne de commande de Virgin-stall.
-
-- `virt-bootstrap` offrant un moyen facile de configurer le système de fichiers racine pour les conteneurs basés sur LiBVirt.
-
---- 
-**virt-manager utilise `libvirt` comme de nombreuses autres IHM.**
-
-Le mode de fonctionnement de libvirt et ses IHM sont très importants à comprendre pour comprendre QEMU/KVM.
-
----
 
 ## Installation et exploration de virt-manager
 
@@ -65,7 +32,7 @@ La "connexion locale" permet de piloter les machines présentes sur le host où 
 
 **On peut ajouter des connexions vers d'autres hôtes avec différents protocoles.**
 
-virt-manager bénéficie des mêmes API de contreôle que libvirt, lui permettant de piloter
+virt-manager bénéficie des mêmes API de contrôle que libvirt, lui permettant de piloter
 
 - QEMU-KVM 
 - QEMU-KVM (session utilisateur)
@@ -94,6 +61,39 @@ Ces informations sont en particulier :
 - les graphiques d'utilisation RAM / CPU
 - les réseaux 
 - les stockages
+
+---
+
+
+## Virt-manager, c'est quoi ?
+
+
+**Virt-Manager est une application fenêtrée pour gérer les machines virtuelles.** 
+
+Localement ou à distance, elle offre la possibilité de 
+- contrôler le cycle de vie des machines existantes (bootup / arrêt, pause, suspendre / restaurer)
+- fournir de nouvelles machines virtuelles 
+- gérer les réseaux virtuels, 
+- accéder à la console graphique des machines virtuelles 
+- afficher les performances
+
+---
+
+**virt-manager fait partie de la même suite d'outil que virt-builder ou virt-install**
+- `virt-install` fournit un moyen facile de provisionner les systèmes d'exploitation dans des machines virtuelles.
+
+- `virt-viewer` est une interface d'interface utilisateur légère pour interagir avec l'affichage graphique du système d'exploitation virtualisé. Il peut afficher VNC ou SPICE, et utilise LibVirt pour rechercher les détails de la connexion graphique.
+
+- `virt-clone` pour cloner les invités inactifs existants. Il copie les images de disque et définit une configuration avec un nouveau nom, UUID et l'adresse MAC pointant vers les disques copiés.
+
+- `virt-xml` pour éditer facilement le domaine LibVirt XML à l'aide des options de ligne de commande de Virgin-stall.
+
+- `virt-bootstrap` offrant un moyen facile de configurer le système de fichiers racine pour les conteneurs basés sur LiBVirt.
+
+--- 
+**virt-manager utilise `libvirt` comme de nombreuses autres IHM.**
+
+Le mode de fonctionnement de libvirt et ses IHM sont très importants à comprendre pour comprendre QEMU/KVM.
 
 ---
 

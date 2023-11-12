@@ -1,4 +1,4 @@
-# TP: Cluster Proxmox
+# 2.15 TP: Cluster Proxmox
 
 ## Objectifs pédagogiques
 
@@ -89,22 +89,22 @@ La documentation complète est ici :
 
 ```shell
 
-sed -i -r 's/listen-on \{ 127.0.0.1; \};/listen-on \{ 127.0.0.1; 10.10.10.1;\};/' /etc/bind/named.conf.options
+sed -i -r 's/listen-on \{ 127.0.0.1; \};/listen-on \{ 127.0.0.1; 192.168.10.1;\};/' /etc/bind/named.conf.options
 
 service bind9 restart
 
 cat << EOF > /etc/dhcpd.conf
 option domain-name "kvm.rackform.eu";
-option domain-name-servers 10.10.10.1;
+option domain-name-servers 192.168.10.1;
 
 default-lease-time 600;
 max-lease-time 7200;
 
 ddns-update-style none;
 
-subnet 10.10.10.0 netmask 255.255.255.0 {
-  range 10.10.10.50 10.10.10.99;
-  option routers 10.10.10.1;
+subnet 192.168.10.0 netmask 255.255.255.0 {
+  range 192.168.10.50 10.10.10.99;
+  option routers 192.168.10.1;
 }
 
 EOF
@@ -118,14 +118,14 @@ systemctl restart isc-dhcp-server
 
 cat <<EOF > /etc/network/if-up.d/SNAT
 #!/bin/sh -e
-if iptables -t nat -C PREROUTING -p tcp -m tcp --dport 22100 -j DNAT --to-destination 10.10.10.100:22; then exit; fi
-for f in {100..110}; do iptables -t nat -A PREROUTING -p tcp -m tcp --dport 22${f} -j DNAT --to-destination 10.10.10.$f:22; done
+if iptables -t nat -C PREROUTING -p tcp -m tcp --dport 22100 -j DNAT --to-destination 192.168.10.100:22; then exit; fi
+for f in {100..110}; do iptables -t nat -A PREROUTING -p tcp -m tcp --dport 22${f} -j DNAT --to-destination 192.168.10.$f:22; done
 EOF
 
 cat <<EOF > /etc/network/if-down.d/SNAT
 #!/bin/sh -e
-if iptables -t nat -C PREROUTING -p tcp -m tcp --dport 22100 -j DNAT --to-destination 10.10.10.100:22; then exit; fi
-for f in {100..110}; do iptables -t nat -A PREROUTING -p tcp -m tcp --dport 9${f} -j DNAT --to-destination 10.10.10.$f:9090; done
+if iptables -t nat -C PREROUTING -p tcp -m tcp --dport 22100 -j DNAT --to-destination 192.168.10.100:22; then exit; fi
+for f in {100..110}; do iptables -t nat -A PREROUTING -p tcp -m tcp --dport 9${f} -j DNAT --to-destination 192.168.10.$f:9090; done
 EOF
 
 chmod +x /etc/network/if-*.d/SNAT

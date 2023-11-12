@@ -1,4 +1,4 @@
-# Théorie : QEMU et les montages 
+# 2.1. QEMU et les montages 
 
 ## Objectifs pédagogiques
 

@@ -1,4 +1,4 @@
-# Théorie : Virt vs. Cont
+# 1.9 Virt vs. Cont
 
 ## Objectifs pédagogiques
 

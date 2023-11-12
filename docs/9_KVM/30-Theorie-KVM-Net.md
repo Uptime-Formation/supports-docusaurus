@@ -1,4 +1,4 @@
-# Théorie: Réseau
+# 2.7 Réseau
 
 ## Objectifs Pédagogiques 
 
@@ -130,7 +130,7 @@ packets
 Le schéma est quasi identique au mode NAT sauf au niveau de la configuration.
 
 ```shell
-iptables -t nat -A PREROUTING -p tcp -m tcp --dport 9${f} -j DNAT --to-destination 10.10.10.$f:9090
+iptables -t nat -A PREROUTING -p tcp -m tcp --dport 9${f} -j DNAT --to-destination 192.168.10.$f:9090
 
 ```
 --- 

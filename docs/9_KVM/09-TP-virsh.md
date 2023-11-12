@@ -1,4 +1,4 @@
-# TP : IHM Virsh
+# 1.8 TP : IHM Virsh
 
 ## Objectifs pédagogiques
 
@@ -134,7 +134,7 @@ $ virsh undefine guest1
 
 ## Créer une VM
 
-Virt
+Dans la suite d'outils virsh on trouve également `virt-install` qui permet d'installer facilement de nouvelles machines.
 
 ```shell
 $  virt-install --install fedora29 --unattended --graphics none 

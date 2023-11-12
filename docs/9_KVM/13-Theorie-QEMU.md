@@ -1,4 +1,4 @@
-# Theorie : QEMU
+# 1.8 QEMU
 
 ## Objectifs pédagogiques
 

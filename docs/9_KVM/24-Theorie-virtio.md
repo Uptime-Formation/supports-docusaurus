@@ -1,4 +1,4 @@
-# Théorie: virtio
+# 2.4 L'interface Virtio
 
 ## Objectifs pédagogiques
 
@@ -14,8 +14,6 @@
 ![](../assets/images/kvm/kvm-virtio.png)
 
 
-hvm 
-paravirt
 ---
 
 ##  VIRTIO est une abréviation pour Virtual Input-Output (Entrées-Sorties Virtuelles)

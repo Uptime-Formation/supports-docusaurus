@@ -1,4 +1,4 @@
-# TP: IHM Proxmox 
+# 1.5 TP: IHM Proxmox 
 
 ---
 
@@ -92,7 +92,7 @@ Vous constatez qu'on y accède via un écran virtuel connecté à sa carte graph
 ```shell
 
 Machine     101 
-IP          10.10.10.10${numéro de machine}
+IP          192.168.10.10${numéro de machine}
 Masque      255.255.255.0
 
 ```
@@ -106,47 +106,12 @@ Masque      255.255.255.0
 
 **Pour Alpine**
 
+**Alpine fournit un script d'installation complet nommé `setup-alpine`.**
+
+cf. https://docs.alpinelinux.org/user-handbook/0.1a/Installing/setup_alpine.html
+
+
 ![](../assets/images/kvm/qwerty-keyboard.jpg)
-- Installer un clavier en français (clavier QWERTY par défaut)
-```shell
-$ apk add --update kbd-bkeymaps
-$ setup-keymap fr fr 
-```
-
-- Ajouter un utilisateur et un serveur ssh 
-```shell
-$ adduser {utilisateur}
-$ apk add openssh
-```
-
-- Ajouter du réseau via la ligne de commande 
-```shell
-$ ip a add  10.10.10.10${numéro de machine}/24 dev eth0
-$ ip r add default via 10.10.10.1
-```
-- OU Ajouter du réseau via le système de fichiers
-```shell
-$ cat << EOF >> /etc/network/interfaces
-auto lo
-iface lo inet loopback
-
-auto eth0
-iface eth0 inet static 
-  address  10.10.10.10${numéro de machine}/24
-  gateway 10.10.10.1
-EOF
-$ ifup eth0
-$ ping 1.1.1.1
-```
-
-- Ajouter un resolver DNS
-`````shell
-
-$ echo "nameserver 10.10.10.1" > /etc/resolv.conf
-$ getent ahosts google.com
-```
-
-
 --- 
 
 ## S'y connecter en SSH

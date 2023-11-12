@@ -1,5 +1,5 @@
 ---
-title: "Formation KVM"
+title: "1.1 Formation KVM"
 author: [Uptime Formation]
 date: "%DATE%"
 keywords: [KVM, Devops]
@@ -66,8 +66,8 @@ book: true
 
 ### Jour 1
 
-- Théorie : virtualisation 
-- Théorie : les IHM
+- virtualisation 
+- les IHM
 - Pratique : IHM web 
 
 ### Jour 2

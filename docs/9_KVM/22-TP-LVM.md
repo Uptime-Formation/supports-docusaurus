@@ -1,4 +1,4 @@
-# TP: LVM 
+# 2.2 TP: LVM 
 
 ## Objectifs pédagogiques
 

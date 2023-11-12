@@ -1,4 +1,4 @@
-# TP: Migration Offline 
+# 2.4 TP: Migration Offline 
 
 ## Objectifs pédagogiques
 

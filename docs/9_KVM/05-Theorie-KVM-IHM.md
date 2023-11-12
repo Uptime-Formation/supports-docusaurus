@@ -1,4 +1,4 @@
-# Théorie: Les IHM KVM
+# 1.4 Les IHM KVM
 
 ## Objectifs pédagogiques
 
@@ -57,7 +57,7 @@ Documentation :
 
 ---
 
-**L’API libvirt, dont le site officiel est accessible à l’adresse , met à disposition un grand nombre d’utilitaires comme virt-manager, virt-install, virt-viewer et surtout un shell interactif dédié à la gestion des machines virtuelles : virsh.**
+**L’API libvirt, dont le site officiel est accessible à l’adresse https://libvirt.org/, met à disposition un grand nombre d’utilitaires comme virt-manager, virt-install, virt-viewer et surtout un shell interactif dédié à la gestion des machines virtuelles : virsh.**
 
 L’API libvirt se connecte à l’hyperviseur local et peut ainsi être utilisée soit en local, soit à distance via SSH.
 

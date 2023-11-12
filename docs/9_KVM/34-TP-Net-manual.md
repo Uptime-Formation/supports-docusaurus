@@ -1,4 +1,4 @@
-# TP : Net "à la main" 
+# 2.8 TP : Net "à la main" 
 
 ## Objectifs pédagogiques
 
