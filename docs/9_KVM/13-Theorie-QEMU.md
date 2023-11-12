@@ -1,4 +1,4 @@
-# 1.8 QEMU
+# 1.12 QEMU
 
 ## Objectifs pédagogiques
 

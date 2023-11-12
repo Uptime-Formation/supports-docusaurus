@@ -1,5 +1,5 @@
 
-# 1.13 TP : créer ses images avec Packer 
+# 1.17 TP : créer ses images avec Packer 
 
 ## Objectifs pédagogiques
 

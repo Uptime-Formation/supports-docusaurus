@@ -1,4 +1,4 @@
-# 1.10 Théorie de la virtualisation
+# 1.9 Théorie de la virtualisation
 
 ## Objectifs pédagogiques
 
