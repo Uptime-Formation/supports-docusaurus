@@ -80,6 +80,6 @@ mv ${PDF_NAME} "${APP_PATH}"
 echo "File available : ${APP_PATH}/${PDF_NAME}"
 
 # Cleanup the temp dir
-cd $APP_PATH
+cd "${APP_PATH}"
 echo "Cleaning up tmpdir $TMPDIR"
-rm -rf ${TMPDIR}
+rm -rf "${TMPDIR}"
