@@ -56,8 +56,6 @@ Alors qu'une image Docker de 1 Go en développement local est insignifiante en t
 
 Par exemple, chaque minute ou deux de temps de construction supplémentaire qui peut être optimisée pourrait s'ajouter au fil du temps pour représenter des heures de temps perdues chaque année
 
-
-
 ## Comment limiter la taille d'une image
 
 Choisir une image Linux de base **minimale**:
@@ -67,7 +65,6 @@ Une image `ubuntu` complète pèse déjà presque une soixantaine de mégaoctets
 mais une image trop rudimentaire (`busybox`) est difficile à débugger et peu bloquer pour certaines tâches à cause de binaires ou de bibliothèques logicielles qui manquent (compilation par exemple).
 
 Par exemple `python3` est fourni en version `python:alpine` (99 Mo), `python:3-slim` (179 Mo) et `python:latest` (918 Mo).
-
 
 ## Créer des conteneurs personnalisés
 

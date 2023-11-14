@@ -5,6 +5,7 @@ weight: 12
 ---
 
 ## Objectifs pédagogiques
+
   - Savoir lancer un process dans un container Docker
   - Savoir utiliser les commandes CMD, ENTRYPOINT
   
@@ -68,7 +69,7 @@ Quand il n'y a que `CMD` dans le Dockerfile :
 
 La plupart des cas de commandes docker run que nous avons vu jusqu'ici rentrent dans cette catégorie
 
----
+<!-- --- -->
 
 #### Cas 2 - ENTRYPOINT type ["/usr/bin/python3"]
 
@@ -86,7 +87,7 @@ Ensuite on peut faire : `docker run python_entrypoint -c 'print("hello")` dans c
 
 Vois aussi cowsay plus bas comme outils pour décorer du texte avec Docker. On pourrait imaginer d'autres outils par exemple utiliser `/usr/bin/nslookup` pour faire des check dns directement sans entrer dans un conteneur. etc
 
----
+<!-- --- -->
 
 #### Cas 3 - ENTRYPOINT type ["/usr/bin/python3"] + une CMD
 
@@ -101,11 +102,6 @@ Dans ce cas :
 - si on donne une commande à `docker run` elle remplace la partie `CMD` mais pas l'entrypoint. Par exemple `docker run python_entrypoint -c 1+1` affiche `2` (car [`-c`,`print(... directement)`] de la CMD on été remplacés par les nouveaux arguments)
 
 => on a une sorte d'"outil" rapide comme le cas 2 mais il a une valeur par défaut pour ses arguments qu'on peut surcharger
-
-<!-- --- -->
-
-
-
 
 <!-- --- -->
 

@@ -9,7 +9,6 @@ weight: 11
   - Savoir ajouter des packages, des utilisateurs, etc.
   - Savoir utiliser les commandes ADD, COPY, USER, RUN, WORKDIR 
 
-
 ![](../assets/images/ops-images-dockerfile.svg)
 
 ## Un dockerfile de test
@@ -189,7 +188,7 @@ CMD ["python3", "-m", "http.server", "8000"]
 
 ## Avancé : Utilisation optimale du cache de build
 
-La documentation officielle est super claire à ce sujet:
+La documentation officielle est plutôt claire à ce sujet:
 
 https://docs.docker.com/build/cache/
 
