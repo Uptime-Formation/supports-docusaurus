@@ -2,13 +2,12 @@
 title: "1.05 Pourquoi Docker : Les pratiques de déploiement"
 pre: "<b>1.05 </b>"
 weight: 6
+sidebar_class_name: hidden
 ---
 
 ## Objectifs Pédagogiques
   - Connaître l'histoire des pratiques devops
   - Comprendre les pratiques d'Infrastructure As Code et d'automatisation
-
----
 
 ## Une petite histoire de l'automatisation du déploiement 
 

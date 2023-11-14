@@ -3,11 +3,11 @@ title: "1.08 Dockerfile : un langage spécifique"
 pre: "<b>1.08 </b>"
 weight: 9
 ---
+
 ## Objectifs pédagogiques
   - Reconnaître les différentes étapes d'un Dockerfile
   - Savoir utiliser la commande build
   
----
 
 ## Analogie 
 
@@ -17,8 +17,6 @@ C'est une suite d'instructions qui permet d'obtenir un plat cuisiné.
 
 **On va travailler sur une recette très simple de Dockerfile, un Hello World.**
 
----
-
 ## Documentation
 
 Il existe de nombreuses instructions dans la documentation officielle 
@@ -26,8 +24,6 @@ Il existe de nombreuses instructions dans la documentation officielle
 > [https://docs.docker.com/engine/reference/builder/](https://docs.docker.com/engine/reference/builder/)
 
 **Les autres instructions qu'on peut ajouter vont permettre d'aller plus loin qu'un simple Hello World.**
-
----
 
 ## La composition d'un Dockerfile minimal
 
@@ -37,13 +33,11 @@ Il existe de nombreuses instructions dans la documentation officielle
 
 ```Dockerfile
 # our base image
-FROM alpine:3.5
+FROM alpine:3.18
 
 # run the application
 CMD ["sh", "-c", "echo Hello World"]
 ```
-
----
 
 **On va immédiatement contruire une image avec ce Dockerfile.**
 
@@ -51,24 +45,17 @@ CMD ["sh", "-c", "echo Hello World"]
 2. Créer dans ce dossier un fichier nommé Dockerfile
 3. Y copier le contenu du fichier
 4. Lancer dans le dossier la commande
+
 ```
-# docker build  . -t minimal 
+docker build  . -t minimal 
 ```
 5. Lancer l'image docker nommée "minimal"
 ```
-# docker run minimal
+docker run minimal
 hello World
 ```
 
----
-
-## Faisons une pause 
-
-**Ceci est une suite d'opérations importantes**
-
----
-
-### 2 instructions suffisent
+## Arrêtons nous pour bien compdrendre cette base
 
 Pour afficher "Hello World", il nous a fallu au moins 2 instructions 
 
@@ -77,7 +64,6 @@ Pour afficher "Hello World", il nous a fallu au moins 2 instructions
 
 Q: Que se passerait-il si on ne donnait pas la 2e commande ?
 
----
 
 ### build = Dockerfile -> Image
 
@@ -99,4 +85,3 @@ Observez l'historique de construction de l'image avec `docker image history <ima
  
 C'est le *hash* correspondant à un *layer* de l'image
 
----

@@ -31,8 +31,6 @@ L'objectif de l'IAC est de définir dans du code des actions manuelles.
 
 Une fois automatisées, ces opérations peuvent être reproduites.
 
----
-
 ## Les outils d'IAC
 
 Quelques noms : 
@@ -41,7 +39,6 @@ Quelques noms :
 - Ansible : ça lance la cuisson d'un plat
 - Puppet : ça surveille des cuisines industrielles
 
----
 
 ### **Terraform** 
 
@@ -56,8 +53,6 @@ resource "aws_ebs_volume" "my_data" {
   size              = 25                                    # in GiB; if you change this in-place, you need to SSH over and run e.g. $ sudo resize2fs /dev/xvdh
 }
 ```
-
----
 
 ### **Ansible**
 
@@ -82,8 +77,6 @@ Est utilisé pour configurer des serveurs en fonction de leurs rôles.
           state: started
 ```
 
----
-
 ### **Puppet** 
 
 Est utilisé pour maintenir sur le long terme une flotte de machines.
@@ -102,8 +95,6 @@ Est utilisé pour maintenir sur le long terme une flotte de machines.
 
 ```
 
----
-
 ### Les outils d'IAC sont exécutés sur des systèmes actifs
 
 Ils vont créer de nouvelles ressources, les configurer, gérer leur cycle de vie.
@@ -113,8 +104,6 @@ Ils vont créer de nouvelles ressources, les configurer, gérer leur cycle de vi
 * Génération de fichiers de configuration
 * Lancement de process
 
----
-
 **C'est ça la "cuisine maison".** 
 
 Elle implique beaucoup de connaissances, ce qui rend le déploiement de nouvelles applications parfois difficile.
@@ -122,8 +111,6 @@ Elle implique beaucoup de connaissances, ce qui rend le déploiement de nouvelle
 Et selon la manière dont on aura plus ou moins bien conçu sa cuisine et formé les cuistots...
 
 On aura de bons résultats et une bonne capacité d'évolution.
-
----
 
 ## Docker, un plat surgelé ? 
 
@@ -160,7 +147,6 @@ C'est un fichier qui définit les conditions nécessaires pour que le process de
 - les ports réseaux 
 - la surveillance de l'application
 
----
 
 **L'image Docker est «prête à consommer».**
 

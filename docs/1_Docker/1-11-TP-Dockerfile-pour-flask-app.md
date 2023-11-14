@@ -19,7 +19,7 @@ Avec Docker, les projets sont déjà isolés dans des conteneurs. Nous allons do
 
 - Dans le dossier du projet ajoutez un fichier nommé `Dockerfile` et sauvegardez-le
 
-- Normalement, VSCode vous propose d'ajouter l'extension Docker. Il va nous faciliter la vie, installez-le. Une nouvelle icône apparaît dans la barre latérale de gauche, vous pouvez y voir les images téléchargées et les conteneurs existants. L'extension ajoute aussi des informations utiles aux instructions Dockerfile quand vous survolez un mot-clé avec la souris.
+<!-- - Normalement, VSCode vous propose d'ajouter l'extension Docker. Il va nous faciliter la vie, installez-le. Une nouvelle icône apparaît dans la barre latérale de gauche, vous pouvez y voir les images téléchargées et les conteneurs existants. L'extension ajoute aussi des informations utiles aux instructions Dockerfile quand vous survolez un mot-clé avec la souris. -->
 
 - Ajoutez en haut du fichier : `FROM python:3.9` Cette commande indique que notre image de base est la version 3.9 de Python. Quel OS est utilisé ? Vérifier en examinant l'image ou via le Docker Hub.
 
@@ -38,6 +38,7 @@ RUN apt-get update -y
 RUN apt-get install -y python3-pip
 ``` 
 Cette étape, qui aurait pu être nécessaire dans un autre contexte : en partant d'un linux vide comme `ubuntu` est ici inutile car l'image officielle python contient déjà ces éléments.
+
 :::
 
 
@@ -119,3 +120,9 @@ CMD ["./boot.sh"]
 
 </p>
 </details>
+
+
+
+### Amélioration : Une image plus simple
+
+A l'aide de l'image `python:3.9-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.

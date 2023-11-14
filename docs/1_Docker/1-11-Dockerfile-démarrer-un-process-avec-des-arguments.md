@@ -8,7 +8,7 @@ weight: 12
   - Savoir lancer un process dans un container Docker
   - Savoir utiliser les commandes CMD, ENTRYPOINT
   
----
+<!-- --- -->
 
 ##  CMD, ENTRYPOINT et leur combinaison
 
@@ -26,7 +26,7 @@ CMD command param1 param2 (shell form)
 CMD ["echo 'Conteneur démarré'"]
 ```
 
----
+<!-- --- -->
 
 ### Instruction `ENTRYPOINT`
 
@@ -44,7 +44,7 @@ ENTRYPOINT ["/usr/bin/python3"]
 
 Ensuite on peut faire : `docker run python_entrypoint -c 'print("hello")`
 
----
+<!-- --- -->
 
 ### Attention `CMD` != `ENTRYPOINT` != RUN
 
@@ -52,7 +52,7 @@ Ensuite on peut faire : `docker run python_entrypoint -c 'print("hello")`
 
 CMD et ENTRYPOINT sont plus apparentés mais il faut également bien faire la distinction
 
----
+<!-- --- -->
 
 ### Combinaisons de ENTRYP0INT et CMD - Comment s'y retrouver ?!
 

@@ -9,7 +9,6 @@ weight: 10
   - Savoir trouver et choisir les systèmes de base
   - Savoir utiliser les commandes FROM ... AS ...
 
-
 ## Instruction `FROM`
 
 C'est l'instruction fondamentale des Dockerfiles. 
@@ -83,13 +82,10 @@ C'est aussi grâce à cette fonctionnalité que Docker peut être considéré co
 
 On peut également prendre une sorte de "capture" du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <conteneur> <repo/image_name>:<tag/version>` et `docker push`.
 
-### TP : Une image plus simple
-
-A l'aide de l'image `python:3.9-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
-
-## Avancé : bien choisir son image de base un choix complexe
+## Avancé : bien choisir son image de base un choix complexe (et partiellement subjectif ?)
 
 Beaucoup de personnes utilisent des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`). Mais ce choix a aussi ses inconvénients:
+
 - https://pythonspeed.com/articles/alpine-docker-python/
 
 Les images basées sur `debian-slim` et redhat `ubi-micro` sont a peine plus lourde et probablement plus solide/sécurisées et polyvalentes.

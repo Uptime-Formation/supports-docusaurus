@@ -3,13 +3,12 @@ title: 1.06 Conteneurs Docker Créer Lister et Détruire
 pre: "<b>1.06 </b>"
 weight: 7
 ---
+
 ## Objectifs pédagogiques
   - Savoir utiliser les commandes pull, stop/start, kill, stats, delete, prune 
 
----
 
-
-# Docker pull et chercher sur Docker Hub
+## Docker pull et chercher sur Docker Hub
 
 - Visitez [hub.docker.com](https://hub.docker.com)
 - Cherchez l'image de Nginx (un serveur web), et téléchargez la dernière version (`pull`).
@@ -21,10 +20,8 @@ Que se passe-t-il ?
 
 **La commande run fait appel à docker pull si l'image n'est pas présente.** 
 
----
 
-
-# Docker stop/start : stopper et redémarrer un conteneur
+## Docker stop/start : stopper et redémarrer un conteneur
 
 ```shell
 docker stop <nom_ou_id_conteneur> # ne détruit pas le conteneur
@@ -37,9 +34,8 @@ docker start --attach <nom_ou_id_conteneur> # lance le conteneur et s'attache à
 Essayez de stopper et redémarrer le conteneur "mycontainer".
 
 
----
+## Docker kill : conteneurs récalcitrants
 
-# Docker kill : conteneurs récalcitrants
 ```
 $ docker run --rm -d --name sleep ubuntu sleep 3600 
 ```
@@ -48,8 +44,8 @@ Essayez de stopper ce conteneur. Que se passe-t-il ?
 ```
 docker kill <conteneur>
 ```
---- 
-# Docker stats : conteneurs et consommation
+
+## Docker stats : conteneurs et consommation
 
 Il est temps de faire un petit `docker stats` pour découvrir l'utilisation du CPU et de la RAM de vos conteneurs !
 ```
@@ -62,11 +58,7 @@ Ctrl+c pour quitter
 $ docker stats mycontainer 
 ```
 
----
-
-# Docker delete : Faire du ménage 
-
-
+## Docker rm : Faire du ménage 
 
 Lancez la commande
 
@@ -83,9 +75,7 @@ $ docker rm <id_ou_nom>
 
 Avancé : combinez docker rm et la commande ps précédente
 
----
-
-# Docker prune : Faire du ménage automatiquement 
+## Docker prune : Faire du ménage automatiquement 
 
 La commande prune supprimme automatiquement tous les conteneurs dans l'état STOPPED.
 
@@ -99,8 +89,6 @@ $ docker container ps
 $ docker container run 
 ... etc
 ```
-
----
 
 ## Avancé : L'option restart=always
 
@@ -119,8 +107,6 @@ Que se passe-t-il ?
 
 Plus d'infos sur https://docs.docker.com/engine/reference/run/#restart-policies-
 
----
-
 ## Avancé : Docker export / décortiquer un conteneur
 
 En utilisant la commande suivante 
@@ -136,4 +122,3 @@ $ cd /tmp; tar -C conteneur_decompresse -xvf conteneur.tar
  
 pour décompresser un conteneur Docker, explorez (avec l'explorateur de fichiers par exemple) jusqu'à trouver l'exécutable principal contenu dans le conteneur.
 
----
