@@ -9,7 +9,7 @@ weight: 11
 - Récupérez d’abord une application Flask exemple en la clonant :
 
 ```shell
-git clone https://github.com/uptime-formation/microblog/
+git clone https://github.com/uptime-formation/microblog/ tp_dockerfile
 ```
 
 Déployer une application Flask manuellement à chaque fois est relativement pénible. Pour que les dépendances de deux projets Python ne se perturbent pas, il faut normalement utiliser un environnement virtuel `virtualenv` pour séparer ces deux apps.
@@ -123,6 +123,6 @@ CMD ["./boot.sh"]
 
 
 
-### Amélioration : Une image plus simple
+<!-- ## Amélioration : Une image plus simple
 
-A l'aide de l'image `python:3.9-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
+A l'aide de l'image `python:3.9-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites. -->

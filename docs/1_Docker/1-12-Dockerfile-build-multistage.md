@@ -80,12 +80,8 @@ La doc:
 
  On peut alors constater que pour une application nodejs, même le minimum du minimum dans une image c'est déjà un joyeux bordel difficile à auditer: (confs linux + locales + ssl + autre + votre node_modules avec plein de lib + votre app)
 
-## TP avancé: Essayer les builds multistage parallélisés
 
-- Tutoriel : https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/
-
-
-<details><summary>correction:</summary>
+ <details><summary>correction:</summary>
 <p>
 
 ```dockerfile
@@ -120,31 +116,6 @@ CMD ["index.js"]
 </details>
 
 
-```Dockerfile
-# Stage 1
-FROM node:20 AS base
+## TP avancé: Essayer les builds multistage parallélisés
 
-RUN mkdir -p /app
-WORKDIR /app
-COPY index.js /app/
-COPY package*.json /app/
-
-# prod deps install
-RUN npm install --omit=dev
-
-# Stage 2
-# Even lighter and more secure than node-alpine
-FROM gcr.io/distroless/nodejs20-debian11
-
-# use the unpriviledge user from distroless images
-
-WORKDIR /app
-COPY --chown=nonroot:nonroot --from=base /app/index.js /app
-COPY --chown=nonroot:nonroot --from=base /app/node_modules /app/node_modules
-
-ENV NODE_ENV="production"
-EXPOSE 3000
-
-USER nonroot
-CMD ["index.js"]
-```
+- Tutoriel : https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/
