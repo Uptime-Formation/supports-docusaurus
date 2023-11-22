@@ -47,7 +47,7 @@ Cette approche est plus rapide, mais avec `virt-install` on peut lancer des inst
 
 ```shell
 $ apt install -y libguestfs-tools virtinst libvirt-daemon-system
-$ dpkg -L libguestfs-tools | grep /usr/bin/
+$ dpkg -L guestfs-tools | grep /usr/bin/
 $ man virt-builder
 ````
 ---

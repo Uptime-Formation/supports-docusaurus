@@ -1,5 +1,6 @@
 # 1.13 TP: QEMU Single user 
 
+ATTENTION : le TP ne marche pas avec les vieilles images Ubuntu les autres archi ne sont pas dans les dépots archive
 
 
 ## Objectifs pédagogiques
