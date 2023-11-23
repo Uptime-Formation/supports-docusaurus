@@ -41,3 +41,5 @@ max_over_time( rate(prometheus_http_requests_total[5m])[30m:1m])
 ```
 
 La requête précédente exécute `rate(prometheus_http_requests_total[5m])` toutes les minutes (`1m`) pendant les 30 dernières minutes (`30m`), puis alimente le résultat dans une fonction `max_over_time()`.
+
+Plus d'info sur les subqueries et leurs motivations : https://prometheus.io/blog/2019/01/28/subquery-support/

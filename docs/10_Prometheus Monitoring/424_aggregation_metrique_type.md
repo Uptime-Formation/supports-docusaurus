@@ -7,7 +7,7 @@ title: Cours - Agrégation et types de métriques
 
 Les jauges donnent un aperçu instantané de l'état, et généralement lors de leur agrégation, vous voulez prendre une somme, une moyenne, un minimum ou un maximum.
 
-Considérez la métrique `node_filesystem_size_bytes` de votre Node Exporter, qui rapporte la taille de chacun de vos systèmes de fichiers montés et possède des étiquettes `device`, `fstype` et `mountpoint`. Vous pouvez calculer la taille totale du système de fichiers sur chaque machine avec:
+Par exemple la métrique `node_filesystem_size_bytes` du Node Exporter, qui rapporte la taille de chacun de vos systèmes de fichiers montés et possède des étiquettes `device`, `fstype` et `mountpoint`. Vous pouvez calculer la taille totale du système de fichiers sur chaque machine avec:
 
 ```
 sum without(device, fstype, mountpoint)(node_filesystem_size_bytes)
@@ -51,20 +51,20 @@ sum without(instance)(rate(node_network_receive_bytes_total{device="eth0"}[5m]))
 
 ## Summary
 
-Une métrique de résumé contiendra généralement à la fois un `_sum` et un `_count`, et parfois une série temporelle sans suffixe avec une étiquette `quantile`. Votre Prometheus expose un résumé `http_response_size_bytes` pour la quantité de données de certaines de ses API HTTP.
+Une métrique de résumé contiendra généralement à la fois un `_sum` et un `_count`, et parfois une série temporelle sans suffixe avec une étiquette `quantile`. Votre Prometheus expose un résumé `prometheus_http_response_size_bytes` pour la quantité de données de certaines de ses API HTTP.
 
-`http_response_size_bytes_count` suit le nombre de requêtes, et comme il s'agit d'un compteur, vous devez utiliser `rate` avant d'agréger son étiquette `handler`:
+`prometheus_http_response_size_bytes_count` suit le nombre de requêtes, et comme il s'agit d'un compteur, vous devez utiliser `rate` avant d'agréger son étiquette `handler`:
 
 ```
-sum without(handler)(rate(http_response_size_bytes_count[5m]))
+sum without(handler)(rate(prometheus_http_response_size_bytes_count[5m]))
 ```
 
 La puissance d'un résumé est qu'il vous permet de calculer la taille moyenne d'un événement, dans ce cas, la quantité moyenne d'octets qui sont retournés dans chaque réponse. Si vous aviez trois réponses de taille 1, 4 et 7, alors la moyenne serait leur somme divisée par leur nombre, soit 12 divisé par 3. Il en va de même pour le résumé. Vous divisez le `_sum` par le `_count` (après avoir pris un `rate`) pour obtenir une moyenne sur une période:
 
 ```
-  sum without(handler)(rate(http_response_size_bytes_sum[5m]))
+  sum without(handler)(rate(prometheus_http_response_size_bytes_sum[5m]))
 /
-  sum without(handler)(rate(http_response_size_bytes_count[5m]))
+  sum without(handler)(rate(prometheus_http_response_size_bytes_count[5m]))
 ```
 
 L'opérateur de division associe les séries temporelles avec les mêmes étiquettes et divise, vous donnant les mêmes deux séries temporelles, mais avec la taille moyenne de la réponse sur les 5 dernières minutes en tant que valeur.
@@ -73,11 +73,11 @@ Si vous vouliez obtenir la taille moyenne de la réponse pour toutes les instanc
 
 ```
   sum without(instance)(
-    sum without(handler)(rate(http_response_size_bytes_sum[5m]))
+    sum without(handler)(rate(prometheus_http_response_size_bytes_sum[5m]))
   )
 /
   sum without(instance)(
-    sum without(handler)(rate(http_response_size_bytes_count[5m]))
+    sum without(handler)(rate(prometheus_http_response_size_bytes_count[5m]))
   )
 ```
 
@@ -117,7 +117,6 @@ Cette métrique d'histogramme peut également avoir une étiquette `le`, donc si
 sum without(job, le)(rate(prometheus_tsdb_compaction_duration_seconds_bucket[1d]))
 ```
 
-## Plus sur l'agrégation
 
 `sum by(job, instance, device)(node_filesystem_size_bytes)`
 
@@ -125,14 +124,20 @@ produira le même résultat que la requête de la section précédente utilisant
 
 `sum without()(node_filesystem_size_bytes)`
 
-Pour compter combien de machines exécutaient chaque version du noyau, vous pourriez utiliser :
-
-`count by(release)(node_uname_info)`
-
 Vous pouvez utiliser sum avec un by vide, et même omettre le by. C'est-à-dire que :
 
 `sum by()(node_filesystem_size_bytes)`
 `sum(node_filesystem_size_bytes)`
+
+## Autre aggrégations
+
+#### `count`
+
+Pour compter combien de machines exécutaient chaque version du noyau, vous pourriez utiliser :
+
+`count by(release)(node_uname_info)`
+
+#### `avg`
 
 L'agrégateur avg renvoie la moyenne des valeurs des séries temporelles du groupe comme valeur pour le groupe. Par exemple :
 
@@ -148,6 +153,8 @@ Cela vous donne exactement le même résultat que :
   count without(cpu)(rate(node_cpu_seconds_total[5m]))
 ```
 
+#### `group`
+
 L'agrégateur group renvoie 1 pour chacune des séries temporelles du groupe comme valeur pour le groupe. Par exemple :
 
 ```
@@ -156,16 +163,16 @@ count by (instance)(
 )
 ```
 
+#### `max`
+
 pour retourner la taille du plus grand système de fichiers sur chaque instance :
 
 ```
 max without(device, fstype, mountpoint)(node_filesystem_size_bytes)
 ```
 
-`topk` et `bottomk` diffèrent des autres agrégateurs discutés jusqu'à présent de trois manières.
-- les étiquettes des séries temporelles qu'ils renvoient pour un groupe ne sont pas les étiquettes du groupe;
-- ils peuvent renvoyer plus d'une série temporelle par groupe;
-- ils prennent un paramètre supplémentaire.
+#### `topk` et `bottomk`
+
 
 topk renvoie les k séries temporelles avec les valeurs les plus élevées, donc par exemple :
 
@@ -174,3 +181,8 @@ topk without(device, fstype, mountpoint)(2, node_filesystem_size_bytes)
 ```
 
 renverrait jusqu'à deux séries temporelles par groupe.
+
+`topk` et `bottomk` diffèrent des autres agrégateurs:
+- les étiquettes des séries temporelles qu'ils renvoient pour un groupe ne sont pas les étiquettes du groupe;
+- ils peuvent renvoyer plus d'une série temporelle par groupe;
+- ils prennent un paramètre supplémentaire.
