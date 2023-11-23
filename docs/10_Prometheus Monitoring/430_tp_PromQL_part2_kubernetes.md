@@ -20,7 +20,11 @@ Nous utiliserons ensuite cette configuration pour essayer des requêtes PromQL p
 
 Pour installer k3s (notre kubernetes pour ce TP) lancez dans un terminal la commande suivante: `curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik" sh - `
 
-- Pour récupérer la configuration lancez `sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config && chown $USER:$USER ~/.kube/config`
+
+- Pour récupérer la configuration lancez
+  - `mkdir -p ~/.kube`
+  - `sudo chmod 744 /etc/rancher/k3s/k3s.yaml cp /etc/rancher/k3s/k3s.yaml ~/.kube/config`
+  - vérifier la config avec `kubectl get nodes`
 
 Testons notre installation dans OpenLens en visitant le cluster nommé `default`
 
@@ -44,7 +48,7 @@ kubectl create -f manifests/
 
 - Observons un peu dans Lens (commentaire formateur) et plus d'information dans les supports Kubernetes sur le même site
 
-- Accédons à l'interface de Prometheus avec la commande `kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090` (laissez la tourner dans le terminal) puis en visitant `localhost:9090` dans le navigateur.
+- Accédons à l'interface de Prometheus avec la commande `kubectl --namespace monitoring port-forward svc/prometheus-k8s 9999` (laissez la tourner dans le terminal) puis en visitant `localhost:9090` dans le navigateur.
 
 ## Facultatif : installer le visualisateur de requête PromQL PromLens
 

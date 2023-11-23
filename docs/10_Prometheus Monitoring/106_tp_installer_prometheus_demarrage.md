@@ -5,12 +5,6 @@ title: TP - Installation simple et découverte de Prometheus
 
 Dans ce TP nous allons explorer comment installer, configurer et utiliser une instance simple de Prometheus. Vous allez télécharger et exécuter Prometheus localement, le configurer pour collecter des données sur lui-même et sur une application exemple, puis travailler avec des requêtes, des règles et des graphiques pour utiliser les séries temporelles collectées.
 
-## Création d'un projet VSCod(ium)
-
-Nous allons jongler entre code de configuration et redémarrage de service et modification de code applicatif. Pour gérer cela il est pratique d'utiliser un IDE comme VSCodium (et d'activer l'autosave dans les settings)
-
-- Créez un dossier tp1 par exemple sur le bureau et ouvrez le avec VSCod(ium)
-
 ## Téléchargement et exécution de Prometheus
 
 [Téléchargez la dernière version](https://prometheus.io/download) de Prometheus pour votre plate-forme, puis extrayez la :
