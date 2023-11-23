@@ -6,7 +6,7 @@ title: Exercices PromQL partie 1
 Nous allons utiliser le `node_exporter` pour appliquer quelques requêtes. Assurez-vous d'avoir correctement configuré le Node Exporter et que vos métriques sont disponibles dans votre serveur Prometheus avant de les exécuter.
 
 Commencez par tester et comprendre les requêtes proposées dans le cours précédent.
-
+<!-- 
 **Obtenir la charge moyenne du système :**
 
 Utilisez `node_load1` pour afficher la charge moyenne du système (évaluée sur la dernière minute, d'où le 1) et ce pour les trois instances.
@@ -15,7 +15,7 @@ Comment afficher la charge moyenne évaluée sur les 15 dernières minutes ?
 
 Affichez le résultat en graphique pour les deux première instances uniquement : Que remarque-t-on ?
 
-Il s'agit en fait de la même machine (deux node_exporter sur le même "serveur" parlent en fait de la même machine) donc les valeurs des trois courbes sont proches mais elles ne sont pas identiques car Prometheus ne garanti pas un temps régulier pour la récupération des données.
+Il s'agit en fait de la même machine (deux node_exporter sur le même "serveur" parlent en fait de la même machine) donc les valeurs des trois courbes sont proches mais elles ne sont pas identiques car Prometheus ne garanti pas un temps régulier pour la récupération des données. -->
 
 **Vérifier l'utilisation du CPU par le système :**
 

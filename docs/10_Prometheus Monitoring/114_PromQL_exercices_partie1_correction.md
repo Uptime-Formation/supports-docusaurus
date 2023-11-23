@@ -2,7 +2,7 @@
 title: Exercices PromQL partie 1 - Correction
 sidebar_class_name: hidden
 ---
-
+<!-- 
 **Obtenir la charge moyenne du système :**
 
 Utilisez `node_load1` pour afficher la charge moyenne du système (évaluée sur la dernière minute, d'où le 1) et ce pour les trois instances.
@@ -19,7 +19,7 @@ node_load15
 
 Affichez le résultat en graphique pour les deux premières instances uniquement : Que remarque-t-on ?
 
-Il s'agit en fait de la même machine (deux node_exporter sur le même "serveur" parlent en fait de la même machine) donc les valeurs des trois courbes sont proches mais elles ne sont pas identiques car Prometheus ne garanti pas un temps régulier pour la récupération des données.
+Il s'agit en fait de la même machine (deux node_exporter sur le même "serveur" parlent en fait de la même machine) donc les valeurs des trois courbes sont proches mais elles ne sont pas identiques car Prometheus ne garanti pas un temps régulier pour la récupération des données. -->
 
 **Vérifier l'utilisation du CPU par le système :**
 
