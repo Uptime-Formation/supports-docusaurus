@@ -48,13 +48,11 @@ kubectl create -f manifests/
 
 - Observons un peu dans Lens (commentaire formateur) et plus d'information dans les supports Kubernetes sur le même site
 
-- Accédons à l'interface de Prometheus avec la commande `kubectl --namespace monitoring port-forward svc/prometheus-k8s 9999` (laissez la tourner dans le terminal) puis en visitant `localhost:9090` dans le navigateur.
+- Accédons à l'interface de Prometheus avec la commande `kubectl --namespace monitoring port-forward svc/prometheus-k8s 9999:9090` (laissez la tourner dans le terminal) puis en visitant `localhost:9090` dans le navigateur.
 
 ## Facultatif : installer le visualisateur de requête PromQL PromLens
 
-- Lancez `docker run -p 8888:8080 prom/promlens` puis visitez `localhost:8888`
 
-- Dans PromLens ajoutez `localhost:9090` comme serveur Prometheus
 
 
 ## Des requêtes PromQL avancées : identifier les problèmes dans notre Cluster
