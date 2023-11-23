@@ -1,6 +1,6 @@
 ---
 title: Exercices PromQL partie 1 - Correction
-# sidebar_class_name: hidden
+sidebar_class_name: hidden
 ---
 
 **Obtenir la charge moyenne du système :**

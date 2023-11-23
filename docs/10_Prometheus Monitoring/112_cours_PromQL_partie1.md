@@ -87,10 +87,10 @@ PromQL permet d'interroger des données historiques et de les combiner/comparer 
 node_network_receive_bytes_total offset 7d
 ```
 
-La requête suivante renverrait les points où la surcharge actuelle de garbage collector(gc) dépasse la surcharge de gc datant d'une heure par un facteur de 1,02.
+La requête suivante renverrait les points où la charge actuelle de cpu dépasse la charge de cpu datant de 10 minutes par un facteur de 1,1.
 
 ```
-go_memstats_gc_cpu_fraction > 1.02 * (go_memstats_gc_cpu_fraction offset 1h)
+node_cpu_seconds_total > 1.1 * (node_cpu_seconds_total offset 10m)
 ```
 
 Les opérations `>` et `*` sont expliquées ci-dessous.
@@ -103,7 +103,7 @@ Les opérations `>` et `*` sont expliquées ci-dessous.
 
 <!-- L'utilité de ces graphiques est proche de zéro, car ils montrent des valeurs de compteur constamment croissantes difficiles à interpréter, alors que nous avons besoin de graphiques pour la bande passante réseau --- voir MB/s à gauche du graphique. -->
 
-PromQL a une fonction magique pour cela `rate()`. Elle calcule le taux par seconde pour toutes les séries temporelles correspondantes :
+PromQL a une fonction magique pour transformer un compteur d'accumulation en une série affichable en graphe `rate()`. Elle calcule le taux par seconde pour toutes les séries temporelles correspondantes :
 
 ```
 rate(node_network_receive_bytes_total[5m])
@@ -128,8 +128,7 @@ rate(node_network_receive_bytes_total)
 La fonction `rate` supprime le nom de la métrique tout en conservant toutes les étiquettes des séries temporelles internes.
 
 N'appliquez pas `rate` aux séries temporelles qui peuvent augmenter et diminuer. De telles séries temporelles sont appelées des [jauges](https://prometheus.io/docs/concepts/metric_types/#gauge). La fonction `rate` doit être appliquée uniquement aux [compteurs](https://prometheus.io/docs/concepts/metric_types/#counter), qui augmentent toujours, mais qui peuvent parfois être réinitialisés à zéro (par exemple, lors du redémarrage du service).
-
-N'utilisez pas `irate` à la place de `rate`, car [il ne capture pas les pics](https://medium.com/@valyala/why-irate-from-prometheus-doesnt-capture-spikes-45f9896d7832) et il n'est pas beaucoup plus rapide que `rate`.
-
+<!-- 
+N'utilisez pas `irate` à la place de `rate`, car [il ne capture pas les pics](https://medium.com/@valyala/why-irate-from-prometheus-doesnt-capture-spikes-45f9896d7832) et il n'est pas beaucoup plus rapide que `rate`. -->
 
 Source: https://valyala.medium.com/promql-tutorial-for-beginners-9ab455142085
