@@ -1,6 +1,6 @@
 ---
 title: TP - Sécurité de base Prometheus
-# sidebar_class_name: hidden
+sidebar_class_name: hidden
 ---
 
 ## Configurer le chiffrement TLS
