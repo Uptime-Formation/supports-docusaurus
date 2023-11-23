@@ -5,7 +5,7 @@ title: Cours - Le langage de requête PromQL - partie 2
 
 ## Avant de commencer `PromLens`
 
-PromLens est une interface de requêtage de prometheus qui permet de décomposer et d'explorer les requêtes complexes.
+PromLens est une interface de requêtage de prometheus qui permet de décomposer et d'explorer les requêtes.
 
 Avant de commencer on peut l'installer avec :
 

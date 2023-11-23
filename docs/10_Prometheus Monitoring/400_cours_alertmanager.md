@@ -1,6 +1,6 @@
 ---
 title: TP - Créer et déclencher des alertes
-# sidebar_class_name: hidden
+sidebar_class_name: hidden
 ---
 
 ## Configuration de Alertmanagers dans Prometheus

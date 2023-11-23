@@ -58,7 +58,7 @@ En général on veut la latence moyenne et on utilise donc l'expression:
 
 Même s'il sont plus économiques, il est déconseillé d'utiliser les Summary et les Histograms doivent être privilégiés. Ils permettent plus de performance pour le calcul des quantiles et aussi l'aggrégation entre de multiples instances contrairement aux Summary.
 
-# Métriques Histrogram (histogramme)
+### Métriques Histrogram (histogramme)
 
 Un résumé (`Summary`) fournit la latence/taille moyenne d'un type d'évènement, mais  Il faut pour cela pouvoir compter les demandes inférieure à cette limite. 
 
