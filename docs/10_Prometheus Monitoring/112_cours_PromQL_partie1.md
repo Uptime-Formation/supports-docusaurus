@@ -1,6 +1,6 @@
 ---
 title: Cours - Le langage de requête PromQL - partie 1
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 PromQL est un langage conçu pour créer des requêtes puissantes mais simples pour les graphiques, les alertes ou les séries temporelles dérivées (également appelées [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/)).

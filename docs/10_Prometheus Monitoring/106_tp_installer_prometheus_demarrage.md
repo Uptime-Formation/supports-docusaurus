@@ -17,8 +17,11 @@ Nous allons jongler entre code de configuration et redémarrage de service et mo
 
 ```bash
 tar xvfz prometheus-*.tar.gz
-cd prometheus-*
+mkdir ~/prometheus-tp
+mv prometheus-xx ~/prometheus-tp/prometheus # à compléter
 ```
+
+Ouvrez ensuite le dossier `~/prometheus-tp` dans VSCode (menu demarrer > development)
 
 Avant de démarrer Prometheus, configurons-le.
 

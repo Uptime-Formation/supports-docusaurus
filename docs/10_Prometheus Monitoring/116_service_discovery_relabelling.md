@@ -3,7 +3,7 @@ title: TP - Service Discovery et relabeling.
 # sidebar_class_name: hidden
 ---
 
-Ce TP plutôt cours va illustrer une découverte de services pour lister les machines:
+Ce TP va illustrer une découverte de services pour lister les machines:
 
 - à partir d'un fichier .json
 - dans le cloud Hetzner (fournisseur allemand très competitif)
