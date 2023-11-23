@@ -35,10 +35,9 @@ Les types d'expressions possibles en PromQL sont les suivants :
 
 3. `instant vector` : Un ensemble de séries temporelles étiquetées, avec un échantillon pour chaque série, tous avec le meme timestamp.
 
-4. `range vector` : Un ensemble de séries temporelles étiquetées, avec une plage d'échantillons dans le temps pour chaque série. Il y deux façons de produire des vecteurs sur une plage en PromQL : en utilisant un sélecteur de vecteur sur une plage littéral dans votre requête (comme node_cpu_seconds_total[5m]), ou en utilisant une sous-requête (comme ...expression...[5m:10s]).
+4. `range vector` : Un ensemble de séries temporelles étiquetées, avec une plage d'échantillons dans le temps pour chaque série. Il y deux façons de produire des vecteurs sur une plage en PromQL : en utilisant un sélecteur de vecteur sur une plage littéral dans votre requête (comme node_cpu_seconds_total[5m]), ou en utilisant une sous-requête (comme `...expression...[5m:10s]`).
 
 Dans PromQL certaines fonctions ne fonctionnent que sur des métriques d'un type spécifique ! Par exemple, la fonction `histogram_quantile()` ne fonctionne que sur les métriques d'histogramme, `rate()` ne fonctionne que sur les métriques de compteur, et `deriv()` ne fonctionne que sur les jauges. 
-
 
 ### Instant Vector
 
@@ -466,16 +465,20 @@ sum without(mode, cpu)(rate(node_cpu_seconds_total[5m]))
 
 Notez que `group_left(mode)` n'est pas la même chose que `by(mode)`. L'agrégation par mode produirait un vecteur instantané avec une seule étiquette mode, tandis que `group_left(mode)` produit un vecteur instantané avec toutes les étiquettes sauf mode.
 
-Comme pour l'agrégation, vous devez vous assurer que vous avez un nombre équilibré de suppressions d'étiquettes des deux côtés de l'opérateur. Ici, l'utilisation de `without(cpu)` du côté gauche et de `without(mode, cpu)` du côté droit est équilibrée par l'utilisation de `group_left(mode)`. Si vous omettiez le mode, la mise en correspondance des vecteurs échouerait.
+Comme pour l'agrégation, vous devez vous assurer que vous avez un nombre équilibré de suppressions d'étiquettes des deux côtés de l'opérateur. Ici, l'utilisation de `without(cpu)` du côté gauche et de `without(mode, cpu)` du côté droit est équilibrée par l'utilisation de `group_left(mode)`.
 
-L'utilisation de `group_right` fonctionnerait de la même manière, mais avec le côté droit du groupe. Si vous deviez utiliser `group_left` ou `group_right` dépend de la façon dont vos données sont structurées. Une règle empirique est d'utiliser `group_left` si le côté gauche a plus d'étiquettes que le côté droit et vice versa, mais cela dépendra toujours de la façon dont les données sont structurées. En pratique, `group_left` est le plus souvent utilisé.
+L'utilisation de `group_right` fonctionne de la même manière, mais avec le côté droit du groupe.
 
-`group_left` prend toujours tous ses libellés des échantillons de votre opérande du côté gauche. Cela garantit que les libellés supplémentaires présents du côté gauche qui nécessitent une correspondance vectorielle de plusieurs à un sont conservés.
+<!-- Si vous deviez utiliser `group_left` ou `group_right` dépend de la façon dont vos données sont structurées. Une règle empirique est d'utiliser `group_left` si le côté gauche a plus d'étiquettes que le côté droit et vice versa, mais cela dépendra toujours de la façon dont les données sont structurées. En pratique, `group_left` est le plus souvent utilisé. -->
+
+<!-- `group_left` prend toujours tous ses libellés des échantillons de votre opérande du côté gauche. Cela garantit que les libellés supplémentaires présents du côté gauche qui nécessitent une correspondance vectorielle de plusieurs à un sont conservés. -->
 
 
-C'est beaucoup plus simple que de devoir exécuter une expression un à un avec un apparieur pour chaque libellé potentiel : `group_left` fait tout pour vous en une seule expression. Vous pouvez utiliser cette approche pour déterminer la proportion que chaque valeur de libellé représente dans une métrique par rapport à l'ensemble, comme illustré dans l'exemple précédent, ou pour comparer une métrique d'un leader d'un cluster par rapport aux répliques.
+<!-- C'est beaucoup plus simple que de devoir exécuter une expression un à un avec un apparieur pour chaque libellé potentiel : `group_left` fait tout pour vous en une seule expression. Vous pouvez utiliser cette approche pour déterminer la proportion que chaque valeur de libellé représente dans une métrique par rapport à l'ensemble, comme illustré dans l'exemple précédent, ou pour comparer une métrique d'un leader d'un cluster par rapport aux répliques. -->
 
-Il y a une autre utilisation pour `group_left` - ajouter des libellés des métriques d'info à d'autres métriques d'une cible. L'instrumentation avec des métriques d'info a été couverte dans "Info". Le rôle des métriques d'info est de vous permettre de fournir des libellés utiles pour une cible ou une métrique, mais qui encombreraient la métrique si vous deviez l'utiliser comme libellé normal.
+Il y a une autre utilisation pour `group_left` - ajouter des libellés de métriques d'info à d'autres métriques d'une cible.
+
+<!-- L'instrumentation avec des métriques d'info a été couverte dans "Info". Le rôle des métriques d'info est de vous permettre de fournir des libellés utiles pour une cible ou une métrique, mais qui encombreraient la métrique si vous deviez l'utiliser comme libellé normal. -->
 
 La métrique `prometheus_build_info`, par exemple, vous fournit des informations de construction de Prometheus :
 
@@ -495,11 +498,14 @@ Ce qui produira un résultat comme :
 {instance="localhost:9090", job="prometheus", version="2.2.1"} 1
 ```
 
-Vous pouvez voir que le libellé de version a été copié de l'opérande de droite à l'opérande de gauche comme l'avait demandé `group_left(version)`, en plus de retourner tous les libellés de l'opérande de gauche comme le fait habituellement `group_left`. Vous pouvez spécifier autant de libellés que vous le souhaitez à `group_left`, mais généralement c'est seulement un ou deux. Cette approche fonctionne quel que soit le nombre de libellés d'instrumentation que le côté gauche possède, car la correspondance vectorielle est de plusieurs à un.
+Vous pouvez voir que le libellé de version a été copié de l'opérande de droite à l'opérande de gauche comme l'avait demandé `group_left(version)`, en plus de retourner tous les libellés de l'opérande de gauche comme le fait habituellement `group_left`.
 
-L'expression précédente utilisait `on(instance)`, ce qui suppose que chaque libellé d'instance n'est utilisé que pour une cible dans votre Prometheus. Bien que ce soit souvent le cas, ce n'est pas toujours le cas, vous devrez donc peut-être ajouter d'autres libellés tels que `job` à la clause `on`.
+<!-- Vous pouvez spécifier autant de libellés que vous le souhaitez à `group_left`, mais généralement c'est seulement un ou deux. Cette approche fonctionne quel que soit le nombre de libellés d'instrumentation que le côté gauche possède, car la correspondance vectorielle est de plusieurs à un. -->
 
-`prometheus_build_info` s'applique à une cible entière. Il existe également des métriques de style info, comme `node_hwmon_sensor_label` mentionné dans "Hwmon Collector", qui s'appliquent aux enfants d'une métrique différente :
+L'expression précédente utilisait `on(instance)`, ce qui suppose que chaque libellé d'instance n'est utilisé que pour une cible dans votre Prometheus.Bien que ce soit souvent le cas, ce n'est pas toujours le cas, vous devrez donc peut-être ajouter d'autres libellés tels que `job` à la clause `on`.
+<!-- 
+
+`node_hwmon_sensor_label` est un exemple de metrique qui ne s'applique pas à une cible (target) entiere:
 
 ```
 node_hwmon_sensor_label{chip="platform_coretemp_0", instance="localhost:9100", job="node", label="core_0", sensor="temp2"} 1
@@ -513,7 +519,7 @@ node_hwmon_temp_celsius{chip="platform_coretemp_0",instance="localhost:9100",
     job="node",sensor="temp3"} 41
 ```
 
-La métrique **node_hwmon_sensor_label** a des enfants qui correspondent à certaines (mais pas toutes) des séries temporelles dans **node_hwmon_temp_celsius**. Dans ce cas, vous savez qu'il n'y a qu'une étiquette supplémentaire (appelée étiquette), vous pouvez donc utiliser *ignoring* avec *group_left* pour ajouter cette étiquette aux échantillons **node_hwmon_temp_celsius** :
+La métrique **node_hwmon_sensor_label** a des enfants qui correspondent à certaines (mais pas toutes) les séries temporelles dans **node_hwmon_temp_celsius**. Dans ce cas, vous savez qu'il n'y a qu'une étiquette supplémentaire (appelée `label`), vous pouvez donc utiliser `ignoring` avec `group_left` pour ajouter cette étiquette aux échantillons **node_hwmon_temp_celsius** :
 
 ```
   node_hwmon_temp_celsius
@@ -530,11 +536,11 @@ ce qui produira des résultats tels que :
 
 Notez qu'il n'y a pas d'échantillon avec `sensor="temp1"` car il n'y avait pas un tel échantillon dans **node_hwmon_sensor_label** (comment associer des vecteurs instantanés clairsemés sera couvert dans "opérateur or").
 
-Il existe également un modificateur *group_right* qui fonctionne de la même manière que *group_left*, sauf que les côtés "un" et "plusieurs" sont inversés, le côté "plusieurs" étant maintenant votre opérande sur le côté droit. Pour des raisons de cohérence, vous devriez préférer *group_left*.
+Il existe également un modificateur *group_right* qui fonctionne de la même manière que *group_left*, sauf que les côtés "un" et "plusieurs" sont inversés, le côté "plusieurs" étant maintenant votre opérande sur le côté droit. Pour des raisons de cohérence, vous devriez préférer *group_left*. -->
 
 ## Matching many-to-many et opérateurs logiques
 
-Il existe trois opérateurs logiques ou d'ensemble que vous pouvez utiliser :
+Il existe trois opérateurs logiques "ensemblistes" que vous pouvez utiliser :
 
 `or` union
 
@@ -542,15 +548,50 @@ Il existe trois opérateurs logiques ou d'ensemble que vous pouvez utiliser :
 
 `unless` soustraction d'ensemble
 
-Tous les opérateurs logiques fonctionnent en mode beaucoup-à-beaucoup, et ils sont les seuls opérateurs à fonctionner de cette manière. Ils diffèrent des opérateurs arithmétiques et de comparaison que vous avez déjà vus en ce qu'aucune mathématique n'est effectuée; tout ce qui compte, c'est qu'un groupe contient des échantillons.
+Tous les opérateurs logiques fonctionnent en mode **many-to-many**, et ils sont les seuls opérateurs à fonctionner de cette manière.
+
+<!-- Ils diffèrent des opérateurs arithmétiques et de comparaison que vous avez déjà vus en ce qu'aucune mathématique n'est effectuée; tout ce qui compte, c'est qu'un groupe contient des échantillons. -->
 
 #### Opérateur `or`
 
-Dans la section précédente, **node_hwmon_sensor_label** n'avait pas d'échantillon pour chaque **node_hwmon_temp_celsius**, donc les résultats n'étaient renvoyés que pour les échantillons présents dans les deux vecteurs instantanés. Les métriques avec des enfants incohérents, ou dont les enfants ne sont pas toujours présents, sont difficiles à gérer, mais vous pouvez les traiter avec l'opérateur or.
+Souvent, dans le cas ou une métrique n'existe pas on voudrait pouvoir renvoyer `0` à la place. On peut pour cela combiner la metrique "qui n'existe pas forcément" avec `up` et `or`:
 
-L'opérateur or fonctionne de telle sorte que pour chaque groupe où le groupe du côté gauche a des échantillons, alors ils sont renvoyés; sinon, les échantillons du groupe du côté droit sont renvoyés. Si vous êtes familiarisé avec SQL, cet opérateur peut être utilisé de manière similaire à la fonction SQL COALESCE, mais avec des étiquettes.
+<!-- ```
+  node_custom_metric
+or
+  up * 0
+```
 
-En poursuivant l'exemple de la section précédente, or peut être utilisé pour substituer les séries temporelles manquantes de **node_hwmon_sensor_label**. Tout ce dont vous avez besoin, c'est d'une autre série temporelle qui a les étiquettes dont vous avez besoin, ce qui dans ce cas est **node_hwmon_temp_celsius**. **node_hwmon_temp_celsius** n'a pas l'étiquette label, mais toutes les autres étiquettes correspondent, donc vous pouvez ignorer cela en utilisant *ignoring* :
+Cela pose un petit problème en ce qu'il renverra une valeur même pour un prélèvement échoué, ce qui n'est pas le fonctionnement des métriques prélevées. Il renverra également des résultats pour d'autres emplois. Vous pouvez corriger cela avec un sélecteur et un filtrage : -->
+
+```
+  node_custom_metric
+or
+  up{job="node"} * 0
+```
+
+<!-- La deuxième opérande ne retournera que des échantillons où le job est node. Le nom de la métrique sera supprimé en raison de l'opérateur arithmétique utilisé. -->
+
+
+<!-- Dans la section précédente, **node_hwmon_sensor_label** n'avait pas d'échantillon pour chaque **node_hwmon_temp_celsius**, donc les résultats n'étaient renvoyés que pour les échantillons présents dans les deux vecteurs instantanés. Les métriques avec des enfants incohérents, ou dont les enfants ne sont pas toujours présents, sont difficiles à gérer, mais vous pouvez les traiter avec l'opérateur or. -->
+
+L'opérateur `or` fonctionne de telle sorte que pour chaque groupe où le groupe du côté gauche a des échantillons, alors ils sont renvoyés; sinon, les échantillons du groupe du côté droit sont renvoyés.
+
+<!-- Si vous êtes familiarisé avec SQL, cet opérateur peut être utilisé de manière similaire à la fonction SQL COALESCE, mais avec des étiquettes. -->
+
+<!-- En poursuivant l'exemple de la section précédente, -->
+
+`or` peut être utilisé pour des substitutions dans des séries temporelles ou il manquerait des étiquettes pour un matching comme **node_hwmon_sensor_label** (le label `label` n'est n'est pas dans le deuxième métrique):
+
+```
+node_hwmon_sensor_label{chip="platform_coretemp_0", instance="localhost:9100", job="node", label="core_0", sensor="temp2"} 1
+node_hwmon_sensor_label{chip="platform_coretemp_0",instance="localhost:9100", job="node",label="core_1",sensor="temp3"} 1
+node_hwmon_temp_celsius{chip="platform_coretemp_0",instance="localhost:9100", job="node",sensor="temp1"} 42
+node_hwmon_temp_celsius{chip="platform_coretemp_0",instance="localhost:9100", job="node",sensor="temp2"} 42
+node_hwmon_temp_celsius{chip="platform_coretemp_0",instance="localhost:9100", job="node",sensor="temp3"} 41
+```
+
+Tout ce dont vous avez besoin, c'est d'une autre série temporelle qui a les étiquettes dont vous avez besoin, ce qui dans ce cas est **node_hwmon_temp_celsius**. **node_hwmon_temp_celsius** n'a pas l'étiquette label, mais toutes les autres étiquettes correspondent, donc vous pouvez ignorer cela en utilisant *ignoring* :
 
 ```
   node_hwmon_sensor_label
@@ -582,25 +623,15 @@ ce qui produira :
 {chip="platform_coretemp_0",instance="localhost:9100",    job="node",label="core_1",sensor="temp3"} 41
 ```
 
-L'échantillon avec `sensor="temp1"` est maintenant présent dans votre résultat. Il n'a pas d'étiquette appelée label, ce qui revient à dire que cette étiquette label a la chaîne vide comme valeur.
+L'échantillon avec `sensor="temp1"` est maintenant présent dans le résultat.
 
-Dans des cas plus simples, vous travaillerez avec des métriques sans étiquettes d'instrumentation. Par exemple, vous pourriez utiliser le collecteur textfile, comme décrit dans "Textfile Collector", et vous attendre à ce qu'il expose une métrique appelée **node_custom_metric**. Dans le cas où cette métrique n'existerait pas, vous aimeriez renvoyer 0 à la place. Dans des cas comme celui-ci, vous pouvez utiliser la métrique up associée à chaque cible :
+<!-- Il n'a pas d'étiquette appelée label, ce qui revient à dire que cette étiquette label a la chaîne vide comme valeur. -->
 
-```
-  node_custom_metric
-or
-  up * 0
-```
+<!-- Dans des cas plus simples, vous travaillerez avec des métriques sans étiquettes d'instrumentation. -->
 
-Cela pose un petit problème en ce qu'il renverra une valeur même pour un prélèvement échoué, ce qui n'est pas le fonctionnement des métriques prélevées.16 Il renverra également des résultats pour d'autres emplois. Vous pouvez corriger cela avec un sélecteur et un filtrage :
 
-```
-  node_custom_metric
-or
-  up{job="node"} * 0
-```
+<!-- Par exemple, vous pourriez utiliser le collecteur textfile, comme décrit dans "Textfile Collector", et vous attendre à ce qu'il expose une métrique appelée **node_custom_metric**. Dans le cas où cette métrique n'existerait pas, vous aimeriez renvoyer 0 à la place. Dans des cas comme celui-ci, vous pouvez utiliser la métrique up associée à chaque cible : -->
 
-La deuxième opérande ne retournera que des échantillons où le job est node. Le nom de la métrique sera supprimé en raison de l'opérateur arithmétique utilisé.
 
 sources :
 - https://valyala.medium.com/promql-tutorial-for-beginners-9ab455142085

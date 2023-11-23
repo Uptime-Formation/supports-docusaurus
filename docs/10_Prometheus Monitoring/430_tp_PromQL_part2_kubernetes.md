@@ -50,11 +50,6 @@ kubectl create -f manifests/
 
 - Accédons à l'interface de Prometheus avec la commande `kubectl --namespace monitoring port-forward svc/prometheus-k8s 9999:9090` (laissez la tourner dans le terminal) puis en visitant `localhost:9090` dans le navigateur.
 
-## Facultatif : installer le visualisateur de requête PromQL PromLens
-
-
-
-
 ## Des requêtes PromQL avancées : identifier les problèmes dans notre Cluster
 
 Pour chacune des requêtes suivantes:
@@ -95,8 +90,6 @@ Maintenant, exécutez la requête suivante :
 ```promQL
 kube_persistentvolumeclaim_status_phase{phase="Pending"}
 ```
-
-
 
 ### Trouver les Pods Kubernetes dans un état CrashLoop
 
