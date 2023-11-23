@@ -17,7 +17,7 @@ Comment afficher la charge moyenne évaluée sur les 15 dernières minutes ?
 node_load15
 ```
 
-Affichez le résultat en graphique pour les deux première instances uniquement : Que remarque-t-on ?
+Affichez le résultat en graphique pour les deux premières instances uniquement : Que remarque-t-on ?
 
 Il s'agit en fait de la même machine (deux node_exporter sur le même "serveur" parlent en fait de la même machine) donc les valeurs des trois courbes sont proches mais elles ne sont pas identiques car Prometheus ne garanti pas un temps régulier pour la récupération des données.
 

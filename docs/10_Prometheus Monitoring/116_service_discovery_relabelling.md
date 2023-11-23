@@ -52,7 +52,7 @@ scrape_configs:
   - job_name: hcloud_node
     hetzner_sd_configs:
       - role: "hcloud"
-        bearer_token: "HmukFn0BnOt469VaWYGLKObtZcCjPbx0Oz2yI5PrtBxDsT1Pevs532A2obWoc6NJ"
+        bearer_token: "<token fourni par le formateur>"
         port: 9100
 ```
 
