@@ -37,7 +37,7 @@ Si vous souhaitez combiner `max_over_time` avec `rate` vous pouvez utiliser une 
 Une sous-requête est une partie d'une requête qui vous permet de faire une `range query` à l'intérieur d'une requête.
 
 ```
-max_over_time( rate(http_requests_total[5m])[30m:1m])
+max_over_time( rate(prometheus_http_requests_total[5m])[30m:1m])
 ```
 
-La requête précédente exécute `rate(http_requests_total[5m])` toutes les minutes (`1m`) pendant les 30 dernières minutes (`30m`), puis alimente le résultat dans une fonction `max_over_time()`.
+La requête précédente exécute `rate(prometheus_http_requests_total[5m])` toutes les minutes (`1m`) pendant les 30 dernières minutes (`30m`), puis alimente le résultat dans une fonction `max_over_time()`.
