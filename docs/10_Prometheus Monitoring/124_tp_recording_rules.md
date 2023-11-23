@@ -1,6 +1,6 @@
 ---
 title: TP - Recording rules
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
 
 Les `recording_rules` sont des règles à ajouter à la configuration de Prometheus pour créer de nouvelles données. En particulier elles permettent d'agréger des requêtes en nouvelles séries temporelles.
