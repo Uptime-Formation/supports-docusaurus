@@ -246,7 +246,7 @@ Si vous vouliez obtenir la taille moyenne de la réponse pour toutes les instanc
   )
 ```
 
-## Histogrammes
+### Histogrammes
 
 Les métriques d'histogrammes vous permettent de suivre la distribution de la taille des événements, vous permettant de calculer les quantiles.
 
@@ -538,7 +538,7 @@ Notez qu'il n'y a pas d'échantillon avec `sensor="temp1"` car il n'y avait pas 
 
 Il existe également un modificateur *group_right* qui fonctionne de la même manière que *group_left*, sauf que les côtés "un" et "plusieurs" sont inversés, le côté "plusieurs" étant maintenant votre opérande sur le côté droit. Pour des raisons de cohérence, vous devriez préférer *group_left*. -->
 
-## Matching many-to-many et opérateurs logiques
+### Matching many-to-many et opérateurs logiques
 
 Il existe trois opérateurs logiques "ensemblistes" que vous pouvez utiliser :
 
@@ -552,7 +552,7 @@ Tous les opérateurs logiques fonctionnent en mode **many-to-many**, et ils sont
 
 <!-- Ils diffèrent des opérateurs arithmétiques et de comparaison que vous avez déjà vus en ce qu'aucune mathématique n'est effectuée; tout ce qui compte, c'est qu'un groupe contient des échantillons. -->
 
-#### Opérateur `or`
+#### Exemple, l' opérateur `or`
 
 Souvent, dans le cas ou une métrique n'existe pas on voudrait pouvoir renvoyer `0` à la place. On peut pour cela combiner la metrique "qui n'existe pas forcément" avec `up` et `or`:
 
