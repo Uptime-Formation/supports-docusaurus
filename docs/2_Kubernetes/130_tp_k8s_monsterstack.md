@@ -21,7 +21,7 @@ Elle est composée :
 - Il est construit à partir du `Dockerfile` présent dans le dossier `TP3`.
 - Le fichier `docker-compose.yml` est utile pour faire tourner les trois services de l'application dans docker rapidement (plus simple que kubernetes)
 
-Pour lancer l'application il suffit d'exécuter: `docker-compose up`
+Pour lancer l'application il suffit d'exécuter par exemple: `docker compose up -d`
 
 Passons maintenant à Kubernetes.
 

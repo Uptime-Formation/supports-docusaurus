@@ -11,8 +11,6 @@ Par ailleurs, il ne cherche pas à répondre à des usecases en dehors de l'espa
 
 Prometheus est loin d'être le seul système de ce type sur le marché mais son modèle est particulièrement adapté à la conteneurisation des applications et il est construit et maintenu dans une vaste communauté open source
 
-Depuis ses débuts avec pas plus qu'une poignée de développeurs travaillant
-
 Le projet Prometheus a démarré chez SoundCloud en 2012 comme outil interne de surveillance adapté à leur cloud applicatif assez innovant pour l'époque. Très vite le projet a été opensourcé,  une communauté et un écosystème se sont développés autour. En 2016, le projet Prometheus est devenu le deuxième membre de la Cloud Native Computing Foundation (CNCF).
 
 Prometheus est principalement écrit en Go et est sous licence Apache 2.0. 
@@ -60,15 +58,15 @@ Un force de Prometheus est son intégration avec énormément de solutions et la
 
 **labels** et dimentionnalité dynamique : Le modèle de données de Prometheus identifie chaque série temporelle non seulement par un nom, mais aussi par un ensemble non ordonné de paires clé-valeur appelées labels.
 
-- Basé sur ces labels, le langage de requête PromQL permet l'agrégation sur n'importe quelle information, de sorte que vous pouvez analyser dynamiquement non seulement par processus, mais aussi par datacenter, service ou par toute autre caractéristique que vous avez définie. Vous pouvez afficher ces données dans des systèmes de tableau de bord tels que Grafana et Perses.
+- Basé sur ces labels, le langage de requête PromQL permet l'agrégation sur n'importe quelle information, de sorte que vous pouvez analyser dynamiquement non seulement par processus, mais aussi par datacenter, service ou par toute autre caractéristique que vous avez définie. Vous pouvez afficher ces données dans des systèmes de tableau de bord tels que Grafana.
 
 Les alertes peuvent être définies à l'aide du même langage de requête PromQL que celui utilisé pour créer des graphiques: tous ce qui est surveillé peut être tracé en graphique et servir de support pour les alertes.
 
-<!-- - Les étiquettes facilitent la maintenance des alertes, on peut créer une seule alerte couvrant toutes les valeurs possibles des étiquettes. Dans d'autres systèmes de surveillance, vous devriez créer individuellement une alerte par machine/application. -->
+- Les étiquettes facilitent la maintenance des alertes, on peut créer une seule alerte couvrant toutes les valeurs possibles des étiquettes. Dans d'autres systèmes de surveillance, vous devriez créer individuellement une alerte par machine/application.
 
-<!-- - La découverte de service (Service Discovery) peut déterminer automatiquement les applications et les machines à "scraper" (ou récupérer des données) à partir de sources telles que Kubernetes, Consul, Amazon Elastic Compute Cloud (EC2), Azure, Google Compute Engine (GCE) et OpenStack. -->
+- La découverte de service (Service Discovery) peut déterminer automatiquement les applications et les machines à "scraper" (ou récupérer des données) à partir de sources telles que Kubernetes, Consul, AWS, Azure, GCP ou OpenStack.
 
-- Prometheus est assez simple a opérer a grande échelle : un seul serveur Prometheus peut ingérer des millions d'échantillons par seconde. Il s'agit d'un fichier binaire unique, avec un fichier de configuration. 
+Prometheus est assez simple a opérer a grande échelle : un seul serveur Prometheus peut ingérer des millions d'échantillons par seconde. Il s'agit d'un fichier binaire unique, avec un fichier de configuration. 
 
 - Les composants de Prometheus peuvent être exécutés dans des conteneurs : il est conçu pour être intégré dans l'infrastructure existante et sur laquelle vous avez construit, et non pour être une plate-forme de gestion en soi.
 

@@ -119,6 +119,7 @@ Construire l'application, pour l'instant avec `docker build ...`, la lancer.
 A la racine de notre projet `identidock` (à côté du Dockerfile), créez un fichier de déclaration de notre application appelé `docker-compose.yml` avec à l'intérieur :
 
 ```yml
+version: 3.8
 services:
   identidock:
     build: .
@@ -301,12 +302,11 @@ Testez votre conteneur en mode DEV avec `docker run --env CONTEXT=DEV -p 5000:50
 
 Et en mode `PROD` ? 
 
----
 Conclusions:
 
 - On peut faire des images multicontextes qui s'adaptent au contexte.
 - Les variables d'environnement sont souvent utilisée pour configurer les conteneurs au moment de leur lancement. (plus dynamique qu'un fichier de configuration)
----
+
 
 ```Dockerfile
 FROM python:3.7
