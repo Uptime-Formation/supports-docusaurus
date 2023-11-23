@@ -35,7 +35,7 @@ Les types d'expressions possibles en PromQL sont les suivants :
 
 3. `instant vector` : Un ensemble de séries temporelles étiquetées, avec un échantillon pour chaque série, tous avec le meme timestamp.
 
-4. `range vector` : Un ensemble de séries temporelles étiquetées, avec une plage d'échantillons dans le temps pour chaque série. Il y deux façons de produire des vecteurs sur une plage en PromQL : en utilisant un sélecteur de vecteur sur une plage littéral dans votre requête (comme node_cpu_seconds_total[5m]), ou en utilisant une sous-requête (comme <expression>[5m:10s]).
+4. `range vector` : Un ensemble de séries temporelles étiquetées, avec une plage d'échantillons dans le temps pour chaque série. Il y deux façons de produire des vecteurs sur une plage en PromQL : en utilisant un sélecteur de vecteur sur une plage littéral dans votre requête (comme node_cpu_seconds_total[5m]), ou en utilisant une sous-requête (comme ...expression...[5m:10s]).
 
 Dans PromQL certaines fonctions ne fonctionnent que sur des métriques d'un type spécifique ! Par exemple, la fonction `histogram_quantile()` ne fonctionne que sur les métriques d'histogramme, `rate()` ne fonctionne que sur les métriques de compteur, et `deriv()` ne fonctionne que sur les jauges. 
 
