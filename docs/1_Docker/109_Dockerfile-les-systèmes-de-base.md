@@ -1,13 +1,11 @@
 ---
-title: "1.09 Dockerfile : les systèmes de base"
-pre: "<b>1.09 </b>"
-weight: 10
+title: "Cours Dockerfile : les systèmes de base"
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
 
   - Savoir trouver et choisir les systèmes de base
-  - Savoir utiliser les commandes FROM ... AS ...
+  - Savoir utiliser les commandes FROM ... AS ... -->
 
 ## Instruction `FROM`
 
@@ -25,8 +23,8 @@ Le Dockerhub fournit une liste des images de base "officielles" :
 **Il y a généralement 2 chemins que l'on peut suivre.**
 
 1. Soit on veut déployer une application maison, et dans ce cas on peut utiliser une image de base généraliste qu'on va customiser.
-  * Debian-based (Debian, Ubuntu, ...)
-  * RHEL-based (CentOs, Rocky, ...)
+  * Debian-based (debian, ubuntu, ...)
+  * RedHat-based (ubi, etc, ...)
   * Alpine
 
 2. Soit on veut déployer une solution standard, et dans ce cas on utilise une image dédiés:

@@ -1,7 +1,5 @@
 ---
-title: "1.10 Dockerfile : modifier le système de base"
-pre: "<b>1.10 </b>"
-weight: 11
+title: "Cours Dockerfile : modifier le système de base"
 ---
 
 ## Objectifs pédagogiques

@@ -1,25 +1,24 @@
 ---
-title: "1.03 Pourquoi Docker : Qu'est ce qu'un process ?"
-pre: "<b>1.03 </b>"
+title: "Pourquoi Docker épisode I : un gestionnaire de processus isolés"
 weight: 4
 ---
-
+<!-- 
 ## Objectifs Pédagogiques
   - Connaître le rôle et les attributs d'un process Linux
-  - Identifier les process docker dans la liste des process du système
----
+  - Identifier les process docker dans la liste des process du système -->
 
-## Docker est un "gestionnaire de process"
+## Docker est un "gestionnaire de processus"
 
-Vous allez voir que le(s) conteneur(s) Docker que vous avez lancé avec Portainer sont des processus visibles dans votre système.
+Il permet de lancer des programmes dans des "boîtes" virtuelles à l'intérieur du noyau Linux.
 
-Pour le moment, on ne vas pas expliquer pourquoi on appelle ça un conteneur, ça viendra plus tard, ce n'est pas essentiel dans un premier temps.
+Il gère les programmes qu'il a participer à lancer.
+
+<!-- Pour le moment, on ne vas pas expliquer pourquoi on appelle ça un conteneur, ça viendra plus tard, ce n'est pas essentiel dans un premier temps.
 
 On verra plus tard comment Docker peut être défini par opposition aux machines virtuelles.
 
-Pour le moment cette approche par les process est suffisante.
+Pour le moment cette approche par les process est suffisante. -->
 
----
 
 ## Lancer une commande listant les process dans un terminal
 
@@ -30,12 +29,11 @@ sudo ps fauxw
 * `ps` est un outil qui permet d'obtenir des listes de process.
 * Ce qui apparaît à l'écran est une liste de processus du système. 
 
-**Avancé** `man ps`, `ps -u`, `ps -p 1 -o stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm` 
-
----
+<!-- **Avancé** `man ps`, `ps -u`, `ps -p 1 -o stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm`  -->
 
 ## Qu'est-ce qu'un process ?
 
+<!-- 
 **Analogie** 
 
 Imaginez un restaurant. Le responsable de salle doit en permanence 
@@ -48,15 +46,11 @@ Un système d'opération et des process, c'est pareil.
 * Chaque table est un process
 * Le chef de table est chargé de surveiller que tout le monde soit servi et paie à la sortie
 
----
-
-**Définition**
+**Définition** -->
 
 Un `process` est un programme en cours d'exécution, autrement dit c'est une instance active d'un programme.
 
 Toute commande que vous exécutez lance un process, voire plusieurs ("processus enfants").
-
----
 
 **Une base de donnés, un serveur web, un éditeur de texte, c'est toujours un process.**
 
@@ -71,15 +65,12 @@ Pour CHAQUE process individuellement, le système :
 * maintient des statistiques le concernant
 * permet de communiquer avec lui 
 * 
----
 
 **En somme, le process est l'unité de base pour exécuter du code dans un système avec**
 - des accès aux ressources systèmes
 - des autorisations
 - des échanges
 - des mesures d'usage des ressources
-
----
 
 ## Revenons à notre liste de process
 
@@ -104,8 +95,6 @@ COMMAND : Programme exécuté
 
 Le signe `\_` dans la commande indique un process enfant.
 
----
-
 ## Docker est un "gestionnaire de process"
 
 On a vu qu'un conteneur Docker, c'est l'activation d'une image Docker. 
@@ -123,24 +112,22 @@ root      301521  0.0  0.0 1526700 5468 ?        Sl   10:06   0:00 /usr/bin/cont
 root      301541  0.0  0.0 111380  2664 ?        Ssl  10:06   0:00  \_ /go/bin/web-password-generator
 ```
 
----
-
 **Avancé** 
 
 ```shell
 $ ps fauxw | grep containe[r] -C 1 
 ```
 
-On voit que portainer est lancé via Docker, tout comme notre générateur de mots de passe. 
+On voit dans cette exemple qu'une application web d'admin docker (portainer) est lancé via Docker, tout comme un générateur de mots de passe. 
 
 Le process "important", celui qui est spécifique à l'image, est un enfant du process `containerd-shim-runc-v2`.
 
-**Quand on parle de Docker, c'est une simplification, car en fait un système de ce type dépend toujours de plusieurs composants.**
+**Quand on parle de Docker, c'est une simplification, car en fait docker est un system fait de plusieurs composants.**
 
-Analogie : on dit qu'on conduit une voiture, mais une voiture est nécessairement composée d'un moteur, de roues, d'une boîte de vitesse, etc.
+<!-- Analogie : on dit qu'on conduit une voiture, mais une voiture est nécessairement composée d'un moteur, de roues, d'une boîte de vitesse, etc. -->
 
 `containerd-shim-runc-v2` est un composant chargé de démarrer les process dans les images docker pour l'utilisateur.
 
 Ce sont ces process que l'on appelle les "conteneurs".
 
-Docker surveille l'état des conteneurs, les relancer en cas de problème, les arrêter, etc.
+Docker surveille l'état des conteneurs, les relance en cas de problème, les arrêter, etc.

@@ -1,21 +1,21 @@
 ---
-title: 1.04 Conteneurs Docker Premiers pas avec la ligne de commande
+title: TP Conteneurs Docker Premiers pas avec la ligne de commande
 pre: "<b>1.04 </b>"
 weight: 5
 ---
 
-## Objectifs Pédagogiques
+<!-- ## Objectifs Pédagogiques
   - Connaître les outils permettant d'interagir avec docker
   - Lancer un conteneur avec des passages d'arguments
-  - Savoir utiliser les commandes ps, run, logs, exec
+  - Savoir utiliser les commandes ps, run, logs, exec -->
 
 
 <!-- --- -->
 
-# Mentalité :
-![](../assets/images/changingThings.jpg)
+<!-- # Mentalité :
+![](../assets/images/changingThings.jpg) -->
 
-**Il faut aussi prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.**
+**Il faut prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.**
 
 
 <!-- --- -->
@@ -33,13 +33,17 @@ Une interface comme Portainer est utile, mais elle expose beaucou (trop) de fonc
 
 # Un peu de documentation
 
-- **Commandes utiles :** [https://devhints.io/docker](https://devhints.io/docker)
-- **Documentation Officielle**
-  - Toute la documentaion: [https://docs.docker.com/reference/](https://docs.docker.com/reference/)
-  - Ex: `docker run` : [https://docs.docker.com/engine/reference/run/](https://docs.docker.com/engine/reference/run/)
 - `docker --help`
 - `man docker`
 - `man docker run`
+
+- **Commandes utiles :** [https://devhints.io/docker](https://devhints.io/docker)
+
+- **Documentation Officielle**
+  - Toute la documentaion: [https://docs.docker.com/reference/](https://docs.docker.com/reference/)
+  - Ex: `docker run` : [https://docs.docker.com/engine/reference/run/](https://docs.docker.com/engine/reference/run/)
+
+
 
 <!-- --- -->
 
@@ -126,7 +130,9 @@ $ docker run -it --rm ubuntu bash
 ```
 **L'argument `--rm ` indique qu'on ne veut pas conserver le conteneur après son arrêt (lorsque le processus principal s'arrête). Il est "jetable".**
 
-## Les commandes de démarrage
+- vérifiez cela avec `docker ps`
+
+<!-- ## Les commandes de démarrage
 
 ```shell
 $ docker run -it --rm alpine bash
@@ -139,8 +145,7 @@ Il faut que la commande demandée existe dans l'image.
 $ docker run -it --rm alpine sh
 ```
 
-Quelles peuvent être les différences entre les images ubuntu et alpine ?
-
+Quelles peuvent être les différences entre les images ubuntu et alpine ? -->
 
 ### Conteneurs nommés persistants
 
@@ -154,7 +159,7 @@ Que se passe-t-il ? Inspectez la liste des conteneurs ? Que remarquez-vous ?
 
 <!-- --- -->
 
-## La commande logs 
+### La commande `logs` : voir la sortie texte d'un conteneur tournant en arrière plan
 
 ```shell
 $ docker logs mycontainer
@@ -175,10 +180,11 @@ $ docker logs  mycontainer -n 3 -t
 --tail , -n    all    Number of lines to show from the end of the logs
 --timestamps , -t     Show timestamps
 ```
+
 <!-- --- -->
 
 
-# Docker exec: Exécuter du code dans un conteneur
+# Docker exec: Exécuter un commande dans un conteneur déja démarré
 
 **La commande `docker exec` permet d'exécuter une commande à l'intérieur du conteneur s'il est actif**.
 
@@ -201,7 +207,7 @@ man docker exec
 
 <!-- --- -->
 
-# Une image, des conteneurs
+# Récapituler : une image, plusieurs conteneurs
 
 ![](../assets/images/ops-basics-isolation.svg)
 

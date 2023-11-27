@@ -1,12 +1,12 @@
 ---
-title: "1.08 Dockerfile : un langage spécifique"
-pre: "<b>1.08 </b>"
+title: "Un Dockerfile minimal"
+# pre: "<b>1.08 </b>"
 weight: 9
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
   - Reconnaître les différentes étapes d'un Dockerfile
-  - Savoir utiliser la commande build
+  - Savoir utiliser la commande build -->
   
 
 ## Analogie 

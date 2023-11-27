@@ -1,11 +1,11 @@
 ---
-title: "1.07 Pourquoi Docker : Les Dockerfiles"
-pre: "<b>1.07 </b>"
-weight: 8
+title: 'Pourquoi Docker épisode II : Dockerfiles "surgeler" une application'
 ---
-## Objectifs pédagogiques
+
+
+<!-- ## Objectifs pédagogiques
   - Savoir comparer un Dockerfile à d'autres solutions d'IAC (Ansible, puppet)
-  - Analyser les avantages et inconvénients de cette solution
+  - Analyser les avantages et inconvénients de cette solution -->
 
 <!-- --- -->
 
@@ -23,14 +23,9 @@ Et qui peut être bonne ou mauvaise selon la qualité des cuisines, des ingrédi
 
 <!-- --- -->
 
-## Les pratiques d'Infrastructure As Code 
 
-**On a vu que les pratiques de déploiement ont avancé dans le sens de la formalisation et de l'automatisation.**
 
-L'objectif de l'IAC est de définir dans du code des actions manuelles.
-
-Une fois automatisées, ces opérations peuvent être reproduites.
-
+<!-- 
 ## Les outils d'IAC
 
 Quelques noms : 
@@ -102,9 +97,9 @@ Ils vont créer de nouvelles ressources, les configurer, gérer leur cycle de vi
 * Déploiement de nouvelles machines
 * Installation de packages
 * Génération de fichiers de configuration
-* Lancement de process
+* Lancement de process -->
 
-**C'est ça la "cuisine maison".** 
+<!-- **C'est ça la "cuisine maison".**  -->
 
 Elle implique beaucoup de connaissances, ce qui rend le déploiement de nouvelles applications parfois difficile.
 
@@ -112,10 +107,24 @@ Et selon la manière dont on aura plus ou moins bien conçu sa cuisine et formé
 
 On aura de bons résultats et une bonne capacité d'évolution.
 
-## Docker, un plat surgelé ? 
+## Les pratiques d'Infrastructure As Code 
 
+L'objectif de l'IAC est de définir dans du code des actions de gestion d'infrastructure.
 
-**C'est le Dockerfile qui rapproche Docker des outils d'IAC.**
+Une fois automatisées de la sorte, ces opérations peuvent être reproduites.
+
+## Docker, le plat surgelé de l'IaC ?
+
+Avec Docker on fournit une recette qu'on cuisine à l'avance et qu'on congèle. On pourra décongeler pour un déploiement **prévisible** le moment venu (en plus le plat peut se multiplier tout seul)
+
+![](../assets/images/docker-cycle.jpg)
+
+Avec Docker on a découper la tache de déploiement en deux temps :
+
+1. build d'une image complexe mais géré à l'avance.
+2. déploiement de l'image / du logiciel simplifiée car une bonne part de la complexité a été gérée en amont.
+
+### C'est le Dockerfile qui fait de Docker un outil d'IAC.**
 
 ```dockerfile
 FROM node:18-alpine
@@ -152,6 +161,5 @@ C'est un fichier qui définit les conditions nécessaires pour que le process de
 
 Avantage : Une image Docker contient toutes ces informations et rend l'application simple à lancer pour un utilisateur.
 
-Désavantage : Vous ne savez pas ce que l'image contient, comment elle fonctionne, ce qu'elle exécute. En cas de problème, ça peut devenir très compliqué.
-
+Désavantage : Vous ne savez pas ce que l'image contient, comment elle fonctionne, ce qu'elle exécute. En cas de problème, ça peut devenir compliqué.
 

@@ -1,11 +1,11 @@
 ---
-title: 1.06 Conteneurs Docker Créer Lister et Détruire
+title: Créer Lister et Détruire des conteneurs
 pre: "<b>1.06 </b>"
 weight: 7
 ---
 
-## Objectifs pédagogiques
-  - Savoir utiliser les commandes pull, stop/start, kill, stats, delete, prune 
+<!-- ## Objectifs pédagogiques
+  - Savoir utiliser les commandes pull, stop/start, kill, stats, delete, prune  -->
 
 
 ## Docker pull et chercher sur Docker Hub
