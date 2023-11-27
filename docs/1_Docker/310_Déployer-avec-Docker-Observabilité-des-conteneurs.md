@@ -1,7 +1,5 @@
 ---
-title: 3.10 Déployer avec Docker Observabilité des conteneurs
-pre: "<b>3.10 </b>"
-weight: 38
+title: Déployer avec Docker Observabilité des conteneurs
 ---
 
 ## Objectifs pédagogiques

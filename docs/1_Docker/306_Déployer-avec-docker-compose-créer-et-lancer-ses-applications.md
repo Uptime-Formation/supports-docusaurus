@@ -1,13 +1,13 @@
 ---
-title: 3.06 Déployer avec docker compose créer et lancer ses applications
+title: "TP: Déployer avec docker compose créer et lancer ses applications"
 pre: "<b>3.06 </b>"
 weight: 34
 ---
-
+<!-- 
 ## Objectifs pédagogiques
   - Savoir lancer une application multi-conteneur avec docker compose
   - Savoir créer une application multi-conteneur
-
+ -->
 
 
 ## Mise en pratique : écrire un fichier compose pas à pas 

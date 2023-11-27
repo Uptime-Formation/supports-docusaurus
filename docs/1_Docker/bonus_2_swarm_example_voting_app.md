@@ -1,6 +1,6 @@
 ---
 title: Bonus 2 - Déployer dans Swarm
-weight: 39
+sidebar_class_name: hidden
 ---
 
 ## TP déployer l'app d'exemple Docker

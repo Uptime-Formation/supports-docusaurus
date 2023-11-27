@@ -1,6 +1,7 @@
 ---
 title: Bonus n - Déployer avec Jenkins dans Kubernetes
 weight: 40
+sidebar_class_name: hidden
 ---
 
 

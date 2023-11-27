@@ -1,6 +1,5 @@
 ---
-title: 3.05 Déployer avec Docker compose
-weight: 33
+title: Déployer avec Docker compose
 ---
 
 ## Objectifs pédagogiques

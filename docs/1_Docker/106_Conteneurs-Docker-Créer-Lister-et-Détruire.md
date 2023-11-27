@@ -1,7 +1,5 @@
 ---
-title: Créer Lister et Détruire des conteneurs
-pre: "<b>1.06 </b>"
-weight: 7
+title: "TP : Créer Lister et Détruire des conteneurs"
 ---
 
 <!-- ## Objectifs pédagogiques

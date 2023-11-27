@@ -1,16 +1,15 @@
 ---
-title: "2.04 Les images Docker : Les registries"
-pre: "<b>2.04 </b>"
-weight: 17
+title: "TP Les registries"
 ---
-## Objectifs pédagogiques
+
+<!-- ## Objectifs pédagogiques
   - Comprendre le fonctionnement des registries
   - Savoir installer un registry local
   - Savoir utiliser la commande push
 
----
+--- -->
 
-# Publier des images vers un registry privé
+## Publier des images vers un registry privé
 
 **Généralement les images spécifiques produites par une entreprise n'ont pas vocation à finir dans un dépôt public.**
 
@@ -29,8 +28,6 @@ On premise:
   - **Docker Registry** correctement configuré est une solution pour les besoins simples. 
   - **JFrog Artifactory** un registry d'artefact au dela des images de conteneurs
   - **Harbor** un solutions libre et puissante du CNCF.
-
----
 
 
 ## TP - installer un Registry privé de base

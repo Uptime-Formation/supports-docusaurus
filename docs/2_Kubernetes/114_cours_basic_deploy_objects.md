@@ -1,6 +1,5 @@
 ---
 title: Cours - Objets Fondamentaux pour déployer une application
-draft: false
 ---
 
 ### Les namespaces

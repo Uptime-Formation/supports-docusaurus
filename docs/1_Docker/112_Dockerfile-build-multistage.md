@@ -4,29 +4,18 @@ pre: "<b>1.12 </b>"
 weight: 13
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
   - Savoir compiler un binaire dans un builder
-  - Savoir utiliser les commandes COPY ... FROM ...
-
-
-# Optimiser la création d'images : la suite 
+  - Savoir utiliser les commandes COPY ... FROM ... -->
 
 > Rappel :La principale **bonne pratique** dans la construction d'images est de **limiter leur taille au maximum**.
 
-Un des problèmes courants est de conserver dans l'image dont on n'aura pas besoin à l'exécution.
+Un des problèmes courants est d'être obliger de conserver dans l'image des fichiers dont on n'aura pas besoin à l'exécution.
 
-**Le cache des packages est un exemple.** 
+- Parce qu'on a pas besoin de tous les fichiers intermédiaires utilisés lors du build.
+- Parce qu'on a besoin d'une image lourde par exemple avec tout gcc pour builder certaines librairies (pip et npm par exemple)
 
-On installera plus de packages à l'exécution.
-
-C'est pouquoi dans le build on commence par lancer une mise à jour (ex: apt update) avant d'installer des packages : il n'y a pas de cache package dans l'image de base.   
-
-**Les artefacts de build en sont un autre.**
-
-À l'exécution, on aura pas besoin de tous les fichiers intermédiaires utilisés lors du build. 
-
-On aura généralement besoin de l'exécutable produit.
-
+On se retrouve avec des images de 1GB basé par exemple sur `python` "full" pour pas grand chose.
 
 ## Les multi-stage builds
 
@@ -116,6 +105,3 @@ CMD ["index.js"]
 </details>
 
 
-## TP avancé: Essayer les builds multistage parallélisés
-
-- Tutoriel : https://www.gasparevitta.com/posts/advanced-docker-multistage-parallel-build-buildkit/

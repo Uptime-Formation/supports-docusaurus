@@ -1,7 +1,5 @@
 ---
 title: Cours - Le langage Kubernetes
-draft: false
-# sidebar_position: 8
 ---
 
 ## L'API et les Objets Kubernetes

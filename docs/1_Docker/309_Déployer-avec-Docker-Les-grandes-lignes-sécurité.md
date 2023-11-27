@@ -1,7 +1,5 @@
 ---
-title: 3.09 Déployer avec Docker Les grandes lignes sécurité
-pre: "<b>3.09 </b>"
-weight: 37
+title: Déployer avec Docker Les grandes lignes sécurité
 ---
 
 ## Objectifs pédagogiques

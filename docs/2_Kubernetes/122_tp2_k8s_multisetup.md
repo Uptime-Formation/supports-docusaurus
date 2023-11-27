@@ -1,6 +1,5 @@
 ---
 title: TP - Plusieurs installations simples de Kubernetes
-# weight: 2025
 # sidebar_class_name: hidden
 ---
 

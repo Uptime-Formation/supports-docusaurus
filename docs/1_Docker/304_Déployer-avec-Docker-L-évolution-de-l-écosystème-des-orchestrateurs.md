@@ -1,7 +1,5 @@
 ---
-title: 3.04 Déployer avec Docker L'évolution de l'écosystème des orchestrateurs
-pre: "<b>3.04 </b>"
-weight: 32
+title: Déployer avec Docker L'évolution de l'écosystème des orchestrateurs
 ---
 
 ## Objectifs pédagogiques

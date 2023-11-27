@@ -1,5 +1,5 @@
 ---
-title: "Cours Dockerfile : les systèmes de base"
+title: "Cours Dockerfile : choisir et modifier une image de base"
 ---
 
 <!-- ## Objectifs pédagogiques
@@ -7,7 +7,11 @@ title: "Cours Dockerfile : les systèmes de base"
   - Savoir trouver et choisir les systèmes de base
   - Savoir utiliser les commandes FROM ... AS ... -->
 
-## Instruction `FROM`
+![](../assets/images/ops-images-dockerfile.svg)
+
+## Image de base
+
+### Instruction `FROM`
 
 C'est l'instruction fondamentale des Dockerfiles. 
 
@@ -36,7 +40,7 @@ Le Dockerhub fournit une liste des images de base "officielles" :
   * autres (busybox, hello-world, ...)
 
 
-## Optimiser la création d'images
+### Bonne pratique: optimiser la création d'images
 
 Les images Docker ont souvent une taille de plusieurs centaines de **mégaoctets** voire parfois **gigaoctets**. `docker image ls` permet de voir la taille des images.
 
@@ -54,19 +58,17 @@ Alors qu'une image Docker de 1 Go en développement local est insignifiante en t
 
 Par exemple, chaque minute ou deux de temps de construction supplémentaire qui peut être optimisée pourrait s'ajouter au fil du temps pour représenter des heures de temps perdues chaque année
 
-## Comment limiter la taille d'une image
+#### Comment limiter la taille d'une image ?
 
-Choisir une image Linux de base **minimale**:
-
-Une image `ubuntu` complète pèse déjà presque une soixantaine de mégaoctets.
-
-mais une image trop rudimentaire (`busybox`) est difficile à débugger et peu bloquer pour certaines tâches à cause de binaires ou de bibliothèques logicielles qui manquent (compilation par exemple).
+Choisir une image Linux de base **légère**:
 
 Par exemple `python3` est fourni en version `python:alpine` (99 Mo), `python:3-slim` (179 Mo) et `python:latest` (918 Mo).
 
-## Créer des conteneurs personnalisés
+Pour ce besoin de trois images ? Souvent on a besoin de plein de choses dans l'images pour effectuer le build Docker :  par exemple de librairies spécifiques et de la chaine de build C/C++ (gcc,g++ etc)
 
-Il n'est pas nécessaire de partir d'une image Linux vierge pour construire un conteneur. On peut utiliser la directive `FROM` avec n'importe quelle image.
+## Un autre usecase de FROM : Créer des conteneurs personnalisés
+
+Il n'est pas obligatoire de partir d'une image Linux vierge pour construire un conteneur. On peut utiliser la directive `FROM` avec n'importe quelle image : cela peut permettre de personnaliser un logiciel.
 
 De nombreuses applications peuvent être configurées en étendant une image officielle
 _Exemple : une image Wordpress déjà adaptée à des besoins spécifiques._
@@ -75,21 +77,154 @@ L'intérêt ensuite est que l'image est disponible préconfigurée pour construi
 
 C'est aussi grâce à cette fonctionnalité que Docker peut être considéré comme un outil d'_infrastructure as code_.
 
-On peut également prendre une sorte de "capture" du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <conteneur> <repo/image_name>:<tag/version>` et `docker push`.
+<!-- On peut également prendre une sorte de "capture" du conteneur (de son système de fichiers, pas des processus en train de tourner) sous forme d'image avec `docker commit <conteneur> <repo/image_name>:<tag/version>` et `docker push`. -->
 
-## Avancé : bien choisir son image de base un choix complexe (et partiellement subjectif ?)
 
-Beaucoup de personnes utilisent des images de base construites à partir de `alpine` qui est un bon compromis (6 mégaoctets seulement et un gestionnaire de paquets `apk`). Mais ce choix a aussi ses inconvénients:
+<!-- ## Objectifs pédagogiques
+  - Savoir ajouter des fichiers au système
+  - Savoir ajouter des packages, des utilisateurs, etc.
+  - Savoir utiliser les commandes ADD, COPY, USER, RUN, WORKDIR  -->
 
-- https://pythonspeed.com/articles/alpine-docker-python/
 
-Les images basées sur `debian-slim` et redhat `ubi-micro` sont a peine plus lourde et probablement plus solide/sécurisées et polyvalentes.
+### Instruction `WORKDIR`
 
-A mentionner: les images de base distroless : un projet de Google des images linux Debian de base mais sans tout ce qui fait la distribution (notamment apt) => a utiliser pour injecter les elements prébuildé dans un build multistage.
+```dockerfile
+WORKDIR /path/to/workdir
+```
+**L'instruction WORKDIR définit le répertoire de travail pour toutes les instructions RUN, CMD, ENTRYPOINT, COPY et ADD qui le suivent dans le Dockerfile.**
 
-- avantage encore plus léger et moins de surface d'attaque
-- images plus difficiles à patcher pour des failles car on ne peut pas utiliser le travail de la distribution
+Si le WORKDIR n'existe pas, il sera créé même s'il n'est utilisé dans aucune instruction Dockerfile ultérieure.
 
-Pour s'y retrouver on peut se référer à ce comparatif assez complet (bien que pro-redhat) : https://crunchtools.com/comparison-linux-container-images/
+L'instruction WORKDIR peut être utilisée plusieurs fois dans un Dockerfile. Si un chemin relatif est fourni, il sera relatif au chemin de l'instruction WORKDIR précédente. Par exemple:
 
-Pour entrer dans les détails d'une image on peut installer et utiliser https://github.com/wagoodman/dive. C'est souvent nécessaire quand on optimiser au maximum son image d'avoir conscience de tous les fichiers
+<!-- --- -->
+
+### Dockerfile in progress 1/5
+
+```Dockerfile
+# notre image de base
+FROM ubuntu
+
+WORKDIR /srv
+```
+
+### Instruction `RUN`
+
+
+```dockerfile
+RUN <command> (shell form, the command is run in a shell, which by default is /bin/sh -c on Linux or cmd /S /C on Windows)
+RUN ["executable", "param1", "param2"] (exec form)
+```
+**Exécute toutes les commandes dans un nouveau calque au-dessus de l'image actuelle et valide les résultats.**
+ 
+L'image validée résultante sera utilisée pour l'étape suivante dans le Dockerfile.
+
+<!-- --- -->
+
+### Dockerfile in progress 2/5
+
+```Dockerfile
+# our base image
+FROM ubuntu
+
+WORKDIR /srv
+
+RUN apt update && apt install -y python3  
+```
+<!-- --- -->
+
+### Instruction `COPY`
+
+```dockerfile
+COPY [--chown=<user>:<group>] <src>... <dest>
+COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
+```
+
+**Copie les nouveaux fichiers ou répertoires depuis src et les ajoute au système de fichiers du conteneur au chemin dest.**
+
+<!-- --- -->
+### Dockerfile in progress 3/5
+
+```Dockerfile
+# our base image
+FROM ubuntu
+
+WORKDIR /srv
+
+RUN apt update && apt install -y python3  
+
+# Cette commande copie index.html depuis le contexte de build dans /srv dans le conteneur
+# index.html doit exister dans votre dossier de projet
+COPY index.html /srv
+```
+**Après avoir ajouté ces instructions, lors du build, que remarque-t-on ?**
+
+La construction reprend depuis la dernière étape modifiée. Sinon, la construction utilise les layers précédents, qui avaient été mis en cache par le Docker Engine.
+
+<!-- --- -->
+
+### Instruction `ADD`
+
+```dockerfile
+ADD [--chown=<user>:<group>] [--checksum=<checksum>] <src>... <dest>
+```
+**Copie les nouveaux fichiers, répertoires ou URL de fichiers distants depuis src et les ajoute au système de fichiers de l'image au chemin dest.**
+
+Généralement utilisé pour ajouter le code du logiciel en cours de développement et sa configuration au conteneur.
+
+<!-- --- -->
+
+### Dockerfile in progress 4/5
+
+```Dockerfile
+# our base image
+FROM ubuntu
+
+WORKDIR /srv
+
+RUN apt update && apt install -y python3  
+
+COPY index.html /srv
+
+ADD https://www.gnu.org/licenses/gpl-3.0.txt /srv/licence.txt
+```
+<!-- --- -->
+
+### Instruction `USER`
+
+```dockerfile
+USER <user>[:<group>]
+USER <UID>[:<GID>]
+```
+**L'instruction USER définit le nom d'utilisateur (ou UID) et éventuellement le groupe d'utilisateurs (ou GID) à utiliser comme utilisateur et groupe par défaut pour le reste de l'étape en cours.**
+
+L'utilisateur spécifié est utilisé pour les instructions RUN et, lors de l'exécution, exécute les commandes ENTRYPOINT et CMD appropriées.
+
+<!-- --- -->
+### Dockerfile in progress 5/5
+
+```Dockerfile
+# our base image
+FROM ubuntu
+
+WORKDIR /srv
+
+RUN apt update && apt install -y python3  
+
+# Cette commande copie index.html depuis le contexte de build dans /srv dans le conteneur
+# index.html doit exister dans votre dossier de projet
+COPY index.html /srv
+
+ADD https://www.gnu.org/licenses/gpl-3.0.txt /srv/licence.txt
+
+# creation de l'utilisateur car USER ne le cree pas pour nous
+RUN useradd -d /srv -ms /bin/bash app
+
+# changement d'utilisateur pour la suite des instructions Dockerfile (en particulier la CMD)
+USER app
+
+# Ajoutons une commande pour servir notre page index.html avec python httpserver
+CMD ["python3", "-m", "http.server", "8000"]
+```
+
+

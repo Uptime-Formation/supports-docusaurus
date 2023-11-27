@@ -1,15 +1,15 @@
 ---
-title: "Cours Dockerfile : démarrer un process avec des arguments"
+title: "Cours Dockerfile : la commande par défaut d'un conteneur"
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
 
   - Savoir lancer un process dans un container Docker
   - Savoir utiliser les commandes CMD, ENTRYPOINT
-  
+   -->
 <!-- --- -->
 
-##  CMD, ENTRYPOINT et leur combinaison
+Les combinaisons des deux directive du Docker file `CMD` et `ENTRYPOINT`
 
 ### Instruction `CMD`
 
@@ -19,7 +19,7 @@ CMD ["param1","param2"] (as default parameters to ENTRYPOINT)
 CMD command param1 param2 (shell form)
 ```
 
-**Généralement à la fin du `Dockerfile` : elle permet de préciser la commande par défaut lancée à la création d'une instance du conteneur avec `docker run`. on l'utilise avec une liste de paramètres**
+Généralement à la fin du `Dockerfile` : elle permet de préciser **la commande par défaut** lancée à la création d'une instance du conteneur avec `docker run`. on l'utilise avec une liste de paramètres
 
 ```Dockerfile
 CMD ["echo 'Conteneur démarré'"]
@@ -34,24 +34,15 @@ ENTRYPOINT ["executable", "param1", "param2"]
 ENTRYPOINT command param1 param2
 ```
 
-**Précise le programme de base (le "prompt") avec lequel sera lancé la commande**
+ENTRYPOINT Précise le programme de base avec lequel sera lancé la commande... il ne sera pas écrasé
 
 ```Dockerfile
 FROM python:3.9
-ENTRYPOINT ["/usr/bin/python3"]
+ENTRYPOINT ["/usr/bin/python3", "-c"]
 ```
 
-Ensuite on peut faire : `docker run python_entrypoint -c 'print("hello")`
+Ensuite on peut faire : `docker run python_entrypoint 'print("hello")'`
 
-<!-- --- -->
-
-### Attention `CMD` != `ENTRYPOINT` != RUN
-
-**Ne surtout pas confondre avec `RUN` qui exécute une commande Bash uniquement pendant la construction de l'image.**
-
-CMD et ENTRYPOINT sont plus apparentés mais il faut également bien faire la distinction
-
-<!-- --- -->
 
 ### Combinaisons de ENTRYP0INT et CMD - Comment s'y retrouver ?!
 
@@ -59,7 +50,7 @@ En général il y a 9 combinaisons possibles des deux commandes => les résultat
 
 En réalité on utilise que 3 situations en général
 
-#### Cas 1 - la plupart du temps ENTRYPOINT est facultatif et on utilise que CMD
+#### Cas 1 - la plupart du temps ENTRYPOINT n'est pas utile et on utilise uniquement CMD
 
 Quand il n'y a que `CMD` dans le Dockerfile :
 - soit on fait `docker run` sans donner de commande et c'est le `CMD` du Dockerfile qui prime
@@ -75,11 +66,11 @@ On utilise ce cas quand on veut créer un conteneur "outil" basé sur un program
 
 ```Dockerfile
 FROM python:3.9
-ENTRYPOINT ["/usr/bin/python3"]
+ENTRYPOINT ["/usr/bin/python3", "-c"]
 ```
 
-Ensuite on peut faire : `docker run python_entrypoint -c 'print("hello")` dans ce cas :
-- `-c` et `print("hello")` sont ajoutés comme arguments de l'entrypoint `/usr/bin/python3`
+Ensuite on peut faire : `docker run python_entrypoint 'print("hello")` dans ce cas :
+- `print("hello")`, la commande est ajoutée comme argument de l'entrypoint `/usr/bin/python3 -c`
 - nous avons un conteneur "outil" qui permet lancer un bout de code python directement.
 - si on ne précise pas de commande avec Docker run c'est juste `/usr/bin/python3` sans argument qui est exécuté.
 
@@ -91,8 +82,8 @@ Vois aussi cowsay plus bas comme outils pour décorer du texte avec Docker. On p
 
 ```Dockerfile
 FROM python:3.9
-ENTRYPOINT ["/usr/bin/python3"]
-CMD ['-c', 'print("je peux executer du python directement")']
+ENTRYPOINT ["/usr/bin/python3", "-c"]
+CMD ['print("je peux executer du python directement")']
 ```
 
 Dans ce cas :
@@ -103,7 +94,7 @@ Dans ce cas :
 
 <!-- --- -->
 
-## _Facultatif :_ Faire parler la vache
+## _Exercice facultatif :_ Faire parler la vache
 
 Créons un nouveau Dockerfile qui permet de faire dire des choses à une vache grâce à la commande `cowsay`.
 

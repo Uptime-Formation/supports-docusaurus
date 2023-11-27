@@ -1,7 +1,5 @@
 ---
-title: TP Conteneurs Docker Premiers pas avec la ligne de commande
-pre: "<b>1.04 </b>"
-weight: 5
+title: TP la ligne de commande Docker
 ---
 
 <!-- ## Objectifs Pédagogiques
@@ -15,13 +13,12 @@ weight: 5
 <!-- # Mentalité :
 ![](../assets/images/changingThings.jpg) -->
 
-**Il faut prendre l'habitude de bien lire ce que la console indique après avoir passé vos commandes.**
+Il faut prendre l'habitude de **bien lire ce que la console indique** après avoir passé vos commandes.
 
 
 <!-- --- -->
 
-# Installation de Docker
-**Docker est préinstallé sur vos machines par simplicité, ce sera à vous de l'installer dans l'environnement de travail de votre choix en fonction de vos besoins et des systèmes que vous utiliserez.**
+**Docker est préinstallé sur vos machines par simplicité**, ce sera à vous de l'installer dans l'environnement de travail de votre choix en fonction de vos besoins et des systèmes que vous utiliserez.
 
 On va commencer à interagir avec Docker en utilisant le terminal, aka. ligne de commande, shell, ou terminal.
 
@@ -31,7 +28,7 @@ Une interface comme Portainer est utile, mais elle expose beaucou (trop) de fonc
 
 <!-- --- -->
 
-# Un peu de documentation
+### Un peu de documentation
 
 - `docker --help`
 - `man docker`
@@ -78,7 +75,7 @@ cf. [https://hub.docker.com/_/hello-world/](https://hub.docker.com/_/hello-world
 
 <!-- --- -->
 
-## Docker Hub, chercher une image
+### Docker Hub, chercher une image
 
 Visitez [hub.docker.com](https://hub.docker.com).
 
@@ -90,7 +87,7 @@ Par exemple cherchez l'image "ubuntu" sur le Docker Hub.
 
 <!-- --- -->
 
-## Pour vérifier l'installation
+### Pour vérifier l'installation
 
 Les commandes de base pour connaître l'état de Docker sont :
 
@@ -184,7 +181,7 @@ $ docker logs  mycontainer -n 3 -t
 <!-- --- -->
 
 
-# Docker exec: Exécuter un commande dans un conteneur déja démarré
+### Exécuter une commande dans un conteneur déja démarré
 
 **La commande `docker exec` permet d'exécuter une commande à l'intérieur du conteneur s'il est actif**.
 
@@ -207,7 +204,7 @@ man docker exec
 
 <!-- --- -->
 
-# Récapituler : une image, plusieurs conteneurs
+## Récapituler : une image, plusieurs conteneurs
 
 ![](../assets/images/ops-basics-isolation.svg)
 

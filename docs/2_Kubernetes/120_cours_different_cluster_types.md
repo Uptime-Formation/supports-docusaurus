@@ -1,7 +1,5 @@
 ---
 title: Cours - Les différents types de clusters
-draft: false
-# sidebar_position: 7
 ---
 
 ## Kubernetes

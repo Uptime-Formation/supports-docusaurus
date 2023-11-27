@@ -1,15 +1,13 @@
 ---
-title: 3.03 Passer des informations Les secrets Docker
-pre: "<b>3.03 </b>"
-weight: 31
+title: Passer des informations Les secrets Docker
 sidebar_class_name: hidden
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
   - Comprendre les dangers d'exposer les secrets
   - Savoir utiliser les secrets avec Docker
 
---- 
+---  -->
 
 # Mauvaise pratique : exposer les secrets  
 
@@ -24,8 +22,6 @@ Ces informations sont typiquement
 * Des identifiants sensibles 
 * Des URLs privées
 * ...
-
----
 
 # Les secrets Docker : disponibles dans Swarm
 
@@ -46,17 +42,13 @@ $ docker service  create --name redis --secret my_secret_data redis:alpine
 ```
 Èvidemment, `docker service` est dépendant de Swarm et ça ne marche pas avec `docker run`.
 
----
-
-# Comment faire ? 
+## Comment faire ? 
 
 Il existe de nombreux moyens de régler ce problème de première importance.
 
 Ces différents moyens impliquent d'injecter les secrets au moment de lancer Docker.
 
 Et comme on l'a vu, désormais il n'est pas rare qu'on utilise d'autres plateformes pour lancer du Docker.
-
----
 
 ## En local avec des variables d'environnement 
 

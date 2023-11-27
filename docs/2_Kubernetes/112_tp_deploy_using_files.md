@@ -1,7 +1,5 @@
 ---
-draft: false
 title: "TP - Déployer en utilisant des fichiers ressource yaml"
-# sidebar_position: 9
 ---
 
 ## Créer un pod rancher-demo à la main avec une description YAML

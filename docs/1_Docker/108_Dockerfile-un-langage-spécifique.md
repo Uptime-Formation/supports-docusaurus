@@ -1,5 +1,5 @@
 ---
-title: "Un Dockerfile minimal"
+title: "Pour commencer, un Dockerfile minimal"
 # pre: "<b>1.08 </b>"
 weight: 9
 ---
@@ -32,11 +32,12 @@ Il existe de nombreuses instructions dans la documentation officielle
 - Exemple:
 
 ```Dockerfile
-# our base image
 FROM alpine:3.18
 
+RUN echo "echo Hello World > /script.sh"
+
 # run the application
-CMD ["sh", "-c", "echo Hello World"]
+CMD ["sh", "script.sh"]
 ```
 
 **On va immédiatement contruire une image avec ce Dockerfile.**

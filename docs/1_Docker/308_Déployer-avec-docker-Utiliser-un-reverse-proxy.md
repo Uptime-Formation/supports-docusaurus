@@ -1,5 +1,5 @@
 ---
-title: 3.08 Déployer avec docker Utiliser un reverse proxy
+title: Déployer avec docker Utiliser un reverse proxy
 weight: 35
 ---
 

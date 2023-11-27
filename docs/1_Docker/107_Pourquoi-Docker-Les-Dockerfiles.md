@@ -1,5 +1,5 @@
 ---
-title: 'Pourquoi Docker épisode II : Dockerfiles "surgeler" une application'
+title: 'Pourquoi Docker épisode II : "surgeler" une application avec un Dockerfile'
 ---
 
 

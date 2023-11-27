@@ -1,10 +1,6 @@
 ---
-title: "1.11 Dockerfile TP : conteneuriser une application flask"
-pre: "<b>1.11 TP</b>"
-weight: 11
+title: "TP Dockerfile TP : conteneuriser une application flask"
 ---
-
-## TP - Dockerfile pour une application web flask
 
 - Récupérez d’abord une application Flask exemple en la clonant :
 
@@ -120,7 +116,6 @@ CMD ["./boot.sh"]
 
 </p>
 </details>
-
 
 
 <!-- ## Amélioration : Une image plus simple

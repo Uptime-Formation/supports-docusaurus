@@ -1,7 +1,5 @@
 ---
-title: 2.01 Les images Docker Créer Lister Détruire
-pre: "<b>2.03 </b>"
-weight: 16
+title: Cours gérer les images Docker
 ---
 
 ## Objectifs pédagogiques
