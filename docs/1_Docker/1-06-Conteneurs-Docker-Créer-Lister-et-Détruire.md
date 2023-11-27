@@ -105,7 +105,7 @@ $ docker ps
 ```
 Que se passe-t-il ?
 
-Plus d'infos sur https://docs.docker.com/engine/reference/run/#restart-policies-
+Plus d'infos sur https://docs.docker.com/engine/reference/run/#restart-policies---restart
 
 ## Avancé : Docker export / décortiquer un conteneur
 
