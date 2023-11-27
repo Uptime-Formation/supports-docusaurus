@@ -23,6 +23,12 @@ Est le (nouveau) builder par défaut de Docker depuis quelques années.
 
 - Inconvénient : pour les CI/CD il faut du Docker in Docker qui pas idéal en terme de sécurité voire impossible dans certains contextes (un cluster K8s sans docker).
 
+### Builder plusieurs images pour plusieurs architectures avec `buildx`
+
+Buildx est un plugin Docker assez récent qui permet d'automatiser le build d'images et de builder pour plusieurs architectures.
+
+Tutoriel d'exemple : https://www.docker.com/blog/how-to-rapidly-build-multi-architecture-images-with-buildx/
+
 ## Kaniko:
 
 Outil de Google pour builder efficacement sans Docker à partir d'un Dockerfile, notamment dans un cluster Kubernetes. Tourné vers la CI/CD
@@ -53,7 +59,7 @@ Un builder initialement de RedHat désormais maintenu par l'Open Container Initi
 
 - Getting started https://developers.redhat.com/blog/2021/01/11/getting-started-with-buildah
 
-## Benchmark des trois solutions précédentes à la fin du post de blog
+<!-- ## Benchmark des trois solutions précédentes à la fin du post de blog -->
 
 ## Un builder automatique plus récent et exotique : Buildpacks
 
