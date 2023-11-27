@@ -32,6 +32,7 @@ Kubernetes se trouve au coeur de plusieurs transformations profondes techniques,
 - Le mouvement DevOps et la CI/CD
 - Le "Cloud"
 - La conteneurisation logicielle
+- Infrastructure as Code
 
 Docker (qui est surtout la marque la plus connue pour les conteneurs en général) et Kubernetes sont des projets qui symbolisent et supportent techniquement ces transformations. D'où leur omniprésence dans les discussions informatiques actuellement.
 
@@ -55,17 +56,16 @@ Docker (qui est surtout la marque la plus connue pour les conteneurs en généra
   - meilleure compréhension globale du logiciel et de son installation de production car le savoir est mieux partagé
   - organisation des équipes par thématique métier plutôt que par spécialité technique (l'équipe scale mieux)
 
-### Le mouvement Cloud Native
 
-Le mouvement **Cloud Native** est relativement récent, il remonte aux années 2010. Le terme a été popularisé en 2015 par la Cloud Native Computing Foundation (CNCF), une organisation à but non lucratif qui a été créée par la Linux Foundation pour fournir une plateforme pour la collaboration et le développement de technologies Cloud Native open source (Kubernetes et son écosystème).
+### Infrastructure as Code
 
-La CNCF vise à promouvoir des applications qui peuvent être déployées et exécutées de manière efficace dans un environnement dynamique, pour tirer pleinement parti des avantages du cloud, tels que la scalabilité, la flexibilité et la résilience. Pour cela la CNCF promeut :
+On décrit en mode code un état du système:
 
-- L'usage des conteneurs qui permettent de créer des unités d'exécution indépendantes qui peuvent être facilement déployées et orchestrées
-
-- Une architecture d'application qui permette notamment la configuration dynamique à partir l'environnement telle que décrite ici : https://12factor.net/
-
-- Les microservices permettent de découper les applications en petits services indépendants qui peuvent être déployés et gérés individuellement.
+  - pas de dérive de la configuration et du système (immutabilité)
+  - on peut connaître de façon fiable l'état des composants du système
+  - on peut travailler en collaboration plus facilement (grâce à Git notamment)
+  - on peut faire des tests
+  - on facilite le déploiement de nouvelles instances
 
 ### Le Cloud
 
@@ -114,6 +114,18 @@ Les conteneurs sont souvent comparés à l'innovation du porte conteneur pour le
 - Logique opérationnelle intégrée dans l'orchestrateur: la responsabilité des l'état du cluster est laissé au controlleur k8s ce qui simplifie le travail
 
 On peut alors espérer **fluidifier** la gestion des défis techniques d'un grosse application et atteindre plus ou moins la livraison logicielle continue (CD de CI/CD)
+
+### Le mouvement Cloud Native
+
+Le mouvement **Cloud Native** est relativement récent, il remonte aux années 2010. Le terme a été popularisé en 2015 par la Cloud Native Computing Foundation (CNCF), une organisation à but non lucratif qui a été créée par la Linux Foundation pour fournir une plateforme pour la collaboration et le développement de technologies Cloud Native open source (Kubernetes et son écosystème).
+
+La CNCF vise à promouvoir des applications qui peuvent être déployées et exécutées de manière efficace dans un environnement dynamique, pour tirer pleinement parti des avantages du cloud, tels que la scalabilité, la flexibilité et la résilience. Pour cela la CNCF promeut :
+
+- L'usage des conteneurs qui permettent de créer des unités d'exécution indépendantes qui peuvent être facilement déployées et orchestrées
+
+- Une architecture d'application qui permette notamment la configuration dynamique à partir l'environnement telle que décrite ici : https://12factor.net/
+
+- Les microservices permettent de découper les applications en petits services indépendants qui peuvent être déployés et gérés individuellement.
 
 ## Kubernetes entre Cloud et auto-hébergement
 
