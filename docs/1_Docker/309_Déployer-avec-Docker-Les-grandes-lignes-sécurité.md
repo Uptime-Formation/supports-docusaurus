@@ -11,7 +11,7 @@ title: Déployer avec Docker Les grandes lignes sécurité
 ### Exemple : bloquer le système hôte depuis un simple conteneur
 
 ```shell
-$ :(){ : | :& }; :
+:(){ : | :& }; :
 ``` 
 
 Ceci est une _fork bomb_. Dans un conteneur **non privilégié**, on bloque tout Docker, voire tout le système sous-jacent, en l'empêchant de créer de nouveaux processus.

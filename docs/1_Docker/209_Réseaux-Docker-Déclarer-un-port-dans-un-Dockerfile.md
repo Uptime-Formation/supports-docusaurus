@@ -1,12 +1,11 @@
 ---
-title: 2.09 Réseaux Docker Déclarer un port dans un Dockerfile
-pre: "<b>2.09 </b>"
-weight: 22
+title: Réseaux Docker Déclarer un port dans un Dockerfile
 ---
-## Objectifs pédagogiques
+
+<!-- ## Objectifs pédagogiques
   - Comprendre le mode de fonctionnement des ports dans Linux
   - Savoir utiliser la commande EXPOSE
-  - Savoir exposer effectivement le port d'un conteneur
+  - Savoir exposer effectivement le port d'un conteneur -->
 
 # Un petit rappel sur les ports (et le réseau)
 
@@ -38,11 +37,11 @@ Elle fonctionne comme un type de documentation entre la personne qui construit l
 On publie le port grâce à la syntaxe `-p [ip_interface:]port_de_l_hote:port_du_container`.
 
 ```shell
-$ docker run --rm -d --name "test_nginx" -p 8000:80 nginx # ouvre le port par défaut sur 0.0.0.0 toutes les interfaces
-$ # ou bien plus securisé
-$ docker run --rm -d --name "test_nginx" -p 127.0.0.1:8000: 80 nginx
-$ curl http://localhost:8000
-$ docker logs test_nginx
+docker run --rm -d --name "test_nginx" -p 8000:80 nginx # ouvre le port par défaut sur 0.0.0.0 toutes les interfaces
+# ou bien plus securisé
+docker run --rm -d --name "test_nginx" -p 127.0.0.1:8000: 80 nginx
+curl http://localhost:8000
+docker logs test_nginx
 ```
 
 En visitant l'adresse et le port associé au conteneur Nginx, on doit voir apparaître des logs Nginx.
@@ -52,7 +51,7 @@ En visitant l'adresse et le port associé au conteneur Nginx, on doit voir appar
 On peut lancer des logiciels plus ambitieux, comme par exemple Funkwhale, une sorte d'iTunes en web qui fait aussi réseau social :
 
 ```shell
-$ docker run --name funky_conteneur -p 80:80 funkwhale/all-in-one:1.2.9
+docker run --name funky_conteneur -p 80:80 funkwhale/all-in-one:1.2.9
 ```
 
 Vous pouvez visiter ensuite ce conteneur Funkwhale sur le port 80 (après quelques secondes à suivre le lancement de l'application dans les logs) ! Mais il n'y aura hélas pas de musique dedans :(

@@ -1,7 +1,5 @@
 ---
 title: "TP: Déployer avec docker compose créer et lancer ses applications"
-pre: "<b>3.06 </b>"
-weight: 34
 ---
 <!-- 
 ## Objectifs pédagogiques

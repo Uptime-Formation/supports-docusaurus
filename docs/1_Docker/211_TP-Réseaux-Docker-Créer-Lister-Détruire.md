@@ -1,15 +1,11 @@
 ---
-title: 2.11 TP - Réseaux Docker Créer Lister Détruire
-pre: "<b>2.11 </b>"
-weight: 24
+title: TP - Réseaux Docker Créer Lister Détruire
 ---
 
 ## Objectifs pédagogiques
   - Savoir utiliser les commandes volume (create, ls, rm, connect, prune)
   - Savoir lancer un conteneur Docker en le connectant à un réseau
   - Savoir faire communiquer deux conteneurs Docker
-
-
 
 ## Pourquoi du réseau ? Pour relier des conteneurs
 
@@ -26,17 +22,17 @@ Le cas classique est l'application web connectée à une base de donnée.
 ### Les commandes network 
 
 ```bash
-$ docker create
-$ docker ls
-$ docker rm
-$ docker connect
-$ docker prune
+docker create
+docker ls
+docker rm
+docker connect
+docker prune
 ```
 
 **Documentation** :
 
 ```bash
-$ man docker-network-create
+man docker-network-create
 ```
 
 - [https://docs.docker.com/network/](https://docs.docker.com/network/)
@@ -48,8 +44,8 @@ Pour expérimenter avec le réseau nous allons **lancer une petite application n
 Récupérons les images depuis Docker Hub:
 
 ```shell
-$ docker image pull redis:alpine
-$ docker image pull russmckendrick/moby-counter
+docker image pull redis:alpine
+docker image pull russmckendrick/moby-counter
 ```
 
 <!-- --- -->
@@ -59,7 +55,7 @@ $ docker image pull russmckendrick/moby-counter
 Pour connecter les deux applications créons un réseau manuellement:
 
 ```shell
-$ docker network create moby-network
+docker network create moby-network
 ```
 
 <!-- --- -->
@@ -72,8 +68,8 @@ Docker implémente ces réseaux virtuels en créant des interfaces. Lancez la co
 
 
 ```shell
-$ docker run -d --name redis --network <réseau> redis:alpine
-$ docker run -d --name moby-counter --network <réseau> -p 80:80 russmckendrick/moby-counter
+docker run -d --name redis --network <réseau> redis:alpine
+docker run -d --name moby-counter --network <réseau> -p 80:80 russmckendrick/moby-counter
 ```
 
 Visitez la page de notre application. Qu'en pensez vous ? Moby est le nom de la mascotte Docker 🐳 😊. Faites un motif en cliquant.
@@ -96,7 +92,7 @@ Exécutez (`docker exec`) la commande `ping -c 3 redis` à l'intérieur de notre
 Quelle est l'adresse IP affichée ?
 
 ```shell
-$ docker exec moby-counter ping -c3 redis
+docker exec moby-counter ping -c3 redis
 ```
 
 <!-- ---  -->
@@ -116,7 +112,7 @@ C'est comme ça que le conteneur connaît l'adresse IP de `redis`.
 Pour s'en assurer interrogeons le serveur DNS de notre réseau `moby-network` en lançant la commande `nslookup redis` grâce à `docker exec` :
 
 ```shell
-$ docker exec moby-counter nslookup redis
+docker exec moby-counter nslookup redis
 ```
 
 <!-- --- -->
@@ -126,7 +122,7 @@ $ docker exec moby-counter nslookup redis
 Créez une deuxième instance de l'application dans ce réseau.
 
 ```bash
-$ docker run -d --name moby-counter2 --network moby-network2 \
+docker run -d --name moby-counter2 --network moby-network2 \
   -p 9090:80 russmckendrick/moby-counter`
 ```
 
@@ -145,7 +141,7 @@ Pour ce faire nous devons spécifier l'option `--network-alias` :
 Créons un deuxième redis avec le même domaine:
 
 ```shell
-$ docker run -d --name redis2 --network moby-network2 --network-alias redis redis:alpine`
+docker run -d --name redis2 --network moby-network2 --network-alias redis redis:alpine`
 ```
 
 Lorsque vous pingez `redis` depuis cette nouvelle instance de l'application, quelle IP obtenez-vous ?
@@ -160,7 +156,7 @@ Lancez `nslookup redis` dans le conteneur `moby-counter2` pour tester la résolu
 Vous pouvez retrouver la configuration du réseau et les conteneurs qui lui sont reliés avec 
 
 ```shell
-$ docker network inspect moby-network2
+docker network inspect moby-network2
 ```
   Notez la section IPAM (IP Address Management).
 
@@ -169,8 +165,8 @@ $ docker network inspect moby-network2
 Arrêtons nos conteneurs et faisons le ménage 
 
 ```shell
-$ docker stop moby-counter2 redis2
-$ docker container prune
+docker stop moby-counter2 redis2
+docker container prune
 ```
 
  **De même `docker network prune` permet de faire le ménage des réseaux qui ne sont plus utilisés par aucun conteneur.**

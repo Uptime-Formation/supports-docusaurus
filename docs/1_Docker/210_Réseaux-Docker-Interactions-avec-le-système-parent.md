@@ -1,13 +1,11 @@
 ---
-title: 2.10 Réseaux Docker Interactions avec le système parent
-pre: "<b>2.10 </b>"
-weight: 23
+title: "Cours: Réseaux Docker Interactions avec le système parent"
 ---
-## Objectifs pédagogiques
-  - Comprendre le mode de fonctionnement des bridge Linux et le NAT
-  - Savoir inspecter la couche réseau d'un conteneur Docker
 
----
+<!-- ## Objectifs pédagogiques
+  - Comprendre le mode de fonctionnement des bridge Linux et le NAT
+  - Savoir inspecter la couche réseau d'un conteneur Docker -->
+
 
 # Le réseau Docker est très automatique
 
@@ -20,7 +18,6 @@ Par défaut :
 
 Il est néanmoins modulaire, et permet de choisir entre plusieurs options.
 
----
 
 ## Par défaut : les réseaux de type bridge
 
@@ -34,7 +31,6 @@ Par défaut les réseaux docker fonctionne en bridge (le réseau de chaque conte
 
 Par défaut les adresses sont en 172.16.0.0/12, typiquement chaque hôte définit le bloc d'IP 172.17.0.0/16 configuré avec DHCP.
 
----
 ## Les autres types de réseaux
 
 ### Overlay

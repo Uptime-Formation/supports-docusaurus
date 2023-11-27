@@ -1,5 +1,5 @@
 ---
-title: TP la ligne de commande Docker
+title: "TP : découvrir la ligne de commande Docker"
 ---
 
 <!-- ## Objectifs Pédagogiques
@@ -47,7 +47,7 @@ Une interface comme Portainer est utile, mais elle expose beaucou (trop) de fonc
 <!-- ## Lancer un conteneur "Hello world"
 
 ```shell
-$ docker run hello-world
+docker run hello-world
 ```
 
 **Décomposons cette «ligne de commande»** 
@@ -106,7 +106,7 @@ Que remarquez-vous ? Quels conteneurs docker sont en train de tourner ?
 ### Les bases
 
 ```shell
-$ docker run -it ubuntu 
+docker run -it ubuntu 
 ```
 Que se passe-t-il ? Le prompt vous indique que vous avez changé d'environnement.
 
@@ -123,7 +123,7 @@ Lancez la commande sans mode interactif. Que se passe-t-il ?
 ### Conteneurs jetables 
 
 ```shell
-$ docker run -it --rm ubuntu bash
+docker run -it --rm ubuntu bash
 ```
 **L'argument `--rm ` indique qu'on ne veut pas conserver le conteneur après son arrêt (lorsque le processus principal s'arrête). Il est "jetable".**
 
@@ -132,14 +132,14 @@ $ docker run -it --rm ubuntu bash
 <!-- ## Les commandes de démarrage
 
 ```shell
-$ docker run -it --rm alpine bash
+docker run -it --rm alpine bash
 ```
 Que se passe-t-il ? Pourquoi ? 
 
 Il faut que la commande demandée existe dans l'image.
 
 ```shell
-$ docker run -it --rm alpine sh
+docker run -it --rm alpine sh
 ```
 
 Quelles peuvent être les différences entre les images ubuntu et alpine ? -->
@@ -147,7 +147,7 @@ Quelles peuvent être les différences entre les images ubuntu et alpine ? -->
 ### Conteneurs nommés persistants
 
 ```shell
-$ docker run -d --name mycontainer -it --rm ubuntu bash -c  'while true; do date; sleep 1; done' 
+docker run -d --name mycontainer -it --rm ubuntu bash -c  'while true; do date; sleep 1; done' 
 ```
 Que se passe-t-il ? Inspectez la liste des conteneurs ? Que remarquez-vous ? 
 
@@ -159,16 +159,16 @@ Que se passe-t-il ? Inspectez la liste des conteneurs ? Que remarquez-vous ?
 ### La commande `logs` : voir la sortie texte d'un conteneur tournant en arrière plan
 
 ```shell
-$ docker logs mycontainer
+docker logs mycontainer
 ```
 Que voyez-vous ? 
 
 **La commande logs permet d'obtenir la sortie du conteneur (STDOUT + STDERR)**
 
 ```shell
-$ docker logs  mycontainer -f 
-$ docker logs  mycontainer --tail 3 
-$ docker logs  mycontainer -n 3 -t 
+docker logs  mycontainer -f 
+docker logs  mycontainer --tail 3 
+docker logs  mycontainer -n 3 -t 
 
 ```
 

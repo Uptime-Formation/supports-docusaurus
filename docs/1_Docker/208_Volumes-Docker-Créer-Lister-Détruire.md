@@ -1,13 +1,10 @@
 ---
-title: 2.08 Volumes Docker Créer Lister Détruire
-pre: "<b>2.08 </b>"
-weight: 21
+title: Volumes Docker Créer Lister Détruire
 ---
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
   - Savoir utiliser les commandes volume (create, ls, rm, prune)
   - Savoir monter des volumes de persistance locaux et distants
-
-
+ -->
 
 ## Les volumes Docker via la sous-commande `volume`
 
@@ -17,21 +14,19 @@ weight: 21
 - `docker volume rm`
 - `docker volume prune`
 
-
-
 ## Un volume nommé avec la commande create
 
 On crée un volume nommé avec
 
 ```shell 
-$ docker volume create redis_data
-$ docker run --rm -d -v redis_data:/data redis
+docker volume create redis_data
+docker run --rm -d -v redis_data:/data redis
 ```
 
 Ici le point de montage `/data` est spécifique à l'image `redis`
 
 ```shell
-$ docker image history redis 
+docker image history redis 
 ...
 <missing>      2 days ago   /bin/sh -c #(nop)  VOLUME [/data]               0B        
 <missing>      2 days ago   /bin/sh -c mkdir /data && chown redis:redis …   0B        
@@ -49,12 +44,12 @@ On peut aussi créer le volume à l'avance et l'attacher après coup à un conte
 Par défaut le driver de volume est `local` c'est-à-dire qu'un dossier est créé sur le disque de l'hôte.
 
 ```shell
-$ docker volume create tmp
-$ docker run -d --name conteneur_1 -v tmp:/data ubuntu bash -c "while true; do date; ls /data; sleep 1; done"
-$ docker run -d --name conteneur_2 -v tmp:/data ubuntu bash -c "while true; do date; ls /data; sleep 1; done"
-$ docker exec conteneur_1 touch /data/file_1
-$ docker exec conteneur_2 touch /data/file_2
-$ docker logs conteneur_1 
+docker volume create tmp
+docker run -d --name conteneur_1 -v tmp:/data ubuntu bash -c "while true; do date; ls /data; sleep 1; done"
+docker run -d --name conteneur_2 -v tmp:/data ubuntu bash -c "while true; do date; ls /data; sleep 1; done"
+docker exec conteneur_1 touch /data/file_1
+docker exec conteneur_2 touch /data/file_2
+docker logs conteneur_1 
 ```
 
 ---
@@ -72,8 +67,8 @@ Exemples:
 - etc.
 
 ```shell
-$ docker volume create -d vieux/sshfs -o sshcmd=<sshcmd> -o allow_other sshvolume
-$ docker run -p 8080:8080 -v sshvolume:/path/to/folder --name test someimage
+docker volume create -d vieux/sshfs -o sshcmd=<sshcmd> -o allow_other sshvolume
+docker run -p 8080:8080 -v sshvolume:/path/to/folder --name test someimage
 ```
 
 ### Permissions

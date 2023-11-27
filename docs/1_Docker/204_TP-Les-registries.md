@@ -35,7 +35,7 @@ On premise:
 Utiliser la commande search pour chercher dans le dockerhub des images.
 
 ```shell
-$ docker search registry 
+docker search registry 
 ```
 
 Vous remarquez qu'une image se détache. Laquelle et pourquoi ?
@@ -59,10 +59,10 @@ Cela crée un tag supplémentaire pour l'image existante.
 
 ```shell
 # Y pousser une image
-$ docker tag ubuntu:latest localhost:5000/my-ubuntu:36.04
-$ docker tag ubuntu:latest localhost:5000/my-ubuntu:latest
-$ docker image ls localhost:5000/my-ubuntu
-$ docker push localhost:5000/my-ubuntu
+docker tag ubuntu:latest localhost:5000/my-ubuntu:36.04
+docker tag ubuntu:latest localhost:5000/my-ubuntu:latest
+docker image ls localhost:5000/my-ubuntu
+docker push localhost:5000/my-ubuntu
 ```
 
 ---
@@ -71,8 +71,8 @@ $ docker push localhost:5000/my-ubuntu
 
 ```shell
 # Supprimer l'image en local
-$ docker image remove ubuntu:16.04
-$ docker image remove localhost:5000/my-ubuntu
+docker image remove ubuntu:16.04
+docker image remove localhost:5000/my-ubuntu
 ```
 
 ---
@@ -81,7 +81,7 @@ Extrayez l'image localhost:5000/my-ubuntu de votre registre local.
 
 ```shell
 # Récupérer l'image depuis le registry
-$ docker pull localhost:5000/my-ubuntu
+docker pull localhost:5000/my-ubuntu
 ```
 
 ## _Facultatif :_  push sur le Docker Hub

@@ -1,29 +1,14 @@
 ---
-title: "Pour commencer, un Dockerfile minimal"
-# pre: "<b>1.08 </b>"
-weight: 9
+title: "TP : Pour commencer, un Dockerfile minimal"
 ---
 
 <!-- ## Objectifs pédagogiques
   - Reconnaître les différentes étapes d'un Dockerfile
   - Savoir utiliser la commande build -->
   
-
-## Analogie 
-
 Pour continuer sur notre analogie de la cuisine, le Dockerfile est une recette. 
-
 C'est une suite d'instructions qui permet d'obtenir un plat cuisiné. 
-
-**On va travailler sur une recette très simple de Dockerfile, un Hello World.**
-
-## Documentation
-
-Il existe de nombreuses instructions dans la documentation officielle 
-
-> [https://docs.docker.com/engine/reference/builder/](https://docs.docker.com/engine/reference/builder/)
-
-**Les autres instructions qu'on peut ajouter vont permettre d'aller plus loin qu'un simple Hello World.**
+On va travailler sur une recette très simple de Dockerfile, un **Hello World.**
 
 ## La composition d'un Dockerfile minimal
 
@@ -34,10 +19,10 @@ Il existe de nombreuses instructions dans la documentation officielle
 ```Dockerfile
 FROM alpine:3.18
 
-RUN echo "echo Hello World > /script.sh"
+RUN echo "echo Hello World > /boot.sh"
 
 # run the application
-CMD ["sh", "script.sh"]
+CMD ["boot.sh"]
 ```
 
 **On va immédiatement contruire une image avec ce Dockerfile.**
@@ -50,7 +35,9 @@ CMD ["sh", "script.sh"]
 ```
 docker build  . -t minimal 
 ```
+
 5. Lancer l'image docker nommée "minimal"
+
 ```
 docker run minimal
 hello World
@@ -61,12 +48,8 @@ hello World
 Pour afficher "Hello World", il nous a fallu au moins 2 instructions 
 
 1. le système de base dans lequel on veut lancer le process
-2. la commande du process qu'on veut lancer ici `sh -c "echo Hello World"`
-
-Q: Que se passerait-il si on ne donnait pas la 2e commande ?
-
-
-### build = Dockerfile -> Image
+2. un fichier de script shell ajouté qui afficher hello world
+2. la commande du process qu'on veut lancer ici `script.sh`
 
 La commande `build` est l'opération qui "prépare le plat", et le met dans un format "consommable".  
 

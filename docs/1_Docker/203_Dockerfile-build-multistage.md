@@ -1,7 +1,5 @@
 ---
-title: "1.12 Dockerfile : build multistage"
-pre: "<b>1.12 </b>"
-weight: 13
+title: "Cours+TP : les build multistage"
 ---
 
 <!-- ## Objectifs pédagogiques
@@ -46,7 +44,7 @@ COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
 CMD ["./app"]
 ```
 
-## TP avancé : Un multi-stage build avec distroless comme image de base de prod
+## TP : Un multi-stage build avec distroless comme image de base de prod
 
 Chercher la documentation sur les images distroless. 
 Quel est l'intérêt ? Quels sont les cas d'usage ? 

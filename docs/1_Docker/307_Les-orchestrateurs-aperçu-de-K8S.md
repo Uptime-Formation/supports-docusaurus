@@ -286,5 +286,5 @@ Les recettes Helm contiennent tous les objets nécessaires au déploiement d'un 
 L'idée étant qu'il ne reste plus que des variables spécifiques (tailles des volumes, secrets, etc.).
 
 ```shell
-$ helm install my-release nginx-stable/nginx-ingress
+helm install my-release nginx-stable/nginx-ingress
 ```

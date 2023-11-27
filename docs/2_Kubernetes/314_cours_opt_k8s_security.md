@@ -129,7 +129,7 @@ Il y a plein d'autre `roles` et `clusterroles` destinés à différents composan
 La commande `kubectl auth can-i <verb> <type_de_resource>` permet de déterminer selon le profil utilisé (défini dans votre `kubeconfig`) les permissions actuelles de l'user sur les objets Kubernetes. On peut en plus utiliser l'impersonnation avec can-i (et toutes les commandes kubectl) pour tester les limites d'une d'action avec identité. Exemple:
 
 ```bash
-$ kubectl auth can-i delete pod --as=my-limited-serviceaccount
+kubectl auth can-i delete pod --as=my-limited-serviceaccount
 no
 ```
 

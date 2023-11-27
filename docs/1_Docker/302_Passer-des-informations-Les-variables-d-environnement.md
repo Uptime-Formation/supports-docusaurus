@@ -26,8 +26,8 @@ Les variables d'environnement sont constituées de paires de noms et de valeurs,
 **Tout process a généralement des variables d'environnement.** 
 
 ```shell
-$ env
-$ sudo cat /proc/self/environ | tr "\0" "\n"
+env
+sudo cat /proc/self/environ | tr "\0" "\n"
 ```
 
 **Avancé** : En remplaçant `self` par un `pid` vous pouvez voir les variables d'environnement de tout process.
@@ -37,15 +37,15 @@ $ sudo cat /proc/self/environ | tr "\0" "\n"
 Les variables d'environnement sont des variables "shell", elles ont toujours la forme
 
 ```shell
-$ VAR=<value>
+VAR=<value>
 ```
 
 On les crée avec la commande shell `export` et la commande `env` sert à les afficher et les gérer.
 
 
 ```shell
-$ env -i sh -c "env"
-$ env -i sh -c "export VAR=VALUE; printenv"
+env -i sh -c "env"
+env -i sh -c "export VAR=VALUE; printenv"
 ```
 
 <!-- --- -->
@@ -85,7 +85,7 @@ Se référer au [mode d'emploi](https://docs.docker.com/engine/reference/builder
 **On peut également définir les variables d'environnement en ligne de commande.**
 
 ```shell
-$ docker run --env VAR=VALUE ubuntu env
+docker run --env VAR=VALUE ubuntu env
 ```
 
 <!-- --- -->
@@ -98,7 +98,7 @@ Absolument tous les langages de programmation offrent des moyens très simples d
 
 En PHP, vous pouvez accéder aux variables d'environnement à l'aide de la fonction getenv().
 ```php
-$maVar = getenv('MA_VAR');
+  $maVar = getenv('MA_VAR');
 ```
 
 En Python, vous pouvez accéder aux variables d'environnement à l'aide du module os.

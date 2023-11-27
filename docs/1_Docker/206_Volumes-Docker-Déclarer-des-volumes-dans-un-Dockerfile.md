@@ -1,13 +1,10 @@
 ---
-title: 2.06 Volumes Docker Déclarer des volumes dans un Dockerfile
-pre: "<b>2.06 </b>"
-weight: 19
+title: Volumes Docker Déclarer des volumes dans un Dockerfile
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
   - Savoir utiliser la commande VOLUME
-  - Comprendre la persistance de données
-
+  - Comprendre la persistance de données -->
 
 ## Cycle de vie d'un conteneur
 
@@ -39,8 +36,8 @@ CMD ["bash", "-c", "cat /myvol/created_at"]
 ```
 
 ```shell
-$ docker build -t created_at
-$ docker run created_at
+docker build -t created_at
+docker run created_at
 ```
 
 On précise ensuite avec l'option `-v` de `docker run` à quoi connecter ces volumes. 

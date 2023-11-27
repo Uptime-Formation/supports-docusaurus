@@ -32,13 +32,13 @@ Il existe bien une page sur les secrets dans Docker mais ils sont réservés à 
 Le principe est pourtant simple : on fournit à Docker un contenu, que le dockerengine stocke de manière chiffrée.
 
 ```shell
-$  echo "f94togJrq9BEqRfxgrtrlU48DlryHMPha" | docker secret create pg_db_password -
+ echo "f94togJrq9BEqRfxgrtrlU48DlryHMPha" | docker secret create pg_db_password -
 ```
 
 Ensuite on peut monter ce secret comme un volume accessible au process lancé.
 
 ```shell
-$ docker service  create --name redis --secret my_secret_data redis:alpine
+docker service  create --name redis --secret my_secret_data redis:alpine
 ```
 Èvidemment, `docker service` est dépendant de Swarm et ça ne marche pas avec `docker run`.
 
@@ -55,7 +55,7 @@ Et comme on l'a vu, désormais il n'est pas rare qu'on utilise d'autres platefor
 C'est la solution simple : on lance l'image avec le paramètre --env 
 
 ```shell
-$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 ```
 
 `-e` est la version courte de `--env` 
@@ -80,9 +80,9 @@ services:
 ```
 - de consommer les secrets docker Swarm
 ```shell
-$ echo P@55w0rd | docker secret create db_password -
+echo P@55w0rd | docker secret create db_password -
 # or
-$ docker secret create db_password ./db_password.txt
+docker secret create db_password ./db_password.txt
 
 ```
 ```yaml

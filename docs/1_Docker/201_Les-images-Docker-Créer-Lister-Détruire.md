@@ -38,7 +38,7 @@ La commande `build` est un alias pour `image build`
 Elle dispose de très nombreuses options qu'il est intéressant de connaître à terme pour des raisons de sécurité.
 
 ```shell
-$ man docker-image-build
+man docker-image-build
 ```  
 <!-- --- -->
 
@@ -50,7 +50,7 @@ La commande `push` est un alias pour `image push`
 On les reverra dans la partie suivantes concernant les registres.
 
 ```shell
-$ man docker-image-pull
+man docker-image-pull
 ```
   
 <!-- --- -->
@@ -64,10 +64,10 @@ La commande `rm` supprime une image spécifique.
 La commande``prune` recherche les images sans conteneur démarré pour les supprimer.
  
 ```shell
-$ docker image pull nging:1.14
-$ docker image rm  nging:1.14
-$ docker image pull busybox
-$ docker image prune
+docker image pull nging:1.14
+docker image rm  nging:1.14
+docker image pull busybox
+docker image prune
 ```  
 <!-- --- -->
 
@@ -78,10 +78,10 @@ Attribue un nouvel alias à une image.
 Un alias fait référence au nom complet de l'image, y compris le TAG facultatif après le ':'.
 
 ```shell
-$ docker image pull busybox
-$ docker image tag busybox busybox:local
-$ docker image tag busybox busybox:1.2.3
-$ docker image ls 
+docker image pull busybox
+docker image tag busybox busybox:local
+docker image tag busybox busybox:1.2.3
+docker image ls 
 busybox      1.2.3     66ba00ad3de8   5 weeks ago     4.87MB
 busybox      latest    66ba00ad3de8   5 weeks ago     4.87MB
 busybox      local     66ba00ad3de8   5 weeks ago     4.87MB
