@@ -1,6 +1,5 @@
 ---
-title: 3.01 Déployer avec Docker L'évolution de l'écosystème des conteneurs
-pre: "<b>3.01 </b>"
+title: Déployer avec Docker L'évolution de l'écosystème des conteneurs
 weight: 28
 ---
 

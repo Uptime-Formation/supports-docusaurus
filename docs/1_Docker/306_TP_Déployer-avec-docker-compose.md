@@ -117,7 +117,7 @@ Construire l'application, pour l'instant avec `docker build ...`, la lancer.
 A la racine de notre projet `identidock` (à côté du Dockerfile), créez un fichier de déclaration de notre application appelé `docker-compose.yml` avec à l'intérieur :
 
 ```yml
-version: 3.8
+version: "3.8"
 services:
   identidock:
     build: .

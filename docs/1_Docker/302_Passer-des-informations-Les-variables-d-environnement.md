@@ -1,16 +1,15 @@
 ---
-title: 3.02 Passer des informations Les variables d'environnement
-weight: 30
+title: "Configurer une application conteneurisée"
 ---
 
-## Objectifs pédagogiques
+<!-- ## Objectifs pédagogiques
   - Comprendre les variables d'environnement d'un process
   - Savoir utiliser la directive ENV dans un Dockerfile
-  - Savoir passer des variables d'environnement à un conteneur
+  - Savoir passer des variables d'environnement à un conteneur -->
 
 <!-- --- -->
 
-# Les variables d'environnement 
+## Les variables d'environnement 
 
 > Analogie : Une commande de restauration à livrer.   
 > La fiche du client affiche des informations qui lui sont spécifiques.  
