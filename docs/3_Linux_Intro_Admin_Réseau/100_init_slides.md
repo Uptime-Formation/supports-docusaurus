@@ -2,36 +2,26 @@
 title: Introduction à Linux
 ---
 
-# Introduction à
-# <small style="font-size: 0.3em">GNU/</small>Linux
-
-*Become a Command Line Padawan in three days!*
+<!-- *Become a Command Line Padawan in three days!* -->
 
 ![](/img/linux/gnulinux.png)
 
----
 
-class: impact
+## Hello, world!
 
-# Hello, world!
+## À propos de moi
 
----
+## À propos de vous ?
 
-# À propos de moi
+## Signatures de présence
 
-...
-
-# À propos de vous ?
-
-# Signatures de présence
-
-# Évaluations (?)
+## Évaluations (?)
 
 <!-- # Plan du cursus -->
 
 <!-- # Autres formateurs / référents -->
-
-# Plan de la formation
+<!-- 
+## Plan de la formation
 
 **Jour 1 ?** / Bases de Linux
 
@@ -95,22 +85,21 @@ class: impact
 
 - Cron jobs
 - Regex ?
-- TP d'application
+- TP d'application -->
 
-# Méthode de travail
+## Méthode de travail
 
 - Alternance théorie / pratique
-- Publication du contenu au fur et à mesure
-    - sur **https://dismorphia.info/documents/formationLinux**
+- Contenu sur ce ce site
 - Travail dans une machine virtuelle
 - Setup avec Guacamole pour les stagiaires à distance
 
-# Objectifs
+## Objectifs
 
 - Vous fournir des bases solides via la pratique
 - Vous transmettre une forme d'enthousiasme !
 
-# Disclaimers
+## Disclaimers
 
 - C'est une formation d'informatique technique
 - L'informatique technique, c'est compliqué
@@ -118,62 +107,36 @@ class: impact
 - Soyez **patient, méthodique, attentifs** !
 - **Ne laissez pas l'écran vous aspirer** !
 
-## On est là pour apprendre
+### On est là pour apprendre
 
 - Réussir les exo importe peu, il faut **comprendre ce que vous faites** !
 - Apprendre plus que de la théorie (posture, savoir se dépatouiller...)
 - Prenez le temps de vous tromper (et de comprendre pourquoi)
 
-## **N'hésitez pas à poser vos questions !**
+### **N'hésitez pas à poser vos questions !**
 
-class: impact
+## 1. Les origines de (GNU/)Linux
 
-# 1. Les origines de (GNU/)Linux
+### (ou plus largement de l'informatique contemporaine)
 
-## (ou plus largement de l'informatique contemporaine)
-
----
-
-# 1. Les origines de Linux
-
-## La préhistoire de l'informatique
+### La préhistoire de l'informatique
 
 - ~1940 : Ordinateurs electromecaniques, premiers ordinateurs programmables
 - ~1950 : Transistors
 - ~1960 : Circuits intégrés
 
-.center[
 ...Expansion de l'informatique...
-]
 
----
+### 1970 : PDP-7
 
-# 1. Les origines de Linux
-
-## 1970 : PDP-7
-
-.center[
 ![](/img/linux/pdp7.jpg)
-]
 
 
----
+### 1970 : (old computer?)
 
-# 1. Les origines de Linux
-
-## 1970 : (old computer?)
-
-.center[
 ![](/img/linux/old_computer.jpg)
-]
 
-
-
----
-
-# 1. Les origines de Linux
-
-## 1970 : UNIX
+### 1970 : UNIX
 
 - Définition d'un 'standard' pour les OS
 - Un multi-utilisateur, multi-tâche
@@ -182,61 +145,36 @@ class: impact
 - Ouvert (évidemment)
 - (Écrit en assembleur)
 
-.center[
 ![](/img/linux/ritchie_thompson_kernighan.png)
-]
 
----
 
-# 1. Les origines de Linux
+### 1970 : UNIX
 
-## 1970 : UNIX
-
-.center[
 ![](/img/linux/unixtree.png)
-]
 
----
 
-# 1. Les origines de Linux
-
-## 1975 : Le langage C
+### 1975 : Le langage C
 
 - D. Ritchie et K. Thompson définissent un nouveau langage : le C ;
 - Le C rends portable les programmes ;
 - Ils réécrivent une version d'UNIX en C, ce qui rends UNIX portable ;
 
-.center[
 ![](/img/linux/ritchie_thompson.jpg)
-]
 
----
 
-# 1. Les origines de Linux
-
-## 1970~1985 : Les débuts d'Internet
+### 1970~1985 : Les débuts d'Internet
 
 - Définition des protocoles IP et TCP
     - Faire communiquer les machines entre elles
     - Distribué / décentralisé : peut survivre à des attaques nucléaires
 - ARPANET ...
 
----
 
-# 1. Les origines de Linux
+### 1970~1985 : Les débuts d'Internet
 
-## 1970~1985 : Les débuts d'Internet
-
-.center[
 ![](/img/linux/arpanet.png)
-]
 
-
----
-
-# 1. Les origines de Linux
-
-## 1970~1985 : Les débuts d'Internet
+### 1970~1985 : Les débuts d'Internet
 
 - Définition des protocoles IP et TCP
     - Faire communiquer les machines entre elles
@@ -246,11 +184,8 @@ class: impact
 - Terminaux dans les grandes universités
 - Appartition des newsgroup, ...
 
----
 
-# 1. Les origines de Linux
-
-## 1980 : Culture hacker, logiciel libre
+### 1980 : Culture hacker, logiciel libre
 
 - Le logiciel devient un enjeu commercial avec des licences propriétaires
 - L'informatique devient un enjeu politique
@@ -260,11 +195,8 @@ class: impact
     - Contre les autorités centrales et la bureaucratie
     - Un mouvement technique, artistique et politique
 
----
 
-# 1. Les origines de Linux
-
-## 1980 : Culture hacker, logiciel libre
+### 1980 : Culture hacker, logiciel libre
 
 - R. Stallman fonde le mouvement du logiciel libre et la FSF <small>(Free Software Foundation)</small>
     0. Liberté d'utiliser du programme
@@ -273,29 +205,18 @@ class: impact
     3. Liberte de redistribuer les modificiations
 - ... et le projet GNU : un ensemble de programmes libres
 
-.center[
 ![](/img/linux/stallman.jpg)
 ![](/img/linux/gnu.png)
-]
 
----
 
-# 1. Les origines de Linux
-
-## 1990 : Création de Linux
+### 1990 : Création de Linux
 
 - Linus Torvalds écrit Linux dans son garage
 
-.center[
 ![](/img/linux/torvalds.jpg)
 ![](/img/linux/tux.png)
-]
 
----
-
-# 1. Les origines de Linux
-
-## 1990 : Création de Linux
+### 1990 : Création de Linux
 
 *I'm doing a (free) operating system (**just a hobby, won't be big and professional like gnu**) for 386(486) AT clones. This has been brewing since april, and is starting to get ready. I'd like any feedback on things people like/dislike in minix, as my OS resembles it somewhat (same physical layout of the file-system (due to practical reasons) among other things).*
 
@@ -306,11 +227,8 @@ class: impact
 *PS. [...] It is NOT portable [...] and it probably never will support anything other than AT-harddisks, as that's all I have :-(.
 — Linus Torvalds*
 
----
 
-# 1. Les origines de Linux
-
-## 1990 : Et en fait, Linux se développe...
+### 1990 : Et en fait, Linux se développe...
 
 - Linus Torvalds met Linux sous licence GPL
 - Support des processeurs Intel
@@ -320,60 +238,33 @@ class: impact
 - Excellent support de TCP/IP
 - Création de Debian en 1993
 
----
 
-# 1. Les origines de Linux
-
-.center[
 ... L'informatique et Internet se démocratisent ...
-]
 
 En très résumé :
 - Linux remporte le marché de l'infrastructure (routeur, serveurs, ..)
 - Windows remporte le marché des machines de bureau / gaming
 - Google remporte le marché des smartphones
 
----
 
-# 1. Les origines de Linux
+### L'informatique contemporaine
 
-## L'informatique contemporaine
-
-.center[
 ![](/img/linux/datacenter.jpg)
-]
 
-.center[
 ![](/img/linux/laptop.jpg)
 ![](/img/linux/smartphone.jpg)
-]
 
----
 
-# 1. Les origines de Linux
+### Architecture d'un ordinateur
 
-## Architecture d'un ordinateur
-
-.center[
 ![](/img/linux/computer.png)
-]
 
 
----
+<!-- ### Le rôle d'un système d'exploitation -->
 
-# 1. Les origines de Linux
+<!-- ![](/img/linux/systemedexploitation.jpg) -->
 
-## Le rôle d'un système d'exploitation
-
-.center[
-![](/img/linux/systemedexploitation.jpg)
-]
-
----
-
-# 1. Les origines de Linux
-
-## Le rôle d'un système d'exploitation
+### Le rôle d'un système d'exploitation
 
 - permet aux users d'exploiter les ressources
 - sais communiquer avec le hardware
@@ -381,11 +272,8 @@ En très résumé :
 - partage le temps de calcul entre les programmes
 - s'assure que les opérations demandées sont légales
 
----
 
-# 1. Les origines de Linux
-
-## Linux aujourd'hui
+### Linux aujourd'hui
 
 - Très présent dans les routeurs, les serveurs et les smartphones
 - Indépendant de tout constructeur
@@ -393,11 +281,8 @@ En très résumé :
 - Le système est fait pour être versatile et personnalisable selon son besoin
 - Pratiques de sécurités beaucoup plus saines et claires que Microsoft
 
----
 
-# 1. Les origines de Linux
-
-## Les distributions
+### Les distributions
 
 Un ensemble de programmes "packagés", préconfigurés, intégré pour un usage ~précis ou suivant une philosophie particulière
 
@@ -409,12 +294,7 @@ Un ensemble de programmes "packagés", préconfigurés, intégré pour un usage 
 - Une suite de logiciel intégrée avec l'environnement graphique
 - Des objectifs / une philosophie
 
-
----
-
-# 1. Les origines de Linux
-
-## Les distributions
+### Les distributions
 
 ![](/img/linux/debian.png)
 ![](/img/linux/ubuntu.png)
@@ -435,20 +315,12 @@ Un ensemble de programmes "packagés", préconfigurés, intégré pour un usage 
 - **YunoHost** : auto-hébergement grand-public
 - **Kubernetes** / k8s : devops, déploiement et orchestration de flotte de conteneur
 
----
 
-# 1. Les origines de Linux
-
-## Les distributions
+### Les distributions
 
 Et bien d'autres : Gentoo, LinuxFromScratch, Fedora, OpenSuse, Slackware, Alpine, Devuan, elementaryOS, ...
 
-
----
-
-# 1. Les origines de Linux
-
-## Linux, les environnement
+### Linux, les environnement
 
 - Gnome
 - Cinnamon, Mate
@@ -456,77 +328,30 @@ Et bien d'autres : Gentoo, LinuxFromScratch, Fedora, OpenSuse, Slackware, Alpine
 - XFCE, LXDE
 - Tiling managers (awesome, i3w, ...)
 
----
-
-# 1. Les origines de Linux
-
-## Linux, les environnements (Gnome)
-
-.center[
 ![](/img/linux/gnome.jpg)
-]
 
----
-
-# 1. Les origines de Linux
-
-## Linux, les environnements (KDE)
-
-.center[
 ![](/img/linux/kde.jpg)
-]
 
----
-
-# 1. Les origines de Linux
-
-## Linux, les environnements (Cinnamon)
-
-.center[
 ![](/img/linux/cinnamon.jpg)
-]
 
----
-
-# 1. Les origines de Linux
-
-## Linux, les environnements (XFCE)
-
-.center[
 ![](/img/linux/xfce.jpg)
-]
 
----
-
-# 1. Les origines de Linux
-
-## Linux, les environnements (Awesome)
-
-.center[
 ![](/img/linux/awesome.jpg)
-]
 
----
 
-# 1. Les origines de Linux
-
-## Environnement de travail : Linux Mint
+### Environnement de travail : Linux Mint
 
 - (Choix arbitraire du formateur)
 - Distribution simple, sobre, pas spécialement controversée (?)
 - Profite de la stabilité de Debian et de l'accessibilité d'Ubuntu
 
----
 
-class: impact
 
-# 2. Premier contact avec le terminal
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Installer une machine virtuelle
+### Installer une machine virtuelle
 
 - Un ordinateur "simulé" dans un ordinateur
     - VirtualBox est un logiciel permettant ce genre de chose
@@ -540,56 +365,41 @@ class: impact
     - ...
 - Parti pris pour l'OS : Linux Mint avec Cinnamon, et pré-installé
 
+## 2. Premier contact avec le terminal
 
----
+### Installer une machine virtuelle
 
-# 2. Premier contact avec le terminal
-
-## Installer une machine virtuelle
-
-.center[
 ![](/img/linux/vbox1.png)
-]
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Installer une machine virtuelle
+### Installer une machine virtuelle
 
-.center[
 ![](/img/linux/vbox2.png)
-]
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Installer une machine virtuelle
+### Installer une machine virtuelle
 
 OSBoxes : un site qui fourni des images Linux pré-installées
 
-.center[
 ![](/img/linux/osboxes.png)
-]
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Installer une machine virtuelle
+### Installer une machine virtuelle
 
 Télécharger une Linux Mint préinstallée sur OSboxes.org
 
-.center[
 ![](/img/linux/osboxes_mint.png)
-]
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Installer une machine virtuelle
+### Installer une machine virtuelle
 
 - Installer Virtualbox
 - Créer une nouvelle machine virtuelle
@@ -599,11 +409,10 @@ Télécharger une Linux Mint préinstallée sur OSboxes.org
 - Démarrer la machine et observer les étapes de démarrage
 - Mot de passe : `ilovelinux`
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Se connecter
+### Se connecter
 
 Pour cette première connexion, nous allons passer par un tty plutôt que par le login graphique.
 
@@ -615,11 +424,10 @@ Debian Stretch <nom_de_machine> tty0
 <nom_de_machine> login: █
 ```
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Se connecter
+### Se connecter
 
 Pour cette première connexion, nous allons passer par un tty plutôt que par le login graphique.
 
@@ -633,11 +441,10 @@ Debian Stretch <nom_de_machine> tty0
 Password: █        # <<<< le mot de passe ne s'affiche pas du tout quand on le tape !
 ```
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Se connecter
+### Se connecter
 
 Pour cette première connexion, nous allons passer par un tty plutôt que par le login graphique.
 
@@ -653,11 +460,10 @@ Last login: Wed 19 Sep 16:23:42 on tty2
 votre_login@machine:~$
 ```
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Premières commandes
+### Premières commandes
 
 Changez votre mot de passe :
 - Taper `passwd` puis *Entrée* puis suivez les instructions
@@ -672,17 +478,13 @@ passwd: password updated successfully
 votre_login@machine:~$ █
 ```
 
----
 
-.center[
 ![](/img/linux/password-mistakes.png)
-]
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Premières commandes
+### Premières commandes
 
 - Taper `pwd` puis *Entrée* et observer
 - Taper `ls` puis *Entrée* et observer
@@ -692,11 +494,10 @@ votre_login@machine:~$ █
 - Taper `ls -l` puis *Entrée* et observer
 - Taper `echo 'Je suis dans la matrice'` puis *Entrée* et observer
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Discussion
+### Discussion
 
 - Nous nous sommes connecté à une machine
 - Nous avons eu accès à un terminal
@@ -705,28 +506,23 @@ votre_login@machine:~$ █
 - Certaines affichent des choses, d'autres changent des états
 - Vous pouvez ouvrir d'autres TTy / consoles avec Ctrl+Alt+F1, F2, F3, ..
 
----
 
-# 2. Premier contact avec le terminal
+## 2. Premier contact avec le terminal
 
-## Origine historique : le tty (teletype)
+### Origine historique : le tty (teletype)
 
-.center[
 ![](/img/linux/tty1.jpg)
 ![](/img/linux/tty2.jpg)
-]
 
----
 
-class: impact
 
-# 3. La ligne de commande
 
----
+## 3. La ligne de commande
 
-# 3. La ligne de commande
 
-## Structure d'une commande
+## 3. La ligne de commande
+
+### Structure d'une commande
 
 ```
   evince  --fullscreen     presentation.pdf
@@ -737,12 +533,11 @@ class: impact
            (une option)
 ```
 
----
 
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Structure d'une commande
+### Structure d'une commande
 
 - Des **options longues** (classiquement avec `--`) comme `--fullscreen`
 
@@ -750,11 +545,10 @@ class: impact
 
 *(des fois, il y a seulement l'option courte ou seulement l'option longue)*
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Structure d'une commande
+### Structure d'une commande
 
 Une commande peut être simple :
 
@@ -768,11 +562,10 @@ ou assez complexe :
 dnsmasq -x /run/dnsmasq/dnsmasq.pid -u dnsmasq -7 /etc/dnsmasq.d,.dpkg-dist,.dpkg-old,.dpkg-new --local-service
 ```
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Effet d'une commande
+### Effet d'une commande
 
 Certaines commandes affichent des choses :
 
@@ -793,11 +586,10 @@ alex@shadow:~$
 
 Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien été créé
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Mais monsieur, les commandes il faut toute les apprendre par coeur ...?
+### Mais monsieur, les commandes il faut toute les apprendre par coeur ...?
 
 - Il y en a des milliers (et on peut créer les siennes)
 - Chacune peut avoir des dizaines d'options combinables entre elles
@@ -806,41 +598,37 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
     - de savoir aller chercher et apprendre de nouvelles commandes si besoin
     - savoir être méthodique et débugger les erreurs du quotidien (typo, ...)
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 - Je regarde où j'en suis
 
----
 
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 - Je regarde où j'en suis
 - J'écris ma commande
 
----
 
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
@@ -848,12 +636,11 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
 - J'écris ma commande
 - Je **relis attentivement ce que je viens de taper**
 
----
 
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
@@ -862,11 +649,10 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
 - Je **relis attentivement ce que je viens de taper**
 - J'appuie sur entrée
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 - Je regarde où j'en suis
@@ -875,11 +661,10 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
 - J'appuie sur entrée
 - J'enlève les mains du clavier pour regarder l'effet produit
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 - Je regarde où j'en suis
@@ -889,11 +674,10 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
 - J'enlève les mains du clavier pour regarder l'effet produit
 - Je **LIS ATTENTIVEMENT et analyse la réponse de la machine** pour valider que c'est ce à quoi je m'attendais
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 - Je regarde où j'en suis
@@ -904,11 +688,10 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
 - Je **LIS ATTENTIVEMENT et analyse la réponse de la machine** pour valider que c'est ce à quoi je m'attendais
    - Je ne culpabilise pas ni ne désespère si il y a un message d'erreur - c'est normal et arrive à tout le monde tout le temps !
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Méthode de travail : le Tai Chi du terminal
+### Méthode de travail : le Tai Chi du terminal
 
 - Je recule la tête de mon écran et réfléchi à ce que je veux faire
 - Je regarde où j'en suis
@@ -920,35 +703,29 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
    - Je ne culpabilise pas ni ne désespère si il y a un message d'erreur - c'est normal et arrive à tout le monde tout le temps !
    - Si je pense que ça a marché, je valide via une autre commande (e.g. verifier avec `ls` que le dossier à bien été créé)
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-.center[
 ![](/img/linux/liberetonesprit.jpg)
-]
 
 
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## `passwd` - Changer son password
+### `passwd` - Changer son password
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## `pwd` - Afficher le dossier courant
+### `pwd` - Afficher le dossier courant
 
 *Print current working directory*
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## `cd` - Naviguer dans les dossiers
+### `cd` - Naviguer dans les dossiers
 
 ```
 cd  /un/dossier   # Change de dossier courant
@@ -959,11 +736,10 @@ cd -              # Retourne dans le dossier où on était juste avant
 
 N.B : On ne peut pas faire `cd /un/fichier` ! Ça n'a pas de sens !
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## `ls` - Liste les fichiers d'un dossier
+### `ls` - Liste les fichiers d'un dossier
 
 ```
 ls            # Liste les fichiers du repertoire courant
@@ -976,17 +752,15 @@ ls  -h        # (ou --human-readable) Tailles lisibles comme '24K' ou '3G'
 
 (on peut combiner les options et arguments)
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
 - Utiliser `ls` et `cd`, c'est comme naviguer avec un explorateur de fichier graphique !
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Les caractères spéciaux
+### Les caractères spéciaux
 
 ```
 ls *.py        # Liste tous les fichiers du repertoire courant finissant par .py
@@ -1004,22 +778,20 @@ echo ls *.{py,.png} # Affiche la commande precedente telle qu'elle va être exec
     - ... et taper juste `*` équivant à taper `foo.py bar.py`
     - ... et on peut écrire `ls '*.py'` pour parler d'un fichier qui s'apelle littéralement `*.py`
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Nettoyer son terminal
+### Nettoyer son terminal
 
 - `clear` efface tout ce qui est affiché dans le terminal
 - `reset` permet de réinitialiser le terminal (utile pour certaines situation où le terminal est "cassé")
 - `exit` permet de fermer un terminal
 - (`logout` est similaire à `exit`)
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Obtenir de l'aide sur des commandes
+### Obtenir de l'aide sur des commandes
 
 ```
 man nom_de_commande
@@ -1032,11 +804,10 @@ Ou avec `--help` ou `-h` :
 nom_de_comande --help
 ```
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Annuler / arrêter une commande en cours d'execution
+### Annuler / arrêter une commande en cours d'execution
 
 - Si une commande prends trop longtemps, il est possible de l'annuler avec [Ctrl]+C
 
@@ -1051,11 +822,10 @@ alex@shadow:~$
 - (N.B. : [Ctrl]+C / [Ctrl]+V ne fais pas copier/coller dans la console !)
 
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Copier-coller dans le terminal
+### Copier-coller dans le terminal
 
 (Dans tous les cas, on commence par selectionner le texte avec la souris)
 
@@ -1063,77 +833,44 @@ alex@shadow:~$
 - Méthode 2. Ctrl + Insert, Shift + Insert
 - Méthode 3. Clic du milieu
 
----
 
-# 3. La ligne de commande
+## 3. La ligne de commande
 
-## Raccourcis et astuces de ninja
+### Raccourcis et astuces de ninja
 
-### [Tab]
+#### [Tab]
 
 - [Tab] x1 permet d'autocompléter les noms de commande et les noms de fichier (si pas d'ambiguité)
 - [Tab] x2 permet de suggérer les différentes possibilités
 - Double-effect kisscool : utiliser [Tab] vous permet de valider au fur à mesure que la commande et le fichier existe !
 
-### Historique
+#### Historique
 
 - Vous pouvez utiliser ↑ pour retrouver les commandes précédentes
 - Ou aussi : `history`
 
----
-
-class: impact
+#### Utilisez [Tab] !
 
 ### Utilisez [Tab] !
 
----
-
-class: impact
+## Utilisez [Tab] !
 
 ## Utilisez [Tab] !
 
----
+## Utilisez [Tab] !
 
-class: impact
-
-# Utilisez [Tab] !
-
----
-
-class: impact
-
-# Utilisez [Tab] !
-
-# Utilisez [Tab] !
-
----
-
-class: impact
-
-# Utilisez [Tab] !
-
-# Utilisez [Tab] !
-
-# Utilisez [Tab] !
+## Utilisez [Tab] !
 
 
----
 
-class: impact
+## et LISEZ ATTENTIVEMENT ce que la machine vous raconte !
 
-# et LISEZ ATTENTIVEMENT ce que la machine vous raconte !
+## 4. Le système de fichier
 
----
 
-class: impact
+## 4. Le système de fichier
 
-# 4. Le système de fichier
-
----
-
-# 4. Le système de fichier
-
-## Généralités
+### Généralités
 
 - (En anglais : *filesystem*, abrégé *fs*)
 - La façon dont sont organisés et référencé les fichiers
@@ -1141,24 +878,20 @@ class: impact
 - Analogie : une bibliothèque avec seulement les pages des livres dans les étagères
 - Le *fs* connait le nom, la taille, l'emplacemenent des différents morceaux, la date de création, ...
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-##  Partitionnement d'un disque
+###  Partitionnement d'un disque
 
 - Un disque peut être segmenté en "partitions"
 - Chaque partition héberge des données indépendantes des autres et sous un format / filesystem différent
 
-.center[
 ![](/img/linux/parts.png)
-]
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Quelques systèmes de fichier classiques
+### Quelques systèmes de fichier classiques
 
 - *FAT16*, *FAT32* : disquettes, Windows 9x (~obsolète)
 - *NTFS* : système actuellement utilisé par Windows
@@ -1166,11 +899,10 @@ class: impact
 - *HFS+* : système utilisé par MacOS
 - *TMPFS* : système de fichier pour gérer des fichiers temporaires (`/tmp/`)
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Quelques systèmes de fichier "avancés"
+### Quelques systèmes de fichier "avancés"
 
 - **ZFS**
     - snapshots
@@ -1186,21 +918,19 @@ class: impact
     - un ensemble de schema d'architecture de disque pour créer de la redondance en cas de perte de disque
     - données copiées sur plusieurs disques (grappe)
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Quelques systèmes de fichier exotiques(?) / autre
+### Quelques systèmes de fichier exotiques(?) / autre
 
 - *Tahoe-LAFS*
 - *FUSE*
 - *IPFS*
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Sous UNIX / Linux : "Tout est fichier"
+### Sous UNIX / Linux : "Tout est fichier"
 
 
 - **fichiers ordinaires** (`-`) : données, configuration, ... texte ou binaire
@@ -1211,11 +941,10 @@ class: impact
     - links (`l`) ('alias' de fichiers, ~comme les raccourcis sous Windows)
 
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Un fichier
+### Un fichier
 
 - Un inode (numéro unique représentant le fichier)
 - *Des* noms (chemins d'accès)
@@ -1225,11 +954,10 @@ class: impact
     - Permissions
     - Date de création, modification
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Nommage des fichiers
+### Nommage des fichiers
 
 - Noms sensibles à la casse
 - (Eviter d'utiliser des espaces)
@@ -1237,11 +965,10 @@ class: impact
 - Les extensions de fichier sont purement indicatives : un vrai mp3 peut s'apeller musique.jpg et vice-versa
 - Lorsqu'on parle d'un dossier, on l'ecrit plutôt avec un `/` à la fin pour expliciter sa nature
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Arborescence de fichier
+### Arborescence de fichier
 
 ```
 coursLinux/
@@ -1259,21 +986,17 @@ coursLinux/
     └── style.scss
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Filesystem Hierarchy Standard
+### Filesystem Hierarchy Standard
 
-.center[
 ![](/img/linux/filetree.png)
-]
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Filesystem Hierarchy Standard
+### Filesystem Hierarchy Standard
 
 - `/` : racine de toute la hierarchie
 - `/bin/`, `/sbin/` : programmes essentiels (e.g. `ls`)
@@ -1288,22 +1011,20 @@ coursLinux/
 - `/usr/` : progr. et librairies "non-essentielles", doc, données partagées
 - `/var/` : **fichiers / données variables** (e.g. cache, logs, boîtes mails)
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Répertoires personnels
+### Répertoires personnels
 
 - Tous les utilisateurs ont un répertoire personnel
 - Classiquement `/home/<user>/` pour les utilisateurs "normaux"
 - Le home de root est `/root/`
 - D'autres utilisateurs ont des home particulier (`/var/mail/`, ...)
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Designation des fichiers
+### Designation des fichiers
 
 "Rappel" :
 - `.` : désigne le dossier actuel
@@ -1316,17 +1037,16 @@ Un chemin peut être :
 
 Un chemin relatif n'a de sens que par rapport à un dossier donné... mais est souvent moins long à écrire
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Designation des fichiers
+### Designation des fichiers
 
 - Pour parler d'un dossier ou fichier `toto` **dans le répertoire courant**
 
 ```bash
 ls toto
-# ou bien
+## ou bien
 ls ./toto
 ```
 
@@ -1337,85 +1057,48 @@ ls /toto
 ```
 
 
----
 
-.center[
 ![](/img/linux/relativepath_1_1.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_1_2.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_1_3.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_1_4.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_1_5.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_2_1.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_2_2.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_2_3.png)
-]
 
 
----
 
-.center[
 ![](/img/linux/relativepath_2_4.png)
-]
 
 
----
 
-.center[
 ![](/img/linux/relativepath_2_5.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_2_6.png)
-]
 
----
 
-.center[
 ![](/img/linux/relativepath_2_7.png)
-]
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Chemins relatifs
+### Chemins relatifs
 
 + d'exemples, tous équivalents (depuis `/home/alex/dev/apps/`)
 
@@ -1426,11 +1109,10 @@ ls /toto
 - `./wordpress/../../yunohost/script.sh`
 - `../.././music/.././../camille/.././alex/dev/ynh-dev/yunohost/script.sh`
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des fichiers (1/5)
+### Manipuler des fichiers (1/5)
 
 - `ls` : lister les fichiers
 - `cat <fichier>` : affiche le contenu d'un fichier dans la console
@@ -1443,11 +1125,10 @@ ls /usr/share/doc/                       # Liste les fichiers de /usr/share/doc
 wc -l /usr/share/doc/nano/nano.html      # 2005 lignes !
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des fichiers (2/5)
+### Manipuler des fichiers (2/5)
 
 - `head <fichier>`, `tail <fichier>` : affiche les quelques premières ou dernières ligne du fichier
 - `less <fichier>` : regarder le contenu d'un fichier de manière "interactive" (paginateur)
@@ -1460,21 +1141,17 @@ tail -n 30 /usr/share/doc/nano/nano.html # Affiche les 30 dernieres lignes du fi
 less /usr/share/doc/nano/nano.html       # Regarder interactivement le fichier
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des fichiers (2/5)
+### Manipuler des fichiers (2/5)
 
-.center[
 ![](/img/linux/cat.jpeg)
-]
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des fichiers (3/5)
+### Manipuler des fichiers (3/5)
 
 - `touch <fichier>` : créer un nouveau fichier, et/ou modifie sa date de modification
 - `nano <fichier>` : éditer un fichier dans la console
@@ -1485,11 +1162,10 @@ less /usr/share/doc/nano/nano.html       # Regarder interactivement le fichier
 - `vi` ou `vim <fichier>` : alternative à nano
     - plus puissant (mais plus complexe)
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des fichiers (4/5)
+### Manipuler des fichiers (4/5)
 
 - `cp <source> <destination>` : copier un fichier
 - `rm <fichier>` : supprimer un fichier
@@ -1505,11 +1181,10 @@ mv coursLinux.html linux.html  # Renomme coursLinux.html en linux.html
 mv linux.html ~/archives/      # Déplace linux.html dans ~/archives/
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des fichiers (5/5)
+### Manipuler des fichiers (5/5)
 
 - `wget` : télécharger un fichier depuis les Internets
 
@@ -1535,20 +1210,18 @@ $ cat toto
 pouet
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des dossiers (1/3)
+### Manipuler des dossiers (1/3)
 
 - `pwd` : connaître le dossier de travail actuel
 - `cd <dossier>` : se déplacer vers un autre dossier
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des dossiers (2/3)
+### Manipuler des dossiers (2/3)
 
 - `mkdir <dossier>` : créer un nouveau dossier
 - `cp -r <source> <destination>` : copier un dossier et l'intégralité de son contenu
@@ -1561,11 +1234,10 @@ cp -r ~/dev ~/dev.bkp # Créé une copie du dossier dev/ qui s'apelle dev.bkp/
 cp -r ~/dev /tmp/     # Créé une copie de dev/ et son contenu dans /tmp/
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Manipuler des dossiers (3/3)
+### Manipuler des dossiers (3/3)
 
 - `mv <dossier> <destination>` : déplace (ou renomme) un dossier
 - `rmdir <dossier>` : supprimer un dossier vide
@@ -1579,43 +1251,34 @@ mv dev.bkp2 ~/trash/   # Déplace dev.bkp2 dans le dossier ~/trash/
 rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
 ```
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Les liens durs (hard link)
+### Les liens durs (hard link)
 
-.center[
 ![](/img/linux/hardlink.png)
-]
 
 - `ln <source> <destination>`
 - Le même fichier ... à plusieurs endroits !
 - Supprimer une instance de ce fichier ne supprime pas les autres
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Les liens symbolic (symlink)
+### Les liens symbolic (symlink)
 
-.center[
 ![](/img/linux/symlink.png)
-]
 
 - `ln -s <cible> <nom_du_lien>`
 - Similaire à un "raccourci", le fichier n'est pas vraiment là .. mais comme si
 - Supprimer le fichier pointé par le symlink "casse" le lien
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Les liens symbolic (symlink)
+### Les liens symbolic (symlink)
 
-.center[
 ![](/img/linux/symlink.png)
-]
 
 - Dans ce exemple, le lien a été créé avec
     - `ln -s ../../../conf/ynh.txt conf.json`
@@ -1623,33 +1286,30 @@ rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
 - `ynh.txt` est la cible : le supprimer rendra inopérationnel le raccourci
 
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## symlink vs. hardlink
+### symlink vs. hardlink
 
 - On croise plus souvent des symlinks que des hardlinks (les symlinks sont + intuitifs)
 - On peut avoir des symlinks de répertoires (à la différence des hardlinks)
     - Attention tout de même à certains comportements étrange (`..` en étant à l'intérieur d'un symlink)
 - On peut avoir des symlinks entre des filesystem différents ! (à la différence des hardlinks)
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Recap dossiers importants (l'essentiel)
+### Recap dossiers importants (l'essentiel)
 
 - `/home/<user>/` : le répertoire personnel de `<user>`
 - `/etc/` : là où habitent les fichiers de configuration
 - `/var/log/` : là ou habitent les fichiers de logs
 - `/root/` : le répertoire personnel de `root`
 
----
 
-# 4. Le système de fichier
+## 4. Le système de fichier
 
-## Recap des commandes
+### Recap des commandes
 
 - `ls` : lister les fichiers d'un dossier
 - `cat` : afficher le contenu d'un fichier
@@ -1664,27 +1324,24 @@ rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
 - `ln -s` : créer un lien symbolique
 - `wget` : télécharger un fichier sur les Internets
 
----
 
-class: impact
 
-# 5. Utilisateurs et groupes
 
----
+## 5. Utilisateurs et groupes
 
-# 5. Utilisateurs et groupes
 
-## Généralités
+## 5. Utilisateurs et groupes
+
+### Généralités
 
 - une entité / identité (!= être humain) qui demande des choses au système
 - possède des fichiers, peut en créer, modifier, naviguer, ...
 - peut lancer des commandes / des processus
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Répertoire des utilisateurs
+### Répertoire des utilisateurs
 
 Classiquement, les utilisateurs sont répertoriés dans `/etc/passwd`
 
@@ -1700,35 +1357,31 @@ alex:x:1000:1000:Super Formateur Linux:/home/alex:/bin/bash
 - répertoire home
 - shell de démarrage
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## root
+### root
 
 - Dieu sur la machine, `uid=0`, `gid=0`
 - **With great power comes great responsabilities**
     - Si un attaquant devient root, l'OS est entièrement compromis (à jamais)
 
-.center[
 ![](/img/linux/iamroot.jpg)
 ![](/img/linux/heistheone.png)
-]
 
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Parenthèse sur la terminologie
+### Parenthèse sur la terminologie
 
-#### Le terminal / la console
+##### Le terminal / la console
 
 Dans le temps, il s'agissait d'une machine sans interface graphique, similaire à un minitel qui permettait d'interagir avec le "vrai" ordinateur (mainframe) à distance.
 
 De nos jours, par abus de language un terminal est en fait un **émulateur** de terminal, c'est-à-dire un programme qui émule la même fonctionnalité. (La distinction terminal/mainframe a disparu)
 
-#### Le shell
+##### Le shell
 
 Il s'agit du programme qui gère l'invite de commande et l'execution des commandes tapées.
 
@@ -1738,11 +1391,10 @@ Lorsque l'on programme dans certains languages de scripting, on parle aussi de s
 
 Un shell que vous utilisez peut potentiellement être situé sur une autre machine que celle devant laquelle vous êtes !
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Passer root (ou changer d'utilisateur)
+### Passer root (ou changer d'utilisateur)
 
 ```bash
 su                  # Demande à ouvrir un shell en tant que root
@@ -1751,11 +1403,10 @@ su -c "ls /root/"   # Executer 'ls /root/' en tant que root (de manière ephemer
 exit                # Quitter un shell
 ```
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Sudo
+### Sudo
 
 - On peut autoriser les utilisateurs à faire des choses en root en leur donnant les droits 'sudo'
 
@@ -1770,11 +1421,10 @@ sudo su             # Ouvrir un shell root via sudo...
    - `su` : mot de passe root
    - `sudo` : mot de passe utilisateur
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## `su` vs `sudo`
+### `su` vs `sudo`
 
 - Generalement, on essaye de ne pas rester en root constamment.
    - `sudo` permet de faire juste une commande en root, ponctuellement
@@ -1784,11 +1434,10 @@ sudo su             # Ouvrir un shell root via sudo...
    - chaque commande effectuée avec `sudo` est logguée dans `/var/log/auth.log`
    - utile pour les audits de sécurité
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Les groupes
+### Les groupes
 
 - Chaque user à un groupe associé qui possède le même nom
 - Des groupes supplémentaires peuvent être créés
@@ -1802,11 +1451,10 @@ Exemples de groupes qui pourraient exister:
 
 N.B : lorsqu'on ajoute un utilisateur à un groupe, il doit se reloguer pour que le changement soit propagé...
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Mot de passe
+### Mot de passe
 
 - Autrefois dans `/etc/passwd` (accessibles à tous mais hashés)
 - Maintenant dans `/etc/shadow` (accessibles uniquement via root)
@@ -1815,9 +1463,8 @@ N.B : lorsqu'on ajoute un utilisateur à un groupe, il doit se reloguer pour que
 alex:$6$kncRwIMqSb/2PLv3$x10HgX4iP7ZImBtWRChTyufsG9XSKExHyg7V26sFiPx7htq0VC0VLdUOdGQJBJmN1Rn34LRVAWBdSzvEXdkHY.:0:0:99999:7:::
 ```
 
----
 
-# (Parenthèse sur le hashing)
+## (Parenthèse sur le hashing)
 
 ```
 $ md5sum coursLinux.html
@@ -1832,7 +1479,7 @@ d1bb5db7736dac454c878976994d6480
 ```
 ---
 
-# (Parenthèse sur le hashing)
+## (Parenthèse sur le hashing)
 
 Hasher un fichier (ou une donnée) c'est la transformer en une chaîne :
 - de taille fixe
@@ -1841,11 +1488,10 @@ Hasher un fichier (ou une donnée) c'est la transformer en une chaîne :
 
 Bref : une empreinte caractérisant une information de manière très précise
 
----
 
-# 5. Utilisateurs et groupes
+## 5. Utilisateurs et groupes
 
-## Commandes utiles
+### Commandes utiles
 
 ```bash
 whoami                  # Demander qui on est...!
@@ -1859,17 +1505,15 @@ groupadd <group>        # Ajouter un groupe
 usermod -a -G <group> <user>  # Ajouter un utilisateur à un groupe
 ```
 
----
 
-class: impact
 
-# 6. Permissions
 
----
+## 6. Permissions
 
-# 6. Permissions
 
-## Généralités
+## 6. Permissions
+
+### Généralités
 
 - Chaque fichier a :
     - un utilisateur proprietaire
@@ -1889,39 +1533,31 @@ $ ls -l coursLinux.html
     les permissions !
 ```
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-.center[
 ![](/img/linux/permissions.jpg)
-]
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-.center[
 ![](/img/linux/permissions2.png)
-]
 
 
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Permissions des **fichiers**
+### Permissions des **fichiers**
 
 - `r` : lire le fichier
 - `w` : écrire dans le fichier
 - `x` : executer le fichier
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Permissions des **dossiers**
+### Permissions des **dossiers**
 
 - `r` : lire le contenu du dossier
 - `w` : créer / supprimer des fichiers
@@ -1929,11 +1565,10 @@ $ ls -l coursLinux.html
 
 (On peut imager que les permissions d'un dossier soient `r--` ou `--x`)
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Gérer les propriétaires
+### Gérer les propriétaires
 
 **(Seul root peut faire ces opérations !!)**
 
@@ -1952,11 +1587,10 @@ chown -R camille /home/alex/dev/      # Change le proprio récursivement !
 
 (ACHTUNG: si l'on fait un malencontreux `chown -R`, il peut être difficile de revenir en arrière)
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Gérer les permissions
+### Gérer les permissions
 
 ```bash
 chmod <changement> <cible>   # Change les permissions d'un fichier
@@ -1972,29 +1606,22 @@ chmod -R +x ./bin/           # Active le droit d'execution pour tout le monde et
 
 (ACHTUNG: si l'on fait un malencontreux `chmod -R`, il peut être difficile de revenir en arrière)
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Représentation octale
+### Représentation octale
 
-.center[
 ![](/img/linux/chmod_octal.png)
-]
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-.center[
 ![](/img/linux/chmod_octal2.png)
-]
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Gérer les permissions .. en octal !
+### Gérer les permissions .. en octal !
 
 ```bash
 chmod <permissions> <cible>
@@ -2008,19 +1635,15 @@ chmod 444 coursLinux.html  # Fixe les permissions à r--r--r--
 ```
 
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Chown vs. chmod
+### Chown vs. chmod
 
-.center[
 ![](/img/linux/chown_chmod.png)
-]
 
----
 
-# 6. Permissions
+## 6. Permissions
 
 Lorsque l'on fait :
 ```bash
@@ -2038,11 +1661,10 @@ Obtenir comme réponse
 ne signifie pas qu'on a pas les droits de lecture sur le fichier, mais bien que l'on a "juste" pas le droit de l'executer <small>(car ça n'a en fait pas de sens de chercher à l'executer)</small>
 
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Permissions "théoriques" vs permissions réelles
+### Permissions "théoriques" vs permissions réelles
 
 Pour pouvoir accéder à `/home/alex/img/pikachu.jpg` j'ai besoin de :
 
@@ -2052,11 +1674,10 @@ Pour pouvoir accéder à `/home/alex/img/pikachu.jpg` j'ai besoin de :
 - Pouvoir entrer (`x`) dans le dossier `/home/alex/img/`
 - Pouvoir lire (`r`) le fichier `/home/alex/img/pikachu`
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Permissions "théoriques" vs permissions réelles
+### Permissions "théoriques" vs permissions réelles
 
 Une commande pour lister toutes les permissions sur un chemin: `namei -l`
 
@@ -2070,31 +1691,27 @@ drwxr-xr-x alex alex img
 -rw-r--r-- alex alex pikachu.jpg
 ```
 
----
 
-# 6. Permissions
+## 6. Permissions
 
 On peut un peu casser son système si on fait `chmod -x /`
 
 (plus personne n'a le droit de rentrer dans la racine !)
 
----
 
-# 6. Permissions
+## 6. Permissions
 
-## Permissions avancées : les ACL
+### Permissions avancées : les ACL
 
----
 
-class: impact
 
-# 7. Processus
 
----
+## 7. Processus
 
-# 7. Processus
 
-## Généralités
+## 7. Processus
+
+### Généralités
 
 - Un processus est *une instance* d'un programme en cours d'éxécution
 - (Un même programme peut tourner plusieurs fois sous la forme de plusieurs processus)
@@ -2106,11 +1723,10 @@ class: impact
 
 - Un processus a des attributs (iidentifiant, proprio, priorité, ...)
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Execution (1/2)
+### Execution (1/2)
 
 La machine comprends seulement du code machine ("binaire").
 
@@ -2122,11 +1738,10 @@ Rappel : UNIX est multi-tâche, multi-utilisateur
 - partage de temps, execution parallèle
 - coordonnées par le kernel
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Execution (2/2)
+### Execution (2/2)
 
 Un processus est lancé soit :
 
@@ -2136,11 +1751,10 @@ Un processus est lancé soit :
 
 En mode interactif, on peut interragir directement avec le processus pendant qu'il s'execute
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Attributs
+### Attributs
 
 - Propriétaire
 - PID (processus ID)
@@ -2149,11 +1763,10 @@ En mode interactif, on peut interragir directement avec le processus pendant qu'
 - Commande / programme lancé
 - Entrée, sortie
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Lister les processus et leurs attributs (1/2)
+### Lister les processus et leurs attributs (1/2)
 
 ```bash
 ps aux            # Liste tous les processus
@@ -2174,11 +1787,10 @@ Exemple de `ps -ef --forest`
 13081 13070  0 00:27 pts/0  00:00:00          \_ ssh dismorphia -t source getIrc.sh
 ```
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Lister les processus et leurs attributs (2/2)
+### Lister les processus et leurs attributs (2/2)
 
 Et aussi :
 ```bash
@@ -2188,11 +1800,10 @@ top               # Liste les processus actif interactivement
   -> q            # Quitte
 ```
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Gérer les processus interactif
+### Gérer les processus interactif
 
 ```bash
 <commande>            # Lancer une commande de façon classique
@@ -2202,11 +1813,10 @@ fg                    # Repasser une commande en arrière-plan en avant-plan
 jobs                  # Lister les commandes en cours d'execution
 ```
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Tuer des processus
+### Tuer des processus
 
 ```bash
 kill <PID>     # Demande gentillement à un processus de finir ce qu'il est en train de faire
@@ -2224,19 +1834,15 @@ pkill java
 pkill -9 java
 ```
 
----
 
-# 7. Processus
+## 7. Processus
 
-.center[
 ![](/img/linux/dontsigkill.png)
-]
 
----
 
-# 7. Processus
+## 7. Processus
 
-### Un petit outil en passant
+#### Un petit outil en passant
 
 `watch` permet d'afficher le résultat d'une commande et de relancer cette commandes toutes les 2 secondes
 
@@ -2248,11 +1854,10 @@ watch ls -l ~/Documents         # Surveiller le contenu de ~/Documents
 watch free -h                   # Surveiller l'utilisation de la RAM
 ```
 
----
 
-# 7. Processus
+## 7. Processus
 
-## `screen`
+### `screen`
 
 `screen` permet de lancer une commande dans un terminal que l'on peut récupérer plus tard
 
@@ -2263,39 +1868,36 @@ watch free -h                   # Surveiller l'utilisation de la RAM
 5. On peut revenir dans la session plus tard avec `screen -r`
 
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Processus et permissions (1/3)
-
-- Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
-- Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
-
----
-
-# 7. Processus
-
-## Processus et permissions (2/3)
+### Processus et permissions (1/3)
 
 - Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
 - Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
 
-### Problème
+
+## 7. Processus
+
+### Processus et permissions (2/3)
+
+- Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
+- Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
+
+#### Problème
 
 - Lorsqu'un user veut changer son mot de passe, il faut modifier `/etc/shadow` ... que seul `root` peut lire et écrire !
 - Pourtant ... le programme `/usr/bin/passwd` permet effectivement de changer son mot de passe !
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Processus et permissions (3/3)
+### Processus et permissions (3/3)
 
 - Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
 - Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
 
-### Problème
+#### Problème
 
 - Lorsqu'un user veut changer son mot de passe, il faut modifier `/etc/shadow` ... que seul `root` peut lire et écrire !
 - Pourtant ... le programme `/usr/bin/passwd` permet effectivement de changer son mot de passe !
@@ -2310,11 +1912,10 @@ Le `s` correspond à [une permission spéciale : le SUID bit](https://fr.wikiped
 
 
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Priorité des processus (1/2)
+### Priorité des processus (1/2)
 
 - Il est possible de régler la priorité d'execution d'un processus
 - "Gentillesse" (*niceness*) entre -20 et 19
@@ -2323,11 +1924,10 @@ Le `s` correspond à [une permission spéciale : le SUID bit](https://fr.wikiped
 - Seul les process du kernel peuvent être "méchant"
     - niceness négative, et donc les + prioritaires
 
----
 
-# 7. Processus
+## 7. Processus
 
-## Priorité des processus (2/2)
+### Priorité des processus (2/2)
 
 ```bash
 nice -n <niceness> <commande> # Lancer une commande avec une certaine priorité
@@ -2336,23 +1936,21 @@ renice <modif> <PID>       # Modifier la priorité d'un process
 
 Exemples :
 ```bash
-# Lancer une création d'archive avec une priorité faible
+## Lancer une création d'archive avec une priorité faible
 nice -n 5 tar -cvzf archive.tar.gz /home/
-# Redéfinir la priorité du processus 9182
+## Redéfinir la priorité du processus 9182
 renice +10 9182
 ```
 
----
 
-class: impact
 
-# 8. Personnaliser son environnement
 
----
+## 8. Personnaliser son environnement
 
-# 8. Personnaliser son environnement
 
-## Variables d'envionnement
+## 8. Personnaliser son environnement
+
+### Variables d'envionnement
 
 Lorsque vous êtes dans un shell, il existe des *variables d'environnement* qui définissent certains comportements.
 
@@ -2366,11 +1964,10 @@ LANG, LC_ALL, ... : langue utilisée par les messages
 USER, USERNAME : nom d'utilisateur
 ```
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## Changer une variable d'envionnement
+### Changer une variable d'envionnement
 
 Exemple :
 
@@ -2378,18 +1975,17 @@ Exemple :
 HOME=/usr/cache/
 ```
 
-## Afficher une variable
+### Afficher une variable
 
 ```
 $ echo $HOME
 /usr/cache/
 ```
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## Lister les variables d'envionnement
+### Lister les variables d'envionnement
 
 `env` permet de lister les variables d'environnement
 
@@ -2402,11 +1998,10 @@ TERM=rxvt-unicode-256color
 [...]
 ```
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## Personnaliser l'invite de commande
+### Personnaliser l'invite de commande
 
 - La variable `PS1` décrit l'apparence de l'invite de commande !
 - Généralement, `PS1` vaut : `\u@\h:\w$`
@@ -2417,11 +2012,10 @@ TERM=rxvt-unicode-256color
 
 `PS2` corresponds à l'invite de commande de deuxième niveau !
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## Ecrire du texte en couleur
+### Ecrire du texte en couleur
 
 (Syntaxe absolument abominable :'( !)
 
@@ -2436,11 +2030,10 @@ echo -e "\033[31;1;7;6mCeci est surligné rouge gras surligné clignotant\033[0m
 Couleurs : 30 à 38
 Effets : 0 à 7
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## PS1 en couleur ...
+### PS1 en couleur ...
 
 ```
 PS1="\[\033[31;1;7;6m\]\u\[\033[0m\]@\h:\w$ "
@@ -2448,11 +2041,10 @@ PS1="\[\033[31;1;7;6m\]\u\[\033[0m\]@\h:\w$ "
 
 N.B. : pour les couleurs dans le PS1, ne pas oublier d'ajouter des `\[` et `\]` autour des machines pour les couleurs ... sinon le terminal buggera à moitié...
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## Définir des aliases
+### Définir des aliases
 
 Un alias est un nom "custom" pour une commande et des options
 
@@ -2466,11 +2058,10 @@ On peut connaître les alias existants avec juste `alias`
 
 (Mauvaise blague : définir `alias cd='rm -r'` !)
 
----
 
-# 8. Personnaliser son environnement
+## 8. Personnaliser son environnement
 
-## Les fichiers de profil
+### Les fichiers de profil
 
 - Le fichier `~/.bashrc` est lu à chaque lancement de shell
 - Il permet de définir des commandes à lancer à ce moment
@@ -2480,49 +2071,41 @@ On peut connaître les alias existants avec juste `alias`
 Autres fichiers de profils : `~/.profile` et `/etc/bash_profile`
 
 
----
 
-class: impact
 
-# 9. Commandes "avancées"
 
-## redirections et assemblages
+## 9. Commandes "avancées"
 
----
+### redirections et assemblages
 
-# 9 - Redirections, assemblages
 
-## Schema fonctionnel d'une commande
+## 9 - Redirections, assemblages
+
+### Schema fonctionnel d'une commande
 
 - Une commande est une boîte avec des entrées / sorties
 - et un code de retour (`$?`)
    - 0 : tout s'est bien passé
    - 1 (ou toute valeur différente de 0) : problème !
 
-.center[
 ![](/img/linux/commandbox.png)
-]
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Entrées / sorties
+### Entrées / sorties
 
-.center[
 ![](/img/linux/commandbox.png)
-]
 
 - **arguments** : donnés lors du lancement de la commande (ex: `/usr/` dans `ls /usr/`)
 - **stdin** : flux d'entrée (typ. viens du clavier)
 - **stdout** : flux de sortie (typ. vers le terminal)
 - **stderr** : flux d'erreur (typ. vers le terminal aussi !)
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Code de retour
+### Code de retour
 
 ```bash
 $ ls /toto
@@ -2531,11 +2114,10 @@ $ echo $?
 2
 ```
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Rediriger les entrées/sorties (1/3)
+### Rediriger les entrées/sorties (1/3)
 
 - `cmd > fichier` : renvoie stdout vers un fichier (le fichier sera d'abord écrasé !)
 - `cmd >> fichier ` : ajoute stdout à la suite du fichier
@@ -2550,11 +2132,10 @@ echo "manger" >> todo.txt          # Ajoute "manger" a la liste des choses à fa
 wc <<< "une grande phrase"           # Compte le nomde de mot d'une chaine
 ```
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Rediriger les entrées/sorties (2/3)
+### Rediriger les entrées/sorties (2/3)
 
 - `commande 2> fichier` : renvoie stderr vers un fichier (le fichier sera d'abord écrasé !)
 - `commande 2>&1` : renvoie stderr vers stdout !
@@ -2569,25 +2150,21 @@ ls /* > log 2>&1 # Redirige tout vers 'log' !
 ls /* &> log     # Redirige tout vers 'log' !
 ```
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Rediriger les entrées/sorties (3/3)
+### Rediriger les entrées/sorties (3/3)
 
 Fichiers speciaux :
 - `/dev/null` : puit sans fond (trou noir)
 - `/dev/urandom` : generateur aleatoire (trou blanc)
 
-.center[
 ![](/img/linux/bottomlesspit.png)
-]
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Rediriger les entrées/sorties (3/3)
+### Rediriger les entrées/sorties (3/3)
 
 Fichiers speciaux :
 - `/dev/null` : puit sans fond (trou noir)
@@ -2600,11 +2177,10 @@ head -c 5 < /dev/urandom     # Affiche 5 caractères de /dev/urandom
 cat /dev/urandom > /dev/null # Injecte de l'aleatoire dans le puit sans fond
 ```
 
----
 
-# 9 - Redirections, assemblages
+## 9 - Redirections, assemblages
 
-## Assembler des commandes
+### Assembler des commandes
 
 Executer plusieurs commandes à la suite :
 
@@ -2615,35 +2191,29 @@ Executer plusieurs commandes à la suite :
 
 Que fait `cmd1 && cmd2 || cmd3` ?
 
----
 
-class: impact
 
-# 10. Commandes avancées
+## 10. Commandes avancées
 
-## pipes et outils
+### pipes et outils
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Pipes ! (1/3)
+### Pipes ! (1/3)
 
 - `cmd1 | cmd2` permet d'assembler des commandes de sorte à ce que le `stdout` de `cmd1` devienne le `stdin` de `cmd2` !
 
 Exemple : `cat /etc/login.defs | head -n 3`
 
-.center[
 ![](/img/linux/pipe.png)
-]
 
 - (Attention, par défaut `stderr` n'est pas affecté par les pipes !)
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Pipes ! (2/3)
+### Pipes ! (2/3)
 
 Lorsqu'on utilise des pipes, c'est generalement pour enchaîner des opérations comme :
 - générer ou récupérer des données
@@ -2652,22 +2222,20 @@ Lorsqu'on utilise des pipes, c'est generalement pour enchaîner des opérations 
 
 Sous Linux : tout est fichier / tout est flux de texte
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Pipes ! (3/3)
+### Pipes ! (3/3)
 
 Precisions techniques
 - La transmission d'une commande à l'autre se fait "en temps réel". La première commande n'a pas besoin d'être terminée pour que la deuxieme commence à travailler.
 - Si la deuxieme commande a terminée, la première *peut* être terminée prématurément (SIGPIPE).
     - C'est le cas par exemple pour `cat tres_gros_fichier | head -n 3`
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `tee`
+### Boîte à outils : `tee`
 
 `tee` permet de rediriger `stdout` vers un fichier tout en l'affichant quand meme dans la console
 
@@ -2676,11 +2244,10 @@ tree ~/documents | tee arbo_docs.txt  # Affiche et enregistre l'arborescence de 
 openssl speed | tee -a tests.log      # Affiche et ajoute la sortie de openssl à la suite de tests.log
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `grep` (1/3)
+### Boîte à outils : `grep` (1/3)
 
 `grep` permet de trouver des lignes qui contiennent un mot clef (ou plus generalement, une expression)
 
@@ -2697,11 +2264,10 @@ LOGIN_TIMEOUT		60
 
 (on aurait aussi pu simplement faire : `grep TIMEOUT /etc/login.defs`)
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `grep` (2/3)
+### Boîte à outils : `grep` (2/3)
 
 Une option utile (parmis d'autres) : `-v` permet d'inverser le filtre
 
@@ -2716,14 +2282,13 @@ On peut créer un "ou" avec : `r2d2\|c3p0`
 
 ```bash
 $ ps -ef | grep "alex\|r2d2"
-# Affiche seulement les lignes contenant alex ou r2d2
+## Affiche seulement les lignes contenant alex ou r2d2
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `grep` (3/3)
+### Boîte à outils : `grep` (3/3)
 
 On peut faire référence à des débuts ou fin de ligne avec `^` et `$` :
 
@@ -2738,11 +2303,10 @@ alex      6164   956  0 Oct02 pts/15   00:00:00 -bash
 root      6222  6218  0 Oct02 pts/15   00:00:00 bash
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `tr`
+### Boîte à outils : `tr`
 
 `tr` ('translate') traduit des caractères d'un ensemble par des caractère d'un autre ensemble ...
 
@@ -2756,11 +2320,10 @@ $ echo "coucou" | tr 'a-q' 'A-Q'
 COuCOu
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `awk`
+### Boîte à outils : `awk`
 
 `awk` est un processeur de texte assez puissant ...
 - En pratique, il est souvent utilisé pour "récupérer seulement une ou plusieurs colonnes"
@@ -2778,11 +2341,10 @@ alex 22:10
 r2d2 11:27
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `awk`
+### Boîte à outils : `awk`
 
 - L'option `-F` permet de specifier un autre délimiteur
 
@@ -2792,11 +2354,10 @@ cat /etc/passwd | awk -F: '{print $3}'  # Affiche les UID des utilisateurs
 
 (Equivalent à `cat /etc/passwd | cut -d: -f 3`)
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `sort`
+### Boîte à outils : `sort`
 
 `sort` est un outil de tri :
 - `-k` permet de spécifier quel colonne utiliser pour trier (par défaut : la 1ère)
@@ -2807,11 +2368,10 @@ ps -ef | sort         # Trie les processus par proprietaire (1ere col)
 ps -ef | sort -k2 -n  # Trie les processus par PID (2eme col., chiffres)
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `uniq`
+### Boîte à outils : `uniq`
 
 `uniq` permet de ne garder que des occurences uniques ... ou de compter un nombre d'occurence (avec `-c`)
 
@@ -2822,11 +2382,10 @@ who | awk '{print $1}' | sort | uniq                   # Affiche la liste des us
 who | awk '{print $1}' | sort | uniq -c                # Compte le nombre de shell par user loggué
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `sed`
+### Boîte à outils : `sed`
 
 `sed` est un outil de manipulation de texte très puissant ... mais sa syntaxe est complexe.
 
@@ -2837,28 +2396,26 @@ Exemple :
 ls -l | sed 's/alex/padawan/g' # Remplace toutes les occurences de alex par padawan
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Boîte à outils : `find`
+### Boîte à outils : `find`
 
 `find` permet de trouver (recursivement) des fichiers répondant à des critères sur le nom, la date de modif, la taille, ...
 
 Exemples:
 ```bash
-# Lister tous les fichiers en .service dans /etc
+## Lister tous les fichiers en .service dans /etc
 find /etc -name "*.service"
 
-# Lister tous les fichiers dans /var/log modifiés il y a moins de 5 minutes
+## Lister tous les fichiers dans /var/log modifiés il y a moins de 5 minutes
 find /var/log -mmin 5
 ```
 
----
 
-# 10 Pipes et boîte à outils
+## 10 Pipes et boîte à outils
 
-## Recap (QUELQUES outils)
+### Recap (QUELQUES outils)
 
 (en tout cas leur utilisation la plus commune)
 
