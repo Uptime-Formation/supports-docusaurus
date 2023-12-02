@@ -103,6 +103,10 @@ Maintenant que l'environnement a été configuré :
 
 Par exemple pour la stratégie **recreate** le graphique donne: ![](/img/prometheus/grafana-recreate.png)
 
+### Argo Rollout : un exemple d'opérateur de rollout (controller)
+
+![](/img/kubernetes/argo-rollout-architecture.webp)
+
 ### Facultatif : Installer Istio pour des scénarios plus avancés
 
 Pour des scénarios plus avancés de déploiement, on a besoin d'utiliser soit un _service mesh_ comme Istio (soit un plugin de rollout comme Argo Rollouts mais pas ce que nous proposons ici).
