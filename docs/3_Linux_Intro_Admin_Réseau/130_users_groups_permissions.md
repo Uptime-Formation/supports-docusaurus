@@ -2,19 +2,11 @@
 title: Cours - Utilisateurs, groupes et permissions
 ---
 
-## 5. Utilisateurs et groupes
-
-
-## 5. Utilisateurs et groupes
-
 ### Généralités
 
 - une entité / identité (!= être humain) qui demande des choses au système
 - possède des fichiers, peut en créer, modifier, naviguer, ...
 - peut lancer des commandes / des processus
-
-
-## 5. Utilisateurs et groupes
 
 ### Répertoire des utilisateurs
 
@@ -32,9 +24,6 @@ alex:x:1000:1000:Super Formateur Linux:/home/alex:/bin/bash
 - répertoire home
 - shell de démarrage
 
-
-## 5. Utilisateurs et groupes
-
 ### root
 
 - Dieu sur la machine, `uid=0`, `gid=0`
@@ -44,9 +33,6 @@ alex:x:1000:1000:Super Formateur Linux:/home/alex:/bin/bash
 ![](/img/linux/iamroot.jpg)
 ![](/img/linux/heistheone.png)
 
-
-
-## 5. Utilisateurs et groupes
 
 ### Parenthèse sur la terminologie
 
@@ -66,9 +52,6 @@ Lorsque l'on programme dans certains languages de scripting, on parle aussi de s
 
 Un shell que vous utilisez peut potentiellement être situé sur une autre machine que celle devant laquelle vous êtes !
 
-
-## 5. Utilisateurs et groupes
-
 ### Passer root (ou changer d'utilisateur)
 
 ```bash
@@ -77,9 +60,6 @@ su camille          # Demande à ouvrir un shell en tant que camille
 su -c "ls /root/"   # Executer 'ls /root/' en tant que root (de manière ephemere)
 exit                # Quitter un shell
 ```
-
-
-## 5. Utilisateurs et groupes
 
 ### Sudo
 
@@ -97,8 +77,6 @@ sudo su             # Ouvrir un shell root via sudo...
    - `sudo` : mot de passe utilisateur
 
 
-## 5. Utilisateurs et groupes
-
 ### `su` vs `sudo`
 
 - Generalement, on essaye de ne pas rester en root constamment.
@@ -108,9 +86,6 @@ sudo su             # Ouvrir un shell root via sudo...
 - `sudo` permet aussi de garder une historique "par utilisateur / être humain" de qui à fait quoi sur la machine
    - chaque commande effectuée avec `sudo` est logguée dans `/var/log/auth.log`
    - utile pour les audits de sécurité
-
-
-## 5. Utilisateurs et groupes
 
 ### Les groupes
 
@@ -126,9 +101,6 @@ Exemples de groupes qui pourraient exister:
 
 N.B : lorsqu'on ajoute un utilisateur à un groupe, il doit se reloguer pour que le changement soit propagé...
 
-
-## 5. Utilisateurs et groupes
-
 ### Mot de passe
 
 - Autrefois dans `/etc/passwd` (accessibles à tous mais hashés)
@@ -137,7 +109,6 @@ N.B : lorsqu'on ajoute un utilisateur à un groupe, il doit se reloguer pour que
 ```
 alex:$6$kncRwIMqSb/2PLv3$x10HgX4iP7ZImBtWRChTyufsG9XSKExHyg7V26sFiPx7htq0VC0VLdUOdGQJBJmN1Rn34LRVAWBdSzvEXdkHY.:0:0:99999:7:::
 ```
-
 
 ## (Parenthèse sur le hashing)
 
@@ -152,9 +123,6 @@ $ md5sum coursLinux.html
 $ md5sum coursLinux.html
 d1bb5db7736dac454c878976994d6480
 ```
----
-
-## (Parenthèse sur le hashing)
 
 Hasher un fichier (ou une donnée) c'est la transformer en une chaîne :
 - de taille fixe
@@ -163,8 +131,6 @@ Hasher un fichier (ou une donnée) c'est la transformer en une chaîne :
 
 Bref : une empreinte caractérisant une information de manière très précise
 
-
-## 5. Utilisateurs et groupes
 
 ### Commandes utiles
 
@@ -181,14 +147,8 @@ usermod -a -G <group> <user>  # Ajouter un utilisateur à un groupe
 ```
 
 
+## Les permissions
 
-
-## 6. Permissions
-
-
-## 6. Permissions
-
-### Généralités
 
 - Chaque fichier a :
     - un utilisateur proprietaire
@@ -209,28 +169,17 @@ $ ls -l coursLinux.html
 ```
 
 
-## 6. Permissions
-
 ![](/img/linux/permissions.jpg)
 
 
-## 6. Permissions
-
 ![](/img/linux/permissions2.png)
 
-
-
-
-## 6. Permissions
 
 ### Permissions des **fichiers**
 
 - `r` : lire le fichier
 - `w` : écrire dans le fichier
 - `x` : executer le fichier
-
-
-## 6. Permissions
 
 ### Permissions des **dossiers**
 
@@ -239,9 +188,6 @@ $ ls -l coursLinux.html
 - `x` : traverser le répertoire
 
 (On peut imager que les permissions d'un dossier soient `r--` ou `--x`)
-
-
-## 6. Permissions
 
 ### Gérer les propriétaires
 
@@ -262,9 +208,6 @@ chown -R camille /home/alex/dev/      # Change le proprio récursivement !
 
 (ACHTUNG: si l'on fait un malencontreux `chown -R`, il peut être difficile de revenir en arrière)
 
-
-## 6. Permissions
-
 ### Gérer les permissions
 
 ```bash
@@ -281,20 +224,11 @@ chmod -R +x ./bin/           # Active le droit d'execution pour tout le monde et
 
 (ACHTUNG: si l'on fait un malencontreux `chmod -R`, il peut être difficile de revenir en arrière)
 
-
-## 6. Permissions
-
 ### Représentation octale
 
 ![](/img/linux/chmod_octal.png)
 
-
-## 6. Permissions
-
 ![](/img/linux/chmod_octal2.png)
-
-
-## 6. Permissions
 
 ### Gérer les permissions .. en octal !
 
@@ -309,23 +243,15 @@ chmod 644 coursLinux.html  # Fixe les permissions à rw-r--r--
 chmod 444 coursLinux.html  # Fixe les permissions à r--r--r--
 ```
 
-
-
-## 6. Permissions
-
 ### Chown vs. chmod
 
 ![](/img/linux/chown_chmod.png)
 
 
-## 6. Permissions
-
 Lorsque l'on fait :
 ```bash
 $ /etc/passwd
 ```
-
-On tente d'executer le fichier !
 
 Obtenir comme réponse
 
@@ -335,9 +261,6 @@ Obtenir comme réponse
 
 ne signifie pas qu'on a pas les droits de lecture sur le fichier, mais bien que l'on a "juste" pas le droit de l'executer <small>(car ça n'a en fait pas de sens de chercher à l'executer)</small>
 
-
-
-## 6. Permissions
 
 ### Permissions "théoriques" vs permissions réelles
 
@@ -349,10 +272,6 @@ Pour pouvoir accéder à `/home/alex/img/pikachu.jpg` j'ai besoin de :
 - Pouvoir entrer (`x`) dans le dossier `/home/alex/img/`
 - Pouvoir lire (`r`) le fichier `/home/alex/img/pikachu`
 
-
-## 6. Permissions
-
-### Permissions "théoriques" vs permissions réelles
 
 Une commande pour lister toutes les permissions sur un chemin: `namei -l`
 
@@ -367,13 +286,49 @@ drwxr-xr-x alex alex img
 ```
 
 
-## 6. Permissions
-
 On peut un peu casser son système si on fait `chmod -x /`
 
 (plus personne n'a le droit de rentrer dans la racine !)
 
 
-## 6. Permissions
+### Permissions avancées : les ACL (Access Control Lists)
 
-### Permissions avancées : les ACL
+
+Par défaut, la gestion des droits sous Linux est relativement basique (bien que souvent suffisante). En effet, il n'est possible de permettre ou d'interdire la lecture, l'écriture et l'exécution de fichiers **que pour trois catégories d'utilisateurs** : le propriétaire du fichier, l'ensemble des utilisateurs inscrits dans le groupe éponyme relatif à l'utilisateur et le reste du monde.
+
+Cette gestion des droits permet de configurer les accès aux fichiers dans la plupart des situations simples **mais peut s'avérer limitée**.
+
+Par exemple: plusieurs utilisateurs doivent accéder à une ressource partagée alors que ni l'un ni l'autre ne sont réciproquement inscrits dans le groupe de l'autre utilisateur.
+
+Les ACL permettent de pallier cette déficience de sorte qu'**il devient possible d'autoriser un utilisateur tiers à effectuer des opérations sur un fichier (dossier) sans autoriser tout un groupe** ou tout le reste du monde.
+
+
+### Exemples
+
+autoriser à "utilisateur" la lecture et l'écriture sur "fichier"
+
+- `setfacl -m user:utilisateur:rw fichier`
+
+- `setfacl -m u:utilisateur:rw fichier` (en abrégé)
+
+La même commande est disponible pour les groupes. Il suffit de remplacer u/user par g/group
+modifier les permissions de plusieurs utilisateurs/groupes sur "fichier" en même temps
+
+- `setfacl -m user:utilisateur:rwx,user:utilisateur2:r,group:groupe:rw fichier`
+
+définir l'accès en lecture par défaut pour "utilisateur" pour les nouveaux fichiers créés dans "dossier"
+
+- `setfacl -m d:u:utilisateur:r dossier`
+
+supprimer les ACL pour un utilisateur sur une arborescence
+
+- `setfacl -R -x user::nom_user repertoire_base_arborescence`
+
+supprimer les ACL sur un fichier/dossier
+
+- `setfacl -b fichier`
+
+
+
+
+source: https://doc.ubuntu-fr.org/acl

@@ -18,41 +18,29 @@ title: Cours - Découverte du terminal et de la ligne de commande
     - ...
 - Parti pris pour l'OS : Linux Mint avec Cinnamon, et pré-installé
 
-## 2. Premier contact avec le terminal
-
-### Installer une machine virtuelle
-
-![](/img/linux/vbox1.png)
+## Installer une machine pour s'exercer
 
 
-## 2. Premier contact avec le terminal
+### Avec virtualbox : il s'agit d'un logiciel pour virtualiser des ordinateurs (VM)
 
-### Installer une machine virtuelle
+- Il est à la fois simple et open source donc c'est une bonne alternative
 
-![](/img/linux/vbox2.png)
+#### Installation
 
+- A télécharger et installer depuis https://virtualbox.org sur Windows ou MacOS
+- A installer avec le gestionnaire de paquet sur Linux (voir partie gestionnaire de paquet)
 
-## 2. Premier contact avec le terminal
+#### Première machine virtuelle
 
-### Installer une machine virtuelle
+Il est possible soit 
 
 OSBoxes : un site qui fourni des images Linux pré-installées
 
 ![](/img/linux/osboxes.png)
 
-
-## 2. Premier contact avec le terminal
-
-### Installer une machine virtuelle
-
 Télécharger une Linux Mint préinstallée sur OSboxes.org
 
 ![](/img/linux/osboxes_mint.png)
-
-
-## 2. Premier contact avec le terminal
-
-### Installer une machine virtuelle
 
 - Installer Virtualbox
 - Créer une nouvelle machine virtuelle
@@ -61,9 +49,6 @@ Télécharger une Linux Mint préinstallée sur OSboxes.org
     - Au moment de choisir le disque dur : fournir le fichier VDI de OSboxes / Linux Mint
 - Démarrer la machine et observer les étapes de démarrage
 - Mot de passe : `ilovelinux`
-
-
-## 2. Premier contact avec le terminal
 
 ### Se connecter
 
@@ -75,46 +60,14 @@ Pour ce faire, appuyer sur Ctrl+Alt+F2 (ou F3, F4, ...)
 Debian Stretch <nom_de_machine> tty0
 
 <nom_de_machine> login: █
-```
-
-
-## 2. Premier contact avec le terminal
-
-### Se connecter
-
-Pour cette première connexion, nous allons passer par un tty plutôt que par le login graphique.
-
-Pour ce faire, appuyer sur Ctrl+Alt+F2 (ou F3, F4, ...)
-
-
-```
-Debian Stretch <nom_de_machine> tty0
-
+...
 <nom_de_machine> login: votre_login
 Password: █        # <<<< le mot de passe ne s'affiche pas du tout quand on le tape !
-```
 
-
-## 2. Premier contact avec le terminal
-
-### Se connecter
-
-Pour cette première connexion, nous allons passer par un tty plutôt que par le login graphique.
-
-Pour ce faire, appuyer sur Ctrl+Alt+F2 (ou F3, F4, ...)
-
-
-```
-Debian Stretch <nom_de_machine> tty0
-
-<nom_de_machine> login: votre_login
-Password:
+...
 Last login: Wed 19 Sep 16:23:42 on tty2
 votre_login@machine:~$
 ```
-
-
-## 2. Premier contact avec le terminal
 
 ### Premières commandes
 
@@ -131,11 +84,7 @@ passwd: password updated successfully
 votre_login@machine:~$ █
 ```
 
-
 ![](/img/linux/password-mistakes.png)
-
-
-## 2. Premier contact avec le terminal
 
 ### Premières commandes
 
@@ -147,9 +96,6 @@ votre_login@machine:~$ █
 - Taper `ls -l` puis *Entrée* et observer
 - Taper `echo 'Je suis dans la matrice'` puis *Entrée* et observer
 
-
-## 2. Premier contact avec le terminal
-
 ### Discussion
 
 - Nous nous sommes connecté à une machine
@@ -159,21 +105,13 @@ votre_login@machine:~$ █
 - Certaines affichent des choses, d'autres changent des états
 - Vous pouvez ouvrir d'autres TTy / consoles avec Ctrl+Alt+F1, F2, F3, ..
 
-
-## 2. Premier contact avec le terminal
-
 ### Origine historique : le tty (teletype)
 
 ![](/img/linux/tty1.jpg)
 ![](/img/linux/tty2.jpg)
 
 
-
-
-## 3. La ligne de commande
-
-
-## 3. La ligne de commande
+## La ligne de commande
 
 ### Structure d'une commande
 
@@ -187,21 +125,12 @@ votre_login@machine:~$ █
 ```
 
 
-
-## 3. La ligne de commande
-
-### Structure d'une commande
-
 - Des **options longues** (classiquement avec `--`) comme `--fullscreen`
-
 - Des **options courtes** correspondantes (classiquement avec `-`) comme `-f`
 
 *(des fois, il y a seulement l'option courte ou seulement l'option longue)*
 
 
-## 3. La ligne de commande
-
-### Structure d'une commande
 
 Une commande peut être simple :
 
@@ -214,9 +143,6 @@ ou assez complexe :
 ```
 dnsmasq -x /run/dnsmasq/dnsmasq.pid -u dnsmasq -7 /etc/dnsmasq.d,.dpkg-dist,.dpkg-old,.dpkg-new --local-service
 ```
-
-
-## 3. La ligne de commande
 
 ### Effet d'une commande
 
@@ -240,9 +166,7 @@ alex@shadow:~$
 Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien été créé
 
 
-## 3. La ligne de commande
-
-### Mais monsieur, les commandes il faut toute les apprendre par coeur ...?
+### Mais les commandes il faut toute les apprendre par coeur ...?
 
 - Il y en a des milliers (et on peut créer les siennes)
 - Chacune peut avoir des dizaines d'options combinables entre elles
@@ -251,98 +175,6 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
     - de savoir aller chercher et apprendre de nouvelles commandes si besoin
     - savoir être méthodique et débugger les erreurs du quotidien (typo, ...)
 
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-- J'écris ma commande
-
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-- J'écris ma commande
-- Je **relis attentivement ce que je viens de taper**
-
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-- J'écris ma commande
-- Je **relis attentivement ce que je viens de taper**
-- J'appuie sur entrée
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-- J'écris ma commande
-- Je **relis attentivement ce que je viens de taper**
-- J'appuie sur entrée
-- J'enlève les mains du clavier pour regarder l'effet produit
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-- J'écris ma commande
-- Je **relis attentivement ce que je viens de taper**
-- J'appuie sur entrée
-- J'enlève les mains du clavier pour regarder l'effet produit
-- Je **LIS ATTENTIVEMENT et analyse la réponse de la machine** pour valider que c'est ce à quoi je m'attendais
-
-
-## 3. La ligne de commande
-
-### Méthode de travail : le Tai Chi du terminal
-
-- Je recule la tête de mon écran et réfléchi à ce que je veux faire
-- Je regarde où j'en suis
-- J'écris ma commande
-- Je **relis attentivement ce que je viens de taper**
-- J'appuie sur entrée
-- J'enlève les mains du clavier pour regarder l'effet produit
-- Je **LIS ATTENTIVEMENT et analyse la réponse de la machine** pour valider que c'est ce à quoi je m'attendais
-   - Je ne culpabilise pas ni ne désespère si il y a un message d'erreur - c'est normal et arrive à tout le monde tout le temps !
-
-
-## 3. La ligne de commande
 
 ### Méthode de travail : le Tai Chi du terminal
 
@@ -357,26 +189,14 @@ Eventuellement, je valide en réutilisant `ls` pour voir que le dossier a bien �
    - Si je pense que ça a marché, je valide via une autre commande (e.g. verifier avec `ls` que le dossier à bien été créé)
 
 
-## 3. La ligne de commande
-
 ![](/img/linux/liberetonesprit.jpg)
 
 
-
-
-## 3. La ligne de commande
-
 ### `passwd` - Changer son password
-
-
-## 3. La ligne de commande
 
 ### `pwd` - Afficher le dossier courant
 
 *Print current working directory*
-
-
-## 3. La ligne de commande
 
 ### `cd` - Naviguer dans les dossiers
 
@@ -388,9 +208,6 @@ cd -              # Retourne dans le dossier où on était juste avant
 ```
 
 N.B : On ne peut pas faire `cd /un/fichier` ! Ça n'a pas de sens !
-
-
-## 3. La ligne de commande
 
 ### `ls` - Liste les fichiers d'un dossier
 
@@ -406,14 +223,8 @@ ls  -h        # (ou --human-readable) Tailles lisibles comme '24K' ou '3G'
 (on peut combiner les options et arguments)
 
 
-## 3. La ligne de commande
-
 - Utiliser `ls` et `cd`, c'est comme naviguer avec un explorateur de fichier graphique !
 
-
-## 3. La ligne de commande
-
-### Les caractères spéciaux
 
 ```
 ls *.py        # Liste tous les fichiers du repertoire courant finissant par .py
@@ -431,18 +242,12 @@ echo ls *.{py,.png} # Affiche la commande precedente telle qu'elle va être exec
     - ... et taper juste `*` équivant à taper `foo.py bar.py`
     - ... et on peut écrire `ls '*.py'` pour parler d'un fichier qui s'apelle littéralement `*.py`
 
-
-## 3. La ligne de commande
-
 ### Nettoyer son terminal
 
 - `clear` efface tout ce qui est affiché dans le terminal
 - `reset` permet de réinitialiser le terminal (utile pour certaines situation où le terminal est "cassé")
 - `exit` permet de fermer un terminal
 - (`logout` est similaire à `exit`)
-
-
-## 3. La ligne de commande
 
 ### Obtenir de l'aide sur des commandes
 
@@ -457,11 +262,6 @@ Ou avec `--help` ou `-h` :
 nom_de_comande --help
 ```
 
-
-## 3. La ligne de commande
-
-### Annuler / arrêter une commande en cours d'execution
-
 - Si une commande prends trop longtemps, il est possible de l'annuler avec [Ctrl]+C
 
 ```
@@ -474,10 +274,6 @@ alex@shadow:~$
 - [Ctrl]+C est à utiliser avec parcimonie ! Interrompre certaines commande peut causer des problèmes...
 - (N.B. : [Ctrl]+C / [Ctrl]+V ne fais pas copier/coller dans la console !)
 
-
-
-## 3. La ligne de commande
-
 ### Copier-coller dans le terminal
 
 (Dans tous les cas, on commence par selectionner le texte avec la souris)
@@ -485,9 +281,6 @@ alex@shadow:~$
 - Méthode 1. Clic droit "copier", clic droit "coller"
 - Méthode 2. Ctrl + Insert, Shift + Insert
 - Méthode 3. Clic du milieu
-
-
-## 3. La ligne de commande
 
 ### Raccourcis et astuces de ninja
 
@@ -513,8 +306,6 @@ alex@shadow:~$
 ## Utilisez [Tab] !
 
 ## Utilisez [Tab] !
-
-
 
 ## et LISEZ ATTENTIVEMENT ce que la machine vous raconte !
 

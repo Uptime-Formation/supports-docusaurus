@@ -2,10 +2,6 @@
 title: Cours - Le système de fichier Linux
 ---
 
-## 4. Le système de fichier
-
-## 4. Le système de fichier
-
 ### Généralités
 
 - (En anglais : *filesystem*, abrégé *fs*)
@@ -13,8 +9,6 @@ title: Cours - Le système de fichier Linux
 - Une abstraction de la mémoire
 - Analogie : une bibliothèque avec seulement les pages des livres dans les étagères
 - Le *fs* connait le nom, la taille, l'emplacemenent des différents morceaux, la date de création, ...
-
-## 4. Le système de fichier
 
 ###  Partitionnement d'un disque
 
@@ -24,8 +18,6 @@ title: Cours - Le système de fichier Linux
 ![](/img/linux/parts.png)
 
 
-## 4. Le système de fichier
-
 ### Quelques systèmes de fichier classiques
 
 - *FAT16*, *FAT32* : disquettes, Windows 9x (~obsolète)
@@ -33,9 +25,6 @@ title: Cours - Le système de fichier Linux
 - **EXT3**, **EXT4** : système typiquement utilisé par Linux (Ubuntu, Mint, ...)
 - *HFS+* : système utilisé par MacOS
 - *TMPFS* : système de fichier pour gérer des fichiers temporaires (`/tmp/`)
-
-
-## 4. Le système de fichier
 
 ### Quelques systèmes de fichier "avancés"
 
@@ -53,20 +42,13 @@ title: Cours - Le système de fichier Linux
     - un ensemble de schema d'architecture de disque pour créer de la redondance en cas de perte de disque
     - données copiées sur plusieurs disques (grappe)
 
-
-## 4. Le système de fichier
-
 ### Quelques systèmes de fichier exotiques(?) / autre
 
 - *Tahoe-LAFS*
 - *FUSE*
 - *IPFS*
 
-
-## 4. Le système de fichier
-
 ### Sous UNIX / Linux : "Tout est fichier"
-
 
 - **fichiers ordinaires** (`-`) : données, configuration, ... texte ou binaire
 - **répertoires** (directory, `d`) : gérer l'aborescence, ...
@@ -74,10 +56,6 @@ title: Cours - Le système de fichier Linux
     - `block` et `char` (`b`, `c`) (clavier, souris, disque, ...)
     - sockets (`s`), named pipe (`p`) (communication entre programmes)
     - links (`l`) ('alias' de fichiers, ~comme les raccourcis sous Windows)
-
-
-
-## 4. Le système de fichier
 
 ### Un fichier
 
@@ -89,9 +67,6 @@ title: Cours - Le système de fichier Linux
     - Permissions
     - Date de création, modification
 
-
-## 4. Le système de fichier
-
 ### Nommage des fichiers
 
 - Noms sensibles à la casse
@@ -99,9 +74,6 @@ title: Cours - Le système de fichier Linux
 - Un fichier commençant par `.` est "caché"
 - Les extensions de fichier sont purement indicatives : un vrai mp3 peut s'apeller musique.jpg et vice-versa
 - Lorsqu'on parle d'un dossier, on l'ecrit plutôt avec un `/` à la fin pour expliciter sa nature
-
-
-## 4. Le système de fichier
 
 ### Arborescence de fichier
 
@@ -121,15 +93,9 @@ coursLinux/
     └── style.scss
 ```
 
-
-## 4. Le système de fichier
-
 ### Filesystem Hierarchy Standard
 
 ![](/img/linux/filetree.png)
-
-
-## 4. Le système de fichier
 
 ### Filesystem Hierarchy Standard
 
@@ -146,18 +112,12 @@ coursLinux/
 - `/usr/` : progr. et librairies "non-essentielles", doc, données partagées
 - `/var/` : **fichiers / données variables** (e.g. cache, logs, boîtes mails)
 
-
-## 4. Le système de fichier
-
 ### Répertoires personnels
 
 - Tous les utilisateurs ont un répertoire personnel
 - Classiquement `/home/<user>/` pour les utilisateurs "normaux"
 - Le home de root est `/root/`
 - D'autres utilisateurs ont des home particulier (`/var/mail/`, ...)
-
-
-## 4. Le système de fichier
 
 ### Designation des fichiers
 
@@ -171,9 +131,6 @@ Un chemin peut être :
 - Relatif : `../yunohost/script.sh` (depuis `/home/alex/dev/apps/`)
 
 Un chemin relatif n'a de sens que par rapport à un dossier donné... mais est souvent moins long à écrire
-
-
-## 4. Le système de fichier
 
 ### Designation des fichiers
 
@@ -190,8 +147,6 @@ ls ./toto
 ```bash
 ls /toto
 ```
-
-
 
 ![](/img/linux/relativepath_1_1.png)
 
@@ -221,7 +176,6 @@ ls /toto
 ![](/img/linux/relativepath_2_4.png)
 
 
-
 ![](/img/linux/relativepath_2_5.png)
 
 
@@ -230,8 +184,6 @@ ls /toto
 
 ![](/img/linux/relativepath_2_7.png)
 
-
-## 4. Le système de fichier
 
 ### Chemins relatifs
 
@@ -245,9 +197,7 @@ ls /toto
 - `../.././music/.././../camille/.././alex/dev/ynh-dev/yunohost/script.sh`
 
 
-## 4. Le système de fichier
-
-### Manipuler des fichiers (1/5)
+### Manipuler des fichiers
 
 - `ls` : lister les fichiers
 - `cat <fichier>` : affiche le contenu d'un fichier dans la console
@@ -260,11 +210,6 @@ ls /usr/share/doc/                       # Liste les fichiers de /usr/share/doc
 wc -l /usr/share/doc/nano/nano.html      # 2005 lignes !
 ```
 
-
-## 4. Le système de fichier
-
-### Manipuler des fichiers (2/5)
-
 - `head <fichier>`, `tail <fichier>` : affiche les quelques premières ou dernières ligne du fichier
 - `less <fichier>` : regarder le contenu d'un fichier de manière "interactive" (paginateur)
    - ↑, ↓, ⇑, ⇓ pour se déplacer
@@ -276,17 +221,8 @@ tail -n 30 /usr/share/doc/nano/nano.html # Affiche les 30 dernieres lignes du fi
 less /usr/share/doc/nano/nano.html       # Regarder interactivement le fichier
 ```
 
-
-## 4. Le système de fichier
-
-### Manipuler des fichiers (2/5)
-
 ![](/img/linux/cat.jpeg)
 
-
-## 4. Le système de fichier
-
-### Manipuler des fichiers (3/5)
 
 - `touch <fichier>` : créer un nouveau fichier, et/ou modifie sa date de modification
 - `nano <fichier>` : éditer un fichier dans la console
@@ -296,11 +232,6 @@ less /usr/share/doc/nano/nano.html       # Regarder interactivement le fichier
     - [Alt]+Y pour activer la coloration syntaxique
 - `vi` ou `vim <fichier>` : alternative à nano
     - plus puissant (mais plus complexe)
-
-
-## 4. Le système de fichier
-
-### Manipuler des fichiers (4/5)
 
 - `cp <source> <destination>` : copier un fichier
 - `rm <fichier>` : supprimer un fichier
@@ -315,11 +246,6 @@ rm cours.html                  # Supprime cours.html
 mv coursLinux.html linux.html  # Renomme coursLinux.html en linux.html
 mv linux.html ~/archives/      # Déplace linux.html dans ~/archives/
 ```
-
-
-## 4. Le système de fichier
-
-### Manipuler des fichiers (5/5)
 
 - `wget` : télécharger un fichier depuis les Internets
 
@@ -345,19 +271,10 @@ $ cat toto
 pouet
 ```
 
-
-## 4. Le système de fichier
-
 ### Manipuler des dossiers (1/3)
 
 - `pwd` : connaître le dossier de travail actuel
 - `cd <dossier>` : se déplacer vers un autre dossier
-
-
-## 4. Le système de fichier
-
-### Manipuler des dossiers (2/3)
-
 - `mkdir <dossier>` : créer un nouveau dossier
 - `cp -r <source> <destination>` : copier un dossier et l'intégralité de son contenu
 
@@ -369,25 +286,16 @@ cp -r ~/dev ~/dev.bkp # Créé une copie du dossier dev/ qui s'apelle dev.bkp/
 cp -r ~/dev /tmp/     # Créé une copie de dev/ et son contenu dans /tmp/
 ```
 
-
-## 4. Le système de fichier
-
-### Manipuler des dossiers (3/3)
-
 - `mv <dossier> <destination>` : déplace (ou renomme) un dossier
 - `rmdir <dossier>` : supprimer un dossier vide
 - `rm -r <dossier>` : supprimer un dossier et tout son contenu récursivement
 
-Exemples :
 
 ```bash
 mv dev.bkp  dev.bkp2   # Renomme le dossier dev.bkp en dev.bkp2
 mv dev.bkp2 ~/trash/   # Déplace dev.bkp2 dans le dossier ~/trash/
 rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
 ```
-
-
-## 4. Le système de fichier
 
 ### Les liens durs (hard link)
 
@@ -397,21 +305,12 @@ rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
 - Le même fichier ... à plusieurs endroits !
 - Supprimer une instance de ce fichier ne supprime pas les autres
 
-
-## 4. Le système de fichier
-
 ### Les liens symbolic (symlink)
 
-![](/img/linux/symlink.png)
 
 - `ln -s <cible> <nom_du_lien>`
 - Similaire à un "raccourci", le fichier n'est pas vraiment là .. mais comme si
 - Supprimer le fichier pointé par le symlink "casse" le lien
-
-
-## 4. Le système de fichier
-
-### Les liens symbolic (symlink)
 
 ![](/img/linux/symlink.png)
 
@@ -421,9 +320,6 @@ rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
 - `ynh.txt` est la cible : le supprimer rendra inopérationnel le raccourci
 
 
-
-## 4. Le système de fichier
-
 ### symlink vs. hardlink
 
 - On croise plus souvent des symlinks que des hardlinks (les symlinks sont + intuitifs)
@@ -431,18 +327,12 @@ rm -r ~/trash          # Supprime tout le dossier ~/trash et son contenu
     - Attention tout de même à certains comportements étrange (`..` en étant à l'intérieur d'un symlink)
 - On peut avoir des symlinks entre des filesystem différents ! (à la différence des hardlinks)
 
-
-## 4. Le système de fichier
-
 ### Recap dossiers importants (l'essentiel)
 
 - `/home/<user>/` : le répertoire personnel de `<user>`
 - `/etc/` : là où habitent les fichiers de configuration
 - `/var/log/` : là ou habitent les fichiers de logs
 - `/root/` : le répertoire personnel de `root`
-
-
-## 4. Le système de fichier
 
 ### Recap des commandes
 

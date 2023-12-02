@@ -2,11 +2,7 @@
 title: Cours - combiner des commandes Linux - redirections et pipes
 ---
 
-## 9. Commandes "avancées"
-
-### redirections et assemblages
-
-## 9 - Redirections, assemblages
+## redirections et assemblages
 
 ### Schema fonctionnel d'une commande
 
@@ -18,8 +14,6 @@ title: Cours - combiner des commandes Linux - redirections et pipes
 ![](/img/linux/commandbox.png)
 
 
-## 9 - Redirections, assemblages
-
 ### Entrées / sorties
 
 ![](/img/linux/commandbox.png)
@@ -29,10 +23,9 @@ title: Cours - combiner des commandes Linux - redirections et pipes
 - **stdout** : flux de sortie (typ. vers le terminal)
 - **stderr** : flux d'erreur (typ. vers le terminal aussi !)
 
+### Code de retour !
 
-## 9 - Redirections, assemblages
 
-### Code de retour
 
 ```bash
 $ ls /toto
@@ -41,10 +34,7 @@ $ echo $?
 2
 ```
 
-
-## 9 - Redirections, assemblages
-
-### Rediriger les entrées/sorties (1/3)
+### Rediriger les entrées/sorties
 
 - `cmd > fichier` : renvoie stdout vers un fichier (le fichier sera d'abord écrasé !)
 - `cmd >> fichier ` : ajoute stdout à la suite du fichier
@@ -59,11 +49,6 @@ echo "manger" >> todo.txt          # Ajoute "manger" a la liste des choses à fa
 wc <<< "une grande phrase"           # Compte le nomde de mot d'une chaine
 ```
 
-
-## 9 - Redirections, assemblages
-
-### Rediriger les entrées/sorties (2/3)
-
 - `commande 2> fichier` : renvoie stderr vers un fichier (le fichier sera d'abord écrasé !)
 - `commande 2>&1` : renvoie stderr vers stdout !
 - `commande &> fichier` : renvoie stderr *et* stdout vers un fichier (le fichier sera d'abord écrasé !)
@@ -77,21 +62,12 @@ ls /* > log 2>&1 # Redirige tout vers 'log' !
 ls /* &> log     # Redirige tout vers 'log' !
 ```
 
-
-## 9 - Redirections, assemblages
-
-### Rediriger les entrées/sorties (3/3)
-
 Fichiers speciaux :
 - `/dev/null` : puit sans fond (trou noir)
 - `/dev/urandom` : generateur aleatoire (trou blanc)
 
 ![](/img/linux/bottomlesspit.png)
 
-
-## 9 - Redirections, assemblages
-
-### Rediriger les entrées/sorties (3/3)
 
 Fichiers speciaux :
 - `/dev/null` : puit sans fond (trou noir)
@@ -104,9 +80,6 @@ head -c 5 < /dev/urandom     # Affiche 5 caractères de /dev/urandom
 cat /dev/urandom > /dev/null # Injecte de l'aleatoire dans le puit sans fond
 ```
 
-
-## 9 - Redirections, assemblages
-
 ### Assembler des commandes
 
 Executer plusieurs commandes à la suite :
@@ -118,16 +91,15 @@ Executer plusieurs commandes à la suite :
 
 Que fait `cmd1 && cmd2 || cmd3` ?
 
+Essayons:
 
+- `echo "1" && echo "2" || echo "3"`
+- `echo "1" && wget site-inexistant.fr || echo "3"`
+- `wget site-inexistant.fr && echo "2" || echo "3"`
 
-## 10. Commandes avancées
+## pipes et outils
 
-### pipes et outils
-
-
-## 10 Pipes et boîte à outils
-
-### Pipes ! (1/3)
+### Pipes !
 
 - `cmd1 | cmd2` permet d'assembler des commandes de sorte à ce que le `stdout` de `cmd1` devienne le `stdin` de `cmd2` !
 
@@ -138,10 +110,6 @@ Exemple : `cat /etc/login.defs | head -n 3`
 - (Attention, par défaut `stderr` n'est pas affecté par les pipes !)
 
 
-## 10 Pipes et boîte à outils
-
-### Pipes ! (2/3)
-
 Lorsqu'on utilise des pipes, c'est generalement pour enchaîner des opérations comme :
 - générer ou récupérer des données
 - filtrer ces données
@@ -150,17 +118,11 @@ Lorsqu'on utilise des pipes, c'est generalement pour enchaîner des opérations 
 Sous Linux : tout est fichier / tout est flux de texte
 
 
-## 10 Pipes et boîte à outils
-
-### Pipes ! (3/3)
-
 Precisions techniques
 - La transmission d'une commande à l'autre se fait "en temps réel". La première commande n'a pas besoin d'être terminée pour que la deuxieme commence à travailler.
 - Si la deuxieme commande a terminée, la première *peut* être terminée prématurément (SIGPIPE).
     - C'est le cas par exemple pour `cat tres_gros_fichier | head -n 3`
 
-
-## 10 Pipes et boîte à outils
 
 ### Boîte à outils : `tee`
 
@@ -171,10 +133,7 @@ tree ~/documents | tee arbo_docs.txt  # Affiche et enregistre l'arborescence de 
 openssl speed | tee -a tests.log      # Affiche et ajoute la sortie de openssl à la suite de tests.log
 ```
 
-
-## 10 Pipes et boîte à outils
-
-### Boîte à outils : `grep` (1/3)
+### Boîte à outils : `grep` 
 
 `grep` permet de trouver des lignes qui contiennent un mot clef (ou plus generalement, une expression)
 
@@ -192,10 +151,6 @@ LOGIN_TIMEOUT		60
 (on aurait aussi pu simplement faire : `grep TIMEOUT /etc/login.defs`)
 
 
-## 10 Pipes et boîte à outils
-
-### Boîte à outils : `grep` (2/3)
-
 Une option utile (parmis d'autres) : `-v` permet d'inverser le filtre
 
 ```bash
@@ -212,11 +167,6 @@ $ ps -ef | grep "alex\|r2d2"
 ## Affiche seulement les lignes contenant alex ou r2d2
 ```
 
-
-## 10 Pipes et boîte à outils
-
-### Boîte à outils : `grep` (3/3)
-
 On peut faire référence à des débuts ou fin de ligne avec `^` et `$` :
 
 ```bash
@@ -229,9 +179,6 @@ alex      5794   956  0 Oct02 pts/14   00:00:00 -bash
 alex      6164   956  0 Oct02 pts/15   00:00:00 -bash
 root      6222  6218  0 Oct02 pts/15   00:00:00 bash
 ```
-
-
-## 10 Pipes et boîte à outils
 
 ### Boîte à outils : `tr`
 
@@ -246,9 +193,6 @@ ID manjaro
 $ echo "coucou" | tr 'a-q' 'A-Q'
 COuCOu
 ```
-
-
-## 10 Pipes et boîte à outils
 
 ### Boîte à outils : `awk`
 
@@ -268,11 +212,6 @@ alex 22:10
 r2d2 11:27
 ```
 
-
-## 10 Pipes et boîte à outils
-
-### Boîte à outils : `awk`
-
 - L'option `-F` permet de specifier un autre délimiteur
 
 ```bash
@@ -281,8 +220,7 @@ cat /etc/passwd | awk -F: '{print $3}'  # Affiche les UID des utilisateurs
 
 (Equivalent à `cat /etc/passwd | cut -d: -f 3`)
 
-
-## 10 Pipes et boîte à outils
+plus sur awk : https://www.funix.org/fr/unix/awk.htm 
 
 ### Boîte à outils : `sort`
 
@@ -293,10 +231,9 @@ cat /etc/passwd | awk -F: '{print $3}'  # Affiche les UID des utilisateurs
 ```bash
 ps -ef | sort         # Trie les processus par proprietaire (1ere col)
 ps -ef | sort -k2 -n  # Trie les processus par PID (2eme col., chiffres)
+viddy 'ps'
 ```
 
-
-## 10 Pipes et boîte à outils
 
 ### Boîte à outils : `uniq`
 
@@ -309,9 +246,6 @@ who | awk '{print $1}' | sort | uniq                   # Affiche la liste des us
 who | awk '{print $1}' | sort | uniq -c                # Compte le nombre de shell par user loggué
 ```
 
-
-## 10 Pipes et boîte à outils
-
 ### Boîte à outils : `sed`
 
 `sed` est un outil de manipulation de texte très puissant ... mais sa syntaxe est complexe.
@@ -322,9 +256,6 @@ Exemple :
 ```bash
 ls -l | sed 's/alex/padawan/g' # Remplace toutes les occurences de alex par padawan
 ```
-
-
-## 10 Pipes et boîte à outils
 
 ### Boîte à outils : `find`
 
@@ -338,9 +269,6 @@ find /etc -name "*.service"
 ## Lister tous les fichiers dans /var/log modifiés il y a moins de 5 minutes
 find /var/log -mmin 5
 ```
-
-
-## 10 Pipes et boîte à outils
 
 ### Recap (QUELQUES outils)
 

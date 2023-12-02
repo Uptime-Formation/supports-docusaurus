@@ -2,13 +2,6 @@
 title: Cours - Les processus
 ---
 
-## 7. Processus
-
-
-## 7. Processus
-
-### Généralités
-
 - Un processus est *une instance* d'un programme en cours d'éxécution
 - (Un même programme peut tourner plusieurs fois sous la forme de plusieurs processus)
 
@@ -19,10 +12,7 @@ title: Cours - Les processus
 
 - Un processus a des attributs (iidentifiant, proprio, priorité, ...)
 
-
-## 7. Processus
-
-### Execution (1/2)
+### Execution
 
 La machine comprends seulement du code machine ("binaire").
 
@@ -35,10 +25,6 @@ Rappel : UNIX est multi-tâche, multi-utilisateur
 - coordonnées par le kernel
 
 
-## 7. Processus
-
-### Execution (2/2)
-
 Un processus est lancé soit :
 
 - en interactif (depuis un shell / la ligne de commande)
@@ -47,10 +33,7 @@ Un processus est lancé soit :
 
 En mode interactif, on peut interragir directement avec le processus pendant qu'il s'execute
 
-
-## 7. Processus
-
-### Attributs
+### Attributs d'un processus
 
 - Propriétaire
 - PID (processus ID)
@@ -59,19 +42,17 @@ En mode interactif, on peut interragir directement avec le processus pendant qu'
 - Commande / programme lancé
 - Entrée, sortie
 
-
-## 7. Processus
-
-### Lister les processus et leurs attributs (1/2)
+### Lister les processus et leurs attributs
 
 ```bash
 ps aux            # Liste tous les processus
 ps ux -U alex     # Liste tous les processus de l'utilisateur alex
 ps -ef --forest   # Liste tous les processus, avec des "arbres de parenté"
+ps fauxw          # Liste tous les processus, avec des "arbres de parenté"
 pstree            # Affiche un arbre de parenté entre les processus
 ```
 
-Exemple de `ps -ef --forest`
+Exemple de `ps fauxw`
 
 ```
   935   927  0 Sep25 ?      00:00:52  \_ urxvtd
@@ -84,9 +65,7 @@ Exemple de `ps -ef --forest`
 ```
 
 
-## 7. Processus
-
-### Lister les processus et leurs attributs (2/2)
+#### `top` et `htop`
 
 Et aussi :
 ```bash
@@ -97,7 +76,6 @@ top               # Liste les processus actif interactivement
 ```
 
 
-## 7. Processus
 
 ### Gérer les processus interactif
 
@@ -108,9 +86,6 @@ top               # Liste les processus actif interactivement
 fg                    # Repasser une commande en arrière-plan en avant-plan
 jobs                  # Lister les commandes en cours d'execution
 ```
-
-
-## 7. Processus
 
 ### Tuer des processus
 
@@ -130,13 +105,8 @@ pkill java
 pkill -9 java
 ```
 
-
-## 7. Processus
-
 ![](/img/linux/dontsigkill.png)
 
-
-## 7. Processus
 
 #### Un petit outil en passant
 
@@ -150,9 +120,6 @@ watch ls -l ~/Documents         # Surveiller le contenu de ~/Documents
 watch free -h                   # Surveiller l'utilisation de la RAM
 ```
 
-
-## 7. Processus
-
 ### `screen`
 
 `screen` permet de lancer une commande dans un terminal que l'on peut récupérer plus tard
@@ -163,32 +130,7 @@ watch free -h                   # Surveiller l'utilisation de la RAM
 4. La commande lancée continue à s'executer
 5. On peut revenir dans la session plus tard avec `screen -r`
 
-
-
-## 7. Processus
-
-### Processus et permissions (1/3)
-
-- Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
-- Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
-
-
-## 7. Processus
-
-### Processus et permissions (2/3)
-
-- Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
-- Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
-
-#### Problème
-
-- Lorsqu'un user veut changer son mot de passe, il faut modifier `/etc/shadow` ... que seul `root` peut lire et écrire !
-- Pourtant ... le programme `/usr/bin/passwd` permet effectivement de changer son mot de passe !
-
-
-## 7. Processus
-
-### Processus et permissions (3/3)
+### Processus et permissions
 
 - Un processus est rattaché à l'identité de l'utilisateur qui l'a lancé
 - Il est donc soumis aux permissions que cet utilisateur possède, par exemple pour lire ou écrire un fichier..
@@ -205,10 +147,7 @@ watch free -h                   # Surveiller l'utilisation de la RAM
 
 Le `s` correspond à [une permission spéciale : le SUID bit](https://fr.wikipedia.org/wiki/Permissions_UNIX#Droits_%C3%A9tendus), qui fait en sorte que lorsque le programme est lancé par n'importe quel user, il s'éxécute quand même en tant que `root` !
 
-
-## 7. Processus
-
-### Priorité des processus (1/2)
+### Priorité des processus
 
 - Il est possible de régler la priorité d'execution d'un processus
 - "Gentillesse" (*niceness*) entre -20 et 19
@@ -217,10 +156,6 @@ Le `s` correspond à [une permission spéciale : le SUID bit](https://fr.wikiped
 - Seul les process du kernel peuvent être "méchant"
     - niceness négative, et donc les + prioritaires
 
-
-## 7. Processus
-
-### Priorité des processus (2/2)
 
 ```bash
 nice -n <niceness> <commande> # Lancer une commande avec une certaine priorité
