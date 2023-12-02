@@ -149,15 +149,61 @@ kubectl get pod demonstration-7645747fc6-f5z55 -o jsonpath='{.spec.containers[0]
 
 Essayez de la même façon d'afficher le nombre de répliques de notre déploiement.
 
-### Des outils CLI supplémentaires
+### Des outils CLI supplémentaires pour le confort
+
+- `helm` package/template manager pour Kubernetes => voir Cours et TP
+- `tanka` langage alternatif de déploiement (bonus)
 
 `kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
 
-- pour visualiser en temps réel les resources du cluster et leur évolution on installera `watch` ou plus confortable `viddy`
+- `kubectx` qui viens avec `kubens` un outil pour switcher de cluster/contexte/namespace courant confortablement
+- `viddy` un watch amélioré pour visualiser en temps réel les resources du cluster et leur évolution
+- `skaffold` pour développer => voir tp "développer directement dans un cluster"
+- `stern` pour pouvoir afficher/tail les logs des pods correctement (notamment via un service)
+- `trivy` pour des analyses de sécurité des images et du cluster
 
-- pour ajouter des plugins à kubectl on peut utiliser `krew`: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
-- pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `kubectl krew install ctx`, `kubectl krew install ns`
-- pour visualiser les logs d'un déploiement/service on peut utiliser `stern`: `kubectl krew install stern`
+Pour installer tous ces outils il y a de nombreuses méthodes (snap/krew/installation manuelle github etc). Une façon uniforme pour avoir des version récentes et multiples sur n'importe quel OS (linux, macOS et windows avec le WSL) est le gestionnaire de dépendance de dev `asdf-vm`.
+
+<details>
+
+<summary>On peut installer tout cela avec le code suivant sous linux (via git et bash): </summary>
+
+
+```bash
+
+## Install asdf dev tools manager
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
+echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+. "$HOME/.asdf/asdf.sh"
+
+## Install kubernetes tools via asdf
+asdf plugin add kubectx
+asdf plugin add stern
+asdf plugin add viddy
+asdf plugin add trivy
+asdf plugin add skaffold
+asdf plugin add tanka
+
+asdf install kubectx latest
+asdf install stern latest
+asdf install viddy latest
+asdf install trivy latest
+asdf install skaffold latest
+asdf install tanka latest
+
+cat << EOF >> ~/.bashrc
+asdf shell kubectx latest
+asdf shell stern latest
+asdf shell viddy latest
+asdf shell trivy latest
+asdf shell skaffold latest
+asdf shell tanka latest
+EOF
+
+```
+
+</details>
+
 
 ## Au délà de la ligne de commande...
 
