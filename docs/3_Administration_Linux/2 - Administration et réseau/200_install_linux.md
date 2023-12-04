@@ -63,7 +63,7 @@ Il fonctionne en client/serveur
 Qui s'occupe de toute la gestion des fenêtres (bordures, décoration, redimensionnement, minimisation, vignette, ...)
 
 
-![](/img/linux/admin/Xorg.png)
+![](/img/linux/admin/x-org.png)
 
 ### Procédure d'installation générale
 
