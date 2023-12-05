@@ -2,15 +2,11 @@
 title: Cours - Déployer une app PHP MYSQL et le déboguage
 ---
 
+<!-- ![](/img/linux/admin/previously.jpg)
 
-![](/img/linux/admin/previously.jpg)
+![](/img/linux/admin/sudoreported.png) -->
 
-
-![](/img/linux/admin/sudoreported.png)
-
-
-
-# Recap'
+## Recap'
 
 - Installer une distribution
 - Le gestionnaire de paquet
@@ -20,8 +16,6 @@ title: Cours - Déployer une app PHP MYSQL et le déboguage
 - Gérer des services
 - Notions de sécurité
 - Installer un serveur web
-
-# Recap'
 
 ### (tentative de représentation)
 
@@ -154,10 +148,8 @@ Une pile logicielle historique et classique pour construire et déployer une app
 - Tester et valider
 
 
-# 8.5. Investiguer et réparer des problèmes
+# Investiguer et réparer des problèmes
 
-
-# 8.5. Investiguer et réparer des problèmes
 
 ## Méthode générale
 
@@ -170,8 +162,6 @@ Une pile logicielle historique et classique pour construire et déployer une app
   - avec des mots clefs approprié
 
 
-# 8.5. Investiguer et réparer des problèmes
-
 ## Méthode générale
 
 Malheureusement ...
@@ -179,8 +169,6 @@ Malheureusement ...
 - Logs pas forcément trouvable (ou alors messages abscons)
 - Demande un peu d'expérience pour savoir quoi / où chercher ...
 
-
-# 8.5. Investiguer et réparer des problèmes
 
 ## Sources d'information
 

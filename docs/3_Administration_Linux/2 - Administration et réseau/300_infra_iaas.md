@@ -1,10 +1,6 @@
-
 ---
-title: Cours - Histoire de Linux et des systèmes d'exploitation
+title: Cours - Introduction à l'ingénierie d'infrastructure
 ---
-
-# Ingénierie d'infrastructure
-
 
 ## Problématiques qui émergent lorsque l'infrastructure ou le nombre d'user grandi
 

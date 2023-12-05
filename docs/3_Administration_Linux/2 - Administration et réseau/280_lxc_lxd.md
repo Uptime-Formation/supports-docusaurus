@@ -1,7 +1,7 @@
+---
+title: Cours - Les conteneurs Linux (LXD/LXC)
+---
 
----
-title: Cours - Histoire de Linux et des systèmes d'exploitation
----
 ## Jusqu'ici : machines virtuelle
 
 - Une machine entière simulée dans une autre machine

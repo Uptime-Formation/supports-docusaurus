@@ -1,7 +1,7 @@
+---
+title: Cours - Découverte de Yunohost
+---
 
----
-title: Cours - Histoire de Linux et des systèmes d'exploitation
----
 ## Applications
 
 ![](/img/linux/admin/apps.png)
