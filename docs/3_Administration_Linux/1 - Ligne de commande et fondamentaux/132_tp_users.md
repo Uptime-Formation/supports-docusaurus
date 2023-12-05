@@ -3,8 +3,8 @@ title: TP - Users et groupes
 ---
 
 
-- **5.1** - Ouvrir un premier terminal en tant que qu'utilisateur (`<votreprenom>`, `<stagiaireN>`, `padawan`)
-- **5.2** - Ouvrir un deuxième terminal. Dedans, ouvrir un sous-shell en `root` à l'aide des commandes `sudo` et/ou `su`.
+- **5.1** - Ouvrir un premier terminal en tant que votre utilisateur (`<votreprenom>`, `<stagiaireN>`, `padawan` selon les cas)
+- **5.2** - Ouvrir un deuxième terminal et dedans, ouvrir un sous-shell en `root` à l'aide des commandes `sudo` et/ou `su`.
 - **5.3** - Dans votre deuxième terminal (en `root`)
     - créez un utilisateur `r2d2` avec `useradd` plutôt que `adduser`
     - définissez un mot de passe pour l'utilisateur `r2d2` à l'aide de la commande `passwd`
@@ -19,4 +19,4 @@ title: TP - Users et groupes
     - en lisant les commentaires du fichier, chercher comment faire pour donner le droit à `r2d2` d'utiliser `sudo`
     - (après avoir fait la manip, n'oubliez pas de relancer le terminal/shell dans lequel vous êtes pour propager le changement!)
     - depuis un shell en tant que `r2d2`, validez que vous êtes en mesure de faire des commandes avec `sudo` (Par exemple: `sudo ls -la /root/`).
-- 5.6 - Constatez que les commandes executées avec `sudo` sont logguées dans le ficher `/var/log/auth.log` (on pourra utiliser `tail` pour afficher seulement les dernières lignes du fichier)
+- **5.6** - Constatez que les commandes executées avec `sudo` sont logguées dans le ficher `/var/log/auth.log` (on pourra utiliser `tail` pour afficher seulement les dernières lignes du fichier)
