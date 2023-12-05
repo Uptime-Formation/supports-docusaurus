@@ -10,7 +10,7 @@ sidebar_class_name: hidden
 ### 5. Utilisateurs et groupes
 
 - **5.3** - Dans votre deuxième terminal (en `root`)
-    - créez un utilisateur `r2d2` avec `useradd` plutôt que `adduser` : `adduser r2d2` suffit ici puisqu'on va le configurer après.
+    - créez un utilisateur `r2d2` avec `useradd` plutôt que `adduser` : `useradd r2d2` suffit ici puisqu'on va le configurer après.
     - définissez un mot de passe pour l'utilisateur `r2d2` à l'aide de la commande `passwd`: `passwd r2d2`
     - créez un groupe `droid`: `groupadd droid` 
     - ajoutez `r2d2` au groupe `droid`: `usermod -aG droid r2d2`
@@ -23,9 +23,11 @@ sidebar_class_name: hidden
     - en lisant les commentaires du fichier, chercher comment faire pour donner le droit à `r2d2` d'utiliser `sudo`
     - (après avoir fait la manip, n'oubliez pas de relancer le terminal/shell dans lequel vous êtes pour propager le changement!)
     - depuis un shell en tant que `r2d2`, validez que vous êtes en mesure de faire des commandes avec `sudo` (Par exemple: `sudo ls -la /root/`).
-- 5.6 - Constatez que les commandes executées avec `sudo` sont logguées dans le ficher `/var/log/auth.log` (on pourra utiliser `tail` pour afficher seulement les dernières lignes du fichier) : `sudo tail -f /var/log/auth.log` puis dans un autre terminal lancer un commande avec `sudo`
+- **5.6** - Constatez que les commandes executées avec `sudo` sont logguées dans le ficher `/var/log/auth.log` (on pourra utiliser `tail` pour afficher seulement les dernières lignes du fichier) : `sudo tail -f /var/log/auth.log` puis dans un autre terminal lancer un commande avec `sudo`
 
 ### 6. Permissions
+
+Votre nom d'utilisateur sera remplacé par `padawan` dans la suite
 
 - 6.1 : Faire `touch xwing.conf` puis `ls -l xwing.conf` pour analyser les proprietaires et permissions actuelles. Changer le proprietaire/groupe si necessaire avec `chown padawan:padawan xwing.conf`. Reverifier les modifications avec `ls -l xwing.conf`. Faire `chmod o-r xwing.conf` di nécessaire.
 - 6.2 : `touch private`, puis `chmod ugo-rwx private` par exemple (on peut aussi le faire en plusieurs étapes)
