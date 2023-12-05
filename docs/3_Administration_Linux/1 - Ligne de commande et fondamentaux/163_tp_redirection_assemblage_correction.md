@@ -4,10 +4,10 @@ sidebar_class_name: hidden
 ---
 
 
-- 9.1 : `echo "hello" > hello.txt`, puis faire `cat hello.txt` pour confirmer le résultat attendu
-- 9.2 : `echo "world" >> hello.txt`, puis faire `cat hello.txt` pour confirmer le résultat attendu
+- 9.1 : `echo "Hello" > hello.txt`, puis faire `cat hello.txt` pour confirmer le résultat attendu
+- 9.2 : `echo "World!" >> hello.txt`, puis faire `cat hello.txt` pour confirmer le résultat attendu
 - 9.3 : `ls /usr/bin/ > files.tmplist` puis `less files.tmplist`
-- 9.4 : `bash fibonnaci_forever.sh > suite_de_fibonnaci`, puis `Ctrl+C` après quelques secondes, puis `cat suite_de_fibonnaci` pour confirmer le résultat attendu
+- 9.4 : `bash fibonacci_forever.sh > suite_de_fibonacci`, puis `Ctrl+C` après quelques secondes, puis `cat suite_de_fibonacci` pour confirmer le résultat attendu
 - 9.4 : écrire `2+2`, `6\*7`, `10/3` (sur plusieurs lignes) dans un fichier `calcul`, puis faire `bc < calcul`
 - 9.5 : `bc <<< "6*7"`
 - 9.6 : `mkdir -p ~/formation_linux/calculs; echo '6*7' > ~/formation_linux/calculs/formule; bc < ~/formation_linux/calculs/formule > ~/formation_linux/calculs/reponse`

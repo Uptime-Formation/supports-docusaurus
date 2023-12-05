@@ -69,10 +69,6 @@ Fichiers speciaux :
 ![](/img/linux/bottomlesspit.png)
 
 
-Fichiers speciaux :
-- `/dev/null` : puit sans fond (trou noir)
-- `/dev/urandom` : generateur aleatoire (trou blanc)
-
 ```bash
 ls /* 2> /dev/null           # Ignore stderr
 mv ./todo.txt /dev/null      # Façon originale de supprimer un fichier !
@@ -231,7 +227,7 @@ plus sur awk : https://www.funix.org/fr/unix/awk.htm
 ```bash
 ps -ef | sort         # Trie les processus par proprietaire (1ere col)
 ps -ef | sort -k2 -n  # Trie les processus par PID (2eme col., chiffres)
-viddy 'ps'
+viddy 'ps -ef | sort -k2 -n'
 ```
 
 
@@ -261,6 +257,8 @@ ls -l | sed 's/alex/padawan/g' # Remplace toutes les occurences de alex par pada
 
 `find` permet de trouver (recursivement) des fichiers répondant à des critères sur le nom, la date de modif, la taille, ...
 
+Il permet aussi d'exécuter automatiquement une commande pour chaque fichier trouvé.
+
 Exemples:
 ```bash
 ## Lister tous les fichiers en .service dans /etc
@@ -268,7 +266,12 @@ find /etc -name "*.service"
 
 ## Lister tous les fichiers dans /var/log modifiés il y a moins de 5 minutes
 find /var/log -mmin 5
+
+## Cherche les 3 fichier .wav de r2d2 et affiche des information sur leur type
+find /home/r2d2 -iname "*.wav" -exec file {} \;
 ```
+
+Plus sur find en combinaison avec `awk` : https://www.baeldung.com/linux/find-exec-command
 
 ### Recap (QUELQUES outils)
 

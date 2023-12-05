@@ -47,12 +47,12 @@ Votre nom d'utilisateur sera remplacé par `padawan` dans la suite
 ### 7. Processus
 
 - 7.1 - Il faut lancer `ps -ef --forest` et lire attentivement la sortie pour trouver `cinnamon-session`/`xfce4-session` et un processus nommé `bash` (et/ou `gnome-terminal-server` qui devrait être le parent des processus `bash`). Trouver le processus qui consomme le plus de CPU et de RAM se fait avec `top` (utiliser `shift+M` pour trier par utilisation de la RAM). Dans `ps -ef --forest`, il est possible aussi de trouver des processus qui tourne en tant que des utilisateurs système, tel que `systemd-*`.
-- 7.2 - En utilisant l'url du programme, faire `wget https://url/du/programme` pour le récupérer dans votre machine. Puis lancer `bash fibonnaci_forever.sh`.
-- 7.3 - En ayant `bash fibonnaci_forever.sh` qui tourne, faire `Ctrl+Z` puis `bg` pour mettre le programme en arrière plan. Confirmer avec `jobs` qu'il tourne bien en arrière plan. Notez que la sortie de la commande continue de s'afficher dans le terminal (bien que le programme n'a pas la main dessus)
+- 7.2 - En utilisant l'url du programme, faire `wget https://url/du/programme` pour le récupérer dans votre machine. Puis lancer `bash fibonacci_forever.sh`.
+- 7.3 - En ayant `bash fibonacci_forever.sh` qui tourne, faire `Ctrl+Z` puis `bg` pour mettre le programme en arrière plan. Confirmer avec `jobs` qu'il tourne bien en arrière plan. Notez que la sortie de la commande continue de s'afficher dans le terminal (bien que le programme n'a pas la main dessus)
 - 7.4 - Après avoir trouvé le PID avec `ps -ef --forest`, faire `kill PID`.
-- 7.5 - `bash fibonnaci_forever.sh &` (notez le `&` à la fin de la commande)
-- 7.6 - Si l'on tue le shell (c'est-à-dire le processus `bash` qui a lancé la commande `bash fibonnaci_forever.sh`), alors cela tue complètement la fenêtre de terminal plutôt que juste l'execution de `fibonnaci_forever.sh`.
-- 7.7 - Lancez `screen` et dedans, `bash fibonnaci_forever.sh`. Faites `Ctrl+A` puis `D` pour détacher la session. Eventuellement `screen -list` pour lister les sessions screen. Depuis un autre terminal, faites `screen -r` et constatez que vous récupérez bien le shell ou vous aviez lancé `fibonnaci_forever.sh`.
+- 7.5 - `bash fibonacci_forever.sh &` (notez le `&` à la fin de la commande)
+- 7.6 - Si l'on tue le shell (c'est-à-dire le processus `bash` qui a lancé la commande `bash fibonacci_forever.sh`), alors cela tue complètement la fenêtre de terminal plutôt que juste l'execution de `fibonacci_forever.sh`.
+- 7.7 - Lancez `screen` et dedans, `bash fibonacci_forever.sh`. Faites `Ctrl+A` puis `D` pour détacher la session. Eventuellement `screen -list` pour lister les sessions screen. Depuis un autre terminal, faites `screen -r` et constatez que vous récupérez bien le shell ou vous aviez lancé `fibonacci_forever.sh`.
 - 7.8 - Après avoir trouvé le PID avec `ps -ef --forest`, faire `kill PID`.
 
 ### 8. Personnaliser son environnement
@@ -88,7 +88,7 @@ PS1="[\033[01;31m\u on \h\033[0m:\033[01;34m\w\033[0m] \n> "
 - 9.1 : `echo "hello" > hello.txt`, puis faire `cat hello.txt` pour confirmer le résultat attendu
 - 9.2 : `echo "world" >> hello.txt`, puis faire `cat hello.txt` pour confirmer le résultat attendu
 - 9.3 : `ls /usr/bin/ > files.tmplist` puis `less files.tmplist`
-- 9.4 : `bash fibonnaci_forever.sh > suite_de_fibonnaci`, puis `Ctrl+C` après quelques secondes, puis `cat suite_de_fibonnaci` pour confirmer le résultat attendu
+- 9.4 : `bash fibonacci_forever.sh > suite_de_fibonacci`, puis `Ctrl+C` après quelques secondes, puis `cat suite_de_fibonacci` pour confirmer le résultat attendu
 - 9.4 : écrire `2+2`, `6\*7`, `10/3` (sur plusieurs lignes) dans un fichier `calcul`, puis faire `bc < calcul`
 - 9.5 : `bc <<< "6*7"`
 - 9.6 : `mkdir -p ~/formation_linux/calculs; echo '6*7' > ~/formation_linux/calculs/formule; bc < ~/formation_linux/calculs/formule > ~/formation_linux/calculs/reponse`
@@ -136,7 +136,7 @@ alias esquecestleweekend='date | grep "^Sat \|^Sun " >/dev/null && echo "Cest le
 - 10.12 : Il s'agit d'un exercice un peu avancé avec plusieurs solutions possibles (qui ne sont pas trop robuste, mais peuvent dépanner). En voici une qui envoie les adresses des images dans un fichier `img.list` :
 
 ```bash
-curl yoloswag.team           \
+curl www.wikimedia.org           \
  | grep "img src"            \
  | sed 's/img src/\n[img]/g' \
  | grep "\[img\]"            \

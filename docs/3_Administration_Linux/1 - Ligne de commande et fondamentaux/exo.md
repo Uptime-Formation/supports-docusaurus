@@ -156,12 +156,12 @@ Vérifiez que le contenu a bien été pris en compte en l'affichant avec `cat`.
     - identifiez le processus qui consomme actuellement le plus de CPU
     - identifiez le processus qui consomme actuellement le plus de RAM
     - trouvez un processus qui ne tourne ni en tant que `root`, ni en tant que `padawan`
-- **7.2** - Récupérez le programme `fibonnaci_forever.sh` auprès du formateur, puis lancez `bash fibonnaci_forever.sh` dans un terminal.
+- **7.2** - Récupérez le programme `fibonacci_forever.sh` auprès du formateur, puis lancez `bash fibonacci_forever.sh` dans un terminal.
 - **7.3** - Mettez ce processus en arrière-plan. Vérifiez avc `jobs` qu'il continue de s'executer.
 - **7.4** - Depuis un autre shell, identifiez le PID de ce processus à l'aide de `ps -ef --forest`, et servez-vous de ce PID pour tuer le processus.
 - **7.5** - Relancez le processus directement en arrière plan cette fois (avec `&`)
 - **7.6** - Identifiez cette fois le shell qui a lancé ce processus. Qu'arrives-t-il si vous tuez ?
-- **7.7** - Lancez une session `screen`, puis dedans, lancer de nouveau le programme `fibonnaci_forever.sh`. Détachez la session, puis ré-attachez-là dans un autre terminal.
+- **7.7** - Lancez une session `screen`, puis dedans, lancer de nouveau le programme `fibonacci_forever.sh`. Détachez la session, puis ré-attachez-là dans un autre terminal.
 - **7.8** - Dans une autre console, identifiez via `ps` le PID de la session screen et tentez de tuer ce processus.
 - **7.9** - (Avancé) Identifiez le PID de votre shell, puis regardez la sortie de `ls -l /proc/<PID>/cwd` (en remplacant `<PID>` par le PID de votre shell). À quoi cela corresponds-t-il ?
 - 7.10 - (Avancé) Test de l'impact de la priorité des processus sur la rapidité d'execution
@@ -187,7 +187,7 @@ Vérifiez que le contenu a bien été pris en compte en l'affichant avec `cat`.
 - **9.1** - Créer un fichier `hello.txt` qui contient `"Hello!"`, à l'aide la commande `echo` et d'une redirection.
 - **9.2** - À l'aide d'une deuxième commande `echo` et d'une autre redirection, ajoutez **à la suite** (sur une nouvelle ligne) le mot `World!` dans `hello.txt`.
 - **9.3** - Stockez la sortie de `ls /usr/bin` dans un fichier, et observez ce fichier avec la commande `less`. Observez-vous une différence entre le format de ce fichier, et la sortie de `ls /usr/bin` lorsqu'elle est affichée directement dans le terminal ?
-- **9.4** - Lancez le script `bash fibonnaci_forever.sh` en redirigeant sa sortie vers un fichier. La commande tournera jusqu'à ce qu'elle soit interrompue : attendez donc quelques secondes puis appuyez sur Ctrl+C pour l'interrompre. Inspectez le contenu du fichier ensuite.
+- **9.4** - Lancez le script `bash fibonacci_forever.sh` en redirigeant sa sortie vers un fichier. La commande tournera jusqu'à ce qu'elle soit interrompue : attendez donc quelques secondes puis appuyez sur Ctrl+C pour l'interrompre. Inspectez le contenu du fichier ensuite.
 - **9.4** - `bc` est un utilitaire permettant de faire de petit calculs. Testez `bc` en mode interactif pour faire quelques additions (Ctrl+D pour quitter). Mettez maintenant une suite de calcul dans un fichier (par exemple, `2+2`, `6*7`, `10/3`), que vous injecterez directement dans `bc`.
 - **9.5** - Même question que précedemment, mais en injectant directement une chaine contenant un calcul dans `bc` (sans passer par un fichier).
 - **9.6** - Écrivez **une seule ligne de commande** (qui comportera plusieurs sous-commandes séparées par `;`, mais sans utiliser `cd` !) qui :
@@ -217,4 +217,4 @@ Vérifiez que le contenu a bien été pris en compte en l'affichant avec `cat`.
 - **10.9** - À l'aide des pages de man de `grep`, trouvez un moyen de lister toutes les occurences du mot `daemon` dans tous les fichiers à l'intérieur de `/etc/` (recursivement)
 - **10.10** - À l'aide de `ps`, `sort` et `uniq` générer un bilan du nombre de processus actuellement en cours par utilisateur
 - **10.11** - À l'aide de `sort` et `uniq`, analysez le fichier `loginattempts.log` (demander au formateur comment l'obtenir), et produisez un résumé du nombre de tentative de connections par ip
-- 10.12 - (Avancé) Construisez une ligne de commande qui récupère les adresses des images présentes dans le code du site `yoloswag.team`. Vous aurez possiblement besoin de `curl`, `grep`, `tr`, `awk` et `sed`.
+- 10.12 - (Avancé) Construisez une ligne de commande qui récupère les adresses des images présentes dans le code du site `www.wikimedia.org`. Vous aurez possiblement besoin de `curl`, `grep`, `tr`, `awk` et `sed`.

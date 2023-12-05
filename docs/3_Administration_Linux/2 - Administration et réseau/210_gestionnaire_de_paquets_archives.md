@@ -36,6 +36,11 @@ Sous Windows historiquement
 - système de mise à jour spécifique
 - nécessité d'installer manuellement des dépendances
 
+Maintenant:
+- le Microsoft store (hum supermarché désagréable selon moi)
+- Toujours la méthode manuelle si on aime pas le store officiel
+- ou Chocolatey (gestionnaire de paquet inspiré de linux sur Windows)
+
 <!-- ## 2. Le gestionnaire de paquet
 
 *One package to rule them all*
@@ -89,6 +94,8 @@ Un programme, et des fichiers (dossier `debian/`) qui décrivent le paquet :
 - `rules` : des trucs techniques pour compiler le paquet
 - `postinst`, `prerm`, ... : des scripts lancés quand le paquet est installé, désinstallé, ...
 
+- https://www.baeldung.com/linux/package-deb-change-repack
+
 ### Mettre à jour les paquets
 
 - `apt update`
@@ -107,6 +114,7 @@ N.B. : pour les moldus dans la vraie vie, il y a des interfaces graphiques pour 
 Les dépots de paquets sont configurés via `/etc/apt/sources.list` et les fichiers du dossier `/etc/apt/sources.list.d/`.
 
 Exemple :
+
 ```
 deb http://ftp.debian.fr/debian/ stretch main contrib
 ```
@@ -146,15 +154,20 @@ Basé sur les personnages de Toy Story
 
 ![](/img/linux/admin/debianpackagesite.png)
 
-### Sous Debian - Les backports
+### Les backports
 
 - Un intermédiaire entre stabilité et nouveauté
-- Fournissent des paquets venant de `testing` en `stable`
-- À utiliser avec prudence
+- Fournissent des paquets venant de `testing` en `stable` (sous debian) de `latest` vers `LTS` (sous ubuntu)
+- À utiliser avec prudence (plus de risque de bug du a des incompatibilité de librairies ou autre)
 
 ### Comparaison avec Ubuntu server
 
 https://phoenixnap.com/blog/debian-vs-ubuntu-server
+
+
+### Comparaison APT avec le nouveau système de fichier SNAP de Canonical (Ubuntu)
+
+https://www.baeldung.com/linux/snap-vs-apt-package-management-system
 
 ### Comparaison avec RedHat (RHEL) / AlmaLinux
 
@@ -169,7 +182,12 @@ https://www.tecmint.com/redhat-vs-debian/
 ### Et les autres distributions ?
 
 - Redhat/Centos/AlmaLinux : `yum install <pkg>`, `yum search <keyword>`, `yum makecache`, `yum update`, ... et maintenant `dnf install` nouvelle version de YUM
+
+=> Très testé aussi (comme Debian)
+
 - Archlinux : `pacman -S <pkg>`, `-Ss <keyword>`, `-Syu`, ...
+
+=> Très récent = moins testé et aussi plus vanilla (moins customizé)
 
 ## Gérer des archives
 

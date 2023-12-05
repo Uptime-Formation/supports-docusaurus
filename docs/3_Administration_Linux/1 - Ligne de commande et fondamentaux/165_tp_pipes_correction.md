@@ -29,7 +29,7 @@ alias esquecestleweekend='date | grep "^Sat \|^Sun " >/dev/null && echo "Cest le
 - 10.12 : Il s'agit d'un exercice un peu avancé avec plusieurs solutions possibles (qui ne sont pas trop robuste, mais peuvent dépanner). En voici une qui envoie les adresses des images dans un fichier `img.list` :
 
 ```bash
-curl yoloswag.team           \
+curl www.wikimedia.org           \
  | grep "img src"            \
  | sed 's/img src/\n[img]/g' \
  | grep "\[img\]"            \

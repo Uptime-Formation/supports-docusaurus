@@ -7,7 +7,6 @@ title: Cours - Services et sécurité basique d'un serveur
 - Parler de la gestion des services
 - Tout en appliquant ça à certaines pratiques "de base" de sécurité d'un serveur
 
-
 ### `sshd`
 
 - Un service ou "daemon" qui écoute sur le port 22
@@ -125,9 +124,10 @@ Config:
   - Archlinux l'utilise pour pas mal de chose
   - Fedora (et aussi Red Hat) utilise tout ou largement systemd
 
-Quelques liens:
+Quelques liens (en anglais):
 
 - https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
+- https://opensource.com/article/20/5/systemd-startup
 
 ### Investiguer des logs via systemd
 

@@ -161,12 +161,18 @@ https://doc.ubuntu-fr.org/tutoriel/grub2_parametrage_manuel
 
 ### Résumé du boot complet (du Bios à l'interface de login)
 
+Historiquement:
 ![](/img/linux/admin/boot.png)
+
+Plus actuel avec Systemd:
+![](/img/linux/admin/Linux-boot-process.png)
+
+Plus sur le démarrage SystemD avec les targets : https://opensource.com/article/20/5/systemd-startup
 
 ### Log du boot
 
 - Les logs du boot du kernel (contient aussi par ex. le log de la détection de dispositif USB branchés après le boot, etc...)
-peuvent être trouvés dans `/var/log/dmesg`
+peuvent être trouvés dans `/var/log/dmesg` ou `journalctl -b`
 
 <!-- ### Init levels / Run levels
 
@@ -218,6 +224,8 @@ Device       Start      End  Sectors  Size Type
 /dev/sda2  2099200 62524946 60425747 28.8G Linux filesystem
 ```
 
+Plus sur `fdisk`: https://www.malekal.com/fdisk-gfdisk-creer-supprimer-redimensionner-des-partitions-de-disque-en-ligne-de-commandes-linux/
+
 ### Les points de montage
 
 Une partition ou n'importe quel "bidule de stockage" peut être "monté" dans le système de fichier
@@ -256,7 +264,7 @@ $ umount /media/usbkey
 UUID=[id tres long] /            ext4    default         0       1
 UUID=[id tres long] /home/       ext4    defaults        0       2
 ```
-
+Les points de mon
 (historiquement, la premiere colomne contenait `/dev/sdxY`, mais les UUID sont plus robustes)
 
 
@@ -300,6 +308,6 @@ sda             8:0    0 29.8G  0 disk
 
 ### Autres configurations du système (avec systemd)
 
-- `hostnamectl` 
-- `timedatectl`
-- `localectl`
+- `hostnamectl` : 
+- `timedatectl` : https://wiki.archlinux.org/title/System_time_(Fran%C3%A7ais)#Fuseau_horaire*
+- `localectl` : 

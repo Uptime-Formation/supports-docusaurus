@@ -15,4 +15,4 @@ title: TP - Pipes et boîte à outils
 - **10.9** - À l'aide des pages de man de `grep`, trouvez un moyen de lister toutes les occurences du mot `daemon` dans tous les fichiers à l'intérieur de `/etc/` (recursivement)
 - **10.10** - À l'aide de `ps`, `sort` et `uniq` générer un bilan du nombre de processus actuellement en cours par utilisateur
 - **10.11** - À l'aide de `sort` et `uniq`, analysez le fichier `loginattempts.log` (demander au formateur comment l'obtenir), et produisez un résumé du nombre de tentative de connections par ip
-- 10.12 - (Avancé) Construisez une ligne de commande qui récupère les adresses des images présentes dans le code du site `yoloswag.team`. Vous aurez possiblement besoin de `curl`, `grep`, `tr`, `awk` et `sed`.
+- 10.12 - (Avancé) Construisez une ligne de commande qui récupère les adresses des images présentes dans le code du site `www.wikimedia.org`. Vous aurez possiblement besoin de `curl`, `grep`, `tr`, `awk` et `sed`.

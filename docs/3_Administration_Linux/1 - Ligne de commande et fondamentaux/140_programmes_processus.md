@@ -154,6 +154,8 @@ watch free -h                   # Surveiller l'utilisation de la RAM
 
 Le `s` correspond à [une permission spéciale : le SUID bit](https://fr.wikipedia.org/wiki/Permissions_UNIX#Droits_%C3%A9tendus), qui fait en sorte que lorsque le programme est lancé par n'importe quel user, il s'éxécute quand même en tant que `root` !
 
+- https://linuxhandbook.com/suid-sgid-sticky-bit/
+
 ### Priorité des processus
 
 - Il est possible de régler la priorité d'execution d'un processus

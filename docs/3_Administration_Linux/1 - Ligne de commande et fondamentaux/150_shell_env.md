@@ -74,6 +74,8 @@ echo -e "\033[31;1;7;6mCeci est surligné rouge gras surligné clignotant\033[0m
 Couleurs : 30 à 38
 Effets : 0 à 7
 
+On parle d'ANSI color codes c'est affreux car c'est un vieux truc historique des terminaux: https://en.wikipedia.org/wiki/ANSI_escape_code
+
 ### PS1 en couleur ...
 
 ```
