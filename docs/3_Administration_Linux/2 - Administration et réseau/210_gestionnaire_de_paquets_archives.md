@@ -47,7 +47,7 @@ Sous Windows historiquement
 *and on the system bind them* -->
 
 
-### Sous Debian
+### Sous Debian / Ubuntu et le reste de la famille
 
 `apt` : couche "haut niveau"
 - dépot,
@@ -131,13 +131,11 @@ Les versions tournent tous les ~2 ans environ
 
 Basé sur les personnages de Toy Story
 
-- 7, `wheezy` (oldoldoldstable)
-- 8, `jessie` (oldoldstable)
-- 9, `stretch` (oldstable, depuis juillet 2019)
-- 10, `buster` **(stable, depuis juillet 2019)**
-- 11, `bullseye` (testing, deviendra stable fin juillet 2021)
-- 12, `bookworm` (future testing, stable en été 2023 ?)
-
+- 9, `stretch` (oldoldoldstable)
+- 10, `buster` (oldoldstable)
+- 11, `bullseye` (oldstable)
+- 12, `bookworm` **(stable depuis juin 2023)**
+- 13, `trixie` (testing, "nextstable")
 
 ![](/img/linux/admin/debiantimeline.png)
 
@@ -148,11 +146,21 @@ Basé sur les personnages de Toy Story
 
 ![](/img/linux/admin/debianpackagesite.png)
 
-### Les backports
+### Sous Debian - Les backports
 
 - Un intermédiaire entre stabilité et nouveauté
 - Fournissent des paquets venant de `testing` en `stable`
 - À utiliser avec prudence
+
+### Comparaison avec Ubuntu server
+
+https://phoenixnap.com/blog/debian-vs-ubuntu-server
+
+### Comparaison avec RedHat (RHEL) / AlmaLinux
+
+AlmaLinux (ou Rocky) remplace CentOS depuis que RedHat l'a torpillé : il s'agit d'une copie plus libre de RHEL globalement identique (les même paquets et configuration sont utilisés)
+
+https://www.tecmint.com/redhat-vs-debian/
 
 ### En pratique ...
 
@@ -160,7 +168,7 @@ Basé sur les personnages de Toy Story
 
 ### Et les autres distributions ?
 
-- Redhat/Centos : `yum install <pkg>`, `yum search <keyword>`, `yum makecache`, `yum update`, ...
+- Redhat/Centos/AlmaLinux : `yum install <pkg>`, `yum search <keyword>`, `yum makecache`, `yum update`, ... et maintenant `dnf install` nouvelle version de YUM
 - Archlinux : `pacman -S <pkg>`, `-Ss <keyword>`, `-Syu`, ...
 
 ## Gérer des archives
@@ -196,6 +204,5 @@ tar -cvzf monarchive.tar.gz file1 file2 folder2/ folder2/
 ## Désassembler une archive
 tar -xvzf monarchive.tar.gz
 ```
-
 
 ![](/img/linux/admin/xkcd_tar.png)

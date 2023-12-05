@@ -47,7 +47,7 @@ Vérifiez que le contenu a bien été pris en compte en l'affichant avec `cat`.
     - `~/`
 - **4.5** - Créez un fichier `dracaufeu.jpg` dans `~/Documents/formation_linux` ... Vous réalisez ensuite que vous auriez voulu mettre ce fichier dans `~/Documents/mon_pokedex/assets/img` ! Utilisez alors la commande `mv` pour déplacer le fichier vers le bon dossier.
 - **4.6** - Renommez le dossier `mon_pokedex/` en `ma_collection_de_pokemons/`
-- **4.7** - Supprimez le fichier `carapuce.jpg` dans `~/Documents/mon_pokedex/assets/img` **en restant là où vous êtes actuellement, i.e. sans utiliser `cd`**
+- **4.7** - Supprimez le fichier `carapuce.jpg` dans `~/Documents/ma_collection_de_pokemons/assets/img` **en restant là où vous êtes actuellement, i.e. sans utiliser `cd`**
 - **4.8** - Créez un dossier `~/sauvegardes` et dedans, créer un dossier `collection_bkp` qui sera une copie récursive de `~/Documents/ma_collection_de_pokemons`
 - **4.9** - Supprimez tout le dossier `~/sauvegardes` récursivement
 

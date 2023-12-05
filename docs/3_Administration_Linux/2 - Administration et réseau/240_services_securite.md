@@ -103,7 +103,6 @@ Config:
 
 `systemctl` est un outil pour lancer le service / daemon, en tant que fils de `init`
 
-
 #### Qu'est-ce que c'est systemd
 
 - Une suite d'outils pour manipuler pleins d'aspects du système
@@ -114,6 +113,21 @@ Config:
     - `systemd-resolve` (un service qui gère la résolution DNS)
     - les points de montage
     - les tâches programmées (cron -> timer)
+
+### Systemd - plus en profondeur
+
+- Systemd est une sorte de framework pour assembler la base d'un système Linux
+- Il au coeur des Linux modernes malgré une certaine impopularité. Approfondir systemd est certainement un bonne chose.
+- Systemd est plein de fonctionnalités détaillées pour répondre à différents usecases et c'est un sujet vaste.
+- Il est modulaire et remplace certaines partie usages linux traditionnels.
+- Certaines distributions implémente seulement certaines parties de systemd
+  - Debian ne l'utilise pas beaucoup
+  - Archlinux l'utilise pour pas mal de chose
+  - Fedora (et aussi Red Hat) utilise tout ou largement systemd
+
+Quelques liens:
+
+- https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
 
 ### Investiguer des logs via systemd
 

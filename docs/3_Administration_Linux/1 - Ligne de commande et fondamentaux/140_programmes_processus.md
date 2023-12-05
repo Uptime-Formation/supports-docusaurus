@@ -105,6 +105,7 @@ pkill java
 pkill -9 java
 ```
 
+![](/img/linux/dont-sigkill.jpeg)
 ![](/img/linux/dontsigkill.png)
 
 
@@ -129,6 +130,12 @@ watch free -h                   # Surveiller l'utilisation de la RAM
 3. On peut sortir de la session avec `<Ctrl>+A` puis `D`.
 4. La commande lancée continue à s'executer
 5. On peut revenir dans la session plus tard avec `screen -r`
+
+### `byobu` 
+
+`screen` en mieux => tmux préconfiguré
+
+- https://www.byobu.org/
 
 ### Processus et permissions
 
