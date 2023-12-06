@@ -2,7 +2,12 @@
 title: TP - Environnement du shell
 ---
 
-- 8.1 - Personnaliser l'apparence de votre invite de commande (syntaxe, couleurs) en modifiant la variable PS1 : par exemple, afficher le nom de la machine en jaune.
+- 8.1 - Personnaliser l'apparence de votre invite de commande (syntaxe, couleurs) en modifiant la variable PS1 : par exemple, afficher le nom de la machine en jaune. :
+
+```bash
+PS1="[\033[01;32m\u on \h\033[0m:\033[01;34m\w\033[0m] \n> "
+```
+
 - 8.2 - Ajouter la personnalisation du PS1 à votre `.bashrc` et propagez ces changements sur vos shells ouverts.
 - 8.3 - Ajouter aussi un message de bienvenue comme "May the force be with you!" qui s'affichera à chaque ouverture d'un shell (rappel : `echo` peut être utilisé pour afficher un tel message).
 - 8.4 - Changer le `.bashrc` de root pour que son invite de commande soit en rouge !
