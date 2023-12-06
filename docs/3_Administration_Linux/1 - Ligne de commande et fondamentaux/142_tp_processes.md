@@ -34,7 +34,7 @@ fib 1000
 function fibonacci(){
         sleep 1
         echo $1 $2
-        fib $2 $(($1+$2))
+        fibonacci $2 $(($1+$2))
 }
 
 fibonacci 0 1
