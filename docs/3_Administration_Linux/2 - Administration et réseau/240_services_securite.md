@@ -113,15 +113,12 @@ Config:
     - les points de montage
     - les tâches programmées (cron -> timer)
 
-### Systemd - plus en profondeur
-
-- Systemd est une sorte de framework pour assembler la base d'un système Linux
-- Il au coeur des Linux modernes malgré une certaine impopularité. Approfondir systemd est certainement un bonne chose.
-- Systemd est plein de fonctionnalités détaillées pour répondre à différents usecases et c'est un sujet vaste.
+- Systemd est une sorte de "framework pour assembler la base d'un système Linux"
+- Il au coeur des Linux modernes malgré une certaine impopularité. Approfondir systemd est certainement important pour un admin.
+- Systemd est plein de fonctionnalités peu connues pour répondre à différents usecases et c'est un sujet vaste.
 - Il est modulaire et remplace certaines partie usages linux traditionnels.
 - Certaines distributions implémente seulement certaines parties de systemd
-  - Debian ne l'utilise pas beaucoup
-  - Archlinux l'utilise pour pas mal de chose
+  - Debian/ubuntu/ArchLinux ne l'utilise pas entièrement
   - Fedora (et aussi Red Hat) utilise tout ou largement systemd
 
 Quelques liens (en anglais):

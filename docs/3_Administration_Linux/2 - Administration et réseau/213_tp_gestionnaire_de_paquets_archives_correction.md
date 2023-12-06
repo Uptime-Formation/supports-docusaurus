@@ -10,7 +10,7 @@ sidebar_class_name: hidden
    - À l'aide de `apt list --upgradable`, identifiez si `firefox`, `libreoffice`, `linux-firmware` et `apt` peuvent être mis à jour - et identifiez l'ancienne version et la nouvelle version.
    - Lancez la mise à jour avec `apt full-upgrade`. Pendant le déroulement de la mise à jour, identifiez les trois parties clefs du déroulement : liste des tâches et validation par l'utilisateur, téléchargement des paquets, et installation/configuration.
 - 2.2 - Cherchez avec `apt search` si le programme `sl` est disponible. (Utiliser `grep` pour vous simplifiez la tâche). À quoi sert ce programme ? Quelles sont ses dépendances ? (Vous pourrez vous aider de `apt show`). Finalement, installez ce programme en prêtant attention aux autres paquets qui seront installés en même temps.
-- 2.3 - Même chose pour le programme `lolcat` mais en utilisant les options `-yq` (pratique pour les scripts) 
+- 2.3 - Même chose pour le programme `lolcat` mais en utilisant les options `-yq` pour l'install (pratique pour les scripts) 
 - 2.4 - Même chose pour le programme `nyancat` - mais cette fois, trouvez un moyen de télécharger le `.deb` directement depuis le site de debian qui référence les paquets, puis installez ce `.deb` avec `dpkg -i`. (Pour ce faire, taper par exemple `nyancat package debian` dans un moteur de recherche. Une fois arrivé sur la bonne page, vous trouverez une section 'Download' en bas. Parmis les architectures proposées, prendre `amd64`.)
 
 - 2.5 - Parfois, il est nécessaire d'ajouter un nouveau dépôt pour installer un programme (parce qu'il n'est pas disponible, ou bien parce qu'il n'est pas entièrement à jour dans la distribution utilisée). Ici, nous prendrons l'exemple de `mongodb` (un logiciel pour gérer des bases NoSQL) dont la version 7 n'est disponible que via un dépôt précis maintenu par les auteurs de mongodb.
@@ -54,7 +54,7 @@ sidebar_class_name: hidden
 
 - Utilisez `apt-rdepends` pour afficher la liste des dépendances de `libreoffice`.
 
-- Investiguez les options de `apt-rdepends` et du programme `dot` pour générer un rendu en PNG du graphe de dépendance de `firefox`.
+- Investiguez les options de `apt-rdepends` et du programme `graphviz`/`dot` pour générer un rendu en PNG du graphe de dépendance de `firefox`.
 
 - Trouvez où télécharger le `.deb` du paquet `nyancat` depuis `ftp.debian.org`
 

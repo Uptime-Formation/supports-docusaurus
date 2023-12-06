@@ -28,11 +28,13 @@ gpg --armor --export votreprenom@formationlinux
     - quelle est la configuration en terme de CPU, de RAM, et d'espace disque ? (`cat /proc/cpuinfo`, `free -h` et `df -h`)
     - quelle est son adresse IP locale et globale ?
 - 5.3 - **Sur votre serveur** : donnez un nom à votre machine avec `hostnamectl set-hostname <un_nom>`. (Attention, ce nom est purement cosmétique et interne à la machine. Il ne s'agit pas d'un vrai nom de domaine résolvable et accessible par n'importe qui sur internet, à la différence de celui qui sera configuré à la question 5.8)
+
 - 5.4 - **Sur votre serveur** : créez un utilisateur destiné à être utilisé plutôt que de se connecter en root. 
     - Créez-lui un répertoire personnel et donnez-lui les permissions dessus. 
     - Définissez-lui un mot de passe. 
-    - Ajoutez-le au groupe `ssh`.
     - Assurez-vous qu'il a le droit d'utiliser `sudo`.
+    <!-- - Ajoutez-le au groupe `ssh`. -->
+
 - 5.5 - **Depuis votre machine de bureau (VM Mint / Xubuntu)** : connectez-vous en ssh sur votre serveur avec le nouvel utilisateur. Personnalisez (ou pas) le PS1, les alias, et votre .bashrc en général. Créez quelques fichiers de test pour confirmer que vous avez le droit d'écrire dans votre home.
 - 5.6 - **Depuis votre machine de bureau (VM Mint / Xubuntu)** : ajoutons maintenant une vrai clef SSH : 
     - générez une clef SSH pour votre utilisateur avec `ssh-keygen -t rsa -b 4096 -C "un_commentaire"`;
@@ -58,5 +60,9 @@ Host nom_de_votre_machine
 ### Exercices avancés
 
 - Installez MobaXterm sous Windows et essayez de vous connecter à votre serveur avec cet outil.
+
 - Utilisez `sshfs` pour monter le home de votre utilisateur dans un dossier de votre répertoire personnel.
+
 - Utilisez `ssh -D` pour créer un tunnel avec votre serveur, et configurez Firefox pour utiliser ce tunnel pour se connecter à Internet. Confirmez que les changements fonctionnent en vérifiant quelle semble être votre IP globale depuis Firefox.
+
+resource en anglais: https://www.baeldung.com/linux/ssh-tunneling-and-proxying
