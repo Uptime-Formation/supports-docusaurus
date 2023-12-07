@@ -41,6 +41,14 @@ title: TP - Installer Linux et gérer les partitions
     - Créez un dossier `windows` dans `/media/` puis montez manuellement la nouvelle partition sur `/media/windows`. (Vérifiez le résultat avec `lsblk` et `df -h`)
 - 1.10 - Rendez ce montage automatique en modifiant `/etc/fstab` et en redémarrant le système. (Vérifiez le résultat avec `lsblk` et `df -h`)
 
+=> Correction:
+- créer le dossier /mnt/windows
+- utilisez `id` et `blkid` pour trouver l'UUID de la partition, l'uid et le gid de votre utilisateur et ajoutez cette ligne au fstab en remplaçant:
+
+```bash
+UUID=<uuid>  /mnt/windows  ntfs-3g uid=<userid>,gid=<groupid>,dmask=022,fmask=133 0 0
+```
+
 ### Exercices avancés
 
 - Inspectez l'arbre des processus avec `ps -ef --forest` et identifiez le serveur graphique `Xorg`. Que se passe-t-il si vous tentez de killer ce processus ?
