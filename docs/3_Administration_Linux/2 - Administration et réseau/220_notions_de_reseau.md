@@ -20,7 +20,10 @@ title: Cours - Quelques notions de réseau
 - Comprendre ce qu'est un nom de domaine
 - Comprendre ce qu'il se passe sous le capot lorsque vous visitez une url web
 
-Autre cours en ligne plutôt bien foutu: https://www.fingerinthenet.com/le-modele-tcp-ip/
+### Autres cours en ligne plutôt bien faits
+
+- https://cisco.goffinet.org/ccna/fondamentaux/modeles-tcp-ip-osi/
+- https://www.fingerinthenet.com/le-modele-tcp-ip/
 
 ### Teh interntez
 
