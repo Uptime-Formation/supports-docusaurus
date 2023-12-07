@@ -49,6 +49,8 @@ title: TP - Installer Linux et gérer les partitions
 UUID=<uuid>  /mnt/windows  ntfs-3g uid=<userid>,gid=<groupid>,dmask=022,fmask=133 0 0
 ```
 
+- redémarrer pour vérifier cette configuration.
+
 ### Exercices avancés
 
 - Inspectez l'arbre des processus avec `ps -ef --forest` et identifiez le serveur graphique `Xorg`. Que se passe-t-il si vous tentez de killer ce processus ?
