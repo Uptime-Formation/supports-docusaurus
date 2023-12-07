@@ -9,7 +9,7 @@ title: TP - Installer Linux et gérer les partitions
 - 1.3 - Créer une nouvelle machine virtuelle en suivant les instructions :
     - de type Linux, avec comme version "Other Linux (64-bit)" ("Ubuntu (64-bit)" devrait fonctionner également) ;
     - 2048 Mo de RAM semble raisonnable ;
-    - créer un disque dur virtuel, de type VDI, dynamiquement alloué, de 20 Go.
+    - créer un disque dur virtuel, de type VDI, dynamiquement alloué, de 30 Go.
 - 1.4 - Utilisez l'ISO téléchargée en tant que CD Rom virtuel que vous insérez dans la machine virtuelle. Pour ce faire : dans Configuration, Stockage, cliquer sur le CD rom (vide) puis, sur l'icone de CD rom *toute à droite*, et choisir l'ISO téléchargée.
 - 1.5 - Démarrer la machine : Linux Mint est censé se lancer (utiliser le mode de compatibilité sinon)
 - 1.6 - Lancer l'installation de Linux Mint
@@ -17,10 +17,11 @@ title: TP - Installer Linux et gérer les partitions
     - accepter l'installation des logiciels tiers
     - lors du choix du type de partitionnement, **cliquer sur "Autre chose"**
     - créer une nouvelle table de partition, puis partitionner à l'aide du "+" l'espace de la manière suivante : 
-         - 300 Mo pour `/boot` en ext4
-         - 14 Go pour `/` en ext4
+         - 200 Mo pour `/boot/efi` type partition `efi`
+         <!-- - 300 Mo pour `/boot` en ext4 -->
+         - 18 Go pour `/` en ext4
          - 5 Go pour `/home` en ext4
-         - le reste (~700 Mo) en swap
+         - le reste en swap
     - choisissez le fuseau horaire, puis un nom d'utilisateur, de machine, et un mot de passe.
     - lancez l'installation et prenez une pause, buvez un café, ou regardez la vidéo youtube "The UNIX operating system" et laissez Brian Kernighan vous parler de l'élégance des pipes !
 - 1.7 - Redémarrez la machine et logguez-vous. Mettez-vous à l'aise et prenez vos marques dans votre nouvel environnement :

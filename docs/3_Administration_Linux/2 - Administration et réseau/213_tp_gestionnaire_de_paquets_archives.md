@@ -19,8 +19,8 @@ title: TP - Le gestionnaire de paquet et les archives
     - Ajouter un nouveau fichier `mongodb.list` dans `/etc/apt/sources.list.d` avec une unique ligne : `deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/debian bullseye/mongodb-org/7.0 main`
     - Faire `apt update`. Que se passe-t-il ? Quels serveurs votre machine a-t-elle essayer de contacter ? Pourquoi cela produit-il une erreur ?
     - Ajoutez la clef d'authentification des paquets avec :
-        - `sudo apt install -y gnupg curl`
-        - `curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor`
+    - `sudo apt install -y gnupg curl`
+    - `curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor`
     <!-- - Ajoutez la clef d'authentification des paquets avec `wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -`. -->
     - Refaire `apt update`. Est-ce que ça fonctionne ?
     - Regarder avec `apt search` et `apt show` (et `grep` !) si le paquet `mongodb-org` est disponible et quelle est la version installable.
