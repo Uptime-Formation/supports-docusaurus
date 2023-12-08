@@ -161,14 +161,12 @@ Une pile logicielle historique et classique pour construire et déployer une app
 - Chercher des infos sur Internet ...
   - avec des mots clefs approprié
 
-
 ## Méthode générale
 
 Malheureusement ...
 
 - Logs pas forcément trouvable (ou alors messages abscons)
 - Demande un peu d'expérience pour savoir quoi / où chercher ...
-
 
 ## Sources d'information
 

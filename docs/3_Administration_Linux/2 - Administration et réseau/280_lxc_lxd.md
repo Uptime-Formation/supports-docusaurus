@@ -30,25 +30,26 @@ La conteneurisation permet :
 
 - Technologie de conteneurisation de Linux
     - (c.f. fonctionnalité du kernel, les cgroups)
-- Relativement récent !
-    - V1.0 date de début 2014 ! 
-    - V3.0 cette année
 - À l'intérieur : un mini-système complet
-
 
 ![](/img/linux/admin/lxc.png)
 
 
-## "Vanilla" LXC
-
-`apt install lxc` puis utilisation des commandes `lxc-<stuff>`
-
 ## LXD !
 
 - "Hyperviseur" pour gérer des LXC
-- UX bien meilleure (commande `lxc <stuff>` (et non `lxd` !))
+- UX bien meilleure que lxc traditionnel (commande `lxc <stuff>` (et non `lxd` !))
 - Développé par Canonical (c.f. Ubuntu)
 
+
+### Installation :
+
+ - `sudo apt install snapd`
+ - `sudo snap install lxd`
+
+- Initialiser avec `lxd init` et répondre aux questions (faire <entrer> a chaque question pour garder les valeurs par défaut fonctionne bien)
+
+### Commande : 
 
 ```
 Usage:
@@ -66,7 +67,6 @@ Available Commands:
   start       Start containers
   stop        Stop containers
 ```
-
 
 ## Creer un LXC (1/2)
 
@@ -91,7 +91,7 @@ $ lxc image list images:
 ## Creer un LXC (2/2)
 
 ```bash
-$ lxc launch images:debian/stretch test1
+$ lxc launch images:debian/12 test1
 Creating test1
 Starting test1
 ```
@@ -117,12 +117,12 @@ root      95  /sbin/agetty --noclear --keep-
 ## Interagir avec un LXC (2/2)
 
 ```bash
-root@scw-32c380:~$ lxc exec stretch1 -- /bin/bash
+root@scw-32c380:~$ lxc exec test1 -- /bin/bash
 root@stretch1:~$       # <<< Dans le LXC !
 ```
 
 ```bash
-root@scw-32c380:~$ lxc console stretch1
+root@scw-32c380:~$ lxc console test1
 To detach from the console, press: <ctrl>+a q
                                              
 Debian GNU/Linux 9 stretch1 console
