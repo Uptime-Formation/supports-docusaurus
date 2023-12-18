@@ -19,7 +19,7 @@ Avec Docker, les projets sont déjà isolés dans des conteneurs. Nous allons do
 
 - Ajoutez en haut du fichier : `FROM python:3.9` Cette commande indique que notre image de base est la version 3.9 de Python. Quel OS est utilisé ? Vérifier en examinant l'image ou via le Docker Hub.
 
-- Nous pouvons déjà contruire un conteneur à partir de ce modèle Ubuntu vide :
+- Nous pouvons déjà contruire un conteneur à partir de ce modèle `python` vide :
   `docker build -t microblog .`
 
 - Une fois la construction terminée lancez le conteneur.
@@ -42,7 +42,7 @@ Cette étape, qui aurait pu être nécessaire dans un autre contexte : en partan
 
 ```Dockerfile
 COPY ./requirements.txt /requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r /requirements.txt
 ```
 
 - Reconstruisez votre image. Si tout se passe bien, poursuivez.
