@@ -19,10 +19,10 @@ On va travailler sur une recette très simple de Dockerfile, un **Hello World.**
 ```Dockerfile
 FROM alpine:3.18
 
-RUN echo "echo Hello World > /boot.sh"
+RUN echo "echo Hello World" > /boot.sh
 
 # run the application
-CMD ["boot.sh"]
+CMD ["/bin/sh", "boot.sh"]
 ```
 
 **On va immédiatement contruire une image avec ce Dockerfile.**
@@ -33,7 +33,7 @@ CMD ["boot.sh"]
 4. Lancer dans le dossier la commande
 
 ```
-docker build  . -t minimal 
+docker build -t minimal . 
 ```
 
 5. Lancer l'image docker nommée "minimal"
