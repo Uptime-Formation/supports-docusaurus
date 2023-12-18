@@ -174,7 +174,8 @@ metadata:
     app: monsterstack
 spec:
   ports:
-    - port: <port>
+    - port: <port>  # port exposé en entrée par le service
+      targetPort: <target-port> # port coté conteneur
   selector:
     app: <app_selector>
     partie: <tier_selector>
