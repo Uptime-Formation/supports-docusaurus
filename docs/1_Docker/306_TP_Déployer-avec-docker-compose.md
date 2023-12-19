@@ -10,11 +10,11 @@ title: "TP: Déployer avec docker compose créer et lancer ses applications"
 
 ## Mise en pratique : écrire un fichier compose pas à pas 
 
-### `identidock` : une application Flask qui se connecte à `redis`
+### `frontend` : une application Flask qui se connecte à `redis`
 
-Démarrez un nouveau projet dans VSCode (créez un dossier appelé `identidock` et chargez-le avec la fonction _Add folder to workspace_)
+Démarrez un nouveau projet dans VSCode (créez un dossier appelé `tp_compose` et chargez-le avec la fonction _Add folder to workspace_)
 
-Dans un sous-dossier `app`, ajoutez une petite application python en créant ce fichier `identidock.py` :
+Dans un sous-dossier `app`, ajoutez une petite application python en créant ce fichier `app.py` :
 
 ```python
 from flask import Flask, Response, request, abort
@@ -41,7 +41,7 @@ def mainpage():
 
     salted_name = salt + name
     name_hash = hashlib.sha256(salted_name.encode()).hexdigest()
-    header = '<html><head><title>Identidock</title></head><body>'
+    header = '<html><head><title>Identidock frontend</title></head><body>'
     body = '''<form method="POST">
                 Salut <input type="text" name="name" value="{0}"> !
                 <input type="submit" value="submit">
@@ -103,7 +103,7 @@ COPY app/identidock.py /app
 
 EXPOSE 5000 9191
 USER uwsgi
-CMD ["uwsgi", "--http", "0.0.0.0:5000", "--wsgi-file", "/app/identidock.py", \
+CMD ["uwsgi", "--http", "0.0.0.0:5000", "--wsgi-file", "/app/app.py", \
 "--callable", "app", "--stats", "0.0.0.0:9191"]
 ```
 
@@ -114,12 +114,12 @@ Construire l'application, pour l'instant avec `docker build ...`, la lancer.
 
 ### Le fichier Docker Compose
 
-A la racine de notre projet `identidock` (à côté du Dockerfile), créez un fichier de déclaration de notre application appelé `docker-compose.yml` avec à l'intérieur :
+A la racine de notre projet (à côté du Dockerfile), créez un fichier de déclaration de notre application appelé `docker-compose.yml` avec à l'intérieur :
 
 ```yml
 version: "3.8"
 services:
-  identidock:
+  frontend:
     build: .
     ports:
       - "5000:5000"
@@ -129,7 +129,7 @@ services:
 
   - La première ligne après `services` déclare le conteneur de notre application
   - Les lignes suivantes permettent de décrire comment lancer notre conteneur
-  - `build: .` indique que l'image d'origine de notre conteneur est le résultat de la construction d'une image à partir du répertoire courant (équivaut à `docker build -t identidock .`)
+  - `build: .` indique que l'image d'origine de notre conteneur est le résultat de la construction d'une image à partir du répertoire courant (équivaut à `docker build -t frontend .`)
   - La ligne suivante décrit le mapping de ports entre l'extérieur du conteneur et l'intérieur.
 
 **Lancez le service (pour le moment mono-conteneur) avec `docker compose up`**
@@ -145,7 +145,7 @@ Nous allons tirer parti d'une image "dnmonster" déjà existante sur docker hub.
 Ajoutez à la suite du fichier Compose **_(attention aux indentations !)_** :
 
 ```yml
-dnmonster:
+imagebackend:
   image: amouat/dnmonster:1.0
 ```
 
@@ -153,12 +153,12 @@ Le `docker-compose.yml` doit pour l'instant ressembler à ça :
 
 ```yml
 services:
-  identidock:
+  frontend:
     build: .
     ports:
       - "5000:5000"
 
-  dnmonster:
+  imagebackend:
     image: amouat/dnmonster:1.0
 ```
 
@@ -176,7 +176,7 @@ networks:
 
 Sans spécifier le driver réseau, `bridge` celui utilisé par défaut, donc la 3e ligne est facultative ici.
 
-Il faut ensuite aussi mettre nos deux services `identidock` et `dnmonster` sur le même réseau en ajoutant **deux fois** le bout de code suivant pour chaque service/conteneur :
+Il faut ensuite aussi mettre nos deux services `frontend` et `imagebackend` sur le même réseau en ajoutant **deux fois** le bout de code suivant pour chaque service/conteneur :
 
 ```yaml
 networks:
@@ -202,7 +202,7 @@ redis:
 
 ```yaml
 services:
-  identidock:
+  frontend:
     build: .
     ports:
       - "5000:5000"
@@ -210,7 +210,7 @@ services:
     networks:
       - identinet
 
-  dnmonster:
+  imagebackend:
     image: amouat/dnmonster:1.0
     networks:
       - identinet
@@ -243,34 +243,12 @@ Indice : chercher "flask hot reload" et penser aux volumes
 
 Avancé : Trouver comment configurer une base de données Postgres pour une app Flask (c'est une option de SQLAlchemy).
 
-### D'autres services
-
-**On lancer un pad HedgeDoc (ou autre logiciel de votre choix).**
-
-On se propose ici d'essayer de déployer plusieurs services pré-configurés comme Wordpress, Nextcloud, Sentry ou votre logiciel préféré.
-
-Récupérez (et adaptez si besoin) à partir d'Internet un fichier `docker-compose.yml` permettant de lancer un pad HedgeDoc ou autre avec sa base de données. 
-
-Je vous conseille de toujours chercher **dans la documentation officielle** ou le repository officiel (souvent sur Github) en premier.
-
-Vérifiez que le service est bien accessible sur le port donné.
-
-Si besoin, lisez les logs en quête bug et adaptez les variables d'environnement.
-
----
-
-Assemblez à partir d'Internet un fichier `docker-compose.yml` permettant de lancer un Wordpress et un Nextcloud **déjà pré-configurés** (pour l'accès à la base de données notamment). 
-
-Ajoutez-y un pad CodiMD / HackMD (toujours grâce à du code trouvé sur Internet).
-
----
 ## Faire varier la configuration en fonction de l'environnement
 
 Finalement le serveur de développement flask est bien pratique pour debugger en situation de développement, mais il n'est pas adapté à la production.
 
 Nous pourrions créer deux images pour les deux situations mais ce serait aller contre l'imperatif DevOps de rapprochement du dév et de la production.
 
----
 
 **Créons un script bash `boot.sh` pour adapter le lancement de l'application au contexte.**
 
@@ -279,13 +257,13 @@ Nous pourrions créer deux images pour les deux situations mais ce serait aller 
 set -e
 if [ "$CONTEXT" = 'DEV' ]; then
     echo "Running Development Server"
-    exec python3 "/app/identidock.py"
+    exec python3 "/app/app.py"
 else
     echo "Running Production Server"
-    exec uwsgi --http 0.0.0.0:5000 --wsgi-file /app/identidock.py --callable app --stats 0.0.0.0:9191
+    exec uwsgi --http 0.0.0.0:5000 --wsgi-file /app/app.py --callable app --stats 0.0.0.0:9191
 fi
 ```
----
+
 Ajoutez au Dockerfile une deuxième instruction `COPY` en dessous de la précédente pour mettre le script dans le conteneur.
 
 Ajoutez un `RUN chmod a+x /boot.sh` pour le rendre executable.
@@ -308,14 +286,18 @@ Conclusions:
 
 ```Dockerfile
 FROM python:3.7
+
 RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi
 RUN pip install Flask uWSGI requests redis
+
 WORKDIR /app
 COPY app /app
 COPY boot.sh /
 RUN chmod a+x /boot.sh
+
 ENV CONTEXT PROD
 EXPOSE 9191 5000
+
 USER uwsgi
 CMD ["/boot.sh"]
 ```
@@ -330,7 +312,34 @@ On veut ajouter les fonctionnalités suivantes :
   - LOGLEVEL
   - CONTEXT
   - Tester [d'autres variables Flask](https://flask.palletsprojects.com/en/2.2.x/config/)
-- Un volume pour la base redis 
+
+- Un volume pour la base redis
+
 - un service redis-commander pour afficher le contenu de la base redis
   - disponible sur le port 8191
   - le connecter via des variables d'environnement
+
+
+
+
+## Exercice facultatif 1 : un pad HedgeDoc (ou autre logiciel de votre choix).
+
+On se propose ici d'essayer de déployer plusieurs services pré-configurés comme Wordpress, Nextcloud, Sentry ou votre logiciel préféré.
+
+Récupérez (et adaptez si besoin) à partir d'Internet un fichier `docker-compose.yml` permettant de lancer un pad HedgeDoc ou autre avec sa base de données. 
+
+Je vous conseille de toujours chercher **dans la documentation officielle** ou le repository officiel (souvent sur Github) en premier.
+
+Vérifiez que le service est bien accessible sur le port donné.
+
+Si besoin, lisez les logs en quête de bug et adaptez les variables d'environnement.
+
+
+
+## Exercice facultatif 2 : Wordpress et/ou Nextcloud
+
+Assemblez à partir d'Internet un fichier `docker-compose.yml` permettant de lancer un Wordpress et un Nextcloud **déjà pré-configurés** (pour l'accès à la base de données notamment). 
+
+Ajoutez-y un pad CodiMD / HackMD (toujours grâce à du code trouvé sur Internet).
+
+
