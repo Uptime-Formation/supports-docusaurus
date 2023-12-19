@@ -3,7 +3,7 @@ title: TP - Réseaux Docker Créer Lister Détruire
 ---
 
 ## Objectifs pédagogiques
-  - Savoir utiliser les commandes volume (create, ls, rm, connect, prune)
+  - Savoir utiliser les commandes network (create, ls, rm, connect, prune)
   - Savoir lancer un conteneur Docker en le connectant à un réseau
   - Savoir faire communiquer deux conteneurs Docker
 

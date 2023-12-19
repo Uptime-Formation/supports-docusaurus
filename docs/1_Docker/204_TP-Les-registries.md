@@ -44,7 +44,7 @@ En récupérant [la commande indiquée dans la doc officielle](https://docs.dock
 
 ```shell
 # Créer le registry
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker run -d -p 127.0.0.1:5555:5000 --restart=always --name registry registry:2
 ```
 
 ---
@@ -59,10 +59,10 @@ Cela crée un tag supplémentaire pour l'image existante.
 
 ```shell
 # Y pousser une image
-docker tag ubuntu:latest localhost:5000/my-ubuntu:36.04
-docker tag ubuntu:latest localhost:5000/my-ubuntu:latest
-docker image ls localhost:5000/my-ubuntu
-docker push localhost:5000/my-ubuntu
+docker tag ubuntu:latest localhost:5555/my-ubuntu:mytag-custom
+docker tag ubuntu:latest localhost:5555/my-ubuntu:latest
+docker image ls localhost:5555/my-ubuntu
+docker push localhost:5555/my-ubuntu:mytag-custom
 ```
 
 ---
@@ -72,7 +72,7 @@ docker push localhost:5000/my-ubuntu
 ```shell
 # Supprimer l'image en local
 docker image remove ubuntu:16.04
-docker image remove localhost:5000/my-ubuntu
+docker image remove localhost:5555/my-ubuntu:mytag-custom
 ```
 
 ---
@@ -81,7 +81,7 @@ Extrayez l'image localhost:5000/my-ubuntu de votre registre local.
 
 ```shell
 # Récupérer l'image depuis le registry
-docker pull localhost:5000/my-ubuntu
+docker pull localhost:5555/my-ubuntu:mytag-custom
 ```
 
 ## _Facultatif :_  push sur le Docker Hub
@@ -92,9 +92,11 @@ Avec `docker login`, `docker tag` et `docker push`, poussez l'image `microblog` 
 
 ```shell
 docker login
-docker tag microblog:latest <your-docker-registry-account>/microblog:latest
-docker push <your-docker-registry-account>/microblog:latest
+docker tag microblog:latest docker.io/<your-docker-registry-account>/microblog:latest
+docker push docker.io/<your-docker-registry-account>/microblog:latest
 ```
+
+(Ajouter docker.io est facultatif car il s'agit du registry par défaut avec Docker. Par contre c'est nécessaire pour pousser vers d'autres registries )
 
 ## TP Avancé - pousser notre image sur Quay.io pour bénéficier du scan de securité
 
