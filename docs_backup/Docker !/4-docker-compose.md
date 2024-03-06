@@ -188,10 +188,18 @@ workflow de base:
 - `docker compose down` tout arrêter quand on a fini de développer avec `-v` en plus si il faut nettoyer les données.
 
 
+<<<<<<<< HEAD:docs/1_Docker/3-05-Déployer-avec-docker-compose-le-fichier-docker-compose.yml.md
+### Usage non synchrone de docker-compose
+========
+<<<<<<<< HEAD:docs/bonus_docker/3-05-Déployer-avec-docker-compose-le-fichier-docker-compose.yml.md
+---
+========
 ## Usage non synchrone de docker-compose
 
 On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. Exemple : https://docs.funkwhale.audio/installation/docker.html#start-funkwhale-service
 
+>>>>>>>> 20230106.kubernetes.supports.dopl.uk:docs/bonus_docker/4-docker-compose.md
+>>>>>>>> origin/supports.eliegavoty.fr:docs_backup/Docker !/4-docker-compose.md
 
 On peut également exécuter des tâches une par une dans les conteneurs du docker-compose sans démarrer tous les conteneurs simultanéement. Comme par exemple pour une migration de base de donnée. 
 

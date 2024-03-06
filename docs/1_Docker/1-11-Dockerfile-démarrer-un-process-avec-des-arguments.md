@@ -56,7 +56,7 @@ CMD et ENTRYPOINT sont plus apparentés mais il faut également bien faire la di
 
 ### Combinaisons de ENTRYP0INT et CMD - Comment s'y retrouver ?!
 
-En général il y a 9 combinaisons possibles des deux commandes => les résultats sont compliqués et peu intuitifs: [la doc](https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact)
+En général il y a 9 combinaisons possibles des deux commandes => les résultats sont compliqués et peu intuitifs: ![la doc](https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact)
 
 En réalité on utilise que 3 situations en général
 
@@ -93,7 +93,7 @@ Vois aussi cowsay plus bas comme outils pour décorer du texte avec Docker. On p
 ```Dockerfile
 FROM python:3.9
 ENTRYPOINT ["/usr/bin/python3"]
-CMD ["-c", "print('je peux executer du python directement')"]
+CMD ['-c', 'print("je peux executer du python directement")']
 ```
 
 Dans ce cas :

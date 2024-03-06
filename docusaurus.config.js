@@ -129,8 +129,7 @@ const config = {
          //   ],
          // },
         ],
-        copyright: `Supports de formation : Elie Gavoty, Alexandre Aubin, Aurélien N. et Hadrien Pélissier
-        Conçus initialement dans le cadre d'un cursus Uptime Formation.
+        copyright: `Supports de formation : Alban Crommer, Elie Gavoty, Alexandre Aubin, Aurélien N. et Hadrien Pélissier
         Sous licence CC-BY-NC-SA - Formations Uptime  ${new Date().getFullYear()} `,
       },
       prism: {
