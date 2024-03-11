@@ -37,28 +37,43 @@ PDF_NAME="$( echo ${FORMATION_NAME} | sed -r "s/^[0-9]*_//").pdf"
 
 
 # Copy markdown files to tmp directory and patch images paths 
-[[ -d "${TMPDIR}" ]]  && rm -f "${TMPDIR}"/*md 
+
+# [[ -d "${TMPDIR}" ]]  && rm -rf "${TMPDIR}" && mkdir "${TMPDIR}"
+
 cp "${FORMATION_DIR}"/*md "${TMPDIR}/"
 cd "${TMPDIR}"
-sed -i -r "s=/img/=../../../static/img/=" *md
+sed -i -r "s=/img/=../../static/img/=" *md
 
 # Loop through files and convert them to PDF
 DATE=$(date +"%d/%m/%Y")
 LIST=()
 for file in *\.md; do
+  content=""
   pdfname="${file/.md/}.pdf"
+  LIST+=("$pdfname")
+  [[ -f "$pdfname" ]] && continue
   logname="${file/.md/}.log"
-  if [[ "$file" == "01-Introduction.md" ]]; then
-    sed -i -r "s=%DATE%=$DATE=" $file
-  else
-    content=$(cat "$file" )
-    title=$( cat "$file" | grep '^#' | head -n 1| sed 's/^# //')
-    cat <<EOF > $file
+  sed -i -r "s=%DATE%=$DATE=" $file
+  # Set content
+  m=0;
+  length=$(wc -l "$file" | awk '{print $1}')
+  for i in $(seq 1 $length);
+    do line=$( sed -n ${i}p $file);
+      if [[ "$line" =~ ^--- && $m -lt 2 ]] ;
+        then m=$(( m + 1 ));
+      elif [[ $m -lt 2 ]];
+        then continue;
+      else
+        content="$content\n$line";
+     fi;
+    done
+
+  title=$( cat "$file" | grep '^#' | head -n 1| sed 's/^# //')
+  cat <<EOF > $file
 ---
 title: "$title"
 author: [Uptime Formation]
 date: "$DATE"
-keywords: [Teraform, Devops]
 titlepage: true
 titlepage-text-color: "3366ff"
 titlepage-rule-color: "3366ff"
@@ -66,9 +81,7 @@ titlepage-rule-height: 4
 book: true
 ...
 EOF
-    echo "$content" >> "$file"
-  fi
-  LIST+=("$pdfname")
+  echo -e "$content" >> "$file"
   echo "Convert "$file" to $pdfname"
   ~/bin/pdfnice "$file" "$pdfname" 2>"$logname"
 done
@@ -81,5 +94,5 @@ echo "File available : ${APP_PATH}/${PDF_NAME}"
 
 # Cleanup the temp dir
 cd "${APP_PATH}"
-echo "Cleaning up tmpdir $TMPDIR"
-rm -rf "${TMPDIR}"
+# echo "Cleaning up tmpdir $TMPDIR"
+# rm -rf "${TMPDIR}"
