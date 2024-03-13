@@ -9,41 +9,35 @@ draft: false
 
 ## Découverte de Kubernetes
 
-### Installer le client CLI `kubectl`
+### Installer k3s et kubectl 
 
-kubectl est le point d'entré universel pour contrôler tous les type de cluster kubernetes. 
-C'est un client en ligne de commande qui communique en REST avec l'API d'un cluster.
 
-Nous allons explorer kubectl au fur et à mesure des TPs. Cependant à noter que :
+**kubectl est le point d'entrée universel pour contrôler tous les types de cluster kubernetes.** 
 
-- `kubectl` peut gérer plusieurs clusters/configurations et switcher entre ces configurations
-- `kubectl` est nécessaire pour le client graphique `Lens` que nous utiliserons plus tard.
+C' est un client en ligne de commande qui communique en REST avec l'API d'un cluster.
 
-La méthode d'installation importe peu. Pour installer kubectl sur Ubuntu nous ferons simplement: `sudo snap install kubectl --classic`.
+**k3s est une solution pour installer rapidement kubernetes.**
 
-- Faites `kubectl version` pour afficher la version du client kubectl.
----
-title:  La ligne de commande kubectl
-weight: 36
----
+```shell
 
-### Installer Minikube
+# Sur ubuntu il faut supprimer ce lien
+sudo rm /snap/bin/kubectl
 
-**Minikube** est la version de développement de Kubernetes (en local) la plus répendue. Elle est maintenue par la cloud native foundation et très proche de kubernetes upstream. Elle permet de simuler un ou plusieurs noeuds de cluster sous forme de conteneurs docker ou de machines virtuelles.
+curl -sfL https://get.k3s.io | sudo sh -
 
-- Pour installer minikube la méthode recommandée est indiquée ici: https://minikube.sigs.k8s.io/docs/start/
+```
 
-Nous utiliserons classiquement `docker` comme runtime pour minikube (les noeuds k8s seront des conteneurs simulant des serveurs). Ceci est, bien sur, une configuration de développement. Elle se comporte cependant de façon très proche d'un véritable cluster.
-
-- Si Docker n'est pas installé, installer Docker avec la commande en une seule ligne : `curl -fsSL https://get.docker.com | sh`, puis ajoutez-vous au groupe Docker avec `sudo usermod -a -G docker <votrenom>`, et faites `sudo reboot` pour que cela prenne effet.
-
-- Pour lancer le cluster faites simplement: `minikube start` (il est également possible de préciser le nombre de coeurs de calcul, la mémoire et et d'autre paramètre pour adapter le cluster à nos besoins.)
-
-Minikube configure automatiquement kubectl (dans le fichier `~/.kube/config`) pour qu'on puisse se connecter au cluster de développement.
+k3s installe sa propre version de kubectl qui utilise le fichier de configuration automatique de k3s. 
 
 - Testez la connexion avec `kubectl get nodes`.
 
-Affichez à nouveau la version `kubectl version`. Cette fois-ci la version de kubernetes qui tourne sur le cluster actif est également affichée. Idéalement le client et le cluster devrait être dans la même version mineure par exemple `1.20.x`.
+Affichez la version `kubectl version`. 
+
+La version de kubernetes qui tourne sur le cluster actif est également affichée. 
+
+Idéalement le client et le cluster devrait être dans la même version mineure par exemple `1.28.x`.
+
+---
 
 ##### Bash completion et racourcis
 
@@ -58,6 +52,8 @@ echo "source <(kubectl completion bash)" >> ${HOME}/.bashrc
 ```
 
 **Vous pouvez désormais appuyer sur `<Tab>` pour compléter vos commandes `kubectl`, c'est très utile !**
+
+---
 
 - Notez également que pour gagner du temps en ligne de commande, la plupart des mots-clés de type Kubernetes peuvent être abrégés :
   - `services` devient `svc`
@@ -78,6 +74,9 @@ La commande `get` est générique et peut être utilisée pour récupérer la li
 
 
 De même, la commande `describe` peut s'appliquer à tout objet k8s.
+
+---
+
 - Pour afficher tous les types de ressources à la fois que l'on utilise : `kubectl get all`
 
 ```
@@ -88,6 +87,8 @@ service/kubernetes   ClusterIP   10.96.0.1   <none>        443/TCP   2m34s
 Il semble qu'il n'y a qu'une ressource dans notre cluster. Il s'agit du service d'API Kubernetes, pour que les pods/conteneurs puissent utiliser la découverte de service pour communiquer avec le cluster.
 
 En réalité il y en a généralement d'autres cachés dans les autres `namespaces`. En effet les éléments internes de Kubernetes tournent eux-mêmes sous forme de services et de daemons Kubernetes. Les *namespaces* sont des groupes qui servent à isoler les ressources de façon logique et en termes de droits (avec le *Role-Based Access Control* (RBAC) de Kubernetes).
+
+---
 
 Pour vérifier cela on peut :
 
@@ -100,6 +101,9 @@ Un cluster Kubernetes a généralement un namespace appelé `default` dans leque
 - Ou encore : `kubectl get all --all-namespaces` (peut être abrégé en `kubectl get all -A`) qui permet d'afficher le contenu de tous les namespaces en même temps.
 
 - Pour avoir des informations sur un namespace : `kubectl describe namespace/kube-system`
+
+---
+
 
 ### Déployer une application en CLI
 
@@ -117,6 +121,9 @@ Cette commande crée un objet de type `deployment`. Nous pourvons étudier ce de
   - Observez à nouveau la liste des évènements, le scaling y est enregistré...
   - Listez les pods pour constater
 
+---
+
+
 A ce stade impossible d'afficher l'application : le déploiement n'est pas encore accessible de l'extérieur du cluster. Pour régler cela nous devons l'exposer grace à un service :
 
 - `kubectl expose deployment demonstration --type=NodePort --port=8080 --name=demonstration-service`
@@ -124,6 +131,9 @@ A ce stade impossible d'afficher l'application : le déploiement n'est pas encor
 - Affichons la liste des services pour voir le résultat: `kubectl get services`
 
 Un service permet de créer un point d'accès unique exposant notre déploiement. Ici nous utilisons le type Nodeport car nous voulons que le service soit accessible de l'extérieur par l'intermédiaire d'un forwarding de port.
+
+---
+
 
 Avec minikube ce forwarding de port doit être concrêtisé avec la commande `minikube service demonstration-service`. Normalement la page s'ouvre automatiquement et nous voyons notre application.
 
@@ -139,6 +149,9 @@ Une autre méthode pour accéder à un service (quel que soit sont type) en mode
 => Un seul conteneur s'affiche. En effet `kubectl port-forward` sert à créer une connexion de developpement/debug qui pointe toujours vers le même pod en arrière plan.
 
 Pour exposer cette application en production sur un véritable cluster, nous devrions plutôt avoir recours à service de type un LoadBalancer. Mais minikube ne propose pas par défaut de loadbalancer. Nous y reviendrons dans le cours sur les objets kubernetes.
+
+---
+
 
 ### CheatSheet pour kubectl et formattage de la sortie
 
@@ -156,6 +169,9 @@ kubectl get pod demonstration-7645747fc6-f5z55 -o jsonpath='{.spec.containers[0]
 
 Essayez de la même façon d'afficher le nombre de répliques de notre déploiement.
 
+---
+
+
 ### Des outils CLI supplémentaires
 
 `kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
@@ -165,31 +181,3 @@ Essayez de la même façon d'afficher le nombre de répliques de notre déploiem
 - pour ajouter des plugins à kubectl on peut utiliser `krew`: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 - pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `kubectl krew install ctx`, `kubectl krew install ns`
 - pour visualiser les logs d'un déploiement/service on peut utiliser `stern`: `kubectl krew install stern`
-
-## Au délà de la ligne de commande...
-
-#### Accéder à la dashboard Kubernetes
-
-Le moyen le plus classique pour avoir une vue d'ensemble des ressources d'un cluster est d'utiliser la Dashboard officielle. Cette Dashboard est généralement installée par défaut lorsqu'on loue un cluster chez un provider.
-
-On peut aussi l'installer dans minikube ou k3s. Nous allons ici préférer le client lourd OpenLens
-
-#### Installer OpenLens
-
-Lens est un logiciel graphique (un client "lourd") pour contrôler Kubernetes. Il se connecte en utilisant kubectl et la configuration `~/.kube/config` par défaut et nous permettra d'accéder à un dashboard puissant et agréable à utiliser.
-
-Récemment Mirantis qui a racheté Lens essaye de fermer l'accès à ce logiciel open source. Il faut donc utiliser le build communautaire à la place du build officiel: https://github.com/MuhammedKalkan/OpenLens/releases
-
-Vous pouvez l'installer en lançant ces commandes :
-
-```bash
-## Install Lens
-export LENS_VERSION=5.5.4 # change with the current stable version
-curl -LO "https://github.com/MuhammedKalkan/OpenLens/releases/download/v$LENS_VERSION/OpenLens-$LENS_VERSION.deb"
-sudo dpkg -i "OpenLens-$LENS_VERSION.deb" 
-```
-
-- Lancez l'application `Lens` dans le menu "internet" de votre machine (VNC).
-- Sélectionnez le cluster de votre choix la liste et épinglez la connection dans la barre de menu
-- Explorons ensemble les ressources dans les différentes rubriques et namespaces
-

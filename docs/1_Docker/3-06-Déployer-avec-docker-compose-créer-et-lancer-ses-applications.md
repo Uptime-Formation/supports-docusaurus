@@ -199,7 +199,7 @@ redis:
     - identinet
 ```
 
-### Résultat finale
+### Résultat final
 
 `docker-compose.yml` final :
 

@@ -8,7 +8,7 @@ draft: false
 
 ## Les ConfigMaps 
 
-D'après les recommandations de développement [12factor](https://12factor.net), la configuration de nos programmes doit venir de l'environnement.
+**D'après les recommandations de développement [12factor](https://12factor.net), la configuration de nos programmes doit venir de l'environnement.**
 
 Les objets ConfigMaps permettent d'injecter dans des pods des ensemble clés/valeur de configuration en tant que volumes/fichiers de configuration ou variables d'environnement.
 
@@ -53,20 +53,29 @@ spec:
         - containerPort: 3306
 ```
 
+---
+
+
 ### les Secrets
 
-Les Secrets se manipulent comme des objets ConfigMaps, mais ils sont chiffrés et faits pour stocker des mots de passe, des clés privées, des certificats, des tokens, ou tout autre élément de config dont la confidentialité doit être préservée.
+**Les Secrets se manipulent comme des objets ConfigMaps, mais ils sont chiffrés et faits pour stocker des mots de passe, des clés privées, des certificats, des tokens, ou tout autre élément de config dont la confidentialité doit être préservée.**
+
 Un secret se créé avec l'API Kubernetes, puis c'est au pod de demander à y avoir accès.
 
-Il y a plusieurs façons de donner un accès à un secret, notamment :
+---
+
+**Il y a plusieurs façons de donner un accès à un secret, notamment :**
 - le secret est un fichier que l'on monte en tant que volume dans un conteneur (pas nécessairement disponible à l'ensemble du pod). Il est possible de ne jamais écrire ce secret sur le disque (volume `tmpfs`).
 - le secret est une variable d'environnement du conteneur.
 
 Pour définir qui et quelle app a accès à quel secret, on peut utiliser les fonctionnalités "RBAC" de Kubernetes.
 
+---
+
+
 #### Exemple de secret pour un certificat SSL et son montage comme fichier dans un pods
 
-Création du secret en ligne de commande à partir d'un fichier:
+**Création du secret en ligne de commande à partir d'un fichier:**
 
 `kubectl create secret generic my-cert --from-file=mycert.pem`
 
@@ -85,6 +94,9 @@ metadata:
   uid: dd27cd3f-1779-47f4-a821-25d8139b21a4
 type: Opaque
 ```
+
+---
+
 
 On peut ensuite monter le secret sous forme d'un fichier dans des pods via un volume comme suit :
 

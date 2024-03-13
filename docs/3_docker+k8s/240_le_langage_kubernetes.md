@@ -9,7 +9,7 @@ draft: false
 
 ## L'API et les Objets Kubernetes
 
-Utiliser Kubernetes consiste à déclarer des objets grâce à l’API Kubernetes pour décrire l’état souhaité d'un cluster : quelles applications ou autres processus exécuter, quelles images elles utilisent, le nombre de replicas, les ressources réseau et disque que vous mettez à disposition, etc.
+**Utiliser Kubernetes consiste à déclarer des objets grâce à l’API Kubernetes pour décrire l’état souhaité d'un cluster : quelles applications ou autres processus exécuter, quelles images elles utilisent, le nombre de replicas, les ressources réseau et disque que vous mettez à disposition, etc.**
 
 On définit des objets généralement via l’interface en ligne de commande et `kubectl` de deux façons :
 
@@ -65,7 +65,7 @@ Kubernetes décrit ses ressources en YAML. A quoi ça ressemble, YAML ?
 
 ### Syntaxe de base d'une description YAML Kubernetes
 
-Les description YAML permettent de décrire de façon lisible et manipulable de nombreuses caractéristiques des ressources Kubernetes (un peu comme un *Compose file* par rapport à la CLI Docker).
+**Les description YAML permettent de décrire de façon lisible et manipulable de nombreuses caractéristiques des ressources Kubernetes (un peu comme un *Compose file* par rapport à la CLI Docker).**
 
 #### Exemple
 
@@ -88,20 +88,29 @@ spec:
   type: NodePort
 ```
 
-Organisation de la syntaxe :
 
-- Les resources k8s sont de dictionnaires !
+---
 
+
+**Organisation de la syntaxe :**
+
+- Les resources k8s sont des dictionnaires !
 - Toutes les descriptions doivent commencer par spécifier le module d'API et sa version à partir de laquelle notre objet peut être créé et manipulé.
 - Il faut ensuite préciser le type d'objet avec `kind`
 
-S'ensuit deux sections présentes dans toutes  description Kubernetes:
+---
+
+
+**S'ensuit deux sections présentes dans toute description Kubernetes:**
 
 - La section `metadata` est identique pour chaque type de resource et contient en particulier le nom, les étiquetes diverses, et éventuellement le namespace de la ressource. Le nom dans `metadata:\n name: value` est également obligatoire.
 
 - La section `spec` qui précise tous les paramètres désirés spécifiques à la resource en question.
 
-Les paramètres de la spec sont pour beaucoup facultatifs et prennent leur valeur par défaut s'ils ne sont pas écrit explicitement.
+---
+
+
+**Les paramètres de la spec sont pour beaucoup facultatifs et prennent leur valeur par défaut s'ils ne sont pas écrit explicitement.**
 
 On peut aller observer les paramètres en ligne de commande avec la commande `kubectl explain` exemple:
 
@@ -111,17 +120,21 @@ kubectl explain pod.spec.containers
 kubectl explain deploy --recursive
 ```
 
-### Description de plusieurs ressources
+---
 
-- On peut mettre plusieurs ressources à la suite dans un fichier k8s : cela permet de décrire une installation complexe en un seul fichier
+
+### Description de plusieurs ressources dans un seul fichier
+
+**On peut mettre plusieurs ressources à la suite dans un fichier k8s : cela permet de décrire une installation complexe en un seul fichier**
 
   - par exemple le dashboard Kubernetes [https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml](https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml)
 
-- L'ordre n'importe pas car les ressources sont décrites déclarativement c'est-à-dire que:
+**L'ordre n'importe pas car les ressources sont décrites déclarativement c'est-à-dire que:**
 
   - Les dépendances entre les ressources sont déclarées
   - Le control plane de Kubernetes se charge de planifier l'ordre correct de création en fonction des dépendances (pods avant le déploiement, rôle avec l'utilisateur lié au rôle)
   - On préfère cependant les mettre dans un ordre logique pour que les humains puissent les lire.
 
-- On peut sauter des lignes dans le YAML et rendre plus lisible les descriptions
-- On sépare les différents objets par `---`
+On peut sauter des lignes dans le YAML et rendre plus lisible les descriptions
+
+On sépare les différents objets par `---`

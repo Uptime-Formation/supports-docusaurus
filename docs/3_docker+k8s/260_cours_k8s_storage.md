@@ -9,9 +9,11 @@ title: Les données
 
 ## Le stockage et les Volumes dans Docker
 
-Les conteneurs propose un paradigme immutable : on peut les transformers pendant leur execution (ajouter des fichier, changer des configurations) mais ce n'est pas le mode d'utilisation recommandé. En particulier Kubernetes est succeptible de les supprimer et de les recréer automatiquement. Les fichiers ajoutés manuellement pendant l'execution seront alors perdu.
+**Les conteneurs proposent un paradigme immutable : on peut les transformers pendant leur execution (ajouter des fichier, changer des configurations) mais ce n'est pas le mode d'utilisation recommandé. En particulier Kubernetes est succeptible de les supprimer et de les recréer automatiquement. Les fichiers ajoutés manuellement pendant l'execution seront alors perdu.**
 
 Se pose donc la question de la persistance des données d'une application, par exemple une base de donnée. Dans un environnement conteneurisé toute persistance est permise via des volumes, sortes de disques durs virtuels, qu'on connecte à nos conteneur. Comme un disque ces volumes sont monté à un emplacement du système de fichier du conteneur. En écrivant dans le dossier en question on écrit alors sur ce disque virtuel qui conservera ses données même si le conteneur est supprimé.
+
+---
 
 ## Le stockage dans Kubernetes
 
@@ -40,8 +42,10 @@ spec:
       type: Directory
 ```
 
-La problématique des volumes et du stockage est plus compliquée dans kubernetes que dans docker car k8s cherche à répondre à de nombreux cas d'usages. [doc officielle](https://kubernetes.io/fr/docs/concepts/storage/volumes/). Il y a donc de nombeux types de volumes kubernetes correspondants à des usages de base et aux solutions proposées par les principaux fournisseurs de cloud.
-<!-- 
+---
+
+**La problématique des volumes et du stockage est plus compliquée dans kubernetes que dans docker car k8s cherche à répondre à de nombreux cas d'usages. [doc officielle](https://kubernetes.io/fr/docs/concepts/storage/volumes/). Il y a donc de nombeux types de volumes kubernetes correspondants à des usages de base et aux solutions proposées par les principaux fournisseurs de cloud.**
+
 Mentionnons quelques d'usage de base des volumes:
 
 - `hostPath`: monte un dossier du noeud ou est plannifié le pod à l'intérieur du conteneur.
@@ -52,14 +56,20 @@ Mentionnons quelques d'usage de base des volumes:
 
 En plus de la gestion manuelle des volumes avec les option précédentes, kubernetes permet de provisionner dynamiquement du stockage en utilisant des plugins de création de volume grâce à 3 types d'objets: `StorageClass` `PersistentVolume` et `PersistentVolumeClaim`.
 
+---
+
+
 ### Les types de stockage avec les `StorageClasses`
 
-Le stockage dynamique dans Kubernetes est fourni à travers des types de stockage appelés *StorageClasses* :
+**Le stockage dynamique dans Kubernetes est fourni à travers des types de stockage appelés *StorageClasses* :**
 
 - dans le cloud, ce sont les différentes offres de volumes du fournisseur,
 - dans un cluster auto-hébergé c'est par exemple des opérateurs de stockage comme `rook.io` ou `longhorn`(Rancher).
 
 [doc officielle](https://kubernetes.io/docs/concepts/storage/storage-classes/) -->
+
+---
+
 
 ### Demander des volumes et les liers aux pods :`PersistentVolumes` et `PersistentVolumeClaims`
 
@@ -73,14 +83,20 @@ Quand un conteneur a besoin d'un volume, il crée une *PersistentVolumeClaim* : 
 
 Le provisionning de `PersistentVolume` peut être manuel (on crée un objet `PersistentVolume` en amont ou non. Dans le second cas la création d'un `PersistentVolumeClaim` mène directement à la création d'un volume si possible)
 
+---
+
+
 ### Liens externes
 
 - https://developers.redhat.com/articles/2022/10/06/kubernetes-storage-concepts
 - https://bluexp.netapp.com/blog/cvo-blg-5-types-of-kubernetes-volumes-and-how-to-work-with-them
 
+---
+
+
 ### Backup de volume
 
-Il existe plusieurs méthodes pour effectuer des sauvegardes de données persistantes dans Kubernetes : 
+**Il existe plusieurs méthodes pour effectuer des sauvegardes de données persistantes dans Kubernetes :** 
 
 - Utiliser des outils de backup Kubernetes : Certains outils de sauvegarde Kubernetes, tels que Velero (anciennement Heptio Ark), permettent de sauvegarder et de restaurer des données persistantes. Ces outils peuvent être configurés pour effectuer des sauvegardes régulières des volumes persistants dans votre cluster Kubernetes, puis les stocker dans un emplacement de stockage sécurisé.
 

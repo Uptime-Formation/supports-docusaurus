@@ -10,7 +10,31 @@ weight: 36
     - Comprendre les grandes lignes de l'architecture de Kubernetes
     - Connaître les objets principaux de Kubernetes 
 
-# L'architecture de Kubernetes 
+
+## L'architecture de Kubernetes 
+
+![](/img/kubernetes/k8s-controlplane-nodes.svg)
+
+**Un control plane d'administration et des nodes d'exécution** 
+
+Le control plane est la partie administrative et les noeuds sont destinés aux conteneurs des utilisateurs.
+
+Les noeuds reçoivent les demandes du control plane et les appliquent.
+
+Le control plane est chargé de recevoir les appels d'API, de gérer les AAA (Authentification Authorisation Accounting), et de traiter l'orchestration.
+
+--- 
+
+**Un système d'orchestration basé sur les intentions** 
+
+Les manifestes envoyés par les utilisateurs définissent l'état idéal souhaité par l'utilisateur.
+
+L'orchestrateur peut rejeter certaines requêtes invalides.
+
+Les requêtes valides sont traitées de manière asynchrone selon un plan de réalisation ordonné.
+
+
+--- 
 
 **Tout est un conteneur** 
 
@@ -25,39 +49,14 @@ Les composants effectifs de Kubernetes (API, pilotage des noeuds, etc.) sont tou
 
 Ceci simplifie la mise à jour du système.
 
-**Un control plane d'administration et des nodes d'exécution** 
+--- 
 
-Le control plane est la partie administrative et les noeuds sont destinés aux conteneurs des utilisateurs.
-
-Les noeuds reçoivent les demandes du control plane et les appliquent.
-
-Le control plane est chargé de recevoir les appels d'API, de gérer les AAA (Authentification Authorisation Accounting), et de traiter l'orchestration.
-
-**Un système d'orchestration basé sur les intentions** 
-
-Les manifestes envoyés par les utilisateurs définissent l'état idéal souhaité par l'utilisateur.
-
-L'orchestrateur peut rejeter certaines requêtes invalides.
-
-Les requêtes valides sont traitées de manière asynchrone selon un plan de réalisation ordonné.
-
-**De la sécurité intégrée et intégrable**
-
-K8S utilise du Role Based Access Control pour les utilisateurs, et des service accounts pour accéder à l'API.  
-
-Les ressources sont cloisonnées et limitées via des namespaces de cluster.
-
-Les règles de sécurisation des conteneurs sont définies par les utilisateurs, mais on peut imposer des minimums (ex: no root user, read only, etc.).
-
-Des règles de sécurité réseaux sont définies pour bloquer les flux indésirables.
-
-Et il existe tout un écosystème de solutions dédiées, comme Falco qui surveille au niveau des appels système que rien d'anormal ne se produise, et logge tous les appels.
-
-
-
-# Les principales ressources utilisateurs 
+# # Les principales ressources utilisateurs 
 
 Dans Kubernetes, les utilisateurs utilisent les ressources mises à disposition par l'API  
+
+![](/img/kubernetes/k8s_objects_hierarchy.png?width=600px)
+
 
 Tout ou partie de ces ressources est définie dans des fichiers YAML complexes.
 
