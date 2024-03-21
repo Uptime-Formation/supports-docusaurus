@@ -82,7 +82,6 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 
 - https://docs.gitlab.com/ee/topics/build_your_application.html
 
-
 ## TP - Mise en oeuvre d'une CI/CD avec Gitlab et Docker
 
 (sans **continuous deployment K8s** => suite dans le TP k8s Gitlab à venir)
@@ -94,7 +93,8 @@ Autre problème, installer et maintenir les serveurs dédiés peut représenter 
 ### Créer un projet Gitlab
 
 - Créez un compte sur Gitlab (gratuit)
-- Ajoutez la clé `~/.ssh/id_stagiaire.pub` (ou une nouvelle crée avec `ssh-keygen`) à votre compte (vous pourrez l'enlever à la fin du TP)
+- créer une clé ssh avec `ssh-keygen` (faire juste entrer a toute les questions suffit ici => id_rsa sans passphrase)
+- Ajoutez la clé à votre compte (vous pourrez l'enlever à la fin du TP)
 - Créez un projet privé `monsterstack_app` par exemple
 - Ajoutez un remote git au dépot git avec `git remote add gitlab <ssh_url_du_projet>`
 - Poussez le projet avec `git push gitlab` et vérifiez sur la page du projet que votre code est bien poussé.

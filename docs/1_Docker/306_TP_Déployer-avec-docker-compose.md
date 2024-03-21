@@ -94,7 +94,7 @@ if __name__ == '__main__':
 Dockerisons maintenant cette nouvelle application avec le Dockerfile suivant :
 
 ```Dockerfile
-FROM python:3.7
+FROM python:3.12
 
 RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi
 RUN pip install Flask uWSGI requests redis
@@ -285,7 +285,7 @@ Conclusions:
 
 
 ```Dockerfile
-FROM python:3.7
+FROM python:3.12
 
 RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi
 RUN pip install Flask uWSGI requests redis
@@ -302,7 +302,7 @@ USER uwsgi
 CMD ["/boot.sh"]
 ```
 
-#### Un `docker-compose.prod.yml` pour `identicon`
+#### Un `docker-compose.prod.yml` pour `frontend`
 
 Créez un deuxième fichier Compose `docker-compose.prod.yml` (à compléter) pour lancer l'application `identicon` en configuration de production. 
 
