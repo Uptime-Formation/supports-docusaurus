@@ -47,7 +47,7 @@ La conteneurisation permet :
  - `sudo apt install snapd`
  - `sudo snap install lxd`
 
-- Initialiser avec `lxd init` et répondre aux questions (faire <entrer> a chaque question pour garder les valeurs par défaut fonctionne bien)
+- Initialiser avec `lxd init` et répondre aux questions (faire |entrer| a chaque question pour garder les valeurs par défaut fonctionne bien)
 
 ### Commande : 
 
