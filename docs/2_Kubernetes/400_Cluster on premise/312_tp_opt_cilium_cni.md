@@ -32,7 +32,6 @@ Suivez le tutoriel suivant pour installer la CLI cilium, déployer et tester le 
 - https://docs.cilium.io/en/stable/gettingstarted/hubble_setup/#hubble-setup
 - https://docs.cilium.io/en/stable/gettingstarted/hubble/#hubble-ui
 
-
 ## Démo des NetworkPolicies de Cilium
 
 - https://docs.cilium.io/en/stable/gettingstarted/demo/#starwars-demo

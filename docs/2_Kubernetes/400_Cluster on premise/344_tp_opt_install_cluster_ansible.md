@@ -1,5 +1,5 @@
 ---
-title: TP optionnel - Bootstrapper un cluster multi-noeud avec Ansible (Kubeadm ou mode manuel)
+title: TP optionnel - Kubernetes the (not so) hard way avec Ansible
 draft: false
 ---
 

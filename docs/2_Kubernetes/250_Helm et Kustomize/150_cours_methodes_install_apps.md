@@ -66,7 +66,10 @@ Voici quelques commandes de bases pour Helm :
 
 - `helm list`: Permet de lister les Charts installés sur votre Cluster
 
-- `kubectl get all --all-namespaces -l='app.kubernetes.io/managed-by=Helm,app.kubernetes.io/instance=release-name` ou `kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind -l release=awesome-nginx --ignore-not-found -o name` => pour lister les resources d'un chart à partir des étiquettes
+Pour lister les resources d'une release helm n'a pas de fonction préconçue :  il faut bricoler un peu:
+- `helm get manifest release-name | yq '(.kind + "/" + .metadata.name)'`
+- `kubectl get all --all-namespaces -l='app.kubernetes.io/managed-by=Helm,app.kubernetes.io/instance=release-name`
+- `kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind -l release=awesome-nginx --ignore-not-found -o name`
 
 - `helm delete my-release`: Permet de désinstaller la release `my-release` de Kubernetes
 
