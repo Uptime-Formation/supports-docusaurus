@@ -21,7 +21,7 @@ C'est un comportement par défaut assez bon, mais parfois, vous pouvez vouloir u
 
 ### NodeSelector
 
-Un pod peut spécifier sur quels nœuds il souhaite être planifié dans sa `spec`. Par exemple, un pod nginx avec un `nodeSelector` spécifiant l'étiquette `kubernetes.io/hostname` du nœud `inkus-worker2` (nœud à partir de l'installation kubeadm ansible) :
+Un pod peut spécifier sur quels nœuds il souhaite être planifié dans sa `spec`. Par exemple, un pod nginx avec un `nodeSelector` spécifiant l'étiquette `kubernetes.io/hostname` du nœud `kluster-worker2` (nœud à partir de l'installation kubeadm ansible) :
 
 ```yaml
 apiVersion: v1
@@ -32,7 +32,7 @@ metadata:
     role: nginx-example
 spec:
   nodeSelector:
-    kubernetes.io/hostname: inkus-worker2
+    kubernetes.io/hostname: kluster-worker2
   containers:
   - name: nginx
     image: nginx:latest
@@ -59,7 +59,7 @@ Tentons de marquer notre nœud `worker2` pour expulser les pods:
 
 
 ```sh
-kubectl taint nodes inkus-worker2 taint-example=true:NoExecute
+kubectl taint nodes kluster-worker2 taint-example=true:NoExecute
 ```
 
 Pour permettre aux pods de tolérer cette taint, ajoutez une toleration à leur `spec`:
@@ -93,7 +93,7 @@ affinity:
         - key: kubernetes.io/hostname
           operator: NotIn
           values:
-          - inkus-worker2
+          - kluster-worker2
 ```
 
 
@@ -140,7 +140,7 @@ Un exemple simple est si vous voulez que hue-reminders soit toujours planifié a
 
 La topologyKey est une étiquette de nœud que Kubernetes utilise pour rassembler les pods qui doivent fonctionner ensemble : dans le cas classique d'un cloud provider on utilise `topology.kubernetes.io/zone` lorsque les workloads doivent s'exécuter dans un même datacenter.
 
-Avec le code d'exemple précédent les nouveaux pods avec cette spec seront planifiés sur `inkus-worker2` à côté du pod `nginx-example`  et loin du pod-repoussoir mais c'est moins prioritaire.
+Avec le code d'exemple précédent les nouveaux pods avec cette spec seront planifiés sur `kluster-worker2` à côté du pod `nginx-example`  et loin du pod-repoussoir mais c'est moins prioritaire.
 
 ### Pod topology spread constraints
 

@@ -120,7 +120,7 @@ kubernetesVersion: "1.28.3"
 certificatesDir: "/etc/kubernetes/pki" 
 
 networking:
-  dnsDomain: inkus.local
+  dnsDomain: kluster.local
 
 featureGates:
   RotateKubeletServerCertificate: true  # Activation de la fonctionnalité expérimentale RotateKubeletServerCertificate
@@ -168,13 +168,13 @@ Constatons que le pods ne peut pas se schedule à cause de la taint `NoSchedule`
 
 ```sh
 kubectl get events
-kubectl describe node inkus-cp0
+kubectl describe node kluster-cp0
 ```
 
 Supprimer la taint avec la commande suivante (source : https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#control-plane-node-isolation): 
 
 ```sh
-kubectl taint nodes inkus-cp0 node-role.kubernetes.io/control-plane-
+kubectl taint nodes kluster-cp0 node-role.kubernetes.io/control-plane-
 ```
 
 `kubectl expose deployment nginx-deployment --type=LoadBalancer --port=80 --target-port=80`
