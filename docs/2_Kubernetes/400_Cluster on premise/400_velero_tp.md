@@ -47,7 +47,7 @@ wget https://github.com/vmware-tanzu/velero/releases/download/v1.13.1/velero-v1.
 tar -zvf velero-v1.13.1-linux-amd64.tar.gz
 mv velero-v1.13.1-linux-amd64/velero /usr/local/bin
 velero version
-pip install awscli
+sudo apt install -y awscli
 ```
 
 ### Tester l'accès à un storage s3
@@ -90,4 +90,9 @@ velero install \
 
 ### Tutoriel backup restore stateful application
 
-https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/1.18/tkgi/GUID-velero-stateful-ns-csi.html
+
+- https://velero.io/blog/velero-v1-1-stateful-backup-vsphere/
+
+
+##### other tuto backup guestbook
+- https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/1.18/tkgi/GUID-velero-stateful-ns-csi.html
