@@ -76,7 +76,7 @@ Créez (via Lens ou un fichier avec `kubectl apply`) la resource suivante pour d
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monsterstack
+  name: monsterstack-<votrenom>
   namespace: argocd
 spec:
   project: dev-elie
