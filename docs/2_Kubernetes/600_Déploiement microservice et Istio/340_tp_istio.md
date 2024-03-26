@@ -16,13 +16,14 @@ Un autre service mesh populaire et plus simple qu'Istio, Linkerd : https://linke
 
 Cilium peut aussi maintenant opérer comme un service mesh
 
+- https://www.youtube.com/watch?v=16fgzklcF7Y
+
 ## Fonctionnalités de Istio
 
 - dynamic service discovery
 - retry et autres fonctionnalités utiles pour les microservices
 - traffic metrics, and tracing (récupérer notamment les latences des requêtes entre chaque service)
 - chiffrement mTLS des connexions entre services
-
 
 ![](/img/kubernetes/istio_archi.png)
 
