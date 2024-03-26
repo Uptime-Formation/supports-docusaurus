@@ -19,8 +19,26 @@ Cilium peut aussi maintenant opérer comme un service mesh
 ## Fonctionnalités de Istio
 
 - dynamic service discovery
+- retry et autres fonctionnalités utiles pour les microservices
 - traffic metrics, and tracing (récupérer notamment les latences des requêtes entre chaque service)
 - chiffrement mTLS des connexions entre services
+
+### CRDs de Istio
+
+Istio utilise plusieurs Custom Resource Definitions (CRDs) pour étendre les fonctionnalités de Kubernetes et permettre la configuration de ses différents composants:
+
+- **VirtualService** : Le CRD `VirtualService` permet de définir les règles de trafic pour contrôler le routage des requêtes HTTP et TCP vers différentes destinations dans le maillage Istio. Il est utilisé pour configurer des fonctionnalités telles que le routage basé sur des en-têtes, des poids du trafic, des redirigeants et des destinations de service.
+
+- **DestinationRule** : Le CRD `DestinationRule` est utilisé pour définir les règles de trafic spécifiques à une destination, telles que la configuration des politiques de répartition de charge, des réplicas et des stratégies de rééquilibrage de charge.
+
+- **Gateway** : Le CRD `Gateway` est utilisé pour configurer les points d'entrée de trafic externes dans le maillage Istio. Il permet de définir des règles pour l'exposition de services Istio à l'extérieur du maillage, comme l'exposition de services HTTP, HTTPS et TCP.
+
+- **ServiceEntry** : Le CRD `ServiceEntry` est utilisé pour déclarer des services externes (non-Istio) au sein du maillage Istio. Il permet à Istio de gérer la communication avec des services situés en dehors du maillage et d'appliquer des politiques de sécurité, de trafic et de résilience à ces services.
+
+- **Sidecar** : Le CRD `Sidecar` est utilisé pour configurer les sidecars Envoy dans les pods de votre application. Il permet de définir des options de configuration spécifiques pour chaque sidecar, telles que les politiques de trafic, les filtres réseau et les règles de sécurité.
+
+- **AuthorizationPolicy** : Le CRD `AuthorizationPolicy` est utilisé pour définir des politiques de contrôle d'accès basées sur les rôles et les permissions pour les services dans le maillage Istio. Il permet de spécifier des règles d'autorisation pour limiter l'accès aux services en fonction des identités et des attributs de requête.
+
 
 ## Essayer Istio
 
