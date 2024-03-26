@@ -4,7 +4,7 @@ title: TP optionnel - Configurer un user et un projet dans ArgoCD
 
 ArgoCD est donc un opérateur GitOps ou encore un operateur / superviseur d'applications qui peut s'étendre à plusieurs équipes et cluster.
 
-La question des identités et droits est central dans un environnement "multi-tenant" comme une cohabitation de plusieurs équipes.
+La question des identités et droits est centrale dans un environnement "multi-tenant" comme une cohabitation de plusieurs équipes.
 
 Nous allons définir pour gérer cette situation un **projet** ArgoCD et un **utilisateur** ArgoCD ayant le droit d'intervention sur ce projet. L'entité projet peut être gérée via l'interface, via la CLI, ou mieux via les CRDs intallés par l'opérateur.
 
@@ -57,9 +57,9 @@ spec:
   clusterResourceWhitelist:  # toutes les resources peuvent être crées
   - group: '*'
     kind: '*'
-  policies:
-    # p, elie, applications, get, my-project/*, allow
-    p, <votreusername>, applications, *, dev-<votreusername>/*, allow
+  # policies:
+  #   # p, elie, applications, get, my-project/*, allow
+  #   p, <votreusername>, applications, *, dev-<votreusername>/*, allow
 ```
 
 TODO: fix policies syntax !!
@@ -83,7 +83,7 @@ spec:
   source:
     repoURL: https://github.com/<yourusername>/<yourmonsterrepo>
     targetRevision: tp_monsterstack_final ## ou autre branche
-    path: k8s-deploy-dev
+    path: k8s-deploy-dev/
     directory:
       recurse: true
   destination:
