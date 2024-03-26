@@ -26,6 +26,8 @@ On donc peut tester la base du fonctionnement d'un plugin CNI installé en essay
 
 https://projectcalico.docs.tigera.io/about/about-k8s-networking
 
+![](/img/kubernetes/pod_network.png)
+
 <!-- ## Traffic réseau "North-South-East-West"
 
 - Lorsque vous avez un cluster Kubernetes avec vos services en cours d'exécution, comment l'utilisateur final extérieur ou un service extérieur entrent-t-ils en contact avec votre service ?. C'est ce que l'on appelle le trafic nord, c'est-à-dire une requête extérieure qui arrive sur votre cluster. Pour gérer ce trafic entrant, vous pouvez mettre en place un loadbalancer. Un loadbalancer kubernetes (LB) donne une seule adresse IP externe qui transmettra tout votre trafic entrant à votre service.
@@ -91,6 +93,9 @@ Flannel est le plugin le plus ancien et simple pour kubernetes. Il implémente l
 Son principal avantage est d'être plus simple à implémenter et maintenir que Calico ou Cillium et plus compatible (pas besoin d'un noyau eBPF par exemple). Idéal pour les petits clusters peu critiques.
 
 Il ne dispose pas d'implémentation des Network Policies à moins d'être complémenté par Calico (Cannal)
+
+![](/img/kubernetes/flannel_archi.png)
+
 ### Calico
 
 Calico développé par l'entreprise Tigera est le plugin CNI le plus populaire pour les clusters à grande échelle avec des configurations avancées et des performances exemplaires.
@@ -107,6 +112,8 @@ Calico est extrêment fin sur les network policies mais peut aussi gérer le tra
 
 Calico dispose de plus de nombreuses offres managées de différents vendeurs. Il s'intègre en particulier avec l'offre de Tigera et stack complète d'observabilité et sécurité réseau. Cf cours sur la sécurité.
 
+![](/img/kubernetes/calico_archi.png)
+
 ### Cilium
 
 Solution plus récente mais très en vogue, Cilium implémente depuis le départ un dataplane eBPF qui lui permet d'associer une configuration simple avec des fonctionnalités puissantes qui concurrencent Calico:
@@ -115,6 +122,8 @@ Solution plus récente mais très en vogue, Cilium implémente depuis le départ
 - fournit des Network Policies standard et avancées au niveau transport (OSI 3-4) et application (OSI 7) qui sont DNS-aware
 - fournit en option un chiffrement du traffic
 - Permet de créer facilement un multi-cluster
+
+![](/img/kubernetes/cilium_archi.png)
 
 ### Comparaison Cilium et Calico
 

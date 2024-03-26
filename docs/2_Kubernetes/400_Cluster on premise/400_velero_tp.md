@@ -1,16 +1,14 @@
 ---
 title: TP optionnel - Backuper kubernetes avec Velero
-sidebar_class_name: hidden
+# sidebar_class_name: hidden
 ---
-
 
 sources: 
 
 - https://velero.io/docs/v1.13/how-velero-works/
 - https://medium.com/cloudnloud/velero-backups-in-kubernetes-39af7e92d992
 
-### Accéder à un storage s3
-
+### Tester l'accès à un storage s3
 
 `.awsrc`
 
@@ -23,8 +21,16 @@ export AWS_ENDPOINT_URL='http://192.168.<ip>:3900'
 aws --version
 ```
 
+`source .awsrc && aws s3 ls`
+
 `.velero-bucket-credential`
 
+```ini
+[default]
+aws_access_key_id = GK2b96ddf577672cd1e759dd25
+aws_secret_access_key = b254f11f28bee56be8f171c2919d32e1dfe62ee0e243e1aca0b989f6ebf0cecd
+
+```
 
 ### Installer l'opérateur velero dans le cluster
 
@@ -38,12 +44,6 @@ velero install \
     --backup-location-config region=garage,s3ForcePathStyle="true",s3Url=http://192.168.1.167:3900
 
 
-### Faire un backup 
+### Tutoriel backup restore stateful application
 
-
-Par défaut : velero backup create everything-backup
-
-velero backup create nginx-backup --include-namespaces nginx
-
-
-### Restorer le backup
+https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid-Integrated-Edition/1.18/tkgi/GUID-velero-stateful-ns-csi.html
