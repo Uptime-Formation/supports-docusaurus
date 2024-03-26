@@ -70,7 +70,7 @@ TODO: fix policies syntax !!
 ## Déployer une application depuis Github
 
 
-Créez via Lens ou un fichier avec kubectl apply la resource suivante pour notre projet de code
+Créez (via Lens ou un fichier avec `kubectl apply`) la resource suivante pour déployer en GitOps notre projet de code monsterstack:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
