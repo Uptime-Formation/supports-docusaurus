@@ -75,6 +75,10 @@ Chaque provider de cloud et flavour de kubernetes est légèrement différent au
 
 Comparaison des controlleurs: <https://medium.com/flant-com/comparing-ingress-controllers-for-kubernetes-9b397483b46b>
 
+## La nouvelle API Gateway
+
+- https://gateway-api.sigs.k8s.io/
+
 ## Gestion dynamique des certificats à l'aide de `certmanager`
 
 `Certmanager` est une application kubernetes (un `operator`) capable de générer automatiquement des certificats TLS/HTTPS pour nos ingresses.
