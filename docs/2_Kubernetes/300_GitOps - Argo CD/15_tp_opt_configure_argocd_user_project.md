@@ -62,4 +62,35 @@ spec:
     p, <votreusername>, applications, *, dev-<votreusername>/*, allow
 ```
 
+TODO: fix policies syntax !!
+
 (pour plus d'info la doc: https://argo-cd.readthedocs.io/en/stable/user-guide/projects/)
+
+
+## Déployer une application depuis Github
+
+
+Créez via Lens ou un fichier avec kubectl apply la resource suivante pour notre projet de code
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monsterstack
+  namespace: argocd
+spec:
+  project: dev-elie
+  source:
+    repoURL: https://github.com/<yourusername>/<yourmonsterrepo>
+    targetRevision: tp_monsterstack_final ## ou autre branche
+    path: k8s-deploy-dev
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: <yournamespace>
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
