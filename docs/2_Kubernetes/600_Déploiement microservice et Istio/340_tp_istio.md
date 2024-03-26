@@ -23,11 +23,14 @@ Cilium peut aussi maintenant opérer comme un service mesh
 - traffic metrics, and tracing (récupérer notamment les latences des requêtes entre chaque service)
 - chiffrement mTLS des connexions entre services
 
+
+![](/img/kubernetes/istio_archi.png)
+
 ### CRDs de Istio
 
 Istio utilise plusieurs Custom Resource Definitions (CRDs) pour étendre les fonctionnalités de Kubernetes et permettre la configuration de ses différents composants:
 
-- **VirtualService** : Le CRD `VirtualService` permet de définir les règles de trafic pour contrôler le routage des requêtes HTTP et TCP vers différentes destinations dans le maillage Istio. Il est utilisé pour configurer des fonctionnalités telles que le routage basé sur des en-têtes, des poids du trafic, des redirigeants et des destinations de service.
+- **VirtualService** : Le CRD `VirtualService` permet de définir les règles de trafic pour contrôler le routage des requêtes HTTP et TCP vers différentes destinations dans le maillage Istio. Il est utilisé pour configurer des fonctionnalités telles que le routage basé sur des en-têtes, des poids du trafic, des redirections et des destinations de service.
 
 - **DestinationRule** : Le CRD `DestinationRule` est utilisé pour définir les règles de trafic spécifiques à une destination, telles que la configuration des politiques de répartition de charge, des réplicas et des stratégies de rééquilibrage de charge.
 
