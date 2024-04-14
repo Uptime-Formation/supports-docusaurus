@@ -140,6 +140,10 @@ Si un contrôleur d'admission trouve une erreur, la requête est rejetée. Si la
 
 C'est un méchanisme très général utilisé par exemple pour ajouter des valeurs par défaut aux objets, appliquer une pod security policy etc.
 
+![](https://kubernetes.io/images/blog/2019-03-21-a-guide-to-kubernetes-admission-controllers/admission-controller-phases.png)
+
+- https://kubernetes.io/blog/2019/03/21/a-guide-to-kubernetes-admission-controllers/
+
 ### Requêtes spécialisées
 
 En plus des requêtes RESTful standard, le serveur API dispose d'un certain nombre de modèles de requête spécialisés qui fournissent des fonctionnalités étendues aux clients :

@@ -114,4 +114,6 @@ Testons avec de vrai commandes:
 - créer un deployment dans `prod` : `kubectl create deploy nginx --image=nginx -n prod`
 
 
+## Aller plus loin
 
+- https://johnharris.io/2019/08/least-privilege-in-kubernetes-using-impersonation/

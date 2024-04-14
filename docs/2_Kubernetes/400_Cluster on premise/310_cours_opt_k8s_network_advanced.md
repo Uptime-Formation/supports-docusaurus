@@ -36,6 +36,12 @@ https://projectcalico.docs.tigera.io/about/about-k8s-networking
 
 Le trafic est-ouest désigne la communication de vos services entre eux. D'une manière générale, il s'agit du trafic au sein d'un datacenter de serveur à serveur. -->
 
+## Une chaine video géniale pour aller en profondeur dans le réseau k8s
+
+Pleins de schémas. Des principes fondamentaux et une comparaison des différents plugin CNI
+
+- https://www.youtube.com/@TheLearningChannel-Tech/videos
+
 ## Communication inter-services avec le kube-proxy
 
 Une fois que l'on a mis en place un moyen de communication inter-pod la communication est-ouest de notre cluster n'est pas encore opérationnelle. En effet Kubernetes étant un environnement dynamique avec des pods créés et détruit automatiquement par des Deployment ou autre controller, gérer les IP des pods manuellement est en réalité impraticable. Pour cela nous avons besoin de la gestion automatique d'une ip virtuelle associée fournissant le loadbalancing proposé par les resources de type Service.
@@ -84,7 +90,7 @@ Voir cours sur la sécurité
 
 ## Comparaison des plugins CNI
 
-https://platform9.com/blog/the-ultimate-guide-to-using-calico-flannel-weave-and-cilium/
+https://platform9.com/blog/the-ultimate-guide-to-using-calico-flannel-weave-and-cilium
 
 ### Flannel
 

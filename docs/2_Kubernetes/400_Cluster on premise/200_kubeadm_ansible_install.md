@@ -21,6 +21,13 @@ Kubeadm est l'outil "officiel" en ligne de commande pour initialiser, configurer
 
 - **Options avancées de configuration**: Kubeadm prend en charge de nombreuses options avancées pour personnaliser la configuration du cluster Kubernetes, telles que la personnalisation des ports, des adresses IP, des plugins réseau, etc. Ces options sont configurables via des manifestes yaml
 
+### Sources:
+
+- tuto kubeadm debian : https://www.linuxtechi.com/install-kubernetes-cluster-on-debian/
+- tuto idem mais control plane HA avec haproxy+keepalive: https://www.linuxtechi.com/setup-highly-available-kubernetes-cluster-kubeadm/
+- documentation raisonnée sur kubeadm et l'admin de cluster : https://unofficial-kubernetes.readthedocs.io/en/latest/admin/kubeadm/
+- ansible+kubeadm simple : https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-20-04
+- exemples de parametres kubeadm : https://blog.zwindler.fr/2023/12/17/kubeadmcfg-introduction-api-kubeadm/
 
 
 ### Se connecter à l'infra et pinger les machines avec Ansible
