@@ -11,12 +11,9 @@ draft: false
 kubectl est le point d'entré universel pour contrôler tous les type de cluster kubernetes. 
 C'est un client en ligne de commande qui communique en REST avec l'API d'un cluster.
 
-Nous allons explorer kubectl au fur et à mesure des TPs. Cependant à noter que :
+`kubectl` peut gérer plusieurs clusters/configurations et switcher entre ces configurations. Pour que cette fonctionnalité soit plus confortable on installe souvent l'addon `kubectx` en plus.
 
-- `kubectl` peut gérer plusieurs clusters/configurations et switcher entre ces configurations
-- `kubectl` est nécessaire pour le client graphique `Lens` que nous utiliserons plus tard.
-
-La méthode d'installation importe peu. Pour installer kubectl sur Ubuntu nous ferons simplement: `sudo snap install kubectl --classic`.
+La méthode d'installation importe peu ici. Pour installer kubectl sur Ubuntu nous pouvons lancer: `sudo snap install kubectl --classic`.
 
 - Faites `kubectl version` pour afficher la version du client kubectl.
 
@@ -37,6 +34,7 @@ Minikube configure automatiquement kubectl (dans le fichier `~/.kube/config`) po
 - Testez la connexion avec `kubectl get nodes`.
 
 Affichez à nouveau la version `kubectl version`. Cette fois-ci la version de kubernetes qui tourne sur le cluster actif est également affichée. Idéalement le client et le cluster devrait être dans la même version mineure par exemple `1.20.x`.
+
 
 ##### Bash completion et racourcis
 
@@ -63,7 +61,7 @@ La liste complète : <https://blog.heptio.com/kubectl-resource-short-names-hepti
 
 Notre cluster k8s est plein d'objets divers, organisés entre eux de façon dynamique pour décrire des applications, tâches de calcul, services et droits d'accès. La première étape consiste à explorer un peu le cluster :
 
-- Listez les nodes pour récupérer le nom de l'unique node (`kubectl get nodes`) puis affichez ses caractéristiques avec `kubectl describe node/minikube`.
+- Listez les nodes pour récupérer le nom de l'unique node (`kubectl get nodes`) puis affichez ses caractéristiques avec `kubectl describe node/minikube` ou `kubectl describe node minikube`.
 
 La commande `get` est générique et peut être utilisée pour récupérer la liste de tous les types de ressources ou d'afficher les informations d'un resource précise.
 
