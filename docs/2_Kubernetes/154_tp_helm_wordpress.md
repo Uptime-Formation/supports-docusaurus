@@ -14,7 +14,7 @@ Inconvénient: Helm ajoute souvent de la complexité non nécessaire car les Cha
 
 Helm ne dispense pas de maîtriser l'administration de son cluster.
 
-## Installer Helm
+## (facultatif) Installer Helm
 
 - Pour installer Helm sur Ubuntu, utilisez : `sudo snap install helm --classic`
 
