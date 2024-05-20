@@ -1,9 +1,33 @@
 ---
-title: TP - Plusieurs installations simples de Kubernetes
+title: TP - installer un cluster de dev 
 # sidebar_class_name: hidden
 ---
 
-## Une 2e installation: `k3s` sur votre VPS
+## Choisir une distribution kubernetes de dev
+
+Voir le cours "différents types de cluster"
+
+- `minikube` est une distribution spécialisée pour le dev => avantage : la distribution la plus connue, bien documentée et utilisée dans tous les tutoriels
+- `k3s` est une distribution simple a installer pour le dev ou la prod en particulier pour des contextes edge computing. => avantage : permet de faire de la prod / s'installe sur un serveur.
+- `k3d` une distribution de dev basée sur k3s et Docker => avantage : démarre très vite, pleins de fonctionnalités pratiques comme le multinoeud.
+
+Nous allons installer l'une ici.
+
+### Installer `Minikube` (facultatif)
+
+- Pour installer minikube la méthode recommandée est indiquée ici: https://minikube.sigs.k8s.io/docs/start/
+
+Nous utiliserons classiquement `docker` comme runtime pour minikube (les noeuds k8s seront des conteneurs simulant des serveurs). Ceci est, bien sur, une configuration de développement. Elle se comporte cependant de façon très proche d'un véritable cluster.
+
+- Pour lancer le cluster faites simplement: `minikube start` (il est également possible de préciser le nombre de coeurs de calcul, la mémoire et et d'autre paramètre pour adapter le cluster à nos besoins.)
+
+Minikube configure automatiquement kubectl (dans le fichier `~/.kube/config`) pour qu'on puisse se connecter au cluster de développement.
+
+- Testez la connexion avec `kubectl get nodes`.
+
+Affichez à nouveau la version `kubectl version`. Cette fois-ci la version de kubernetes qui tourne sur le cluster actif est également affichée. Idéalement le client et le cluster devrait être dans la même version mineure par exemple `1.20.x`.
+
+## Installer k3s (facultatif)
 
 K3s est une distribution de Kubernetes orientée vers la création de petits clusters de production notamment pour l'informatique embarquée et l'Edge computing. Elle a la caractéristique de rassembler les différents composants d'un cluster kubernetes en un seul "binaire" pouvant s'exécuter en mode `master` (noeud du control plane) ou `agent` (noeud de calcul).
 
