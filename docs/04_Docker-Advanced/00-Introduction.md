@@ -5,7 +5,8 @@ weight: 1
 
 ## Introduction
 
-![](../assets/images/Moby-logo.png)
+![](../../static/img/docker/docker-lifecycle.png)
+
 
 ## A propos de moi / nous
 
@@ -45,11 +46,11 @@ weight: 1
   - on peut faire des tests
   - on facilite le déploiement de nouvelles instances
 
-## Comparaison entre Terraform et d'autres solutions IAC 
+--- 
+
+## Comparaison entre des solutions IAC 
 
 **Il existe 5 grandes familles d'outils d'IAC.**
-
---- 
 
 ### Scripts ad hoc  
   C'est la façon la plus basique de faire, en mettant dans des scripts les opérations répétables.  
@@ -126,9 +127,10 @@ sudo service apache2 start
   }]
 }
 
+```
+
 --- 
 
-```
 ### Outils d'orchestration  
   Les outils d'orchestration se basent sur des modèles de serveur pour assurer la gestion du cycle de vie des services pilotés par les équipe Devops.
   L'orchestrateur va piloter ces instances en : démarrage / arrêt, configuration, démultiplication à la demande, et autres opérations nécessaires à la bonne marche du service. 
@@ -189,20 +191,23 @@ Ce mouvement se structure autour des solutions **humaines** (organisation de l'e
 - La célérité de déploiement demandée par le développement agile (cycles journaliers de développement).
 - Difficultées à organiser des équipes hétérogènes de grande taille et qui s'agrandissent très vite selon le modèle des startups.et
 
-Il y a de nombreuses versions de ce que qui caractérise le DevOps mais pour résumer:
+
+--- 
+
+**Il y a de nombreuses versions de ce que qui caractérise le DevOps mais pour résumer:**
 
 Du côté humain:
 
-- Application des process de management agile aux opérations et la gestion des infrastructures (pour les synchroniser avec le développement).
-- Remplacement des procédés d'opérations humaines complexes et spécifiques par des opérations automatiques et mieux standardisées.
-- Réconciliation de deux cultures divergentes (Dev et Ops) rapprochant en pratique les deux métiers du développeur et de l'administrateur système.
+- **Application des process de management agile** aux opérations et la gestion des infrastructures (pour les synchroniser avec le développement).
+- **Remplacement des procédés d'opérations humaines** complexes et spécifiques par des opérations automatiques et mieux standardisées.
+- **Réconciliation de deux cultures divergentes (Dev et Ops)** rapprochant en pratique les deux métiers du développeur et de l'administrateur système.
 
 Du côté technique:
 
-- L'intégration et le déploiement continus des logiciels/produits.
-- L'infrastructure as code: gestion sous forme de code de l'état des infrastructures d'une façon le plus possible déclarative.
-- Les conteneurs (Docker surtout mais aussi Rkt et LXC/LXD): plus léger que la virtualisation = permet d'isoler chaque service dans son "OS" virtuel sans dupliquer le noyau.
-- Le cloud (Infra as a service, Plateforme as a Service, Software as a service) permet de fluidifier l'informatique en alignant chaque niveau d'abstraction d'une pile logicielle avec sa structuration économique sous forme de service.
+- **L'intégration et le déploiement continus** des logiciels/produits.
+- **L'infrastructure as code**: gestion sous forme de code de l'état des infrastructures d'une façon le plus possible déclarative.
+- **Les conteneurs** (Docker surtout mais aussi Rkt et LXC/LXD): plus léger que la virtualisation = permet d'isoler chaque service dans son "OS" virtuel sans dupliquer le noyau.
+- **Le cloud** (Infra as a service, Plateforme as a Service, Software as a service) permet de fluidifier l'informatique en alignant chaque niveau d'abstraction d'une pile logicielle avec sa structuration économique sous forme de service.
 
 
 ## Aller plus loin

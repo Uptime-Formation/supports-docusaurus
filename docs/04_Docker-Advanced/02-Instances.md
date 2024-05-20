@@ -64,7 +64,13 @@ Exemples:
 - etc.
 
 ```shell
+# Installation du plugin SSHFS
+$ docker plugin install vieux/sshfs
+
+# Création du volume
 $ docker volume create -d vieux/sshfs -o sshcmd=<sshcmd> -o allow_other sshvolume
+
+# Montage du volume
 $ docker run -p 8080:8080 -v sshvolume:/path/to/folder --name test someimage
 ```
 
@@ -86,3 +92,42 @@ La solution basique est de faire un bridge local.
 
 
 ![](../../static/img/docker/k8s-net-simple.png)
+
+---
+
+**On accède aux réseaux dans Docker avec la ligne de commande et le verbe `network`**
+
+Ex: `docker network ls`
+
+--- 
+
+## TP : Lancer deux instances Docker avec un volume et un réseau nommés partagés
+
+Objectif : vous devez lancer deux instances Docker 
+- avec une image alpine
+- nommées container_1 et container_2 
+- dans le même réseau `test` 
+- avec le même volume `test` monté sur /data
+
+Vous devriez pouvoir afficher et modifier le contenu d'un même fichier. 
+
+Vous devriez également pouvoir faire un ping de la machine 1 vers la machine 2.
+
+<details><summary>Correction</summary>
+
+```yml
+
+docker network create test
+docker network create test
+docker run -d --rm -v test:/data --network test --name container_1 alpine:latest sh -c "while true; do read /dev/null; done"
+docker run -d --rm -v test:/data --network test --name container_2 alpine:latest sh -c "while true; do read /dev/null; done"
+docker exec -it container_1 sh
+    / # echo container_1 > /data/info
+docker exec -it container_2 sh
+    / # cat /data/info 
+    / # ping container_1
+
+```
+
+
+</details>

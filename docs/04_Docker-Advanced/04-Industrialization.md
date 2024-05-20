@@ -237,7 +237,7 @@ Puis, à l'aide de la documentation Elasticsearch et/ou en adaptant de bouts de 
 
 ### TP : déployer du monitoring avec *cAdvisor* et *Prometheus*
 
-La solution Prometheus 
+La solution Prometheus est aujourd'hui très utilisée pour le monitoring des instances Docker.
 
 Suivre ce tutoriel pour du monitoring des conteneurs Docker : <https://prometheus.io/docs/guides/cadvisor/>
 

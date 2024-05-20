@@ -4,6 +4,8 @@ weight: 6
 ---
 
 
+![](../../static/img/docker/docker-orchestrators.png)
+
 ##  Docker compose
 
 
@@ -340,7 +342,7 @@ Tenter :
 ---
 
 
-### Gérer les données sensibles dans Swarm avec les secrets Docker
+### Facultatif : Gérer les données sensibles dans Swarm avec les secrets Docker
 
 - créer un secret avec : `echo "This is a secret" | docker secret create my_secret_data`
 
@@ -350,35 +352,13 @@ Tenter :
 
 
 
+---
 
-### Facultatif : stratégies de déploiement et Swarm
+### Facultatif : cluster Postgres haute dispo et Swarm 
 
-A partir d'une commande Curl, observez les changements de version d'un conteneur.
-- Vous pouvez vous servir de cette image qui lit la variable d'environnement `VERSION` :
-`docker run -e VERSION=v2.0.0 -p 8080:8080 containersol/k8s-deployment-strategies`
+Objectif : Déployer un cluster postgres répliqué avec Swarm 
 
-- Préparez 2 fichiers : `docker-compose.init.yml` et `docker-compose.upgrade.yml`, représentant vos deux scénarios. Vous pouvez vous inspirer de cette page et de son dépôt :
-  - <https://blog.container-solutions.com/kubernetes-deployment-strategies>
-  - <https://github.com/ContainerSolutions/k8s-deployment-strategies>
-
-- Nous allons maintenant mettre à jour, lancez d'abord dans un terminal la commande : `while true; do curl localhost:8080; echo; sleep 1; done`
-
-- Appliquez votre `docker-compose.upgrade.yml` et observez
-
-
-### _Facultatif :_ Utiliser Traefik avec Swarm
-
-Vous pouvez désormais faire [l'exercice 2 du TP 7](../7-tp-traefik) pour configurer un serveur web qui permet d'accéder à vos services Swarm via des domaines spécifiques.
-
-
-<!-- ### *Facultatif :* du monitoring de cluster Docker Swarm avec *Prometheus*
-
-Suivre ce tutoriel pour du monitoring d'un cluster Docker Swarm : <https://prometheus.io/docs/guides/dockerswarm> -->
-
-
-### Facultatif : cluster Postgres haute dispo et Swarm -->
-
-https://www.crunchydata.com/blog/an-easy-recipe-for-creating-a-postgresql-cluster-with-docker-swarm 
+Indice : https://www.crunchydata.com/blog/an-easy-recipe-for-creating-a-postgresql-cluster-with-docker-swarm 
 
 
 ---
