@@ -8,7 +8,7 @@ draft: false
 
 ### Installer le client CLI `kubectl`
 
-kubectl est le point d'entré universel pour contrôler tous les type de cluster kubernetes. 
+kubectl est le point d'entrée universel pour contrôler tous les types de cluster kubernetes. 
 C'est un client en ligne de commande qui communique en REST avec l'API d'un cluster.
 
 `kubectl` peut gérer plusieurs clusters/configurations et switcher entre ces configurations. Pour que cette fonctionnalité soit plus confortable on installe souvent l'addon `kubectx` en plus.
@@ -17,23 +17,6 @@ La méthode d'installation importe peu ici. Pour installer kubectl sur Ubuntu no
 
 - Faites `kubectl version` pour afficher la version du client kubectl.
 
-### Installer Minikube
-
-**Minikube** est la version de développement de Kubernetes (en local) la plus répendue. Elle est maintenue par la cloud native foundation et très proche de kubernetes upstream. Elle permet de simuler un ou plusieurs noeuds de cluster sous forme de conteneurs docker ou de machines virtuelles.
-
-- Pour installer minikube la méthode recommandée est indiquée ici: https://minikube.sigs.k8s.io/docs/start/
-
-Nous utiliserons classiquement `docker` comme runtime pour minikube (les noeuds k8s seront des conteneurs simulant des serveurs). Ceci est, bien sur, une configuration de développement. Elle se comporte cependant de façon très proche d'un véritable cluster.
-
-- Si Docker n'est pas installé, installer Docker avec la commande en une seule ligne : `curl -fsSL https://get.docker.com | sh`, puis ajoutez-vous au groupe Docker avec `sudo usermod -a -G docker <votrenom>`, et faites `sudo reboot` pour que cela prenne effet.
-
-- Pour lancer le cluster faites simplement: `minikube start` (il est également possible de préciser le nombre de coeurs de calcul, la mémoire et et d'autre paramètre pour adapter le cluster à nos besoins.)
-
-Minikube configure automatiquement kubectl (dans le fichier `~/.kube/config`) pour qu'on puisse se connecter au cluster de développement.
-
-- Testez la connexion avec `kubectl get nodes`.
-
-Affichez à nouveau la version `kubectl version`. Cette fois-ci la version de kubernetes qui tourne sur le cluster actif est également affichée. Idéalement le client et le cluster devrait être dans la même version mineure par exemple `1.20.x`.
 
 
 ##### Bash completion et racourcis
@@ -63,7 +46,7 @@ Notre cluster k8s est plein d'objets divers, organisés entre eux de façon dyna
 
 - Listez les nodes pour récupérer le nom de l'unique node (`kubectl get nodes`) puis affichez ses caractéristiques avec `kubectl describe node/minikube` ou `kubectl describe node minikube`.
 
-La commande `get` est générique et peut être utilisée pour récupérer la liste de tous les types de ressources ou d'afficher les informations d'un resource précise.
+La commande `get` est générique et peut être utilisée pour récupérer la liste de tous les types de ressources ou d'afficher les informations d'une ressource précise.
 
  Pour désigner un seul objet, il faut préfixer le nom de l'objet par son type (ex : `kubectl get nodes minikube` ou `kubectl get node/minikube`) car k8s ne peut pas deviner ce que l'on cherche quand plusieurs ressources de types différents ont le même nom.
 

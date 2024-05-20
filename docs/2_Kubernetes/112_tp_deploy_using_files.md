@@ -32,7 +32,7 @@ Kubernetes fournit un ensemble de commande pour débugger des conteneurs :
 
 ## Utiliser un déploiement (méthode à utiliser)
 
-- Créez un fichier `demo-deploy.yaml` avec à l'intérieur le code suivant à compléter:
+- Créez un fichier `demo-deploy.yaml` avec à l'intérieur le code suivant **A COMPLETER**:
 
 ```yaml
 apiVersion: apps/v1
