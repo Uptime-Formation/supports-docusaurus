@@ -9,7 +9,7 @@ title: "Cours Dockerfile : la commande par défaut d'un conteneur"
    -->
 <!-- --- -->
 
-Les combinaisons des deux directive du Docker file `CMD` et `ENTRYPOINT`
+La combinaison des deux directives du Dockerfile `CMD` et `ENTRYPOINT` débouche sur le programme qui sera effectivement executé au lancement du conteneur ainsi que les arguments utilisés.
 
 ### Instruction `CMD`
 
@@ -19,7 +19,7 @@ CMD ["param1","param2"] (as default parameters to ENTRYPOINT)
 CMD command param1 param2 (shell form)
 ```
 
-Généralement à la fin du `Dockerfile` : elle permet de préciser **la commande par défaut** lancée à la création d'une instance du conteneur avec `docker run`. on l'utilise avec une liste de paramètres
+Généralement à la fin du `Dockerfile`, `CMD` permet de préciser **la commande par défaut** lancée à la création d'une instance du conteneur avec `docker run`. on l'utilise avec une liste de paramètres
 
 ```Dockerfile
 CMD ["echo 'Conteneur démarré'"]
@@ -34,7 +34,7 @@ ENTRYPOINT ["executable", "param1", "param2"]
 ENTRYPOINT command param1 param2
 ```
 
-ENTRYPOINT Précise le programme de base avec lequel sera lancé la commande... il ne sera pas écrasé
+`ENTRYPOINT` précise le programme de base (d'entrée) avec lequel sera lancé le conteneur... il ne sera pas écrasé par la commande éventuellement fournie au lancement.
 
 ```Dockerfile
 FROM python:3.9
@@ -98,12 +98,6 @@ Dans ce cas :
 
 Créons un nouveau Dockerfile qui permet de faire dire des choses à une vache grâce à la commande `cowsay`.
 
-```Dockerfile
-FROM ubuntu
-RUN apt-get update && apt-get install -y cowsay
-ENTRYPOINT ["/usr/games/cowsay"]
-```
-
 Le but est de faire fonctionner notre programme dans un conteneur à partir de commandes de type :
 
 - `docker run --rm cowsay Coucou !`
@@ -113,6 +107,15 @@ Le but est de faire fonctionner notre programme dans un conteneur à partir de c
 - Doit-on utiliser la commande `ENTRYPOINT` ou la commande `CMD` ? Se référer au [manuel de référence sur les Dockerfiles](https://docs.docker.com/engine/reference/builder/) si besoin.
 - Pour information, `cowsay` s'installe dans `/usr/games/cowsay`.
 - La liste des options (incontournables) de `cowsay` se trouve ici : <https://debian-facile.org/doc:jeux:cowsay>
+
+
+### Correction :
+
+```Dockerfile
+FROM ubuntu
+RUN apt-get update && apt-get install -y cowsay
+ENTRYPOINT ["/usr/games/cowsay"]
+```
 
 
 **L'instruction `ENTRYPOINT` et la gestion des entrées-sorties des programmes dans les Dockerfiles peut être un peu capricieuse et il faut parfois avoir de bonnes notions de Bash et de Linux pour comprendre (et bien lire la documentation Docker).**
