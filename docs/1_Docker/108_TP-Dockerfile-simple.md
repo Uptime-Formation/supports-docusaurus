@@ -49,7 +49,7 @@ Pour afficher "Hello World", il nous a fallu au moins 2 instructions
 
 1. le système de base dans lequel on veut lancer le process
 2. un fichier de script shell ajouté qui afficher hello world
-2. la commande du process qu'on veut lancer ici `script.sh`
+2. la commande du process qu'on veut lancer ici le script `boot.sh`
 
 La commande `build` est l'opération qui "prépare le plat", et le met dans un format "consommable".  
 
