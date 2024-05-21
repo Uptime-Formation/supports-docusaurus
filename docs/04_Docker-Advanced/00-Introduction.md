@@ -5,7 +5,7 @@ weight: 1
 
 ## Introduction
 
-![](../../static/img/docker/docker-lifecycle.png)
+![](../assets/images/Moby-logo.png)
 
 
 ## A propos de moi / nous
