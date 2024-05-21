@@ -108,7 +108,13 @@ Plus d'infos sur https://docs.docker.com/engine/reference/run/#restart-policies-
 
 ## Portainer : un interface web d'aministration
 
+Installation : `docker run -d -p 8000:8000 -p 9443:9443 -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest`
+
+Puis accéder à localhost:9000
+
 Doc d'install : https://docs.portainer.io/start/install-ce/server/docker/linux
+
+
 
 <!-- ## Avancé : Docker export / décortiquer un conteneur
 
