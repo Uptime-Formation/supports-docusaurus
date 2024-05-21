@@ -29,9 +29,9 @@ Les instances Docker sont des processus standards lancés dans un host.
 - Modifier la manière de lancer le container (ex: donner les droits root)
 - Exec dans le même espace de conteneurisation
 
-**Comment faire quand on utilise des images Serverless i.e. sans Shell ?** 
+**Comment faire quand on utilise des images distroless i.e. sans Shell ?** 
 
-- Disposer d'une image non-serverless
+- Disposer d'une image non-distroless
 - Utiliser l'API debug de l'orchestrateur k8s
 
 --- 

@@ -66,7 +66,7 @@ CMD ["nginx"]
 - Image de base :
   - Sécurisées
   - Mises à jour
-  - Qualifiée (lite ou serverless)
+  - Qualifiée (lite ou distroless)
 - Utilisation de entry-point si utile
 - Sécurité : 
   - Protection des secrets
@@ -101,7 +101,7 @@ Exemples de Dockerfile :
 - Go : https://github.com/alexellis/href-counter/
 
 Exemples de transformations : 
-- Utilisation d'un builder go puis d'une image serverless
+- Utilisation d'un builder go puis d'une image distroless
 - Utilisation de labels qui indiquent l'entreprise 
 - Utilisateur "nonroot" 
 - Utilisation d'un script de démarrage entrypoint qui détecte si la variable d'environnement "DEV" est définie
