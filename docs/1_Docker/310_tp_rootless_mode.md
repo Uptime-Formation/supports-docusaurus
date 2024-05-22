@@ -16,7 +16,7 @@ Essayez de lancer un conteneur nginx avec quelque uns des paramètres suivants:
 
 ## Scanner une image pour les vulnérabilités avec `trivy`
 
-- Installez `trivy` par exemple avec le script kubernetes.sh si dispo sur la machine : `bash /opt/kubernetes.sh`
+- Installez `trivy` par exemple avec le script kubernetes.sh si dispo sur la machine (`bash /opt/kubernetes.sh`) puis relancez le terminal
 
 - Lancez `trivy image registry` puis `trivy image microblog` des tp précédents. Commentons
 
