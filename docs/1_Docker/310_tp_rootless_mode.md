@@ -14,6 +14,12 @@ Essayez de lancer un conteneur nginx avec quelque uns des paramètres suivants:
 - `--ulimit nofile=<number>` — maximum number of file descriptors
 - `--ulimit nproc=<number>` — maximum number of processes
 
+## Scanner une image pour les vulnérabilités avec `trivy`
+
+- Installez `trivy` par exemple avec le script kubernetes.sh si dispo sur la machine : `bash /opt/kubernetes.sh`
+
+- Lancez `trivy image registry` puis `trivy image microblog` des tp précédents. Commentons
+
 
 ## Limiter les `capabilities` accordées à l'utilisateur
 
@@ -40,11 +46,11 @@ Ainsi même si un intrus parvient à devenir root dans un conteneur, il est beau
 Cela réduit considérablement les vecteurs d'attaque des utilisateurs malveillants. Par défaut, Docker désactive toutes les capabilities sauf celles nécessaires:
 
 - https://github.com/moby/moby/blob/master/oci/caps/defaults.go#L6-L19
+- explication des capabilities : https://www.baeldung.com/linux/set-modify-capability-permissions#possible-system-capabilities
 
+Lancer un conteneur `registry2` avec toutes les capabilities désactivées (si l'application fonctionne sans, ce n'est jamais une mauvaise) : `docker run -d --name registry2 -p 5001:5000 --cap-drop=all registry:2` : normalement ici aucune n'est nécessaire.
 
-Lancer un conteneur registry avec toutes les capabilities désactivées (si l'application fonctionne sans, ce n'est jamais une mauvaise) : `docker run -d --name registry2 -p 5001:5000 --cap-drop=all registry:2` : normalement ici aucune n'est nécessaire.
-
-pour remettre tout désactiver et remettre par exemple juste le droit de chown : `docker run -d --name registry2 -p 5001:5000 --cap-drop=all --cap-add CHOWN registry:2`
+pour remettre tout désactiver et remettre par exemple juste le droit de chown : `docker run -d --name registry3 -p 5001:5000 --cap-drop=all --cap-add CHOWN registry:2`
 
 ## Le mode Rootless de docker
 
