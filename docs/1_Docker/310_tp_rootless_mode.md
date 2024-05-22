@@ -62,7 +62,7 @@ Un autre façon de le dire :
 
 - un conteneur rootful (classique) est lancé par l'utilisateur root et a potentiellement accès aux fonctionnalités que root possède en cas de faille dans la runtime (mis à part la réduction des `capabilities` effectuée automatiquement par Docker si le conteneur n'est pas lancé avec `--priviledged`). Ça n'est pas la même chose que de dire que le processus lancé dans le conteneur est lancé et root !
 
-- Lorsque docker est lancé en mode `rootless` (c'est à dire que le daemon est lancé par un utilisateur) tous les conteneurs sont créés comme enfants d'un user namespace dans lequel sont recréé des utilisateur y compris un "faux" user root et d'autre user namespaces (pour chaque conteneur). Donc on peut être root dans conteneur rootless sans risque.
+- Lorsque docker est lancé en mode `rootless` (c'est à dire que le daemon est lancé par un utilisateur) tous les conteneurs sont créés comme enfants d'un user namespace dans lequel sont recréé des "sous utilisateurs" y compris un "faux" user root et d'autre user namespaces (pour chaque conteneur). Donc on peut être root dans conteneur rootless sans risque.
 
 ### Installer et lancer docker en mode rootless (sur ubuntu 22.04)
 
