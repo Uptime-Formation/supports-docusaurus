@@ -243,6 +243,8 @@ Indice : chercher "flask hot reload" et penser aux volumes
 
 Avancé : Trouver comment configurer une base de données Postgres pour une app Flask (c'est une option de SQLAlchemy). -->
 
+
+
 ## Faire varier la configuration en fonction de l'environnement
 
 Finalement le serveur de développement flask est bien pratique pour debugger en situation de développement, mais il n'est pas adapté à la production.
@@ -301,6 +303,15 @@ EXPOSE 9191 5000
 USER uwsgi
 CMD ["/boot.sh"]
 ```
+
+## Code `hot reload`
+
+Une façon pratique de développer avec Docker Compose consiste à monter le code de l'application directement dans le conteneur via un bind mount
+
+- ajoutez une section `volumes` à `frontend` avec `./app:/app:ro`
+
+Modifiez le code dans app.py par exemple avec un simple commentaire. Si vous êtes en contexte DEV le serveur flask devrait recharger le code automatiquement (disponible dans la plupart des langages et frameworks)
+
 
 #### Un `docker-compose.prod.yml` pour `frontend`
 
