@@ -30,7 +30,7 @@ On premise:
   - **Harbor** un solutions libre et puissante du CNCF.
 
 
- Note plus avancée : un registry est un serveur qui implémente l'API HTTP Docker (voir TP)
+ **Note plus avancée** : un registry est un serveur qui implémente l'**API HTTP Docker** (voir TP optionnel en dessous)
 
 ## TP - installer un Registry privé de base
 
