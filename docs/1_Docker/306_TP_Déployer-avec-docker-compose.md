@@ -313,7 +313,7 @@ Une façon pratique de développer avec Docker Compose consiste à monter le cod
 Modifiez le code dans app.py par exemple avec un simple commentaire. Si vous êtes en contexte DEV le serveur flask devrait recharger le code automatiquement (disponible dans la plupart des langages et frameworks)
 
 
-#### Un `docker-compose.prod.yml` pour `frontend`
+### Un `docker-compose.prod.yml` pour `frontend`
 
 Créez un deuxième fichier Compose `docker-compose.prod.yml` (à compléter) pour lancer l'application `identicon` en configuration de production. 
 
@@ -330,7 +330,99 @@ On veut ajouter les fonctionnalités suivantes :
   - disponible sur le port 8191
   - le connecter via des variables d'environnement
 
+<details><summary>Correction étendue avec traefik reverse proxy https</summary>
 
+```yaml
+services:
+  reverse-proxy:
+    image: "traefik:v2.3"
+    container_name: "traefik"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    networks:
+      - identinet
+      - redis
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    command:
+      #- "--log.level=DEBUG" # pour debugger avec docker logs si la connexion ou le letsencrypt marche pas
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory" # pour tester en staging
+      - "--certificatesresolvers.myresolver.acme.email=eliegavoty@free.fr"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    networks:
+      - identinet
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.who.rule=Host(`who.elie.formation.dopl.uk`)"
+      - "traefik.http.routers.who.entrypoints=websecure"
+      - "traefik.http.routers.who.tls.certresolver=myresolver"
+
+  frontend:
+    build: .
+    # ports: # plus nécessaire car traefik
+    #   - "5000:5000"
+    networks:
+      - identinet
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`monster.elie.formation.dopl.uk`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.frontend.loadbalancer.server.port=5000"
+
+  imagebackend:
+    image: amouat/dnmonster:1.0
+    networks:
+      - identinet
+
+  redis:
+    image: redis
+    hostname: redis
+    networks:
+      - identinet
+      - redis
+    volumes:
+      - redis_data:/data
+
+  rediscommander:
+    image: rediscommander/redis-commander
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    # ports:
+    # - "8081:8081"
+    networks:
+      - redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rediscommander.rule=Host(`rediscommander.elie.formation.dopl.uk`)"
+      - "traefik.http.routers.rediscommander.entrypoints=websecure"
+      - "traefik.http.routers.rediscommander.tls.certresolver=myresolver"
+      - "traefik.http.services.rediscommander.loadbalancer.server.port=8081"
+
+networks:
+  identinet:
+    driver: bridge
+  redis:
+    driver: bridge
+
+volumes:
+  redis_data:
+```
+
+</details>
 
 
 ## Exercice facultatif 1 : un pad HedgeDoc (ou autre logiciel de votre choix).
