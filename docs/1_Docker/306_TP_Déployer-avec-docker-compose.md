@@ -361,17 +361,6 @@ services:
       - "--certificatesresolvers.myresolver.acme.email=testfakemail777@free.fr"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
 
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    networks:
-      - identinet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.who.rule=Host(`who.<votrenom>.formation.dopl.uk`)"
-      - "traefik.http.routers.who.entrypoints=websecure"
-      - "traefik.http.routers.who.tls.certresolver=myresolver"
-
   frontend:
     build: .
     # ports: # plus nécessaire car traefik
