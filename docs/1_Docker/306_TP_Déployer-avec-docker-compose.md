@@ -1,11 +1,12 @@
 ---
 title: "TP: Déployer avec docker compose créer et lancer ses applications"
 ---
+
 <!-- 
 ## Objectifs pédagogiques
   - Savoir lancer une application multi-conteneur avec docker compose
   - Savoir créer une application multi-conteneur
- -->
+-->
 
 
 ## Mise en pratique : écrire un fichier compose pas à pas 
@@ -330,7 +331,10 @@ On veut ajouter les fonctionnalités suivantes :
   - disponible sur le port 8191
   - le connecter via des variables d'environnement
 
-<details><summary>Correction étendue avec traefik reverse proxy https</summary>
+<details><summary>Correction étendue de prod avec traefik reverse proxy https</summary>
+
+**À compléter au niveau du nom de domaine**
+
 
 ```yaml
 services:
@@ -354,7 +358,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory" # pour tester en staging
-      - "--certificatesresolvers.myresolver.acme.email=eliegavoty@free.fr"
+      - "--certificatesresolvers.myresolver.acme.email=testfakemail777@free.fr"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
 
   whoami:
@@ -364,7 +368,7 @@ services:
       - identinet
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.who.rule=Host(`who.elie.formation.dopl.uk`)"
+      - "traefik.http.routers.who.rule=Host(`who.<votrenom>.formation.dopl.uk`)"
       - "traefik.http.routers.who.entrypoints=websecure"
       - "traefik.http.routers.who.tls.certresolver=myresolver"
 
@@ -378,7 +382,7 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`monster.elie.formation.dopl.uk`)"
+      - "traefik.http.routers.frontend.rule=Host(`monster.<votrenom>.formation.dopl.uk`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.tls.certresolver=myresolver"
       - "traefik.http.services.frontend.loadbalancer.server.port=5000"
@@ -436,8 +440,6 @@ Je vous conseille de toujours chercher **dans la documentation officielle** ou l
 Vérifiez que le service est bien accessible sur le port donné.
 
 Si besoin, lisez les logs en quête de bug et adaptez les variables d'environnement.
-
-
 
 ## Exercice facultatif 2 : Wordpress et/ou Nextcloud
 
