@@ -99,7 +99,7 @@ FROM python:3.12
 RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi
 RUN pip install Flask uWSGI requests redis
 WORKDIR /app
-COPY app/identidock.py /app
+COPY app/app.py /app
 
 EXPOSE 5000 9191
 USER uwsgi
