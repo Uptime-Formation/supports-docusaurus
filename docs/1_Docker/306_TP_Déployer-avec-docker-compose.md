@@ -270,7 +270,7 @@ Ajoutez au Dockerfile une deuxième instruction `COPY` en dessous de la précéd
 
 Ajoutez un `RUN chmod a+x /boot.sh` pour le rendre executable.
 
-Modifiez l'instruction `ENTRYPOINT` pour lancer le script de boot plutôt que `uwsgi` directement.
+Modifiez l'instruction `CMD` pour lancer le script de boot plutôt que `uwsgi` directement.
 
 Modifiez l'instruction `EXPOSE` pour déclarer le port 5000 en plus.
 
