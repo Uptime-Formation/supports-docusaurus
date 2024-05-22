@@ -17,6 +17,8 @@ A mentionner: les images de base distroless : un projet de Google des images lin
 
 Pour s'y retrouver on peut se référer à ce comparatif assez complet (bien que pro-redhat) : https://crunchtools.com/comparison-linux-container-images/
 
+Autre comparaison pour faire des images minimales: https://baykara.medium.com/alpine-vs-distroless-vs-busybox-e14573ba8724
+
 Pour entrer dans les détails d'une image on peut installer et utiliser https://github.com/wagoodman/dive. C'est souvent nécessaire quand on optimiser au maximum son image d'avoir conscience de tous les fichiers
 
 ## Cache de Build
