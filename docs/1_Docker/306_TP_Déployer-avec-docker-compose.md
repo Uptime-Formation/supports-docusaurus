@@ -70,7 +70,7 @@ def get_identicon(name):
     if not found_in_cache:
         logging.info("Image non trouvée dans le cache")
         try:
-            r = requests.get('http://dnmonster:8080/monster/' + name + '?size=80')
+            r = requests.get('http://imagebackend:8080/monster/' + name + '?size=80')
             image = r.content
             logging.info("Image générée grâce au service dnmonster")
 
