@@ -230,7 +230,7 @@ networks:
 
 N'hésitez pas à passer du temps à explorer les options et commandes de `docker-compose`, ainsi que [la documentation officielle du langage des Compose files](https://docs.docker.com/compose/compose-file/). 
 
-
+<!-- 
 ###  Le Docker Compose de `microblog`
 
 Créons un fichier Docker Compose pour faire fonctionner l'application Microblog avec redis sous forme de docker-compose.
@@ -241,7 +241,7 @@ Avancé : Comment pourrait-on faire pour avoir du "Hot Reload", c'est à dire vo
 
 Indice : chercher "flask hot reload" et penser aux volumes
 
-Avancé : Trouver comment configurer une base de données Postgres pour une app Flask (c'est une option de SQLAlchemy).
+Avancé : Trouver comment configurer une base de données Postgres pour une app Flask (c'est une option de SQLAlchemy). -->
 
 ## Faire varier la configuration en fonction de l'environnement
 
