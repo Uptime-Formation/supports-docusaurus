@@ -30,6 +30,8 @@ On premise:
   - **Harbor** un solutions libre et puissante du CNCF.
 
 
+ Note plus avancée : un registry est un serveur qui implémente l'API HTTP Docker (voir TP)
+
 ## TP - installer un Registry privé de base
 
 Utiliser la commande search pour chercher dans le dockerhub des images.
@@ -84,6 +86,8 @@ Extrayez l'image localhost:5000/my-ubuntu de votre registre local.
 docker pull localhost:5555/my-ubuntu:mytag-custom
 ```
 
+
+
 ## _Facultatif :_  push sur le Docker Hub
 
 Cette manipulation requiert la création d'un compte sur [le Docker Hub](https://hub.docker.com/).
@@ -98,7 +102,20 @@ docker push docker.io/<your-docker-registry-account>/microblog:latest
 
 (Ajouter docker.io est facultatif car il s'agit du registry par défaut avec Docker. Par contre c'est nécessaire pour pousser vers d'autres registries )
 
-## TP Avancé - pousser notre image sur Quay.io pour bénéficier du scan de securité
+## TP optionnel : utiliser l'API http avec curl
+
+Regardez les liens suivants:
+
+- https://www.baeldung.com/ops/docker-registry-api-list-images-tags
+- https://stackoverflow.com/questions/56193110/how-can-i-use-docker-registry-http-api-v2-to-obtain-a-list-of-all-repositories-i
+
+Puis:
+
+- Listez les registries
+- Listez les tags de `my-ubuntu`
+
+
+## TP optionnel - poussez notre image sur Quay.io pour bénéficier du scan de securité
 
 - Créez un compte sur Quay
 - suivez les instruction de login
