@@ -73,4 +73,7 @@ En dehors des réseaux par défaut de Docker, il existe plusieurs autres solutio
     - un DNS qui permet de simuler de la découverte de service
     - Du multicast UDP
 
+## Le réseau Docker en profondeur (conteneurs plus généralement)
+
+- https://medium.com/techlog/diving-into-linux-networking-and-docker-bridge-veth-and-iptables-a05eb27b1e72
 
