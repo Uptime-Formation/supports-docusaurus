@@ -58,7 +58,7 @@ Un autre façon de le dire :
 
 - Lorsque docker est lancé en mode `rootless` (c'est à dire que le daemon est lancé par un utilisateur) tous les conteneurs sont créés comme enfants d'un user namespace dans lequel sont recréé des utilisateur y compris un "faux" user root et d'autre user namespaces (pour chaque conteneur). Donc on peut être root dans conteneur rootless sans pouvoir
 
-### Installer et lancer docker en mode rootless
+### Installer et lancer docker en mode rootless (sur ubuntu 22.04)
 
 La documentation afférente est ici : https://docs.docker.com/engine/security/rootless/
 
