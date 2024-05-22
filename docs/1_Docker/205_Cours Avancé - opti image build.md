@@ -39,8 +39,6 @@ Un enjeu du cache est notamment d'accélérer l'exécution du build dans les pip
 
 ## Une comparaison des autre outils de build d'image
 
-
-
 ### Docker Buildkit
 
 - https://docs.docker.com/build/buildkit/

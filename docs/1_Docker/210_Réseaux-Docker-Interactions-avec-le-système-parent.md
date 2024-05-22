@@ -41,16 +41,18 @@ Un réseau overlay est un réseau virtuel privé déployé par dessus un réseau
 
 La solution Swarm est en perte de vitesse, on ne va pas s'apesantir sur cette option.
 
-
 ### Host
+
 Pour les conteneurs autonomes, supprime l'isolation réseau entre le conteneur et l'hôte Docker, et utilise directement la mise en réseau de l'hôte. 
 
 ### ipvlan
+
 Les réseaux IPvlan offrent aux utilisateurs un contrôle total sur l'adressage IPv4 et IPv6. 
 
 Le pilote VLAN s'appuie sur cela en donnant aux opérateurs un contrôle complet du balisage VLAN de couche 2 et même du routage IPvlan L3 pour les utilisateurs intéressés par l'intégration du réseau sous-jacent. 
 
-### macvlan 
+### macvlan
+
 Les réseaux Macvlan vous permettent d'attribuer une adresse MAC à un conteneur, le faisant apparaître comme un périphérique physique sur votre réseau. 
 
 Le démon Docker achemine le trafic vers les conteneurs par leurs adresses MAC. 
@@ -58,6 +60,7 @@ Le démon Docker achemine le trafic vers les conteneurs par leurs adresses MAC.
 L'utilisation du pilote macvlan est parfois le meilleur choix lorsqu'il s'agit d'applications héritées qui s'attendent à être directement connectées au réseau physique, plutôt que d'être acheminées via la pile réseau de l'hôte Docker. 
 
 ### none
+
 Désactive tous les réseaux. Généralement utilisé en conjonction avec un pilote réseau personnalisé. none n'est pas disponible pour les services Swarm. 
 
 ### Plugins réseaux

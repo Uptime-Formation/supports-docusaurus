@@ -111,8 +111,8 @@ Regardez les liens suivants:
 
 Puis:
 
-- Listez les registries
-- Listez les tags de `my-ubuntu`
+- Listez les repositories (les noms d'images) dans notre registry local
+- Listez les tags (les "versions") de `my-ubuntu`
 
 
 ## TP optionnel - poussez notre image sur Quay.io pour bénéficier du scan de securité
