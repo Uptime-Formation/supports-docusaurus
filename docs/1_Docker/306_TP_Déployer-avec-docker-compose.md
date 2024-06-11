@@ -400,7 +400,7 @@ services:
       - redis
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rediscommander.rule=Host(`rediscommander.elie.formation.dopl.uk`)"
+      - "traefik.http.routers.rediscommander.rule=Host(`rediscommander.<votrenom>.formation.dopl.uk`)"
       - "traefik.http.routers.rediscommander.entrypoints=websecure"
       - "traefik.http.routers.rediscommander.tls.certresolver=myresolver"
       - "traefik.http.services.rediscommander.loadbalancer.server.port=8081"

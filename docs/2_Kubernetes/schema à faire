@@ -1,0 +1,11 @@
+
+
+Schemas a faire !
+
+- Ingress + ingress controller !!
+
+- Refaire le schema des 3 types de services !!
+
+- Schema de l'application monsterstack avec ses 3 services et le coreDNS
+
+- Schema de RollingUpdate + probes
