@@ -9,7 +9,7 @@ draft: false
 
 ## `Kubernetes the hard way` avec Ansible
 
-![](/img/kubernetes/shema-persos/k8s-archi.jpg)
+![](/img/kubernetes/schemas-perso/k8s-archi.jpg)
 
 
 La version la plus manuelle de l'installation de Kubernetes a été documentée à des fins d'apprentissage par Kelsey Hightower qui l'a nommé `Kubernetes the hard way`. On peut la retrouver à l'adresse https://github.com/kelseyhightower/kubernetes-the-hard-way/tree/master/docs.
