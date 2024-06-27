@@ -4,7 +4,7 @@ draft: false
 # sidebar_class_name: hidden
 ---
 
-![](/img/kubernetes/k8s_objects_hierarchy.png?width=600px)
+![](/img/kubernetes/schemas-perso/resources-deps.jpg?width=400px)
 
 En plus du déploiement d'un application, Il existe pleins d'autre raisons de créer un ensemble de Pods:
 

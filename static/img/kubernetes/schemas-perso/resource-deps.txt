@@ -1,0 +1,14 @@
+Deployment->ReplicaSet
+ReplicaSet->Pod
+DaemonSet->Pod
+StatefulSet->Pod
+CronJob->Job
+Job->Pod
+Service->Pod
+HorizontalPodAutoscaler(HPA)->Pod
+Container->Pod
+Container->Volume
+Volume->ConfigMap
+Volume->Secret
+Volume->PersistentVolumeClaim(PVC)
+Volume->HostPath/EmptyDir
