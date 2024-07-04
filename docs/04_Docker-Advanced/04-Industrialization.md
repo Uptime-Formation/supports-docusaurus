@@ -76,10 +76,10 @@ services:
           - "--providers.docker.exposedbydefault=false"
           - "--entrypoints.websecure.address=:443"
           - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-          - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
           - "--certificatesresolvers.myresolver.acme.email=postmaster@${DOMAIN}"
           - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
         ports:
+          - "80:80"
           - "443:443"
           - "8080:8080"
         volumes:
