@@ -1,0 +1,10 @@
+---
+title:   Run1 - Move To Prod
+weight: 100
+---
+
+## Contenu du run
+
+**Notre objectif sera de mettre en ligne un site web selon des méthodes GitOps.**
+
+![](../../static/img/kubernetes/100-Run1.png)
