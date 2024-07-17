@@ -364,10 +364,8 @@ Nous allons maintenant installer `nginx` sur nos machines. Il y a plusieurs faç
         mode: 755 
 ``` -->
 
-- Lançons la commande en "ad-hoc" : 
-```
-ansible adhoc_lab -m package -a "name=nginx state=present"
-```
+- Lançons la commande en "ad-hoc" : `ansible adhoc_lab -m package -a "name=nginx state=present"`
+
 
 - Lancez le playbook après avoir sauvegardé les modifications avec `ansible-playbook monplaybook.yml`. Si cela ne marche pas, pourquoi ?
 
@@ -387,32 +385,34 @@ L'élévation de privilège est nécessaire lorsqu'on a besoin d'être `root` po
 - Re-relancez la même commande une seconde fois. Que se passe-t-il ?
 
 <details><summary>Réponse</summary>
+
 C'est l'idempotence: ansible nous indique via les couleurs vertes ou jaunes si nginx était déjà présent sur le serveur.
+
 </details>
 
 
 <details><summary>Réponse</summary>
-```
-ansible adhoc_lab --become -m package -a "name=nginx state=present"
-```
+
+`ansible adhoc_lab --become -m package -a "name=nginx state=present"`
+
 </details>
 
 - Pour résoudre le problème sur les hôtes almalinux, installez `epel-release` sur la  machine almalinux.
 
 <details><summary>Réponse</summary>
-```
-ansible almalinux_hosts --become -m package -a "name=epel-release state=present"
-```
+
+`ansible almalinux_hosts --become -m package -a "name=epel-release state=present"`
+
 </details>
 
 - Relancez la commande d'installation de `nginx`. Que remarque-t-on ?
 
 <details><summary>Réponse</summary>
-```
-ansible adhoc_lab -m package -a name=nginx state=present
-```
+
+`ansible adhoc_lab -m package -a name=nginx state=present`
 
 La machine almalinux a un retour changed jaune alors que la machine ubuntu a un retour ok vert. C'est l'idempotence: ansible nous indique que nginx était déjà présent sur le serveur ubuntu.
+
 </details>
 
 ### Vérifier l'état du service Nginx
@@ -420,9 +420,9 @@ La machine almalinux a un retour changed jaune alors que la machine ubuntu a un 
 - Utiliser le module `systemd` et l'option `--check` pour vérifier si le service `nginx` est démarré sur chacune des 2 machines. Normalement vous constatez que le service est déjà démarré (par défaut) sur la machine ubuntu et non démarré sur la machine almalinux.
 
 <details><summary>Réponse</summary>
-```
-ansible adhoc_lab --become --check -m systemd -a "name=nginx state=started"
-```
+
+`ansible adhoc_lab --become --check -m systemd -a "name=nginx state=started"`
+
 </details>
 
 - L'option `--check` sert à vérifier l'état des ressources sur les machines mais sans modifier la configuration`. Relancez la commande précédente pour le vérifier. Normalement le retour de la commande est le même (l'ordre peut varier).
@@ -523,14 +523,16 @@ Il existe trois façon de lancer des commandes unix avec ansible:
 - Relancer l'un des modules `shell` ou `command` avec `touch` et l'option `creates` pour rendre l'opération idempotente. Ansible détecte alors que le fichier témoin existe et n'exécute pas la commande.
 
 <details><summary>Réponse</summary>
-```
-ansible adhoc_lab --become -m "command touch /tmp/file" -a "creates=/tmp/file"
-```
+
+`ansible adhoc_lab --become -m "command touch /tmp/file" -a "creates=/tmp/file"`
+
 ou
-```
+
+```yaml
 - name: "On crée"
   command:
     cmd: "touch /tmp/file"
     creates: "/tmp/file"
 ```
+
 </details>
