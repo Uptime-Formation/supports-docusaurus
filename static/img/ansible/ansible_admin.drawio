@@ -1,0 +1,102 @@
+<mxfile host="app.diagrams.net" modified="2023-10-11T13:50:30.771Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="gUwf-zYizMM6ckZQoMT0" version="22.0.4" type="device">
+  <diagram name="Page-1" id="-Ftmw3MrEGL2TLwtLW5O">
+    <mxGraphModel dx="1434" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="9n7l4J0uehODZQY8nmez-14" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="70" width="670" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-13" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="230" width="790" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9n7l4J0uehODZQY8nmez-1" target="9n7l4J0uehODZQY8nmez-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-1" value="&lt;div&gt;Bastion&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-2" value="&lt;div&gt;Poste admin Thibaut&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-3" value="&lt;div&gt;Serveur prod&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="90" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-4" value="&lt;div&gt;Serveur AWX/Ansible Tower&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-7" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="9n7l4J0uehODZQY8nmez-2" target="9n7l4J0uehODZQY8nmez-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="300" as="sourcePoint" />
+            <mxPoint x="270" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-8" value="&lt;div&gt;SSH as thibaut (root)&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9n7l4J0uehODZQY8nmez-7">
+          <mxGeometry x="0.1667" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-11" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.183;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="9n7l4J0uehODZQY8nmez-4" target="9n7l4J0uehODZQY8nmez-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="369" y="250" as="sourcePoint" />
+            <mxPoint x="369" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-12" value="&lt;div&gt;SSH as ansible (non-root)&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9n7l4J0uehODZQY8nmez-11">
+          <mxGeometry x="0.1667" y="1" relative="1" as="geometry">
+            <mxPoint x="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-15" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="9n7l4J0uehODZQY8nmez-1" target="9n7l4J0uehODZQY8nmez-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="330" y="230" as="sourcePoint" />
+            <mxPoint x="630" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-16" value="&lt;div&gt;SSH as thibaut (root)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9n7l4J0uehODZQY8nmez-15">
+          <mxGeometry x="0.1667" y="1" relative="1" as="geometry">
+            <mxPoint x="-4" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-20" value="&lt;div&gt;projet Ansible chez&amp;nbsp; Thibaut&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="310" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-21" value="&lt;div&gt;projet Ansible chez&amp;nbsp; Tower / AWX&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="100" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-22" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="9n7l4J0uehODZQY8nmez-20" target="9n7l4J0uehODZQY8nmez-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="360" as="sourcePoint" />
+            <mxPoint x="360" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-23" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="9n7l4J0uehODZQY8nmez-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="664" y="170" as="sourcePoint" />
+            <mxPoint x="630" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-25" value="Réseau intérieur" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="210" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-26" value="Réseau extérieur" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="250" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-27" value="&lt;div&gt;Poste user Joseph&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-29" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="589.5" y="320" as="sourcePoint" />
+            <mxPoint x="589.5" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9n7l4J0uehODZQY8nmez-30" value="HTTPS as joseph" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9n7l4J0uehODZQY8nmez-29">
+          <mxGeometry x="0.1667" y="1" relative="1" as="geometry">
+            <mxPoint x="2" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

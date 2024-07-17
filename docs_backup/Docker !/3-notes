@@ -64,7 +64,7 @@ fi
 
 ### Dockerfile amélioré
 
-{{% expand "`Dockerfile` final :" %}}
+<details><summary>`Dockerfile` final :</summary>
 
 ```Dockerfile
 FROM python:3.9-slim

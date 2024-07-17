@@ -143,6 +143,14 @@ Essayez de la même façon d'afficher le nombre de répliques de notre déploiem
 - `stern` pour pouvoir afficher/tail les logs des pods correctement (notamment via un service)
 - `trivy` pour des analyses de sécurité des images et du cluster
 
+Exemple d'utilisation:
+
+```bash
+viddy
+stern my-service -n my-namespace --tail 100 --include "error|warning"
+stern -t my-service ...
+```
+
 Pour installer tous ces outils il y a de nombreuses méthodes (snap/krew/installation manuelle github etc). Une façon uniforme pour avoir des version récentes et multiples sur n'importe quel OS (linux, macOS et windows avec le WSL) est le gestionnaire de dépendance de dev `asdf-vm`.
 
 <details>
