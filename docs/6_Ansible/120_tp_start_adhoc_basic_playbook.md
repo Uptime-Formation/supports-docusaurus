@@ -8,7 +8,7 @@ weight: 11
 
 - Installez Ansible au niveau du système avec `pip` en lançant:
 
-`pip install ansible`
+`sudo apt install ansible`
 
 <!-- ```
 $ sudo apt update
@@ -243,8 +243,8 @@ Un projet Ansible implique généralement une configuration Ansible spécifique 
 inventory = ./inventory.cfg
 roles_path = ./roles
 host_key_checking = false # nécessaire pour les labs ou on créé et supprime des machines constamment avec des signatures SSH changées.
-stdout_callback = yaml
-bin_ansible_callbacks = True
+# stdout_callback = yaml
+# bin_ansible_callbacks = True
 ```
 
 - Créez le fichier d'inventaire spécifié dans `ansible.cfg` et ajoutez à l'intérieur notre nouvelle machine `hote1`.
@@ -379,7 +379,7 @@ L'élévation de privilège est nécessaire lorsqu'on a besoin d'être `root` po
 - La section `become: yes`
   - au début du play (après `hosts`) : toutes les tâches seront executée avec cette élévation par défaut.
   - après n'importe quelle tâche : l'élévation concerne uniquement la tâche cible.
-  
+
 </details>
 
 - Re-relancez la commande après avoir sauvegardé les modifications. Si cela ne marche pas, pourquoi ?
