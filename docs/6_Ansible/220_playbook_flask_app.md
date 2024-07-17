@@ -88,7 +88,7 @@ Le code (très minimal) de cette application se trouve sur github à l'adresse: 
 
 - Commençons par installer les dépendances de cette application. Tous nos serveurs d'application sont sur ubuntu. Nous pouvons donc utiliser le module `apt` pour installer les dépendances. Il fournit plus d'options que le module `package`.
 
-<details><summary>Si vous avez créé une app3 sur CentOS :</summary>
+<details><summary>Si vous avez créé une app3 sur almalinux :</summary>
 Pour faire varier les tasks que l'on exécute, il faudrait jouer sur la variable `ansible_os_family` avec la ligne `when: ansible_os_family == "RedHat"` (ou `Debian`) (au niveau du nom du module dans la task).
 Il faudra aussi trouver les bons noms de packages et installer `epel-release`
 
@@ -135,7 +135,7 @@ En utilisant une `loop` (et en accédant aux différentes valeurs qu'elle prend 
           - "www-data"
 ```
 
-<details><summary>Si vous avez créé une app3 sur CentOS (facultatif), cliquez ici</summary>
+<details><summary>Si vous avez créé une app3 sur almalinux (facultatif), cliquez ici</summary>
 
 Ici, le fonctionnement le plus concis serait d'utiliser les conditions Jinja2 (et non le mot-clé `when:`) avec une section de playbook appelée `vars:` et quelque chose comme `nginx_user: "{{ 'www-data' if ansible_os_family == "RedHat" else 'www-data'`
 
@@ -454,19 +454,19 @@ Dans un template Jinja2, pour écrire un bloc de texte en fonction d'une variabl
 
 ## Amélioration A : faire varier le playbook selon les OS
 
-Nous allons tenter de créer une nouvelle version de votre playbook pour qu'il soit portable entre CentOS et Ubuntu.
+Nous allons tenter de créer une nouvelle version de votre playbook pour qu'il soit portable entre almalinux et Ubuntu.
 
 - Pour cela, utilisez la directive `when: ansible_os_family == 'Debian'` ou `RedHat` (on pourra aussi utiliser des modules génériques comme `package:` au lieu de `apt:`, ou `service:` au lieu de `systemd:`). Cette directive peut s'utiliser sur toutes les tâches.
 
-- N'oubliez pas d'installer `epel-release` qui est nécessaire à CentOS.
+- N'oubliez pas d'installer `epel-release` qui est nécessaire à almalinux.
 
-- Il va falloir adapter le nom des packages à CentOS.
+- Il va falloir adapter le nom des packages à almalinux.
 
 - Pour le nom du user Nginx, on pourrait ajouter une section de playbook appelée `vars:` et définir quelque chose comme `nginx_user: "{{ 'nginx' if ansible_os_family == "RedHat" else 'www-data' }}`
 
-- De même, les fichiers Nginx ne sont pas forcément au même endroit dans CentOS : il n'y a pas de notion de `sites-enabled` dans Nginx, il suffit de copier un fichier de config dans `/etc/nginx/conf.d` à la place (pas de lien symbolique).
+- De même, les fichiers Nginx ne sont pas forcément au même endroit dans almalinux : il n'y a pas de notion de `sites-enabled` dans Nginx, il suffit de copier un fichier de config dans `/etc/nginx/conf.d` à la place (pas de lien symbolique).
 
-<!-- - Il faudra peut-être penser à l'installation de Python 3 dans CentOS, et dire à Ansible d'utiliser Python 3 en indiquant dans l'inventaire `ansible_python_interpreter=/usr/bin/python3`. -->
+<!-- - Il faudra peut-être penser à l'installation de Python 3 dans almalinux, et dire à Ansible d'utiliser Python 3 en indiquant dans l'inventaire `ansible_python_interpreter=/usr/bin/python3`. -->
 
 ## Amélioration B : un handler en deux parties en testant la config de Nginx avant de reload
 On peut utiliser l'attribut `listen` dans le handler pour décomposer un handler en plusieurs étapes.

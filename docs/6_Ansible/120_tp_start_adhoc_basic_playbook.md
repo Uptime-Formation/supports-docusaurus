@@ -81,14 +81,14 @@ Incus est le successeur de LXD, abandonné par ses devs à cause des choix de Ca
 (Pour initialiser à la main on peut utiliser la commande `lxd init` mais utilisez plutôt ici la configuration avec le script précédent) -->
 
 - Affichez la liste des conteneurs avec `incus list`. Aucun conteneur ne tourne.
-- Maintenant lançons notre premier conteneur `centos` avec `incus launch images:centos/7/amd64 centos1`.
+- Maintenant lançons notre premier conteneur `almalinux` avec `incus launch images:almalinux/8/amd64 almalinux1`.
 - Listez à nouveau les conteneurs lxc.
-- Ce conteneur est un centos minimal et n'a donc pas de serveur SSH pour se connecter. Pour lancez des commandes dans le conteneur on utilise une commande LXC pour s'y connecter `incus exec <non_conteneur> -- <commande>`. Dans notre cas nous voulons lancer bash pour ouvrir un shell dans le conteneur : `incus exec centos1 -- bash`.
+- Ce conteneur est un almalinux minimal et n'a donc pas de serveur SSH pour se connecter. Pour lancez des commandes dans le conteneur on utilise une commande LXC pour s'y connecter `incus exec <non_conteneur> -- <commande>`. Dans notre cas nous voulons lancer bash pour ouvrir un shell dans le conteneur : `incus exec almalinux1 -- bash`.
 - Nous pouvons installer des logiciels dans le conteneur comme dans une VM. Pour sortir du conteneur on peut simplement utiliser `exit`.
 
-- Un peu comme avec Docker, LXC utilise des images modèles pour créer des conteneurs. Affichez la liste des images avec `incus image list`. Trois images sont disponibles l'image centos vide téléchargée et utilisée pour créer centos1 et deux autres images préconfigurée `ubuntu_ansible` et `centos_ansible`. Ces images contiennent déjà la configuration nécessaire pour être utilisée avec ansible (SSH + Python + Un utilisateur + une clé SSH).
+- Un peu comme avec Docker, LXC utilise des images modèles pour créer des conteneurs. Affichez la liste des images avec `incus image list`. Trois images sont disponibles l'image almalinux vide téléchargée et utilisée pour créer almalinux1 et deux autres images préconfigurée `ubuntu_ansible` et `almalinux_ansible`. Ces images contiennent déjà la configuration nécessaire pour être utilisée avec ansible (SSH + Python + Un utilisateur + une clé SSH).
 
-- Supprimez la machine centos1 avec `incus stop centos1 && incus delete centos1` -->
+- Supprimez la machine almalinux1 avec `incus stop almalinux1 && incus delete almalinux1` -->
 
 ## Configurer des images prêtes pour Ansible
 
@@ -105,7 +105,7 @@ Si vous devez refaire les travaux pratiques from scratch (sans la VM de TP actue
 
 - Connectez vous dans le conteneur avec la commande `incus exec` précédente. Une fois dans le conteneur  lancez les commandes suivantes:
 
-##### Pour centos
+##### Pour almalinux
 
 ```bash
 # installer SSH
@@ -170,39 +170,39 @@ LXD permet de gérer aisément des snapshots de nos conteneurs sous forme d'imag
 Nous allons maintenant créer snapshots opérationnels de base qui vont nous permettre de construire notre lab d'infrastructure en local.
 
 ```bash
-incus stop centos1
-incus publish --alias centos_ansible_ready centos1
+incus stop almalinux1
+incus publish --alias almalinux_ansible_ready almalinux1
 incus image list
 ```
 
 On peut ensuite lancer autant de conteneur que nécessaire avec la commande launch:
 
 ```bash
-incus launch centos_ansible_ready centos2 centos3
+incus launch almalinux_ansible_ready almalinux2 almalinux3
 ```
 
 - Une fois l'image exportée faite supprimez les conteneurs.
 
 ```bash
-incus delete centos1 centos2 centos3 --force
+incus delete almalinux1 almalinux2 almalinux3 --force
 ```
 
 </details>
 
 ### Lancer et tester les conteneurs
 
-Créons à partir des images du remotes un conteneur ubuntu et un autre centos:
+Créons à partir des images du remotes un conteneur ubuntu et un autre almalinux:
 
 ```bash
 incus launch ubuntu_ansible ubu1
-incus launch centos_ansible centos1
+incus launch almalinux_ansible almalinux1
 ```
 
 - Pour se connecter en SSH nous allons donc utiliser une clé SSH appelée `id_ed25519` qui devrait être présente dans votre dossier `~/.ssh/`. Vérifiez cela en lançant `ls -l /home/stagiaire/.ssh`.
 
 <!-- - Déverrouillez cette clé ssh avec `ssh-add ~/.ssh/id_ed25519` et le mot de passe `devops101` (le ssh-agent doit être démarré dans le shell pour que cette commande fonctionne si ce n'est pas le cas `eval $(ssh-agent)`). -->
 
-- Essayez de vous connecter à `ubu1` et `centos1` en ssh pour vérifier que la clé ssh est bien configurée et vérifiez dans chaque machine que le sudo est configuré sans mot de passe avec `sudo -i`.
+- Essayez de vous connecter à `ubu1` et `almalinux1` en ssh pour vérifier que la clé ssh est bien configurée et vérifiez dans chaque machine que le sudo est configuré sans mot de passe avec `sudo -i`.
 
 ## Créer un projet de code Ansible
 
@@ -275,7 +275,7 @@ Ansible cherche la configuration locale dans le dossier courant. Conséquence: o
 
 - Ansible implique le cas échéant (login avec clé ssh) de déverrouiller la clé ssh pour se connecter à **chaque** hôte. Lorsqu'on en a plusieurs il est donc nécessaire de la déverrouiller en amont avec l'agent ssh pour ne pas perturber l'exécution des commandes ansible. Pour cela : `ssh-add`.
 
-- Créez un groupe `adhoc_lab` et ajoutez les deux machines `ubu1` et  `centos1`.
+- Créez un groupe `adhoc_lab` et ajoutez les deux machines `ubu1` et  `almalinux1`.
 
 <details><summary>Réponse</summary>
 
@@ -285,7 +285,7 @@ ansible_user=stagiaire
 
 [adhoc_lab]
 ubu1 ansible_host=<ip>
-centos1 ansible_host=<ip>
+almalinux1 ansible_host=<ip>
 ```
 
 </details>
@@ -304,7 +304,7 @@ En précisant les paramètres de connexion dans le playbook il et aussi possible
 
 ## Installons nginx avec quelques modules
 
-- Modifiez l'inventaire pour créer deux sous-groupes de `adhoc_lab`, `centos_hosts` et `ubuntu_hosts` avec deux machines dans chacun. (utilisez pour cela `[adhoc_lab:children]`)
+- Modifiez l'inventaire pour créer deux sous-groupes de `adhoc_lab`, `almalinux_hosts` et `ubuntu_hosts` avec deux machines dans chacun. (utilisez pour cela `[adhoc_lab:children]`)
 
 ```ini
 [all:vars]
@@ -313,12 +313,12 @@ ansible_user=stagiaire
 [ubuntu_hosts]
 ubu1 ansible_host=<ip>
 
-[centos_hosts]
-centos1 ansible_host=<ip>
+[almalinux_hosts]
+almalinux1 ansible_host=<ip>
 
 [adhoc_lab:children]
 ubuntu_hosts
-centos_hosts
+almalinux_hosts
 ```
 
 Dans un inventaire ansible on commence toujours par créer les plus petits sous groupes puis on les rassemble en plus grands groupes.
@@ -327,7 +327,7 @@ Dans un inventaire ansible on commence toujours par créer les plus petits sous 
 
 Nous allons maintenant installer `nginx` sur nos machines. Il y a plusieurs façons d'installer des logiciels grâce à Ansible: en utilisant le gestionnaire de paquets de la distribution ou un gestionnaire spécifique comme `pip` ou `npm`. Chaque méthode dispose d'un module ansible spécifique.
 
-- Si nous voulions installer nginx avec la même commande sur des machines centos et ubuntu à la fois, impossible d'utiliser `apt` car centos utilise `dnf`. Pour éviter ce problème on peut utiliser le module `package` qui permet d'uniformiser l'installation (pour les cas simples).
+- Si nous voulions installer nginx avec la même commande sur des machines almalinux et ubuntu à la fois, impossible d'utiliser `apt` car almalinux utilise `dnf`. Pour éviter ce problème on peut utiliser le module `package` qui permet d'uniformiser l'installation (pour les cas simples).
 
 - N'hésitez pas consulter extensivement la documentation des modules avec leur exemple ou d'utiliser la commande de documentation `ansible-doc <module>`
   - utilisez `become` pour devenir root avant d'exécuter la commande (cf élévation de privilège dans le cours2)
@@ -397,11 +397,11 @@ ansible adhoc_lab --become -m package -a "name=nginx state=present"
 ```
 </details>
 
-- Pour résoudre le problème sur les hôtes CentOS, installez `epel-release` sur la  machine CentOS.
+- Pour résoudre le problème sur les hôtes almalinux, installez `epel-release` sur la  machine almalinux.
 
 <details><summary>Réponse</summary>
 ```
-ansible centos_hosts --become -m package -a "name=epel-release state=present"
+ansible almalinux_hosts --become -m package -a "name=epel-release state=present"
 ```
 </details>
 
@@ -412,12 +412,12 @@ ansible centos_hosts --become -m package -a "name=epel-release state=present"
 ansible adhoc_lab -m package -a name=nginx state=present
 ```
 
-La machine centos a un retour changed jaune alors que la machine ubuntu a un retour ok vert. C'est l'idempotence: ansible nous indique que nginx était déjà présent sur le serveur ubuntu.
+La machine almalinux a un retour changed jaune alors que la machine ubuntu a un retour ok vert. C'est l'idempotence: ansible nous indique que nginx était déjà présent sur le serveur ubuntu.
 </details>
 
 ### Vérifier l'état du service Nginx
 
-- Utiliser le module `systemd` et l'option `--check` pour vérifier si le service `nginx` est démarré sur chacune des 2 machines. Normalement vous constatez que le service est déjà démarré (par défaut) sur la machine ubuntu et non démarré sur la machine centos.
+- Utiliser le module `systemd` et l'option `--check` pour vérifier si le service `nginx` est démarré sur chacune des 2 machines. Normalement vous constatez que le service est déjà démarré (par défaut) sur la machine ubuntu et non démarré sur la machine almalinux.
 
 <details><summary>Réponse</summary>
 ```
