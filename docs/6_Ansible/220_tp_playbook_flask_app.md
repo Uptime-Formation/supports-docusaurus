@@ -74,25 +74,14 @@ Le code (très minimal) de cette application se trouve sur github à l'adresse: 
 
 - N'hésitez pas consulter extensivement la documentation des modules avec leur exemple ou d'utiliser la commande de doc `ansible-doc <module>`
 
-- Créons un playbook : ajoutez un fichier `flask_deploy.yml` avec à l'intérieur:
+- Créons un playbook : ajoutez un fichier `flask_deploy.yml`. avec la base suivante:
 
 ```yaml
 - hosts: hotes_cible
-  
   tasks:
-    - name: ping
-      ping:
 ```
 
-- Lancez ce playbook avec la commande `ansible-playbook <nom_playbook>`.
-
-- Commençons par installer les dépendances de cette application. Tous nos serveurs d'application sont sur ubuntu. Nous pouvons donc utiliser le module `apt` pour installer les dépendances. Il fournit plus d'options que le module `package`.
-
-<details><summary>Si vous avez créé une app3 sur almalinux :</summary>
-Pour faire varier les tasks que l'on exécute, il faudrait jouer sur la variable `ansible_os_family` avec la ligne `when: ansible_os_family == "RedHat"` (ou `Debian`) (au niveau du nom du module dans la task).
-Il faudra aussi trouver les bons noms de packages et installer `epel-release`
-
-</details>
+Commençons par installer les dépendances de cette application. Tous nos serveurs d'application sont sur ubuntu. Nous pouvons donc utiliser le module `apt` pour installer les dépendances. Il fournit plus d'options que le module `package`.
 
 - Avec le module `apt` installez les applications: `python3-dev`, `python3-pip`, `python3-virtualenv`, `virtualenv`, `nginx`, `git`. Donnez à cette tache le nom: `ensure basic dependencies are present`. ajoutez pour cela la directive `become: yes` au début du playbook.
 
@@ -112,7 +101,13 @@ En utilisant une `loop` (et en accédant aux différentes valeurs qu'elle prend 
         - git
 ```
 
-- Relancez bien votre playbook à chaque tâche : comme Ansible est idempotent il n'est pas grave en situation de développement d'interrompre l'exécution du playbook et de reprendre l'exécution après un échec.
+<!-- <details><summary>Si vous avez créé une app3 sur almalinux :</summary>
+Pour faire varier les tasks que l'on exécute, il faudrait jouer sur la variable `ansible_os_family` avec la ligne `when: ansible_os_family == "RedHat"` (ou `Debian`) (au niveau du nom du module dans la task).
+Il faudra aussi trouver les bons noms de packages et installer `epel-release`
+
+</details> -->
+
+- Lancez ce playbook avec la commande `ansible-playbook <nom_playbook>`.
 
 - Ajoutez une tâche `systemd` pour s'assurer que le service `nginx` est démarré.
 
@@ -122,6 +117,8 @@ En utilisant une `loop` (et en accédant aux différentes valeurs qu'elle prend 
         name: nginx
         state: started
 ```
+
+- Relancez bien votre playbook à chaque tâche : comme Ansible est idempotent il n'est pas grave en situation de développement d'interrompre l'exécution du playbook et de reprendre l'exécution après un échec.
 
 - Ajoutez une tâche pour créer un utilisateur `flask` et l'ajouter au groupe `www-data`. Utilisez bien le paramètre `append: yes` pour éviter de supprimer des groupes à l'utilisateur.
 
@@ -452,7 +449,7 @@ Dans un template Jinja2, pour écrire un bloc de texte en fonction d'une variabl
 {% endif %}
 ```  -->
 
-## Amélioration A : faire varier le playbook selon les OS
+<!-- ## Amélioration A : faire varier le playbook selon les OS
 
 Nous allons tenter de créer une nouvelle version de votre playbook pour qu'il soit portable entre almalinux et Ubuntu.
 
@@ -464,10 +461,10 @@ Nous allons tenter de créer une nouvelle version de votre playbook pour qu'il s
 
 - Pour le nom du user Nginx, on pourrait ajouter une section de playbook appelée `vars:` et définir quelque chose comme `nginx_user: "{{ 'nginx' if ansible_os_family == "RedHat" else 'www-data' }}`
 
-- De même, les fichiers Nginx ne sont pas forcément au même endroit dans almalinux : il n'y a pas de notion de `sites-enabled` dans Nginx, il suffit de copier un fichier de config dans `/etc/nginx/conf.d` à la place (pas de lien symbolique).
+- De même, les fichiers Nginx ne sont pas forcément au même endroit dans almalinux : il n'y a pas de notion de `sites-enabled` dans Nginx, il suffit de copier un fichier de config dans `/etc/nginx/conf.d` à la place (pas de lien symbolique). -->
 
 <!-- - Il faudra peut-être penser à l'installation de Python 3 dans almalinux, et dire à Ansible d'utiliser Python 3 en indiquant dans l'inventaire `ansible_python_interpreter=/usr/bin/python3`. -->
-
+<!-- 
 ## Amélioration B : un handler en deux parties en testant la config de Nginx avant de reload
 On peut utiliser l'attribut `listen` dans le handler pour décomposer un handler en plusieurs étapes.
 Avec `nginx -t`, testons la config de Nginx dans le handler avant de reload.
@@ -488,11 +485,11 @@ Dans le cas de plusieurs hosts hébergeant nos apps, on pourrait même ajouter u
 Pour info : la variable `{{ inventory_hostname }}` permet d'accéder au nom que l'on a donné à une machine dans l'inventaire.
 
 
-## Amélioration E : l'attribut `register:`
+## Amélioration E : l'attribut `register:` -->
 <!-- TODO: à améliorer -->
-- Avec le module `command`, listez les configs activées dans Nginx, utilisez la directive `register:` pour la mettre dans une variable.
+<!-- - Avec le module `command`, listez les configs activées dans Nginx, utilisez la directive `register:` pour la mettre dans une variable.
 
-- Ajoutez une tâche de `debug:` qui affiche le contenu de cette variable (avec `{{ }}`)
+- Ajoutez une tâche de `debug:` qui affiche le contenu de cette variable (avec `{{ }}`) -->
 
 ## Réorganisation : rendre le playbook dynamique avec des variables, puis une boucle, pour se préparer aux rôles
 
@@ -624,8 +621,6 @@ La directive `loop_var` permet de renommer la variable sur laquelle on boucle pa
 - Testez en relançant le playbook que le déplacement des variables est pris en compte correctement.
 
 - Pour la solution : activez la branche `tp2_correction` avec `git checkout tp2_correction`.
-
-
 
 ## Bonus : pour pratiquer
 
