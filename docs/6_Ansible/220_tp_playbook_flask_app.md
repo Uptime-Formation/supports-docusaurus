@@ -427,7 +427,7 @@ Ajoutez une section `handlers:` à la suite
 # => penser aussi à supprimer la tâche maintenant inutile de restart de nginx précédente
 ```
 
-## Solution
+## Solution 
 
 - Pour la solution complète, clonons le dépôt via cette commande :
 ```bash
