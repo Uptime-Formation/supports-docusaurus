@@ -77,7 +77,9 @@ Le code (très minimal) de cette application se trouve sur github à l'adresse: 
 - Créons un playbook : ajoutez un fichier `flask_deploy.yml`. avec la base suivante:
 
 ```yaml
-- hosts: hotes_cible
+- hosts: <hotes_cible_cible_a_completer>
+  gather_facts: true
+  become: true
   tasks:
 ```
 
@@ -132,11 +134,11 @@ Il faudra aussi trouver les bons noms de packages et installer `epel-release`
           - "www-data"
 ```
 
-<details><summary>Si vous avez créé une app3 sur almalinux (facultatif), cliquez ici</summary>
+<!-- <details><summary>Si vous avez créé une app3 sur almalinux (facultatif), cliquez ici</summary>
 
 Ici, le fonctionnement le plus concis serait d'utiliser les conditions Jinja2 (et non le mot-clé `when:`) avec une section de playbook appelée `vars:` et quelque chose comme `nginx_user: "{{ 'www-data' if ansible_os_family == "RedHat" else 'www-data'`
 
-</details>
+</details> -->
 
 N'hésitez pas à tester l'option `--diff -v` avec vos commandes pour voir l'avant-après.
 
@@ -200,7 +202,7 @@ Notre application sera exécutée en tant qu'utilisateur flask pour des raisons 
 ```yaml
     - name: Change permissions of app directory
       file:
-        path: /home/flask/hello
+        path: /home/flask
         state: directory
         owner: "flask"
         group: www-data
@@ -326,7 +328,7 @@ server {
 
     - name: Change permissions of app directory recursively if needed
       file:
-        path: /home/flask/hello
+        path: /home/flask
         state: directory
         owner: "flask"
         group: www-data
@@ -429,7 +431,7 @@ Ajoutez une section `handlers:` à la suite
 - Pour la solution complète, clonons le dépôt via cette commande :
 ```bash
 cd # Pour revenir dans notre dossier home
-git clone https://github.com/Uptime-Formation/ansible-tp-solutions -b tp2_correction tp2_before_handlers
+git clone https://github.com/Uptime-Formation/ansible-tp-solutions -b tp2_correction
 ```
 
 Vous pouvez également consulter la solution directement sur le site de Github : <https://github.com/Uptime-Formation/ansible-tp-solutions/tree/tp2_correction>
@@ -622,8 +624,8 @@ La directive `loop_var` permet de renommer la variable sur laquelle on boucle pa
 
 - Pour la solution : activez la branche `tp2_correction` avec `git checkout tp2_correction`.
 
-## Bonus : pour pratiquer
+<!-- ## Bonus : pour pratiquer
 
 Essayez de déployer une version plus complexe d'application flask avec une base de donnée mysql : [https://github.com/miguelgrinberg/microblog/tree/v0.17](https://github.com/miguelgrinberg/microblog/tree/v0.17)
 
-Il s'agit de l'application construite au fur et à mesure dans un [magnifique tutoriel python](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deployment-on-linux). Ce chapitre indique comment déployer l'application sur linux.
+Il s'agit de l'application construite au fur et à mesure dans un [magnifique tutoriel python](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deployment-on-linux). Ce chapitre indique comment déployer l'application sur linux. -->

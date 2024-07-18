@@ -149,7 +149,7 @@ C'est le store de roles officiel d'Ansible : [https://galaxy.ansible.com/](https
 
 C'est également le nom d'une commande `ansible-galaxy` qui permet d'installer des roles et leurs dépendances depuis internet. Un sorte de gestionnaire de paquet pour ansible.
 
-Elle est utilisée généralement sour la forme `ansible-galaxy install -r roles/requirements.yml -p roles` ou plus simplement `ansible-galaxy install <role>` mais installe dans `/etc/ansible/roles`.
+Elle est utilisée généralement sour la forme `ansible-galaxy role install -r roles/requirements.yml -p roles` ou plus simplement `ansible-galaxy role install <role>` mais installe dans `/etc/ansible/roles`.
 
 Tous les rôles ansible sont communautaires (pas de roles officiels) et généralement stockés sur github.
 

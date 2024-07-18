@@ -21,19 +21,25 @@ weight: 32
   name: geerlingguy.mysql
 ```
 
-- Pour installez le rôle lancez ensuite `ansible-galaxy install -r roles/requirements.yml -p roles`.
+- Pour installez le rôle lancez ensuite `ansible-galaxy role install -r roles/requirements.yml -p roles`.
 
 - Facultatif : Ajoutez la ligne `geerlingguy.*` au fichier `.gitignore` pour ne pas ajouter les roles externes à votre dépot git.
 
-- Pour installer notre base de données, ajoutez un playbook `dbservers.yml` appliqué au groupe `dbservers` avec juste une section:
+- Pour installer notre base de données, ajoutez un playbook `dbservers.yml` appliqué au groupe `dbservers` avec juste une section roles:
 
 ```yaml
-    ...
-    roles:
-        - <nom_role>
+- hosts: dbservers
+  become: yes
+  roles:
+    - <nom_role>
 ```
 
-- Faire un playbook principal `site.yml` (le playbook principal par convention) qui importe juste les deux playbooks `appservers.yml` et `dbservers.yml` avec `import_playbook`.
+- Faire un playbook principal `site.yml` (le playbook principal par convention) qui importe juste les deux playbooks `appservers.yml` (renommer le playbook d'installation d'app en `appservers.yml`) et `dbservers.yml` avec `import_playbook`:
+
+```yaml
+- import_playbook: dbservers.yml
+- import_playbook: appservers.yml
+```
 
 - Lancer la configuration de toute l'infra avec ce playbook.
 
@@ -41,8 +47,8 @@ weight: 32
 
 ## Transformer notre playbook en role
 
-**Pour ce TP on va réutiliser soit le dossier du TP2, soit la solution du TP2 :
-`git clone https://github.com/Uptime-Formation/ansible-tp-solutions -b tp2_correction`**
+**Pour ce TP on va partir de la solution du TP2 :
+`git clone https://github.com/Uptime-Formation/ansible-tp-solutions -b tp2_correction tp3_roles_base`**
 
 - Si ce n'est pas fait, créez à la racine du projet le dossier `roles` dans lequel seront rangés tous les roles (c'est une convention ansible à respecter).
 - Créer un dossier `flaskapp` dans `roles`.
@@ -119,10 +125,10 @@ L'idée est la suivante :
 
 - Votre role est prêt : lancez `appservers.yml` et debuggez le résultat le cas échéant.
 
-## Facultatif: rendre le rôle compatible avec le mode `--check`
+<!-- ## Facultatif: rendre le rôle compatible avec le mode `--check`
 
 - Ajouter une app dans la variable `flask_apps` et lancer le playbook avec `--check`. Que se passe-t-il ? Pourquoi ?
-- ajoutez une instruction `ignore_errors: {{ ansible_check_mode }}` au bon endroit. Re-testons.
+- ajoutez une instruction `ignore_errors: {{ ansible_check_mode }}` au bon endroit. Re-testons. -->
 
 ## Facultatif: Ajouter un paramètre d'exécution à notre rôle pour mettre à jour l'application
 
@@ -161,6 +167,7 @@ git clone https://github.com/Uptime-Formation/ansible-tp-solutions -b tp3_correc
 
 Vous pouvez également consulter la solution directement sur le site de Github : <https://github.com/Uptime-Formation/ansible-tp-solutions/tree/tp3_correction>
 
+<!-- 
 ## Bonus 1
 
 Essayez différents exemples de projets de Jeff Geerling accessibles sur Github à l'adresse <https://github.com/geerlingguy/ansible-for-devops>.
@@ -185,4 +192,4 @@ On peut créer des scénarios :
 Documentation : <https://molecule.readthedocs.io/en/latest/>
 
 - Suivre le tutoriel *Getting started* : <https://molecule.readthedocs.io/en/latest/getting-started.html>
-- Tutoriel bonus : <https://www.adictosaltrabajo.com/2020/05/08/ansible-testing-using-molecule-with-ansible-as-verifier/>
+- Tutoriel bonus : <https://www.adictosaltrabajo.com/2020/05/08/ansible-testing-using-molecule-with-ansible-as-verifier/> -->
