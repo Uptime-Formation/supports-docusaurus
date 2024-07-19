@@ -148,11 +148,10 @@ Pour transformer la valeur des variables à la volée lors de leur appel on peut
 
 - par exemple on peut fournir une valeur par défaut pour une variable avec filtre default: `{{ hostname | default('localhost') }}`
 - Un autre usage courant des filtres est de reformater et filtrer des listes et dictionnaires de paramètre. Ces syntaxes sont peut intuitives. Vous pouvez vous entrainer en regardant ces tutoriels:
-  - [https://www.tailored.cloud/devops/how-to-filter-and-map-lists-in-ansible/](https://www.tailored.cloud/devops/how-to-filter-and-map-lists-in-ansible/)
-  - [https://www.tailored.cloud/devops/advanced-list-operations-ansible/](https://www.tailored.cloud/devops/advanced-list-operations-ansible/)
 
-La liste complète des filtres ansible se trouve ici : [https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
-<!-- TODO: ajout de liens vers jinja filter custom -->
+  - https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html
+  - https://blog.stephane-robert.info/post/ansible-filtres-advanced/
+  - https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
 
 ### Jinja2 et les variables dans les fichiers de templates
 
