@@ -14,20 +14,12 @@ Les fichiers nécessaires sont en fin de page.
 
 ### Étapes 
 
-- **Action** : Préparer un répertoire local pour le projet Docker.  
+- **Action** : Préparer le répertoire local pour le projet Docker.  
   **Observation** : Le répertoire contient les fichiers `main.py`, `index.html` et `requirements.txt`.
 
 
-- **Action** : Créer un fichier `Dockerfile` en utilisant l'image `python:3.11-slim-bullseye` comme base.  
+- **Action** : Créer le fichier `Dockerfile` avec le code fourni.  
   **Observation** : Le fichier `Dockerfile` est présent dans le répertoire et contient les instructions de base.
-
-
-- **Action** : Ajouter des instructions dans le `Dockerfile` pour copier les fichiers de dépendances et installer les modules Python requis.  
-  **Observation** : Le `Dockerfile` inclut les commandes pour copier `requirements.txt` et installer les dépendances.
-
-
-- **Action** : Ajouter des bonnes pratiques de sécurité et de qualité de code dans le `Dockerfile` (utilisateur non-root, utilisation d'ARG et de labels, configuration du `HEALTHCHECK`).  
-  **Observation** : Le `Dockerfile` contient des instructions optimisées pour la sécurité et la qualité.
 
 
 - **Action** : Construire l'image Docker personnalisée.  
@@ -42,12 +34,9 @@ Les fichiers nécessaires sont en fin de page.
   **Observation** : L'image est correctement taggée et identifiable.
 
 
-- **Action** : Tester l'image en lançant un conteneur et en exécutant l'application Flask.  
-  **Observation** : L'application Flask s'exécute correctement dans le conteneur.
+- **Action** : Tester l'image en lançant un conteneur.  
+  **Observation** : La webapp s'exécute correctement dans le conteneur.
 
-
-- **Action** : Vérifier le fonctionnement de l'application et le respect des bonnes pratiques (taille de l'image, sécurité, performance).  
-  **Observation** : Le conteneur fonctionne conformément aux attentes, et les bonnes pratiques sont respectées.
 
 
 ### Structure des fichiers du projet Python 
@@ -103,6 +92,18 @@ def index():
     # Définir la variable pour savoir si Redis est disponible
     redis_available = redis_client is not None
     return render_template('index.html', redis_available=redis_available, counter=counter_value)
+
+
+def check_all_dependencies():
+    return True
+
+
+@app.route('/healthz')
+def health_check():
+    if check_all_dependencies():
+        return 'OK', 200
+    else:
+        return 'Service Unavailable', 500
 
 @app.route('/increment', methods=['POST'])
 def increment_counter():
@@ -193,7 +194,7 @@ LABEL maintainer="support@mytechcompany.io" \
 
 WORKDIR /app
 
-RUN apt update && apt install curl && apt clean
+RUN apt update && apt install -y curl && apt clean
 
 COPY requirements.txt .
 
@@ -212,7 +213,7 @@ EXPOSE ${APP_PORT}
 ENTRYPOINT ["python"]
 CMD ["main.py"]
 
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:${APP_PORT} || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:${APP_PORT}/healthz || exit 1
 ```
 
 ### Avancé 
@@ -232,8 +233,8 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhos
 - Ajouter les instructions au `Dockerfile` : voir le contenu fourni précédemment.  
 - Construire l'image Docker : `docker build .`  
 - Vérifier la liste des images : `docker images`  
-- Tagger l'image : `docker tag [image_uuid] myfirstapp:1.0`  
-- Lancer le conteneur : `docker run -p 3000:3000 myfirstapp:1.0`  
-- Vérifier l'application : `curl http://localhost:3000`  
+- Tagger l'image : `docker tag [image_uuid] myfirstapp:1.0`  ou `docker build . -t myfirstapp:1.0`  
+- Lancer le conteneur : `docker run --name myfirstapp -d myfirstapp:1.0`  
+- Vérifier l'application : `docker exec myfirstapp curl http://localhost:3000`  
 
 </details>
