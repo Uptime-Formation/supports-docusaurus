@@ -1,5 +1,5 @@
 ---
-title: Git 5 - Les pipelines avec Gitlab CI
+title: Cours - Les pipelines avec Gitlab CI
 weight: 500
 ---
 
@@ -15,13 +15,14 @@ weight: 500
 
 - A chaque étape le code passe dans un **Pipeline** de validation automatique.
 
-![](../../images/devops/gitlab_workflow_example.png)
+![](/img/devops/gitlab_workflow_example.png)
+![](/img/kubernetes/wiki-ciscolinux-co-uk-russiandolls.png)
 
 
 **La CI/CD fait partie de l'approche DevOps dont fait aussi partie les concepts de cloud (Infrastructure-as-a-Service, IaaS), d'Infrastructure-as-Code et les conteneurs.**
 
 
-![](../../images/git/pipeline_status.png)
+![](/img/git/pipeline_status.png)
 
 ### Le Cloud (plus précisément : Infrastructure-as-a-Service, ou *IaaS*)
 
@@ -61,8 +62,8 @@ Avantages :
 
 ---
 
-![](../../images/devops/gitlab_workflow_example.png)
-![](../../images/devops/pipeline_status.png)
+![](/img/devops/gitlab_workflow_example.png)
+![](/img/devops/pipeline_status.png)
 
 ---
 
@@ -72,7 +73,7 @@ Essentiel :
 
 **Get started with GitLab CI/CD : <https://docs.gitlab.com/ee/ci/quick_start/>**
 
-![](../../images/git/job_running.png)
+![](/img/git/job_running.png)
 
 
 ## La syntaxe Gitlab CI

@@ -1,5 +1,5 @@
 ---
-title: Git 5 - Exercices
+title: Exercices Git - Partie 5
 weight: 510
 ---
 
@@ -48,7 +48,7 @@ Issues, Merge Requests and Integrations in GitLab:
 https://www.youtube.com/watch?v=raXvuwet78M
 
 ### Tutoriels
-- [TP Docker : Gitlab CI](../../04-docker/6-tp-gitlab-ci/)
+- TP Docker : Gitlab CI -> voir les supports Docker sur ce site
 
 Code Refinery :
 - <https://coderefinery.github.io/testing/continuous-integration/>

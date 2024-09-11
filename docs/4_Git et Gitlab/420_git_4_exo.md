@@ -1,5 +1,5 @@
 ---
-title: Git 4 - Exercices
+title: Exercices Git - Partie 4
 weight: 410
 ---
 
@@ -101,6 +101,7 @@ This is a simple microblogging app
 ```
 
 - Commitez l'ensemble de ces changements (n'oubliez pas d'ajouter les nouveaux fichiers non-versionnés avec `git add` si besoin !)
+
 <!-- - 3.7 : Utilisez `git reset HEAD~1` pour faire un "soft" reset qui annule votre dernier commit (mais conserve les fichiers dans l'état actuel, à la différence du `git reset --hard`). Puis refaites ce commit depuis VS code / Eclipse.
 - 3.8 : Utilisez `git reflog` pour relire l'historique de tout vos changements de commit / état du dépôt -->
 
@@ -140,14 +141,15 @@ This is a simple microblogging app
   - commitez le changement sur la branche.
 - 5.4 : Récupérez auprès du formateur un petit fichier de patch contenant la sortie d'un `git diff`. Appliquez ce patch sur votre espace de travail en lançant `git apply`. Cette commande tourne "dans le vide" en attendant que vous colliez le contenu du patch, puis que vous fassiez Ctrl+D pour terminer. Vérifiez avec `git status` et `git diff` que le patch a bien été appliqué sur votre espace de travail. -->
 
-
-  <!-- FIXME: euh je l'ai pas marqué quelque part ça ? tp3 ? fusionner -->
+<!-- FIXME: euh je l'ai pas marqué quelque part ça ? tp3 ? fusionner -->
 
 <!-- - ... via Gitlab avec une Merge Request -->
+
 <!-- - ... via Github avec une Pull Request -->
 
 <!-- - Faites une merge request sur le dépôt de quelqu'un de votre groupe, ou bien sur le dépôt de ce cours : <https://github.com/Uptime-Formation/cours-git> -->
-  <!-- - Les deux premiers chapitres seront à merger en local et les deux suivants sur framagit. -->
+
+<!-- - Les deux premiers chapitres seront à merger en local et les deux suivants sur framagit. -->
 
 <!-- FIXME: ajout autre remote, changement URL d'origine et ajout de celle de grinberg -->
 

@@ -1,7 +1,5 @@
 ---
-title: "Git 2 - Exercices"
-draft: false
-weight: 210
+title: "Exercices Git - Partie 2"
 ---
 
 Durant cette partie nous allons explorer un dépôt git existant grâce aux commandes git de base mais également grâce au GUI (interface graphique) de VSCode.
@@ -79,7 +77,7 @@ Nous allons maintenant créer une branche en repartant du début du projet pour 
 
 - Trouvez comment ajouter une page _A propos_ à l'application Flask (indice : il faut ajouter une route, un template et un lien dans le menu).
 
-{{% expand "Solution :" %}}
+<details><summary>Solution :</summary>
 
 `app/templates/base.html` :
 
@@ -108,7 +106,7 @@ def about_page():
 {% endblock %}
 ```
 
-{{% /expand %}}
+</details>
 
 - Une fois vos modifications ajoutées, faites simplement `git diff`. Cette fonction affiche en vert le code que vous venez d'ajouter, et en rouge celui que vous avez retiré, si jamais.
 
@@ -124,7 +122,13 @@ def about_page():
 
 ## Exercices supplémentaires
 
-- ["Déplacer le travail + Un assortiment + Sujets avancés" sur _Learn Git branching_](https://learngitbranching.js.org/?locale=fr_FR)
+### Learn git branching
+
+https://learngitbranching.js.org/?locale=fr_FR
+
+- Déplacer le travail
+- Un assortiment
+- Sujets avancés
 
 ### gitexercises.fracz.com
 

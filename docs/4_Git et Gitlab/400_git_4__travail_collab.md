@@ -1,5 +1,5 @@
 ---
-title: Git 4 - Forges Git
+title: Cours - Les forges Git
 weight: 400
 ---
 

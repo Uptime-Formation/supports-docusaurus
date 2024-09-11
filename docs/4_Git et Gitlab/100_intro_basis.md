@@ -1,19 +1,13 @@
 ---
-title: "Git 1 - Introduction"
-# class: animation-fade
-# layout: true
-weight: 10
-draft: false
+title: "Cours - Introduction à Git"
 ---
 
 
-## GIT = Des dépôts de code à partager
-### Comment gérer du code logiciel ?
+## Git = Des dépôts de code à partager
 
-### Plusieurs difficultés :
+### Plusieurs difficultés quand on gère du code logiciel
 
 1. **Suivre** le code avec **précision** :
-
    - Comme on l'a vu **chaque lettre compte** : une erreur = un bug qui peut être grave et nous faire perdre plusieurs heures
    - **Mémoire** : comment savoir ou l'on en était quand on **revient sur le projet d'il y a deux mois**
 
@@ -30,17 +24,17 @@ draft: false
 
 1. Suit **chaque modification** faite à des **fichiers**, en général des **fichiers texte** (souvent de code mais peut être autre chose : de la documentation, par exemple en format Markdown comme ce cours, plus rarement d'autres fichiers, comme des documents Word).
 
-![](../../images/git_diff.png)
+![](/img/git_diff.png)
 
 2. Permet de **stocker plusieurs versions** des **mêmes fichiers** et passer d'une version à l'autre.
 
 Un peu comme la fonctionnalité "Historique" de Google Docs ou de Framapad en **beaucoup plus avancé**.
 
-![](../../images/merge_3_versions.png)
+![](/img/merge_3_versions.png)
 
 3. Permet de suivre **qui** a fait quelle modification, **partager les modifications** avec les autres, **régler les conflits d'édition**
 
-![](../../images/gitkraken.png)
+![](/img/gitkraken.png)
 
 ## Git !
 
@@ -52,6 +46,10 @@ Un peu comme la fonctionnalité "Historique" de Google Docs ou de Framapad en **
 - Aide à résoudre les conflits de code
 
 Pour la petite histoire, Git a été inventé en 2005 par Linus Torvalds, le créateur de Linux, pour garder la trace des propositions de modification du code de Linux !
+
+Linus était insatisfait des gestionnaires de version existant SVN, CVS et mercurial.
+
+La popularité de git a par la suite explosé grâce à ma forge GitHub
 
 ## Écosystème Git :
 
@@ -72,7 +70,7 @@ On va utiliser :
 
 - **git** en ligne de commande souvent : il faut **absolument connaître** les fonctions de base pour travailler sur un projet de code aujourd'hui
 - **VSCode** : un éditeur de texte qui a des fonctions pratiques pour visualiser les modifications git et l'historique d'un projet, afficher les conflits d'édition.
-- **Gitlab** sur l'instance `framagit.org` : une forge logicielle open-source. On va l'utiliser pour collaborer sur du code existant. Framagit est l'instance de l'association Framasoft qui milite pour le libre et un Internet décentralisé.
+- **Gitlab** : une forge logicielle open-source (il y a plusieurs forge basée sur le logiciel, **gitlab.com** et par exemple **framagit.org**). On va l'utiliser pour collaborer sur du code existant.
 
 ## Git, fonctionnement de base
 
@@ -97,7 +95,7 @@ Vous êtes dans un dossier avec du code :
 - `git commit` permet de **valider vos modifications** pour créer ce qu'on appelle un **commit**, c'est-à-dire une **étape validée du code**.
 - `git status` et `git log` permettent de suivre l'état du dépôt et la liste des commits.
 
-## Le **commit**
+## Le **commit** : on "engage" des modifications du code
 
 Un commit est composé :
 
@@ -120,9 +118,9 @@ Un commit est composé :
 
 ## Cycle des fichiers
 
-![](../../images/commit_cycle.png)
+![](/img/commit_cycle.png)
 
-![](../../images/git_file_statuses.jpg)
+![](/img/git_file_statuses.jpg)
 
 ### Les différents espaces de Git :
 
@@ -139,4 +137,4 @@ Un commit est composé :
 
 ---
 
-![](../../images/git/git-cheat-sheet.jpg)
+![](/img/git/git-cheat-sheet.jpg)

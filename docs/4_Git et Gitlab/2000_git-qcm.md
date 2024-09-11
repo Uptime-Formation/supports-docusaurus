@@ -1,8 +1,7 @@
 ---
-draft: false
 title: "QCM"
 weight: 1020
-
+sidebar_class_name: hidden
 ---
 
 # Initiation à Git : questionnaire

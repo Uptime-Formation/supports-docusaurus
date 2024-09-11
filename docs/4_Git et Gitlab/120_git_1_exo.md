@@ -1,5 +1,5 @@
 ---
-title: "Git 1 - Exercices"
+title: "Exercices Git - partie 1"
 weight: 11
 ---
 
@@ -25,7 +25,7 @@ Sur Linux : Si VSCode n'est pas installé : `snap install --classic code`
 
 - Créez un nouveau fichier Python dans ce dossier appelé `multiplication.py`. Copiez-y le code suivant :
 
-{{% expand "Cliquer pour afficher `multiplication.py` :" %}}
+<details><summary>Cliquer pour afficher `multiplication.py` :</summary>
 
 ```python
     # Définit l'opération de multiplication
@@ -37,7 +37,7 @@ if __name__ == "__main__":
   print(multiplie(a, b))
 ```
 
-{{% /expand %}}
+</details>
 
 - Lancez `git status`. Quel est le problème ?
 - Initialisez le dépot de code avec la commande `git init`.
@@ -69,7 +69,7 @@ git config --global user.email "<votre email>"
 
 ### Commit de tous les fichiers
 
-- Si le dossier `__pycache__` n'a pas été créé, créez manuellement juste pour le TP un fichier : `touch __pycache__`
+- Si le dossier `__pycache__` n'a pas été créé, créez le manuellement juste pour le TP un fichier : `mkdir __pycache__; touch __pycache__/moncache.pyc`
 
 - Utiliser `git add` avec l'option `-A` pour ajouter tous les fichiers actuels de votre projet.
 - Qu'affiche `git status` ?
@@ -83,7 +83,9 @@ Oh non ! Vous avez ajouté le dossier `__pycache__` dans votre commit précéden
 Ce ne serait pas correct de pousser sur Internet votre code en l'état !
 
 - Supprimez le suivi du dossier `__pycache__` avec la commande `git rm`:
-  - Quelles options sont nécessaires ? utilisez `git rm --help` pour les trouver.
+  - Quelles options sont nécessaires ? util
+
+Lancez `git rm --help` pour les trouver.
 
 ### Ignorer un fichier
 
@@ -113,7 +115,12 @@ Le problème avec la suppression de `__pycache__` de la partie précédente est 
 
 ## Exercices supplémentaires
 
-- ["1: Séquence d'introduction et Montée en puissance" sur _Learn Git branching_](https://learngitbranching.js.org/?locale=fr_FR)
+### Learn git branching
+
+https://learngitbranching.js.org/?locale=fr_FR
+
+- Séquence d'introduction
+- Montée en puissance
 
 ### gitexercises.fracz.com
 

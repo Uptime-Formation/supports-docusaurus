@@ -1,5 +1,5 @@
 ---
-title: Git 3 - Les branches
+title: Cours - Les branches, le merge et le rebase
 weight: 310
 ---
 
@@ -35,7 +35,7 @@ Il existe plusieurs méthodes d'organisation dans Git par rapport à l'utilité 
 - parfois il y a une branche `stable` et une branche `development` qui représente une version plus _beta_ de l'application
 - il y a souvent des branches pour chaque fonctionnalité ajoutée, appelées `feature branch`
 
-![](../../images/git_branches_2.png)
+![](/img/git_branches_2.png)
 _**git-flow**, le workflow le plus ancien, un peu trop complexe_
 
 ### L'exemple du GitHub flow
@@ -71,4 +71,4 @@ L'article suivant, extrêmement riche, est une référence à laquelle on peut r
 
 ---
 
-![](../../images/git/git-cheat-sheet.jpg)
+![](/img/git/git-cheat-sheet.jpg)

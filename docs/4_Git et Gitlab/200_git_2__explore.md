@@ -1,5 +1,5 @@
 ---
-title: "Git 2 - Explorer un dépôt"
+title: Cours - Explorer et se déplacer dans un dépôt
 class: animation-fade
 layout: true
 weight: 200
@@ -22,11 +22,11 @@ Un dépôt Git téléchargé depuis Internet peut être privé : il faut alors s
 
 ## L'historique d'un dépôt
 
-![](../../images/tig_history.png)
+![](/img/tig_history.png)
 
 ## `master` et les branches d'un dépôt
 
-![](../../images/git_branches_2.png)
+![](/img/git_branches_2.png)
 
 - Un dépôt git permet d'avoir **plusieurs historiques** en parallèle qu'on appelle des **branches**. Un dépôt git ressemble à un arbre.
 
@@ -49,7 +49,7 @@ Un dépôt Git téléchargé depuis Internet peut être privé : il faut alors s
 
 ## Déplacer HEAD dans l'historique
 
-![](../../images/head_point_3.jpg)
+![](/img/head_point_3.jpg)
 
 ## Interface graphique pour explorer l'historique d'un dépôt.
 

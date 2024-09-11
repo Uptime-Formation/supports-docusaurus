@@ -1,5 +1,5 @@
 ---
-title: Git 3 - Exercices
+title: Exercices Git - Partie 3
 weight: 320
 ---
 
@@ -20,7 +20,6 @@ weight: 320
 ### Merge
 
 Les fusions de branche peuvent s'effectuer en local sur la machine ou sur la forge logicielle.
-
 
 Prendre le TP microblog (à cloner si nécessaire depuis `https://github.com/uptime-formation/microblog`) et localiser la branche qui ajoute une page "A propos". Faire un `merge` de cette branche avec `master` en local.
 
@@ -46,13 +45,13 @@ Prendre le TP microblog et localiser la branche qui ajoute une page "A propos" (
 6. https://gitexercises.fracz.com/exercise/commit-parts
 7. https://gitexercises.fracz.com/exercise/pick-your-features
 
-#### Interactive rebase
+<!-- #### Interactive rebase
 
 1. https://gitexercises.fracz.com/exercise/split-commit
 2. https://gitexercises.fracz.com/exercise/too-many-commits
 3. https://gitexercises.fracz.com/exercise/rebase-complex
-4. https://gitexercises.fracz.com/exercise/invalid-order
+4. https://gitexercises.fracz.com/exercise/invalid-order -->
 
-#### Bisect (avancé)
+<!-- #### Bisect (avancé)
 
-https://gitexercises.fracz.com/exercise/find-bug
+https://gitexercises.fracz.com/exercise/find-bug -->
