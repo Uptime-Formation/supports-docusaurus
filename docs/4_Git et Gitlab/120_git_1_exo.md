@@ -9,7 +9,9 @@ Durant ces exercices nous allons utiliser Git en ligne de commande (sans interfa
 
 ### Installer Git
 
-`git` est souvent déjà installé sur Linux. Mais si ce n'est pas le cas, il suffit d'installer le paquet `git`, par exemple avec `apt install git`.
+`git` est déjà installé sur Linux et MacOS. Mais si ce n'est pas le cas (pour un linux léger par exemple), il suffit d'installer le paquet `git`, par exemple avec `apt install git`.
+
+Sur windows on peut installer à partir du setup officiel (https://git-scm.com/download/win) ou avec Chocolatey. Certaine personnes utilisent la jolie app github mais attention à la capture...
 
 ### Initialiser le dépôt
 
@@ -122,10 +124,12 @@ https://learngitbranching.js.org/?locale=fr_FR
 - Séquence d'introduction
 - Montée en puissance
 
-### gitexercises.fracz.com
+
+### Bonus facultatif : le début de gitexercises.fracz.com
 
 1. <https://gitexercises.fracz.com/exercise/master>
 2. <https://gitexercises.fracz.com/exercise/commit-one-file>
 3. <https://gitexercises.fracz.com/exercise/commit-one-file-staged>
 4. <https://gitexercises.fracz.com/exercise/ignore-them>
 5. <https://gitexercises.fracz.com/exercise/remove-ignored>
+

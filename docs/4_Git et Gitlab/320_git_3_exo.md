@@ -36,14 +36,14 @@ Prendre le TP microblog et localiser la branche qui ajoute une page "A propos" (
 
 <!-- FIXME: could be split between 3 and 4 -->
 
-1. https://gitexercises.fracz.com/exercise/chase-branch
-2. https://gitexercises.fracz.com/exercise/change-branch-history
-3. https://gitexercises.fracz.com/exercise/merge-conflict
-4. https://gitexercises.fracz.com/exercise/save-your-work
-5. https://gitexercises.fracz.com/exercise/fix-old-typo
+1. Merge simple: https://gitexercises.fracz.com/exercise/chase-branch
+2. Rebase simple: https://gitexercises.fracz.com/exercise/change-branch-history
+3. Résoudre un conflit de merge : https://gitexercises.fracz.com/exercise/merge-conflict
+4. Git stash: https://gitexercises.fracz.com/exercise/save-your-work
+5. Rebase interactif: https://gitexercises.fracz.com/exercise/fix-old-typo
 <!-- FIXME: parler de git add -p -->
-6. https://gitexercises.fracz.com/exercise/commit-parts
-7. https://gitexercises.fracz.com/exercise/pick-your-features
+6. Ajouter une partie des modifs a un commit et le reste à l'autre: https://gitexercises.fracz.com/exercise/commit-parts
+7. merge A, rebase B on pick branch puis rebase interactive C on pick branch squashing 2 commits puis merge C dans pick branch: https://gitexercises.fracz.com/exercise/pick-your-features
 
 <!-- #### Interactive rebase
 

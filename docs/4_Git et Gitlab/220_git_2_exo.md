@@ -62,7 +62,7 @@ flask db upgrade
 
 Nous allons maintenant créer une branche en repartant du début du projet pour étendre l'application avec une page supplémentaire "A propos".
 
-- Installez dans VSCode l'extension `Git Graph`.
+- (Installez dans VSCode l'extension `Git Graph`.)
 
 - Retournez à la fin de l'historique du projet comme précédemment (`master`).
 

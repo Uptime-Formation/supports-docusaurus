@@ -5,6 +5,8 @@ layout: true
 weight: 200
 ---
 
+## Télécharger le code d'un logiciel gérer avec Git
+
 Il s'agit de **télécharger** le dépôt d'un **logiciel** depuis Internet en créant un dossier contenant le code ainsi que son **historique Git**:
 
 - `git clone <url dépot>` puis `cd <dépôt>` pour aller dans le dossier du dépôt.
@@ -18,7 +20,15 @@ Il s'agit de **télécharger** le dépôt d'un **logiciel** depuis Internet en c
 - `git diff <commit_1> <commit_2>` pour voir ce qui a changé entre deux commits.
 - Plus pratique : utilisez **VSCode** et **Git Graph**
 
-Un dépôt Git téléchargé depuis Internet peut être privé : il faut alors se connecter avant à son compte (en HTTP ou SSH) pour le télécharger. Quand on veut modifier le dépôt distant (ajouter des commits), il faut de toute façon se connecter à un compte.
+### Authentification auprès d'un serveur (Remote)
+
+Un dépôt Git téléchargé depuis Internet peut être privé : l'accès est limité depuis le remote/la forge. Il faut alors se connecter à son compte (en HTTP ou SSH) pour le cloner.
+
+De façon générale il faut s'authentifier quand on utilise git. En effet, quand on veut modifier le dépôt distant (ajouter des commits), il faut de toute façon être connecté à un compte.
+
+
+La façon la plus neutre et générique est d'utiliser une clé SSH. Les clients github/gitlab sont pratique lorsque utilise ces forges mais cassent un peu l'universalité de git...
+
 
 ## L'historique d'un dépôt
 

@@ -64,7 +64,7 @@ Pour arriver à cela il y a 2 outils importants :
 
 ### Le rebase interactif
 
-Le rebase interactif est un outil un peu compliqué à manipuler, qui nous permet de **réécrire l'historique d'une branche** en choisissant quels commits on va fusionner ensemble, effacer, ou réordonner. C'est la commande `git rebase -i`
+Le rebase interactif est un outil un peu compliqué à manipuler, qui nous permet de **réécrire l'historique d'une branche** en choisissant quels commits on va fusionner ensemble, effacer, ou réordonner. C'est la commande `git rebase -i <branche_de_base>`
 
 L'article suivant, extrêmement riche, est une référence à laquelle on peut revenir en cas de doute sur le choix de merge ou de rebase :
 [_Bien utiliser Git merge et rebase_, par Delicious Insights](https://delicious-insights.com/fr/articles/bien-utiliser-git-merge-et-rebase/)
