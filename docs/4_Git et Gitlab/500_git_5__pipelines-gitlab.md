@@ -69,6 +69,9 @@ Avantages :
 
 ## Ressources
 
+
+Un tutoriel video de une heure débutant mais en Anglais qui récapitule Gitlab CI : https://www.youtube.com/watch?v=qP8kir2GUgo 
+
 Essentiel :
 
 **Get started with GitLab CI/CD : <https://docs.gitlab.com/ee/ci/quick_start/>**
