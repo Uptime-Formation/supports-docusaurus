@@ -31,7 +31,7 @@ Cette branche de fonctionnalité contient un travail fini que nous voudrions inc
 ### Rebase
 
 <!-- FIXME: précisions + tester -->
-- Cloner le TP microblog a nouveau et ouvrez le dans VSCode: `git clone https://github.com/uptime-formation/microblog microblog_merge_exercice`)
+- Cloner le TP microblog a nouveau et ouvrez le dans VSCode: `git clone https://github.com/uptime-formation/microblog microblog_rebase_exercice`)
 
 Prendre le TP microblog et localiser la branche qui ajoute une page "A propos" (à cloner si nécessaire depuis `https://github.com/uptime-formation/microblog`).
 
