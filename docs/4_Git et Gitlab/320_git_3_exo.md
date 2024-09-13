@@ -19,18 +19,29 @@ weight: 320
 
 ### Merge
 
-Les fusions de branche peuvent s'effectuer en local sur la machine ou sur la forge logicielle.
+Les fusions de branche peuvent s'effectuer en local sur la machine ou sur la forge logicielle. Nous allons le faire en local ici.
 
-Prendre le TP microblog (à cloner si nécessaire depuis `https://github.com/uptime-formation/microblog`) et localiser la branche qui ajoute une page "A propos". Faire un `merge` de cette branche avec `master` en local.
+- Cloner le TP microblog et ouvrez le dans VSCode: `git clone https://github.com/uptime-formation/microblog microblog_merge_exercice`)
+- Localiser la branche qui ajoute une page "A propos". 
+
+Cette branche de fonctionnalité contient un travail fini que nous voudrions incorporer à une branche commune ici `master`.
+
+- Faites donc un `merge` de cette branche dans `master` en local. Discutons ensemble de la résolution des conflits
 
 ### Rebase
 
 <!-- FIXME: précisions + tester -->
+- Cloner le TP microblog a nouveau et ouvrez le dans VSCode: `git clone https://github.com/uptime-formation/microblog microblog_merge_exercice`)
 
 Prendre le TP microblog et localiser la branche qui ajoute une page "A propos" (à cloner si nécessaire depuis `https://github.com/uptime-formation/microblog`).
 
-- Faire un `rebase` de cette branche sur `master` ou sur la branche de votre choix.
-- Faire un `rebase` de cette branche (ou d'une autre) sur `master` en mode interactif.
+Nous voudrions continuer à travailler sur cette branche en incorporant les nouvelles modifications de master, ajoutées par des collègues.
+
+- Pour celà, faire un `rebase` de cette branche sur `master` ou sur la branche de votre choix.
+
+Nous voudrions maintenant nettoyer notre branche (faire des commits consistants avec des messages clairs)
+
+- La fonctionnalité la plus classique pour ce faire  est un `rebase` de cette branche sur elle-même en mode interactif.
 
 ### Exercices supplémentaires
 
