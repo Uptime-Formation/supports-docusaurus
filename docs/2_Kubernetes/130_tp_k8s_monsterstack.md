@@ -309,6 +309,21 @@ La **readinessProbe** est un test qui s'assure que l'application est prête à r
 
 - on peut tester mettre volontairement port 3000 pour la livenessProbe et constater que k8s redémarre les conteneurs frontend un certain nombre de fois avant d'abandonner. On peut le constater avec `kubectl describe deployment frontend` dans la section évènement ou avec `Lens` en bas du panneau latéral droite d'une ressource.
 
+### Rollback un rollout en echec : constater la haute disponibilité de notre application
+
+ 1. Redéployez le frontend avec 8 replicas et une strategy type `RollingUpdate`
+ 2. Faisons échouer la `readinessProbe` en mettant par exemple son port à `5001`
+ 3. Redéployez, et constatez que le deploiement se bloque à mi-chemin (+- 6 pod up de l'ancienne version et 4 nouveau `not ready`)
+ 4. Allez voir les `ReplicatSets` pour constater qu'il y en a deux en cours la nouvelle et l'ancienne version (et tout un historique d'anciens à 0 replicas)
+ 5. Allez voir la resource `Endpoints` créé par le service frontend pour constater qu'elle ne liste que les pods ready dans la liste active et qu'elle met les pods not ready à part. Notre application est toujours up car les traffic est renvoyé uniquement vers les pods ready.
+ 6. Nous pouvons etudier le deploiement (`rollout`) en cours avec `kubectl rollout status deployment frontend`, `kubectl rollout history deployment frontend`.
+ 7. Pour effectuer un rollback lancez `kubectl rollout undo deployment frontend`.
+
+ Documentation sur les rollouts de deployement:
+ 
+ - https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+ - Autre tutoriel : https://www.baeldung.com/ops/deployment-rollout-kubernetes
+
 </details>
 
 <details><summary>Facultatif: Ajouter des indications de ressources</summary>
