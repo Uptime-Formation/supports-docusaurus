@@ -1,31 +1,62 @@
 ---
-title: TP optionnel - Istio service mesh
+title: Cours - Service mesh et Istio
 # sidebar_class_name: hidden
 ---
 
 
 ## Le mesh networking et les *service meshes*
 
-Un **service mesh** est un type d'outil réseau pour connecter un ensemble de pods, généralement les parties d'une application microservices de façon encore plus intégrée que ne le permet Kubernetes.
+Un **service mesh** est un type d'outil réseau pour connecter un ensemble de pods, généralement les parties d'une application microservices de façon encore plus intégrée que ne le permet Kubernetes, mais également plus sécurisé et contrôlable.
 
 En effet opérer une application composée de nombreux services fortement couplés discutant sur le réseau implique des besoins particuliers en terme de routage des requêtes, sécurité et monitoring qui nécessite l'installation d'outils fortement dynamique autour des nos conteneurs.
 
 Un exemple de service mesh est `https://istio.io` qui, en ajoutant dynamiquement un conteneur "sidecar" à chacun des pods à supervisés, ajoute à notre application microservice un ensemble de fonctionnalités d'intégration très puissant.
 
-Un autre service mesh populaire et plus simple qu'Istio, Linkerd : https://linkerd.io/
+Un autre service mesh populaire et "plus simple" qu'Istio, Linkerd : https://linkerd.io/
 
-Cilium peut aussi maintenant opérer comme un service mesh
+Cilium, le plugin réseau CNI peut aussi opérer comme un service mesh
 
 - https://www.youtube.com/watch?v=16fgzklcF7Y
 
-## Fonctionnalités de Istio
+<!-- ## Problématiques d'un service mesh -->
 
-- dynamic service discovery
-- retry et autres fonctionnalités utiles pour les microservices
-- traffic metrics, and tracing (récupérer notamment les latences des requêtes entre chaque service)
-- chiffrement mTLS des connexions entre services
+## Istio
+
+Istio est un **service mesh** open source qui peut se superposer de manière transparente aux applications distribuées existantes.
+
+Il offrent un moyen uniforme et efficace de sécuriser, connecter et surveiller les services. Il ajoute au cluster, avec peu ou pas de modifications du code des services.
+
+- des fonctionnalités plus flexibles et puissantes que le coeur de Kubernetes pour le LoadBalancing entre les services. Notamment un loadbalancing L7 (la couche réseau application) du trafic HTTP, gRPC, WebSocket et TCP
+
+- une authentification entre les services
+
+- une autorisation fine des communications basée sur cette authentification
+
+- une communication chiffrée avec TLS mutuel
+
+- la surveillance du trafic dans le mesh en temps réel
+
+- Un contrôle granulaire du trafic avec des règles de routage riches, des retry automatiques pour les requêtes, des failovers en cas de panne d'un service et un mechanisme de **fault injection**.
+
+- Une couche de politique de sécurité modulaire. l'API de configuration permet d'exprimer des contrôles d'accès, des ratelimits et des quotas pour le traffic
+
+- Istio expose aussi des métriques, des journaux et des traces (chaine d'appels reseau) pour tout le trafic au sein d'un cluster, y compris concernant le traffic entrant et sortant (ingress et egress) du cluster.
+
+- Istio est conçu pour être extensible et gère une grande variété de besoins de déploiement.
+
+### Architecture de Istio
 
 ![](/img/kubernetes/istio_archi.png)
+
+- Istiod (auparavant 3 composant séparés fusionnés pour la simplicité opérationnelle) est le controlleur du control plane istio
+- Le mesh des sidecar proxies est le dataplane de istio
+- Les ingress et egress gateways sont les point d'accès à votre mesh de service et permettent de définir des règles de routage et de sécurité en périphérie du mesh.
+
+### Istio par l'exemple
+
+https://istiobyexample.dev/
+
+### 
 
 ### CRDs de Istio
 
@@ -44,7 +75,13 @@ Istio utilise plusieurs Custom Resource Definitions (CRDs) pour étendre les fon
 - **AuthorizationPolicy** : Le CRD `AuthorizationPolicy` est utilisé pour définir des politiques de contrôle d'accès basées sur les rôles et les permissions pour les services dans le maillage Istio. Il permet de spécifier des règles d'autorisation pour limiter l'accès aux services en fonction des identités et des attributs de requête.
 
 
-## Essayer Istio
+### Istio et API Gateway
+
+Istio soutient la standardisation
+
+
+
+<!-- ## Essayer Istio
 
 - Cloner l'application d'exemple bookinfo :
 
@@ -55,7 +92,7 @@ cp -R istio/sample/bookinfo .
 ```
 
 - Suivez le tutoriel officiel à l'adresse : https://istio.io/latest/docs/setup/getting-started/
-
+ -->
 
 <!-- 
 ## Principes et architecture
