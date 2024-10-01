@@ -52,11 +52,11 @@ Il offrent un moyen uniforme et efficace de sécuriser, connecter et surveiller 
 - Le mesh des sidecar proxies est le dataplane de istio
 - Les ingress et egress gateways sont les point d'accès à votre mesh de service et permettent de définir des règles de routage et de sécurité en périphérie du mesh.
 
-### Istio par l'exemple
+### Istio par l'exemple et autres resources
 
-https://istiobyexample.dev/
+- https://istiobyexample.dev/
 
-### 
+- https://www.istioworkshop.io/09-traffic-management/06-circuit-breaker/
 
 ### CRDs de Istio
 
@@ -77,8 +77,17 @@ Istio utilise plusieurs Custom Resource Definitions (CRDs) pour étendre les fon
 
 ### Istio et API Gateway
 
-Istio soutient la standardisation
+Istio soutient la standardisation via la norme API gateway de Kubernetes. Il est donc possible d'utiliser les CRDs de l'api gateway pour configurer le routage du traffic et les points d'entrée du mesh plutôt que les CRDs de Istio.
 
+En l'état actuel l'api gateway ne supporte pas tous les cas d'usage de Istio et est moins documenté même si la documentation vous permet de choisir librement la syntaxe istio ou api gateway pour de nombreux cas. Il peut être intéressant de l'utiliser si l'on cherche de la standardisation à long terme
+
+Les CRDs de l'API Gateway officiel doivent être installés indépendament de Istio
+
+### Ambient mesh architecture
+
+L'architecture classique de Istio avec des proxies pour chaque pod est un peu lourde à mettre en oeuvres et peut interfèrer avec d'autres solution kubernetes.
+
+Istio développe une nouvelle architecture appelée ambient basée sur des agents déployés sur chaque noeuds du cluster. Elle est encore alpha mais promet un usage plus simple et économe de Istio dans un futur proche.
 
 
 <!-- ## Essayer Istio
