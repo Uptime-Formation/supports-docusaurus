@@ -1,5 +1,5 @@
 ---
-title: "1/2 TP Fondamentaux Docker"
+title: "TP 1 Fondamentaux Docker"
 pre: "<b>1.07 </b>"
 weight: 8
 ---

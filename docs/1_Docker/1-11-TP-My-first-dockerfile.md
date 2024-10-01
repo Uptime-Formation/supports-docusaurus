@@ -1,5 +1,5 @@
 ---
-title: "1/1 TP Dockerfile MyFirstApp"
+title: "TP 2 Dockerfile MyFirstApp"
 pre: "<b>1.11 TP</b>"
 weight: 11
 ---
