@@ -28,26 +28,26 @@ Cela a commencé comme un projet à petite échelle, avec environ 3-4 personnes 
 
 ---
 
-### 20013: de Borg à Omega
+### 2013: de Borg à Omega
 
 Après Borg, Google a introduit le système de gestion des cluster Omega, un planificateur flexible et évolutif pour les grands clusters de calcul. 
 
 ---
 
-### 20014: Google présente Kubernetes
+### 2014: Google présente Kubernetes
 
 - mi-2014: Google a présenté Kubernetes comme une version open source de Borg, la communauté de Kubernetes est rejointe immédiatement par Microsoft, Redhat, IBM, Docker.
 
 ---
 
-### 20015: L'année de Kube V1.0 & CNCF
+### 2015: L'année de Kube V1.0 & CNCF
 
 
 Le 21 juillet, Kubernetes v1.0 est publié, marquant le début de la Cloud Native Computing Foundation (CNCF) en partenariat avec Google et la Linux Foundation, visant à promouvoir des écosystèmes durables autour des projets d'orchestration de conteneurs.
 
 ---
 
-### 20016: L'année de popularisation
+### 2016: L'année de popularisation
 
 - Première version de Helm, le gestionnaire de packages de Kubernetes, est lancée.
 - Kubernetes 1.2 est publié, apportant des améliorations significatives telles que la mise à l'échelle, le déploiement simplifié des applications et la gestion automatisée des clusters.
@@ -57,7 +57,7 @@ Le 21 juillet, Kubernetes v1.0 est publié, marquant le début de la Cloud Nativ
 
 ---
 
-### 20017: L'année de l'adoption et du soutien aux entreprises
+### 2017: L'année de l'adoption et du soutien aux entreprises
 
 - Kubernetes 1.6 est publié, avec des mises à jour telles que l'activation par défaut d'etcdv3 et la prise en charge de RBAC en version bêta, marquant une version de stabilisation.
 - Google et IBM annoncent Istio, une technologie ouverte permettant la gestion et la sécurisation transparentes des réseaux de microservices sur différentes plateformes et fournisseurs.

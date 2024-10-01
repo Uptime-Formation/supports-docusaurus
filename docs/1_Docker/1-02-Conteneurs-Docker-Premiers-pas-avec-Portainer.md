@@ -18,10 +18,10 @@ chapter: true
 
 Portainer est un portail web pour gérer une installation Docker via une interface graphique. Il va nous faciliter la vie.
 
-- Une instance de Portainer devrait être directement disponible sur l'url suivante de votre environnement de développement
+- Lancer portainer avec la ligne de commande suivante
 
 ```shell
- http://localhost:9000/#!/2/docker/containers
+ docker run --name portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce:latest 
 ```
 
 - Visitez ensuite la page [http://localhost:9000](http://localhost:9000) ou l'adresse IP publique de votre serveur Docker sur le port 9000 pour accéder à l'interface.
