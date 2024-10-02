@@ -94,3 +94,7 @@ spec:
       prune: true
       selfHeal: true
 ```
+
+Lorsque vous déployer cette application via git, argocd poll/vérifie le dépot toutes les 3 minutes pour se mettre a jour éventuellement avec les modifications.
+
+Pour éviter le poll inutile et diminuer la réactivité des déploiements quand le code change on configure généralement un webhook sur la forge git (ici github). Vous pouvez suivre cette documentation pour ajouter un webhook pour votre application : https://argo-cd.readthedocs.io/en/stable/operator-manual/webhook/
