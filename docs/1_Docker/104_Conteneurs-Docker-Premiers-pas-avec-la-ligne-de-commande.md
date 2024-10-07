@@ -83,7 +83,7 @@ C'est l'endroit où va chercher Docker par défaut.
 
 On nomme cela un registry, on y reviendra.
 
-Par exemple cherchez l'image "ubuntu" sur le Docker Hub.
+Par exemple cherchez l'image "debian" sur le Docker Hub.
 
 <!-- --- -->
 
@@ -106,7 +106,7 @@ Que remarquez-vous ? Quels conteneurs docker sont en train de tourner ?
 ### Les bases
 
 ```shell
-docker run -it ubuntu 
+docker run -it debian 
 ```
 Que se passe-t-il ? Le prompt vous indique que vous avez changé d'environnement.
 
@@ -123,38 +123,86 @@ Lancez la commande sans mode interactif. Que se passe-t-il ?
 ### Conteneurs jetables 
 
 ```shell
-docker run -it --rm ubuntu bash
+docker run -it debian bash # puis exit le conteneur est toujours là en status exited
+docker run -it --rm debian bash # puis exit le conteneur a été supprimé automatiquement
 ```
 **L'argument `--rm ` indique qu'on ne veut pas conserver le conteneur après son arrêt (lorsque le processus principal s'arrête). Il est "jetable".**
 
-- vérifiez cela avec `docker ps`
+- vérifiez cela avec `docker ps` que le conteneur n'existe
 
-<!-- ## Les commandes de démarrage
+### Lancer un conteneur avec une commande
 
 ```shell
-docker run -it --rm alpine bash
+docker run -it --rm debian echo "hello world"
 ```
-Que se passe-t-il ? Pourquoi ? 
 
-Il faut que la commande demandée existe dans l'image.
+Le conteneur execute la commande `echo` puis s'arrête (et est supprimé grace à `--rm`)
+
+Maintenant lancez:
+
+```shell
+docker run -it alpine bash
+```
+
+Que se passe-t-il ? 
+
+Il y a une erreur car, il faut que la commande demandée existe dans l'image. Or `alpine` qui est un linux plus léger que `debian` ne contient pas le shell `bash` par défaut.
+
+Ressayons avec le shell `sh`
 
 ```shell
 docker run -it --rm alpine sh
 ```
 
-Quelles peuvent être les différences entre les images ubuntu et alpine ? -->
+Cette fois nous somme bien connectés au shell
+
+
+Quelles peuvent être les différences entre les images des deux linux debian et alpine ?
+
+<details><summary>réponse:</summary>
+
+Alpine est un linux plus léger qui contient beaucoup moins de programme et dans des versions allégées par rapport à debian. Ce qui peut être un avantage ou un inconvénient.
+
+Alpine utilise un gestionnaire de paquet différent appelé `apk`.
+
+Alpine a des commandes dont la syntaxe peut être différente de debian par exemple `useradd` n'a pas les même options. Il faudra y être attentif pour la création de dockerfiles.
+
+</details>
 
 ### Conteneurs nommés persistants
 
 ```shell
-docker run -d --name mycontainer -it --rm ubuntu bash -c  'while true; do date; sleep 1; done' 
+docker run -d --name my-nginx nginx
 ```
 Que se passe-t-il ? Inspectez la liste des conteneurs ? Que remarquez-vous ? 
 
 **`-name` permet de donner un nom au conteneur**
 **`-d` permet de lancer le conteneur en mode **daemon** ou **détaché** et libérer le terminal**
 
-<!-- --- -->
+### Accéder à nginx en réseau pour afficher la page welcome
+
+Pour accéder au conteneur précédent en réseau on peut aller chercher son adresse IP avec `inspect`
+
+```shell
+docker container inspect my-nginx
+```
+
+Récupérez l'adresse en `172.2` et collez la dans le navigateur. La page d'accueil d'affiche.
+
+
+Pour éviter d'aller chercher l'IP manuellement du conteneur, IP de sucroit dynamique qui peut changer si on le recrée, on peut lancer le conteneur avec une exposition de port:
+
+```shell
+docker run -d nginx
+
+
+
+### Lancer un conteneur avec une commande
+
+```shell
+docker run -d --name mycontainer -it --rm debian bash -c  'while true; do date; sleep 1; done' 
+```
+
 
 ### La commande `logs` : voir la sortie texte d'un conteneur tournant en arrière plan
 

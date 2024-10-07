@@ -1,5 +1,5 @@
 ---
-title: "Cours+TP : les build multistage"
+title: "Cours+TP : les builds multistage"
 ---
 
 <!-- ## Objectifs pédagogiques
@@ -50,25 +50,26 @@ Chercher la documentation sur les images distroless.
 Quel est l'intérêt ? Quels sont les cas d'usage ? 
 
 Objectif : transformer le `Dockerfile` de l'app nodejs (express) suivante en build multistage : https://github.com/Uptime-Formation/docker-example-nodejs-multistage-distroless.git
- Le builder sera par exemple basé sur l'image `node:20` et le résultat sur `gcr.io/distroless/nodejs20-debian11`.
+
+Le builder sera par exemple basé sur l'image `node:20` et le résultat sur `gcr.io/distroless/nodejs20-debian11`.
 
 La doc:
 - https://docs.docker.com/build/building/multi-stage/
 
- Deux exemples simple pour vous aider:
- - https://alphasec.io/dockerize-a-node-js-app-using-a-distroless-image/
- - https://medium.com/@luke_perry_dev/dockerizing-with-distroless-f3b84ae10f3a
+Deux exemples pour vous aider:
+- https://alphasec.io/dockerize-a-node-js-app-using-a-distroless-image/
+- https://medium.com/@luke_perry_dev/dockerizing-with-distroless-f3b84ae10f3a
 
  Une correction possible dans la branche correction : `git clone https://github.com/Uptime-Formation/docker-example-nodejs-multistage-distroless/-b correction`
 
- L'image résultante fait tout de même environ 170Mo.
+L'image résultante fait tout de même un peu plus de 170Mo, mais elle ne contient ni shell ni utilitaires unix ce qui réduit notamment la surface d'attaque et les signalements aux scans de sécurité.
 
- Pour entrer dans les détails de l'image on peut installer et utiliser https://github.com/wagoodman/dive
+Pour entrer dans les détails de l'image on peut installer et utiliser https://github.com/wagoodman/dive
 
- On peut alors constater que pour une application nodejs, même le minimum du minimum dans une image c'est déjà un joyeux bordel difficile à auditer: (confs linux + locales + ssl + autre + votre node_modules avec plein de lib + votre app)
+On peut alors constater que pour une application nodejs, même le minimum du minimum dans une image c'est déjà un joyeux bordel difficile à auditer: (confs linux + locales + ssl + autre + votre node_modules avec plein de lib + votre app)
 
 
- <details><summary>correction:</summary>
+<details><summary>correction:</summary>
 <p>
 
 ```dockerfile
@@ -84,7 +85,7 @@ RUN npm install --omit=dev
 
 # Stage 2
 # Even lighter and more secure than node-alpine
-FROM gcr.io/distroless/nodejs20-debian11
+FROM gcr.io/distroless/nodejs20-debian12
 
 # use the unpriviledge user from distroless images
 
