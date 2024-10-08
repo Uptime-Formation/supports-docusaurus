@@ -44,6 +44,36 @@ COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
 CMD ["./app"]
 ```
 
+### Exemple : notre application microblog en multistage avec python slim
+
+```Dockerfile
+# Stage 1
+FROM python:3.9 AS builder
+
+WORKDIR /microblog
+
+COPY ./requirements.txt /requirements.txt
+RUN pip3 install -r /requirements.txt
+
+# Stage 2
+FROM python:3.9-slim
+
+COPY --from=builder /usr/local/ /usr/local/
+
+# Ajoute un user et groupe appelés microblog
+RUN  useradd -ms /bin/bash -d /microblog microblog
+
+USER microblog
+WORKDIR /microblog
+
+COPY --chown=microblog:microblog . /microblog
+
+ENV CONTEXT=PROD
+EXPOSE 5000
+
+CMD ["./boot.sh"]
+```
+
 ## TP : Un multi-stage build avec distroless comme image de base de prod
 
 Chercher la documentation sur les images distroless. 
