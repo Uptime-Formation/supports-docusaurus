@@ -86,6 +86,11 @@ Le builder sera par exemple basé sur l'image `node:20` et le résultat sur `gcr
 La doc:
 - https://docs.docker.com/build/building/multi-stage/
 
+Reade de distroless:
+- https://github.com/GoogleContainerTools/distroless
+
+A noter que l'utilisateur par défaut de distroless est `nonroot` qui a l'UID 65535
+
 Deux exemples pour vous aider:
 - https://alphasec.io/dockerize-a-node-js-app-using-a-distroless-image/
 - https://medium.com/@luke_perry_dev/dockerizing-with-distroless-f3b84ae10f3a
@@ -106,7 +111,6 @@ On peut alors constater que pour une application nodejs, même le minimum du min
 # Stage 1
 FROM node:20 AS base
 
-RUN mkdir -p /app
 WORKDIR /app
 COPY package*.json /app/
 
@@ -114,7 +118,7 @@ COPY package*.json /app/
 RUN npm install --omit=dev
 
 # Stage 2
-# Even lighter and more secure than node-alpine
+# Even simpler and more secure than node-alpine but not lighter because based on debian
 FROM gcr.io/distroless/nodejs20-debian12
 
 # use the unpriviledge user from distroless images
