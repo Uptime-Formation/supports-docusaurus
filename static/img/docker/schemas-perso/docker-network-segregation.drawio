@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0" version="24.7.17">
+  <diagram name="Page-1" id="9nS6Nalt8qF6VQF2Vatm">
+    <mxGraphModel dx="555" dy="363" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gRbxm3WSAX4777lx8NaK-5" value="" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=1;dashed=1;dashPattern=8 8;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="250" y="260" width="220" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-6" value="" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=1;dashed=1;dashPattern=8 8;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="360" y="260" width="200" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-8" value="&lt;div&gt;frontend-net&lt;/div&gt;&lt;div&gt;172.18.0.1/16&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="315" y="230" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-10" value="&lt;div&gt;frontend-net&lt;/div&gt;&lt;div&gt;172.19.0.1/16&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="425" y="230" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-11" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="290" y="324" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-12" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="390" y="324" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-13" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="490" y="324" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-14" value="&lt;div&gt;frontend&lt;/div&gt;&lt;div&gt;172.18.0.2&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="280" y="294" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-15" value="&lt;div&gt;backend&lt;/div&gt;&lt;div&gt;172.18.0.3&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="379" y="294" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-16" value="&lt;div&gt;172.1.0.2&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="370" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-17" value="&lt;div&gt;database&lt;/div&gt;&lt;div&gt;172.19.0.3&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="475" y="374" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gRbxm3WSAX4777lx8NaK-18" value="&lt;div&gt;Docker basic network segregation&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="314" y="450" width="200" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

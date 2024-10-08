@@ -49,7 +49,6 @@ En récupérant [la commande indiquée dans la doc officielle](https://docs.dock
 docker run -d -p 127.0.0.1:5555:5000 --restart=always --name registry registry:2
 ```
 
----
 
 **Puis pousser une image dessus.**
 
@@ -67,17 +66,14 @@ docker image ls localhost:5555/my-ubuntu
 docker push localhost:5555/my-ubuntu:mytag-custom
 ```
 
----
-
 **Enfin, supprimez votre image en local et récupérez-la depuis votre registry.**
 
 ```shell
 # Supprimer l'image en local
-docker image remove ubuntu:16.04
+docker image remove ubuntu
 docker image remove localhost:5555/my-ubuntu:mytag-custom
 ```
 
----
 
 Extrayez l'image localhost:5000/my-ubuntu de votre registre local.
 

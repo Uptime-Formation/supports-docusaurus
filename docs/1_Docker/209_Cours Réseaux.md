@@ -34,32 +34,58 @@ Vous pouvez spécifier si le port écoute sur TCP ou UDP, et la valeur par défa
 Elle fonctionne comme un type de documentation entre la personne qui construit l'image et la personne qui exécute le conteneur, sur les ports destinés à être publiés. 
 
 
-## Exporter effectivement le(s) port(s) d'un conteneur
+## Exporter/exposer le(s) port(s) d'un conteneur
 
 **Pour publier réellement le port lors de l'exécution du conteneur, utilisez l'indicateur -p lors de l'exécution du docker pour publier et mapper un ou plusieurs ports, ou l'indicateur -P pour publier tous les ports exposés et les mapper aux ports de niveau supérieur.**
 
 On publie le port grâce à la syntaxe `-p [ip_interface:]port_de_l_hote:port_du_container`.
 
 ```shell
-docker run --rm -d --name "test_nginx" -p 8000:80 nginx # ouvre le port par défaut sur 0.0.0.0 toutes les interfaces
+docker run --rm -d --name "test_nginx" -p 8000:80 nginx # ouvre le port par défaut sur 0.0.0.0 toutes les interfaces ATTENTION
 # ou bien plus securisé
-docker run --rm -d --name "test_nginx" -p 127.0.0.1:8000: 80 nginx
+docker run --rm -d --name "test_nginx" -p 127.0.0.1:8000:80 nginx # plus sécurisé
 curl http://localhost:8000
 docker logs test_nginx
 ```
 
-En visitant l'adresse et le port associé au conteneur Nginx, on doit voir apparaître des logs Nginx.
+**Attention à ne jamais lancer deux containers connectés au même port sur l'hôte, sinon cela échouera !**
 
-On peut lancer des logiciels plus ambitieux, comme par exemple Funkwhale, une sorte d'iTunes en web qui fait aussi réseau social :
+## Pourquoi du réseau ? Pour relier des conteneurs
 
-```shell
-docker run --name funky_conteneur -p 80:80 funkwhale/all-in-one:1.2.9
+Le cas classique est l'application web connectée à une base de donnée.
+
+<!-- **Une fonctionnalité obsolète et déconseillée permettait de créer un lien entre des conteneurs sans sous-réseau manifeste**
+  - avec l'option `--link` de `docker run`
+  - avec l'instruction `link:` dans un docker composer -->
+
+On cree un reseau Docker pour l'application avec `docker network create` puis on ajoute les deux conteneurs à ce réseau avec :
+
+  - avec l'option `--network` de `docker run`
+  - avec l'instruction `networks:` dans un docker composer
+
+
+![](/img/docker/schemas-perso/docker-network-segregation.png)
+
+
+### Les commandes network 
+
+```bash
+docker network create
+docker network ls
+docker network rm
+docker network connect
+docker network prune
 ```
 
-Vous pouvez visiter ensuite ce conteneur Funkwhale sur le port 80 (après quelques secondes à suivre le lancement de l'application dans les logs) ! Mais il n'y aura hélas pas de musique dedans :(
+**Documentation** :
 
-**Attention à ne jamais lancer deux containers connectés au même port sur l'hôte, sinon cela échouera !**
-`
+```bash
+man docker-network-create
+```
+
+- [https://docs.docker.com/network/](https://docs.docker.com/network/)
+
+
 
 ## Le réseau Docker est très automatique
 
@@ -72,8 +98,9 @@ Par défaut :
 
 Il est néanmoins modulaire, et permet de choisir entre plusieurs options.
 
+![](/img/docker/schemas-perso/docker-auto-dns-tp-reseau.png)
 
-## Par défaut : les réseaux de type bridge
+## Driver par défaut : les réseaux de type bridge
 
 **Un réseau bridge est une façon de créer un pont entre deux carte réseaux pour construire un réseau à partir de deux.**
 
