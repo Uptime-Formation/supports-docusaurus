@@ -1,10 +1,83 @@
 ---
-title: Volumes Docker Créer Lister Détruire
+title: Cours - les volumes
 ---
+
 <!-- ## Objectifs pédagogiques
+  - Savoir utiliser la commande VOLUME
+  - Comprendre la persistance de données
+  - Comprendre le montage dans les systèmes de fichier Linux
+  - Savoir monter un volume dans un conteneur Docker
   - Savoir utiliser les commandes volume (create, ls, rm, prune)
   - Savoir monter des volumes de persistance locaux et distants
- -->
+-->
+
+## Cycle de vie d'un conteneur
+
+- Un conteneur a un cycle de vie très court: il doit pouvoir être créé et supprimé rapidement même en contexte de production.
+
+Conséquences :
+
+- On a besoin de mécanismes d'autoconfiguration, en particuler réseau car les IP des différents conteneur changent tout le temps.
+- On ne peut pas garder les données persistantes dans le conteneur.
+
+Solutions :
+
+- Des réseaux dynamiques par défaut automatiques (DHCP mais surtout DNS automatiques)
+- Des volumes (partagés ou non, distribués ou non) montés dans les conteneurs
+
+## Volumes
+
+Un volume est utile pour tout ce qui est "stateful" dans un conteneur :
+
+* fichiers de config
+* stockages de base de données
+* certificats SSL
+* etc.
+
+## L'instruction `VOLUME` dans un `Dockerfile`
+
+```dockerfile
+VOLUME ["/data"]
+```
+L'instruction `VOLUME` dans un `Dockerfile` permet de désigner les volumes qui devront être créés lors du lancement du conteneur. 
+
+```dockerfile
+FROM ubuntu
+RUN mkdir /myvol
+RUN date > /myvol/created_at
+VOLUME /myvol
+CMD ["bash", "-c", "cat /myvol/created_at"]
+```
+
+```shell
+docker build -t created_at
+docker run created_at
+```
+
+On précise ensuite avec l'option `-v` de `docker run` à quoi connecter ces volumes. 
+
+Si on ne le précise pas, Docker crée quand même un volume Docker au nom généré aléatoirement, un volume "caché".
+
+## Bind mounting : un dossier partagé avec le conteneur
+
+Lorsqu'un répertoire hôte spécifique est utilisé dans un volume (la syntaxe `-v HOST_DIR:CONTAINER_DIR`), elle est souvent appelée **bind mounting** ("montage lié").
+
+La particularité, c'est que le point de montage sur l'hôte est explicite plutôt que caché dans un répertoire appartenant à Docker.
+
+Exemple :
+
+```shell
+# Sur l'hôte
+docker run -it -v /home/user/app/config.conf:/config/main.conf:ro -v /home/user/app/data:/data ubuntu /bin/bash
+
+# Dans le conteneur
+cd /data/
+touch testfile
+exit
+
+# Sur l'hôte
+ls /home/user/app/data:
+```
 
 ## Les volumes Docker via la sous-commande `volume`
 
@@ -52,7 +125,20 @@ docker exec conteneur_2 touch /data/file_2
 docker logs conteneur_1 
 ```
 
----
+
+### L'argument verbeux : `docker run --mount`
+
+Cette option plus verbeuse que "-v" est préconisée car elle permet de bien spécifier les types de points de montage.
+
+```shell
+--mount type=TYPE, TYPE-SPECIFIC-OPTION[,...]
+           Attacher un montage de système de fichiers au conteneur
+           
+       type=bind,source=/path/on/host,destination=/path/in/container
+       type=volume,source=myvolume,destination=/path/in/container,volume-label="color=red",volume-label="shape=round"
+       type=tmpfs,tmpfs-size=512M,destination=/path/in/container
+
+```
 
 ### Plugins de volumes
 
@@ -83,8 +169,6 @@ VOLUME /data/graphite
 USER graphite
 CMD ["echo", "Data container for graphite"]
 ```
-
----
 
 ### Backups de volumes
 
