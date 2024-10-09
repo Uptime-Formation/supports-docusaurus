@@ -109,6 +109,10 @@ Cela divise efficacement les privilèges root en unités plus petites et distinc
 <!-- * Monter au maximum en read only (un fichier binaire pirate est visible au milieu d'images) -->
 * Faire des scan de sécurité des images et cluster par exemple avec : https://github.com/aquasecurity/trivy
 
+
+
+- Documentation docker sur le sécurité: https://docs.docker.com/engine/security/
+
 <!-- ---  -->
 
 ## Renforcer la sécurité
