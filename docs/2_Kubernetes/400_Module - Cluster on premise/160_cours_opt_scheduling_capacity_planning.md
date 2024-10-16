@@ -2,7 +2,6 @@
 title: Cours optionnel - Règles de scheduling et capacity planning
 ---
 
-
 ## Règles de scheduling (planification)
 
 Le rôle du *scheduler* est de choisir les nœuds sur lesquels exécuter les pods nouvellement créés.
