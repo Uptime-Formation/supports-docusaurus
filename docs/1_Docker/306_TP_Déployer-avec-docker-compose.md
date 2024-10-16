@@ -328,7 +328,7 @@ On veut ajouter les fonctionnalités suivantes :
 - Un volume pour la base redis
 
 - un service redis-commander pour afficher le contenu de la base redis
-  - disponible sur le port 8191
+  - disponible sur le port 8081
   - le connecter via des variables d'environnement
 
 <details><summary>Correction étendue de prod avec traefik reverse proxy https</summary>
