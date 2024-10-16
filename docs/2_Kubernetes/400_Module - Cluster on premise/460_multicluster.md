@@ -1,6 +1,6 @@
 ---
 title: Cours optionnel - multicluster
-# sidebar_class_name: hidden
+sidebar_class_name: hidden
 ---
 
 ### Plein de solutions avec plein d'architectures
