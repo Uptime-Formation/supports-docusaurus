@@ -1,3 +1,8 @@
+---
+title: "cours istio traffic routing eng"
+sidebar_class_name: hidden
+---
+
 ## Traffic Management
 
 Istio’s traffic routing rules let you easily control the flow of traffic and API calls between services. Istio simplifies configuration of service-level properties like circuit breakers, timeouts, and retries, and makes it easy to set up important tasks like A/B testing, canary rollouts, and staged rollouts with percentage-based traffic splits. It also provides out-of-box reliability features that help make your application more resilient against failures of dependent services or the network.
@@ -18,11 +23,11 @@ Like other Istio configuration, the API is specified using Kubernetes custom res
 
 The rest of this guide examines each of the traffic management API resources and what you can do with them. These resources are:
 
-    Virtual services
-    Destination rules
-    Gateways
-    Service entries
-    Sidecars
+- Virtual services
+- Destination rules
+- Gateways
+- Service entries
+- Sidecars
 
 This guide also gives an overview of some of the network resilience and testing features that are built in to the API resources.
 
@@ -42,8 +47,8 @@ A typical use case is to send traffic to different versions of a service, specif
 
 Virtual services also let you:
 
-    Address multiple application services through a single virtual service. If your mesh uses Kubernetes, for example, you can configure a virtual service to handle all services in a specific namespace. Mapping a single virtual service to multiple “real” services is particularly useful in facilitating turning a monolithic application into a composite service built out of distinct microservices without requiring the consumers of the service to adapt to the transition. Your routing rules can specify “calls to these URIs of monolith.com go to microservice A”, and so on. You can see how this works in one of our examples below.
-    Configure traffic rules in combination with gateways to control ingress and egress traffic.
+- Address multiple application services through a single virtual service. If your mesh uses Kubernetes, for example, you can configure a virtual service to handle all services in a specific namespace. Mapping a single virtual service to multiple “real” services is particularly useful in facilitating turning a monolithic application into a composite service built out of distinct microservices without requiring the consumers of the service to adapt to the transition. Your routing rules can specify “calls to these URIs of monolith.com go to microservice A”, and so on. You can see how this works in one of our examples below.
+- Configure traffic rules in combination with gateways to control ingress and egress traffic.
 
 In some cases you also need to configure destination rules to use these features, as these are where you specify your service subsets. Specifying service subsets and other destination-specific policies in a separate object lets you reuse these cleanly between virtual services. You can find out more about destination rules in the next section.
 
@@ -51,6 +56,7 @@ In some cases you also need to configure destination rules to use these features
 
 The following virtual service routes requests to different versions of a service depending on whether the request comes from a particular user.
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -71,13 +77,16 @@ spec:
     - destination:
         host: reviews
         subset: v3
+```
 
 ##### The hosts field
 
 The hosts field lists the virtual service’s hosts - in other words, the user-addressable destination or destinations that these routing rules apply to. This is the address or addresses the client uses when sending requests to the service.
 
+```yaml
 hosts:
 - reviews
+```
 
 The virtual service hostname can be an IP address, a DNS name, or, depending on the platform, a short name (such as a Kubernetes service short name) that resolves, implicitly or explicitly, to a fully qualified domain name (FQDN). You can also use wildcard ("*") prefixes, letting you create a single set of routing rules for all matching services. Virtual service hosts don’t actually have to be part of the Istio service registry, they are simply virtual destinations. This lets you model traffic for virtual hosts that don’t have routable entries inside the mesh.
 
@@ -88,19 +97,23 @@ Match condition
 
 The first routing rule in the example has a condition and so begins with the match field. In this case you want this routing to apply to all requests from the user “jason”, so you use the headers, end-user, and exact fields to select the appropriate requests.
 
+```yaml
 - match:
    - headers:
        end-user:
          exact: jason
+```
 
 Destination
 
 The route section’s destination field specifies the actual destination for traffic that matches this condition. Unlike the virtual service’s host(s), the destination’s host must be a real destination that exists in Istio’s service registry or Envoy won’t know where to send traffic to it. This can be a mesh service with proxies or a non-mesh service added using a service entry. In this case we’re running on Kubernetes and the host name is a Kubernetes service name:
 
+```yaml
 route:
 - destination:
     host: reviews
     subset: v2
+```
 
 Note in this and the other examples on this page, we use a Kubernetes short name for the destination hosts for simplicity. When this rule is evaluated, Istio adds a domain suffix based on the namespace of the virtual service that contains the routing rule to get the fully qualified name for the host. Using short names in our examples also means that you can copy and try them in any namespace you like.
 Using short names like this only works if the destination hosts and the virtual service are actually in the same Kubernetes namespace. Because using the Kubernetes short name can result in misconfigurations, we recommend that you specify fully qualified host names in production environments.
@@ -111,10 +124,12 @@ The destination section also specifies which subset of this Kubernetes service y
 
 Routing rules are evaluated in sequential order from top to bottom, with the first rule in the virtual service definition being given highest priority. In this case you want anything that doesn’t match the first routing rule to go to a default destination, specified in the second rule. Because of this, the second rule has no match conditions and just directs traffic to the v3 subset.
 
+```yaml
 - route:
   - destination:
       host: reviews
       subset: v3
+```
 
 We recommend providing a default “no condition” or weight-based rule (described below) like this as the last rule in each virtual service to ensure that traffic to the virtual service always has at least one matching route.
 
@@ -122,6 +137,7 @@ We recommend providing a default “no condition” or weight-based rule (descri
 
 As you saw above, routing rules are a powerful tool for routing particular subsets of traffic to particular destinations. You can set match conditions on traffic ports, header fields, URIs, and more. For example, this virtual service lets users send traffic to two separate services, ratings and reviews, as if they were part of a bigger virtual service at http://bookinfo.com/. The virtual service rules match traffic based on request URIs and direct requests to the appropriate service.
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -142,6 +158,7 @@ spec:
     route:
     - destination:
         host: ratings
+```
 
 For some match conditions, you can also choose to select them using the exact value, a prefix, or a regex.
 
@@ -149,6 +166,7 @@ You can add multiple match conditions to the same match block to AND your condit
 
 In addition to using match conditions, you can distribute traffic by percentage “weight”. This is useful for A/B testing and canary rollouts:
 
+```yaml
 spec:
   hosts:
   - reviews
@@ -162,12 +180,13 @@ spec:
         host: reviews
         subset: v2
       weight: 25
+```
 
 You can also use routing rules to perform some actions on the traffic, for example:
 
-    Append or remove headers.
-    Rewrite the URL.
-    Set a retry policy for calls to this destination.
+- Append or remove headers.
+- Rewrite the URL.
+- Set a retry policy for calls to this destination.
 
 To learn more about the actions available, see the HTTPRoute reference.
 
@@ -182,15 +201,16 @@ Load balancing options
 
 By default, Istio uses a least requests load balancing policy, where requests are distributed among the instances with the least number of requests. Istio also supports the following models, which you can specify in destination rules for requests to a particular service or service subset.
 
-    Random: Requests are forwarded at random to instances in the pool.
-    Weighted: Requests are forwarded to instances in the pool according to a specific percentage.
-    Round robin: Requests are forwarded to each instance in sequence.
+- Random: Requests are forwarded at random to instances in the pool.
+- Weighted: Requests are forwarded to instances in the pool according to a specific percentage.
+- Round robin: Requests are forwarded to each instance in sequence.
 
 See the Envoy load balancing documentation for more information about each option.
 Destination rule example
 
 The following example destination rule configures three different subsets for the my-svc destination service, with different load balancing policies:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
@@ -213,6 +233,7 @@ spec:
   - name: v3
     labels:
       version: v3
+```
 
 Each subset is defined based on one or more labels, which in Kubernetes are key/value pairs that are attached to objects such as Pods. These labels are applied in the Kubernetes service’s deployment as metadata to identify different versions.
 
@@ -230,6 +251,7 @@ Gateway example
 
 The following example shows a possible gateway configuration for external HTTPS ingress traffic:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
@@ -247,11 +269,13 @@ spec:
     tls:
       mode: SIMPLE
       credentialName: ext-host-cert
+```
 
 This gateway configuration lets HTTPS traffic from ext-host.example.com into the mesh on port 443, but doesn’t specify any routing for the traffic.
 
 To specify routing and for the gateway to work as intended, you must also bind the gateway to a virtual service. You do this using the virtual service’s gateways field, as shown in the following example:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -261,21 +285,23 @@ spec:
   - ext-host.example.com
   gateways:
   - ext-host-gwy
+```
 
 You can then configure the virtual service with routing rules for the external traffic.
 Service entries
 
 You use a service entry to add an entry to the service registry that Istio maintains internally. After you add the service entry, the Envoy proxies can send traffic to the service as if it was a service in your mesh. Configuring service entries allows you to manage traffic for services running outside of the mesh, including the following tasks:
 
-    Redirect and forward traffic for external destinations, such as APIs consumed from the web, or traffic to services in legacy infrastructure.
-    Define retry, timeout, and fault injection policies for external destinations.
-    Run a mesh service in a Virtual Machine (VM) by adding VMs to your mesh.
+- Redirect and forward traffic for external destinations, such as APIs consumed from the web, or traffic to services in legacy infrastructure.
+- Define retry, timeout, and fault injection policies for external destinations.
+- Run a mesh service in a Virtual Machine (VM) by adding VMs to your mesh.
 
 You don’t need to add a service entry for every external service that you want your mesh services to use. By default, Istio configures the Envoy proxies to passthrough requests to unknown services. However, you can’t use Istio features to control the traffic to destinations that aren’t registered in the mesh.
 Service entry example
 
 The following example mesh-external service entry adds the ext-svc.example.com external dependency to Istio’s service registry:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: ServiceEntry
 metadata:
@@ -294,6 +320,7 @@ You specify the external resource using the hosts field. You can qualify it full
 
 You can configure virtual services and destination rules to control traffic to a service entry in a more granular way, in the same way you configure traffic for any other service in the mesh. For example, the following destination rule adjusts the TCP connection timeout for requests to the ext-svc.example.com external service that we configured using the service entry:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
@@ -304,6 +331,7 @@ spec:
     connectionPool:
       tcp:
         connectTimeout: 1s
+```
 
 See the Service Entry reference for more possible configuration options.
 
@@ -311,13 +339,14 @@ See the Service Entry reference for more possible configuration options.
 
 By default, Istio configures every Envoy proxy to accept traffic on all the ports of its associated workload, and to reach every workload in the mesh when forwarding traffic. You can use a sidecar configuration to do the following:
 
-    Fine-tune the set of ports and protocols that an Envoy proxy accepts.
-    Limit the set of services that the Envoy proxy can reach.
+- Fine-tune the set of ports and protocols that an Envoy proxy accepts.
+- Limit the set of services that the Envoy proxy can reach.
 
 You might want to limit sidecar reachability like this in larger applications, where having every proxy configured to reach every other service in the mesh can potentially affect mesh performance due to high memory usage.
 
 You can specify that you want a sidecar configuration to apply to all workloads in a particular namespace, or choose specific workloads using a workloadSelector. For example, the following sidecar configuration configures all services in the bookinfo namespace to only reach services running in the same namespace and the Istio control plane (needed by Istio’s egress and telemetry features):
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: Sidecar
 metadata:
@@ -328,6 +357,7 @@ spec:
   - hosts:
     - "./*"
     - "istio-system/*"
+```
 
 See the Sidecar reference for more details.
 
@@ -341,6 +371,7 @@ A timeout is the amount of time that an Envoy proxy should wait for replies from
 
 For some applications and services, Istio’s default timeout might not be appropriate. For example, a timeout that is too long could result in excessive latency from waiting for replies from failing services, while a timeout that is too short could result in calls failing unnecessarily while waiting for an operation involving multiple services to return. To find and use your optimal timeout settings, Istio lets you easily adjust timeouts dynamically on a per-service basis using virtual services without having to edit your service code. Here’s a virtual service that specifies a 10 second timeout for calls to the v1 subset of the ratings service:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -354,6 +385,7 @@ spec:
         host: ratings
         subset: v1
     timeout: 10s
+```
 
 #### Retries
 
@@ -361,6 +393,7 @@ A retry setting specifies the maximum number of times an Envoy proxy attempts to
 
 Like timeouts, Istio’s default retry behavior might not suit your application needs in terms of latency (too many retries to a failed service can slow things down) or availability. Also like timeouts, you can adjust your retry settings on a per-service basis in virtual services without having to touch your service code. You can also further refine your retry behavior by adding per-retry timeouts, specifying the amount of time you want to wait for each retry attempt to successfully connect to the service. The following example configures a maximum of 3 retries to connect to this service subset after an initial call failure, each with a 2 second timeout.
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -376,6 +409,7 @@ spec:
     retries:
       attempts: 3
       perTryTimeout: 2s
+```
 
 #### Circuit breakers
 
@@ -383,6 +417,7 @@ Circuit breakers are another useful mechanism Istio provides for creating resili
 
 As circuit breaking applies to “real” mesh destinations in a load balancing pool, you configure circuit breaker thresholds in destination rules, with the settings applying to each individual host in the service. The following example limits the number of concurrent connections for the reviews service workloads of the v1 subset to 100:
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
@@ -397,6 +432,7 @@ spec:
       connectionPool:
         tcp:
           maxConnections: 100
+```
 
 You can find out more about creating circuit breakers in Circuit Breaking.
 
@@ -409,11 +445,12 @@ Unlike other mechanisms for introducing errors, such as delaying packets or kill
 
 You can inject two types of faults, both configured using a virtual service:
 
-    Delays: Delays are timing failures. They mimic increased network latency or an overloaded upstream service.
-    Aborts: Aborts are crash failures. They mimic failures in upstream services. Aborts usually manifest in the form of HTTP error codes or TCP connection failures.
+- Delays: Delays are timing failures. They mimic increased network latency or an overloaded upstream service.
+- Aborts: Aborts are crash failures. They mimic failures in upstream services. Aborts usually manifest in the form of HTTP error codes or TCP connection failures.
 
 For example, this virtual service introduces a 5 second delay for 1 out of every 1000 requests to the ratings service.
 
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -431,6 +468,7 @@ spec:
     - destination:
         host: ratings
         subset: v1
+```
 
 For detailed instructions on how to configure delays and aborts, see Fault Injection.
 
