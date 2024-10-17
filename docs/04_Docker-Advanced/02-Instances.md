@@ -118,7 +118,7 @@ Vous devriez également pouvoir faire un ping de la machine 1 vers la machine 2.
 ```yml
 
 docker network create test
-docker network create test
+docker volume create test
 docker run -d --rm -v test:/data --network test --name container_1 alpine:latest sh -c "while true; do read /dev/null; done"
 docker run -d --rm -v test:/data --network test --name container_2 alpine:latest sh -c "while true; do read /dev/null; done"
 docker exec -it container_1 sh
