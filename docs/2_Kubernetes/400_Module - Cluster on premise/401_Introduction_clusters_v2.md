@@ -1,6 +1,6 @@
 ---
 title: Introduction - Les différents types de cluster - avancé
-# sidebar_class_name: hidden
+sidebar_class_name: hidden
 ---
 
 

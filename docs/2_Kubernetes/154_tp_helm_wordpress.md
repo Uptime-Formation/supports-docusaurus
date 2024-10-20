@@ -4,7 +4,7 @@ draft: false
 # sidebar_position: 14
 ---
 
-Helm est un "gestionnaire de paquet" ou vu autrement un "outil de templating avancé" pour k8s qui permet d'installer des applications plsu complexe de façon paramétrable :
+Helm est un "gestionnaire de paquet" ou vu autrement un "outil de templating avancé" pour k8s qui permet d'installer des applications plus complexe de façon paramétrable :
 
 - Pas de duplication de code
 - Possibilité de créer du code générique et flexible avec pleins de paramètres pour le déploiement.

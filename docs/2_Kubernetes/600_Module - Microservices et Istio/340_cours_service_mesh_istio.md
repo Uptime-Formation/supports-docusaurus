@@ -3,7 +3,6 @@ title: Cours - Service mesh et Istio
 # sidebar_class_name: hidden
 ---
 
-
 ## Le mesh networking et les *service meshes*
 
 Un **service mesh** est un type d'outil réseau pour connecter un ensemble de pods, généralement les parties d'une application microservices de façon encore plus intégrée que ne le permet Kubernetes, mais également plus sécurisé et contrôlable.
@@ -17,8 +16,6 @@ Un autre service mesh populaire et "plus simple" qu'Istio, Linkerd : https://lin
 Cilium, le plugin réseau CNI peut aussi opérer comme un service mesh
 
 - https://www.youtube.com/watch?v=16fgzklcF7Y
-
-<!-- ## Problématiques d'un service mesh -->
 
 ## Istio
 

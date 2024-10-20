@@ -1,5 +1,6 @@
 ---
 title: Cours - l'opérateur de stockage Longhorn
+sidebar_class_name: hidden
 ---
 
 Voici la traduction en français :

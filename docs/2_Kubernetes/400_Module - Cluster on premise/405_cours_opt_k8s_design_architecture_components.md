@@ -173,9 +173,6 @@ En utilisant --v sur le serveur API, vous pouvez ajuster le niveau de verbosité
 
 En plus du débogage du serveur d'API via les journaux, il est également possible de déboguer les interactions avec le serveur d'API, via l'outil de ligne de commande kubectl. Comme le serveur d'API, l'outil de ligne de commande kubectl enregistre les journaux via le paquet github.com/golang/glog et prend en charge l'indicateur de verbosité --v. Définir la verbosité au niveau 10 (`--v=10`)
 
-
-
-
 ## `Scheduler` : assigner des pods aux noeuds
 
 Avec etcd et le serveur API fonctionnant correctement, un cluster Kubernetes est, d'une certaine manière, fonctionnellement complet. Avec seulement ces deux composants, vous pouvez créer tous les différents objets de l'API, tels que Deployments et Pods. Cependant, en testant cela on peut se rendre compte que les pods ne sont jamais exécutés.
@@ -183,8 +180,6 @@ Avec etcd et le serveur API fonctionnant correctement, un cluster Kubernetes est
 En effet, trouver un emplacement pour l'exécution d'un Pod est le travail du scheduler de Kubernetes. Il scanne le serveur d'API à la recherche de Pods non programmés et détermine ensuite les meilleurs nœuds sur lesquels les exécuter.
 
 Le scheduler va pour cela cartographier en temps réel les ressources encore disponible sur les noeuds, les resources demandées par les pods, les étiquettes de caractéristiques des noeuds appelées `Taints`, et autres contraintes géographiques des pods comme les `Affinity, Anti-affinity` ainsi que contraintes de volume etc.
-
-
 
 ## `Controller Manager` : les boucles de réconciliations
 

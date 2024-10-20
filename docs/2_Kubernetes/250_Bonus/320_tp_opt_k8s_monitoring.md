@@ -3,9 +3,7 @@ title: TP optionnel - Monitoring classique d'un cluster avec Prometheus
 ---
 
 <!-- https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-interactive/
-
 https://blog.container-solutions.com/kubernetes-deployment-strategies
-
 https://github.com/ContainerSolutions/k8s-deployment-strategies -->
 
 ## Prometheus pour monitorer le cluster

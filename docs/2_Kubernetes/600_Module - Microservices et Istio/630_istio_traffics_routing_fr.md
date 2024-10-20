@@ -36,15 +36,6 @@ Comme pour les autres configurations d'Istio, l'API est spécifiée à l'aide de
 
 Les Virtual services, ainsi que les destination rules, sont les éléments clés de la fonctionnalité de routage de trafic d'Istio. Un virtual service vous permet de configurer comment les requêtes sont routées vers un service à l'intérieur d'un mesh de services Istio, en s'appuyant sur la connectivité de base et la découverte fournies par Istio et votre plateforme. Chaque `virtual service` se compose d'un ensemble de règles de routage qui sont évaluées dans l'ordre, permettant à Istio d'associer chaque requête donnée au virtual service à une destination réelle spécifique dans le mesh. Votre mesh peut nécessiter plusieurs virtual services ou aucun, selon votre cas d'utilisation.
 
-
-
-
-
-
-
-
-
-
 #### Pourquoi utiliser des virtual services ?
 
 Les virtual services jouent un rôle clé en rendant la gestion du trafic dans Istio flexible et puissante. Ils le font en découplant fortement l’endroit où les clients envoient leurs requêtes des workloads de destination qui les implémentent réellement. Les virtual services offrent également une façon riche de spécifier différentes règles de routage du trafic pour envoyer du trafic à ces workloads.
@@ -124,21 +115,6 @@ route:
     host: reviews
     subset: v2
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Voici la traduction de la suite en français :
 
 Notez que dans cet exemple, ainsi que dans les autres exemples de cette page, nous utilisons un nom court Kubernetes pour les hôtes de destination pour simplifier. Lorsque cette règle est évaluée, Istio ajoute un suffixe de domaine basé sur le namespace du virtual service qui contient la règle de routage afin d’obtenir le nom complet de l’hôte. Utiliser des noms courts dans nos exemples signifie également que vous pouvez les copier et les essayer dans n’importe quel namespace que vous souhaitez. L’utilisation de noms courts comme celui-ci ne fonctionne que si les hôtes de destination et le virtual service se trouvent réellement dans le même namespace Kubernetes. Parce que l'utilisation du nom court Kubernetes peut entraîner des erreurs de configuration, nous recommandons de spécifier des noms d'hôtes complets dans les environnements de production.
 
@@ -282,139 +258,6 @@ Istio fournit quelques déploiements de proxy gateway préconfigurés (`istio-in
 
 
 
-Note in this and the other examples on this page, we use a Kubernetes short name for the destination hosts for simplicity. When this rule is evaluated, Istio adds a domain suffix based on the namespace of the virtual service that contains the routing rule to get the fully qualified name for the host. Using short names in our examples also means that you can copy and try them in any namespace you like.
-Using short names like this only works if the destination hosts and the virtual service are actually in the same Kubernetes namespace. Because using the Kubernetes short name can result in misconfigurations, we recommend that you specify fully qualified host names in production environments.
-
-The destination section also specifies which subset of this Kubernetes service you want requests that match this rule’s conditions to go to, in this case the subset named v2. You’ll see how you define a service subset in the section on destination rules below.
-
-##### Routing rule precedence
-
-Routing rules are evaluated in sequential order from top to bottom, with the first rule in the virtual service definition being given highest priority. In this case you want anything that doesn’t match the first routing rule to go to a default destination, specified in the second rule. Because of this, the second rule has no match conditions and just directs traffic to the v3 subset.
-
-```yaml
-- route:
-  - destination:
-      host: reviews
-      subset: v3
-```
-
-We recommend providing a default “no condition” or weight-based rule (described below) like this as the last rule in each virtual service to ensure that traffic to the virtual service always has at least one matching route.
-
-#### More about routing rules
-
-As you saw above, routing rules are a powerful tool for routing particular subsets of traffic to particular destinations. You can set match conditions on traffic ports, header fields, URIs, and more. For example, this virtual service lets users send traffic to two separate services, ratings and reviews, as if they were part of a bigger virtual service at http://bookinfo.com/. The virtual service rules match traffic based on request URIs and direct requests to the appropriate service.
-
-```yaml
-apiVersion: networking.istio.io/v1
-kind: VirtualService
-metadata:
-  name: bookinfo
-spec:
-  hosts:
-    - bookinfo.com
-  http:
-  - match:
-    - uri:
-        prefix: /reviews
-    route:
-    - destination:
-        host: reviews
-  - match:
-    - uri:
-        prefix: /ratings
-    route:
-    - destination:
-        host: ratings
-```
-
-For some match conditions, you can also choose to select them using the exact value, a prefix, or a regex.
-
-You can add multiple match conditions to the same match block to AND your conditions, or add multiple match blocks to the same rule to OR your conditions. You can also have multiple routing rules for any given virtual service. This lets you make your routing conditions as complex or simple as you like within a single virtual service. A full list of match condition fields and their possible values can be found in the HTTPMatchRequest reference.
-
-In addition to using match conditions, you can distribute traffic by percentage “weight”. This is useful for A/B testing and canary rollouts:
-
-```yaml
-spec:
-  hosts:
-  - reviews
-  http:
-  - route:
-    - destination:
-        host: reviews
-        subset: v1
-      weight: 75
-    - destination:
-        host: reviews
-        subset: v2
-      weight: 25
-```
-
-You can also use routing rules to perform some actions on the traffic, for example:
-
-- Append or remove headers.
-- Rewrite the URL.
-- Set a retry policy for calls to this destination.
-
-To learn more about the actions available, see the HTTPRoute reference.
-
-### Destination rules
-
-Along with virtual services, destination rules are a key part of Istio’s traffic routing functionality. You can think of virtual services as how you route your traffic to a given destination, and then you use destination rules to configure what happens to traffic for that destination. Destination rules are applied after virtual service routing rules are evaluated, so they apply to the traffic’s “real” destination.
-
-In particular, you use destination rules to specify named service subsets, such as grouping all a given service’s instances by version. You can then use these service subsets in the routing rules of virtual services to control the traffic to different instances of your services.
-
-Destination rules also let you customize Envoy’s traffic policies when calling the entire destination service or a particular service subset, such as your preferred load balancing model, TLS security mode, or circuit breaker settings. You can see a complete list of destination rule options in the Destination Rule reference.
-Load balancing options
-
-By default, Istio uses a least requests load balancing policy, where requests are distributed among the instances with the least number of requests. Istio also supports the following models, which you can specify in destination rules for requests to a particular service or service subset.
-
-- Random: Requests are forwarded at random to instances in the pool.
-- Weighted: Requests are forwarded to instances in the pool according to a specific percentage.
-- Round robin: Requests are forwarded to each instance in sequence.
-
-See the Envoy load balancing documentation for more information about each option.
-Destination rule example
-
-The following example destination rule configures three different subsets for the my-svc destination service, with different load balancing policies:
-
-```yaml
-apiVersion: networking.istio.io/v1
-kind: DestinationRule
-metadata:
-  name: my-destination-rule
-spec:
-  host: my-svc
-  trafficPolicy:
-    loadBalancer:
-      simple: RANDOM
-  subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
-    trafficPolicy:
-      loadBalancer:
-        simple: ROUND_ROBIN
-  - name: v3
-    labels:
-      version: v3
-```
-
-Each subset is defined based on one or more labels, which in Kubernetes are key/value pairs that are attached to objects such as Pods. These labels are applied in the Kubernetes service’s deployment as metadata to identify different versions.
-
-As well as defining subsets, this destination rule has both a default traffic policy for all subsets in this destination and a subset-specific policy that overrides it for just that subset. The default policy, defined above the subsets field, sets a simple random load balancer for the v1 and v3 subsets. In the v2 policy, a round-robin load balancer is specified in the corresponding subset’s field.
-Gateways
-
-You use a gateway to manage inbound and outbound traffic for your mesh, letting you specify which traffic you want to enter or leave the mesh. Gateway configurations are applied to standalone Envoy proxies that are running at the edge of the mesh, rather than sidecar Envoy proxies running alongside your service workloads.
-
-Unlike other mechanisms for controlling traffic entering your systems, such as the Kubernetes Ingress APIs, Istio gateways let you use the full power and flexibility of Istio’s traffic routing. You can do this because Istio’s Gateway resource just lets you configure layer 4-6 load balancing properties such as ports to expose, TLS settings, and so on. Then instead of adding application-layer traffic routing (L7) to the same API resource, you bind a regular Istio virtual service to the gateway. This lets you basically manage gateway traffic like any other data plane traffic in an Istio mesh.
-
-Gateways are primarily used to manage ingress traffic, but you can also configure egress gateways. An egress gateway lets you configure a dedicated exit node for the traffic leaving the mesh, letting you limit which services can or should access external networks, or to enable secure control of egress traffic to add security to your mesh, for example. You can also use a gateway to configure a purely internal proxy.
-
-Istio provides some preconfigured gateway proxy deployments (istio-ingressgateway and istio-egressgateway) that you can use - both are deployed if you use our demo installation, while just the ingress gateway is deployed with our default profile. You can apply your own gateway configurations to these deployments or deploy and configure your own gateway proxies.
-Gateway example
 
 
 
@@ -431,12 +274,6 @@ Gateway example
 
 
 
-
-
-
-Voici la traduction en français de la dernière partie :
-
----
 
 L'exemple suivant montre une configuration possible de **gateway** pour le trafic HTTPS entrant :
 

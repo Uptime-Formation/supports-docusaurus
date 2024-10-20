@@ -1,3 +1,8 @@
+---
+title: Cours - l'opérateur de stockage Longhorn
+sidebar_class_name: hidden
+---
+
 ## 1. Design
 
 The Longhorn design has two layers: the data plane and the controlplane. The Longhorn Engine is a storage controller that corresponds to the data plane, and the Longhorn Manager corresponds to the controlplane.
