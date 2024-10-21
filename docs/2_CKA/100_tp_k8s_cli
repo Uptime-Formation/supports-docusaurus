@@ -1,0 +1,152 @@
+---
+title: TP - Découvrir la CLI kubectl et déployer une application
+draft: false
+# sidebar_position: 6
+---
+
+### Déployer une application en CLI
+
+Nous allons maintenant déployer une première application conteneurisée. Le déploiement est un peu plus complexe qu'avec Docker, en particulier car il est séparé en plusieurs objets et plus configurable.
+
+- Pour créer un déploiement en ligne de commande (par opposition au mode déclaratif que nous verrons plus loin), on peut lancer par exemple: `kubectl create deployment demonstration --image=monachus/rancher-demo`.
+
+Cette commande crée un objet de type `deployment`. Nous pourvons étudier ce deployment avec la commande `kubectl describe deployment/demonstration`.
+
+- Notez la liste des événements sur ce déploiement en bas de la description.
+- De la même façon que dans la partie précédente, listez les `pods` avec `kubectl`. Combien y en a-t-il ?
+
+- Agrandissons ce déploiement avec `kubectl scale deployment demonstration --replicas=5`
+- `kubectl describe deployment/demonstration` permet de constater que le service est bien passé à 5 replicas.
+  - Observez à nouveau la liste des évènements, le scaling y est enregistré...
+  - Listez les pods pour constater
+
+A ce stade impossible d'afficher l'application : le déploiement n'est pas encore accessible de l'extérieur du cluster. Pour régler cela nous devons l'exposer grace à un service :
+
+- `kubectl expose deployment demonstration --type=NodePort --port=8080 --name=demonstration-service`
+
+- Affichons la liste des services pour voir le résultat: `kubectl get services`
+
+Un service permet de créer un point d'accès unique exposant notre déploiement. Ici nous utilisons le type Nodeport car nous voulons que le service soit accessible de l'extérieur par l'intermédiaire d'un forwarding de port.
+
+Avec minikube ce forwarding de port doit être concrêtisé avec la commande `minikube service demonstration-service`. Normalement la page s'ouvre automatiquement et nous voyons notre application.
+
+- Sauriez-vous expliquer ce que l'app fait ?
+- Pour le comprendre ou le confirmer, diminuez le nombre de réplicats à l'aide de la commande utilisée précédement pour passer à 5 réplicats. Qu se passe-t-il ?
+
+
+Une autre méthode pour accéder à un service (quel que soit sont type) en mode développement est de forwarder le traffic par l'intermédiaire de kubectl (et des composants kube-proxy installés sur chaque noeuds du cluster).
+
+- Pour cela on peut par exemple lancer: `kubectl port-forward pod demonstration-......-... 8080:8080 --address 127.0.0.1` à remplacer par un de vos pods.
+- Vous pouvez désormais accéder à votre app via via kubectl sur: `http://localhost:8080`. Quelle différence avec l'exposition précédente via minikube ?
+
+=> Un seul conteneur s'affiche. En effet `kubectl port-forward` sert à créer une connexion de developpement/debug qui pointe toujours vers le même pod en arrière plan.
+
+Pour exposer cette application en production sur un véritable cluster, nous devrions plutôt avoir recours à service de type un LoadBalancer. Mais minikube ne propose pas par défaut de loadbalancer. Nous y reviendrons dans le cours sur les objets kubernetes.
+
+### CheatSheet pour kubectl et formattage de la sortie
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+Vous noterez dans cette page qu'il est possible de traiter la sortie des commandes kubectl de multiple façon (yaml, json, gotemplate, jsonpath, etc)
+
+Le mode de sortie le plus utilisé pour filtrer une information parmis l'ensemble des caractéristiques d'une resource est `jsonpath` qui s'utilise comme ceci:
+
+```bash
+kubectl get pod <tab>
+kubectl get pod demonstration-7645747fc6-f5z55 -o yaml # pour afficher la spécification
+kubectl get pod demonstration-7645747fc6-f5z55 -o jsonpath='{.spec.containers[0].image}' # affiche le nom de l'image
+```
+
+Essayez de la même façon d'afficher le nombre de répliques de notre déploiement.
+
+### Des outils CLI supplémentaires pour le confort
+
+- `helm` package/template manager pour Kubernetes => voir Cours et TP
+- `tanka` langage alternatif de déploiement (bonus)
+
+`kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
+
+- `kubectx` qui viens avec `kubens` un outil pour switcher de cluster/contexte/namespace courant confortablement
+- `viddy` un watch amélioré pour visualiser en temps réel les resources du cluster et leur évolution
+- `skaffold` pour développer => voir tp "développer directement dans un cluster"
+- `stern` pour pouvoir afficher/tail les logs des pods correctement (notamment via un service)
+- `trivy` pour des analyses de sécurité des images et du cluster
+
+Exemple d'utilisation:
+
+```bash
+viddy
+stern my-service -n my-namespace --tail 100 --include "error|warning"
+stern -t my-service ...
+```
+
+Pour installer tous ces outils il y a de nombreuses méthodes (snap/krew/installation manuelle github etc). Une façon uniforme pour avoir des version récentes et multiples sur n'importe quel OS (linux, macOS et windows avec le WSL) est le gestionnaire de dépendance de dev `asdf-vm`.
+
+<details>
+
+<summary>On peut installer tout cela avec le code suivant sous linux (via git et bash): </summary>
+
+
+```bash
+
+## Install asdf dev tools manager
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
+echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+. "$HOME/.asdf/asdf.sh"
+
+## Install kubernetes tools via asdf
+asdf plugin add kubectx
+asdf plugin add stern
+asdf plugin add viddy
+asdf plugin add trivy
+asdf plugin add skaffold
+asdf plugin add tanka
+
+asdf install kubectx latest
+asdf install stern latest
+asdf install viddy latest
+asdf install trivy latest
+asdf install skaffold latest
+asdf install tanka latest
+
+cat << EOF >> ~/.bashrc
+asdf shell kubectx latest
+asdf shell stern latest
+asdf shell viddy latest
+asdf shell trivy latest
+asdf shell skaffold latest
+asdf shell tanka latest
+EOF
+
+```
+
+</details>
+
+
+## Au délà de la ligne de commande...
+
+#### Accéder à la dashboard Kubernetes
+
+Le moyen le plus classique pour avoir une vue d'ensemble des ressources d'un cluster est d'utiliser la Dashboard officielle. Cette Dashboard est généralement installée par défaut lorsqu'on loue un cluster chez un provider.
+
+On peut aussi l'installer dans minikube ou k3s. Nous allons ici préférer le client lourd OpenLens
+
+#### Installer OpenLens
+
+Lens est un logiciel graphique (un client "lourd") pour contrôler Kubernetes. Il se connecte en utilisant kubectl et la configuration `~/.kube/config` par défaut et nous permettra d'accéder à un dashboard puissant et agréable à utiliser.
+
+Récemment Mirantis qui a racheté Lens essaye de fermer l'accès à ce logiciel open source. Il faut donc utiliser le build communautaire à la place du build officiel: https://github.com/MuhammedKalkan/OpenLens/releases
+
+Vous pouvez l'installer en lançant ces commandes :
+
+```bash
+## Install Lens
+export LENS_VERSION=5.5.4 # change with the current stable version
+curl -LO "https://github.com/MuhammedKalkan/OpenLens/releases/download/v$LENS_VERSION/OpenLens-$LENS_VERSION.deb"
+sudo dpkg -i "OpenLens-$LENS_VERSION.deb" 
+```
+
+- Lancez l'application `Lens` dans le menu "internet" de votre machine (VNC).
+- Sélectionnez le cluster de votre choix la liste et épinglez la connection dans la barre de menu
+- Explorons ensemble les ressources dans les différentes rubriques et namespaces
+

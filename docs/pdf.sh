@@ -2,7 +2,7 @@
 
 which pdfnice &>/dev/null || { echo "!!! Missing pdfnice! Please use the bin/pdfnice script at the root of the project" : exit 1 ; }
 
-set -e 
+#set -e 
 
 
 APP_PATH=$( cd $(dirname $0) && pwd )
@@ -72,7 +72,7 @@ for file in *\.md; do
   cat <<EOF > $file
 ---
 title: "$title"
-author: [Uptime Formation]
+author: [PLB]
 date: "$DATE"
 titlepage: true
 titlepage-text-color: "3366ff"
@@ -84,6 +84,13 @@ EOF
   echo -e "$content" >> "$file"
   echo "Convert "$file" to $pdfname"
   ~/bin/pdfnice "$file" "$pdfname" 2>"$logname"
+  [[ $? -ne 0 ]] && {
+
+      echo "An error occured with file $file."
+      read -e -p "Want to see $logname ? [Y/n]" REPLY
+      [[ "N" != ${REPLY^^} ]] && vim $logname
+      exit 1
+  }
 done
 
 # Finish by creating the PDF file
