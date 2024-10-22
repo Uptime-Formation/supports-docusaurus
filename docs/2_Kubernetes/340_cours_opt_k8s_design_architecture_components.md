@@ -55,7 +55,7 @@ Pour écrire des chart Helm il est également important (bien que facultatif) de
 # Retour détaillé sur les composants du `Control Plane`
 
 
-![](/img/kubernetes/shema-persos/k8s-archi.jpg)
+![](../../static/img/kubernetes/schemas-perso/k8s-archi.jpg)
 
 
 Kubernetes adhère à la philosophie (Unix) de modularité de petits composants qui font bien leur travail. Kubernetes n'est pas une application d'un seul tenant qui implémente les diverses fonctionnalités du système dans un seul binaire. Il s'agit plutôt d'une collection de différentes applications qui travaillent toutes ensemble, en grande partie en s'ignorant les unes les autres, pour mettre en œuvre le système global.

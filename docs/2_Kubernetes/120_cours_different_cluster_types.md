@@ -14,7 +14,7 @@ draft: false
 
 Kubernetes a une architecture master/worker ce qui signifie que certains certains noeuds du cluster contrôlent l'exécution par les autres noeuds de logiciels ou jobs.
 
-![](/img/kubernetes/shema-persos/k8s-archi.jpg)
+![](../../static/img/kubernetes/schemas-perso/k8s-archi.jpg)
 
 #### Les noeuds Kubernetes
 

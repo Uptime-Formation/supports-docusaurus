@@ -7,6 +7,8 @@ title: Jour 1 - Après-midi
 
 ## Compréhension du Pod  
 
+![](../../static/img/kubernetes/k8s-pod.png)
+
 ### Les Pods
 
 **Un Pod est l’unité de base d’une application Kubernetes que vous déployez : un Pod est un `groupe atomique de conteneurs`, ce qui veut dire qu'il est garanti que ces conteneurs atterrirons sur le même noeud et seront toujours lancé ensembles et connectés.**

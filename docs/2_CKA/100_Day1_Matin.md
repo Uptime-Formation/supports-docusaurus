@@ -75,6 +75,8 @@ Pour utiliser Kubernetes, on définit un état souhaité en créant des ressourc
 
 #### Les noeuds master kubernetes forment le `Control Plane` du Cluster
 
+![](../../static/img/kubernetes/schemas-perso//k8s-archi.jpg)
+
 Le control plane est responsable du maintien de l’état souhaité des différents éléments de votre cluster. Lorsque vous interagissez avec Kubernetes, par exemple en utilisant l’interface en ligne de commande `kubectl`, vous communiquez avec les noeuds master de votre cluster (plus précisément l'`API Server`).
 
 Le control plane conserve un enregistrement de tous les objets Kubernetes du système. À tout moment, des `boucles de contrôle` s'efforcent de faire converger l’état réel de tous les objets du système pour correspondre à l’état souhaité que vous avez fourni. Pour gérer l’état réel de ces objets sous forme de conteneurs (toujours) avec leur configuration le control plane envoie des instructions aux différents kubelets des noeuds.
@@ -94,11 +96,83 @@ Lien vers la documentation pour plus de détails sur les composants : https://ku
 
 ---
 
+### Les ressources Kubernetes 
+
 **La solution s'appuie sur une multitude de ressources qui composent des architectures articulables.**
 
 ![](../../static/img/kubernetes/Kubernetes_Resources.png)
+Voici la liste des ressources Kubernetes avec des noms longs et une description simplifiée pour débutants :
+
+![](../../static/img/kubernetes/icons/cm.svg) **cm (ConfigMap)** : Utilisé pour stocker des données de configuration sous forme de paires clé-valeur, par exemple des fichiers de configuration que les Pods peuvent consommer.
+   
+
+![](../../static/img/kubernetes/icons/cronjob.svg) **cronjob (CronJob)** : Planifie et exécute des tâches répétées à des moments spécifiques (comme une tâche cron classique), par exemple pour un nettoyage périodique de la base de données.  
+
+![](../../static/img/kubernetes/icons/deploy.svg) **deploy (Deployment)** : Automatiser le déploiement et la gestion d'une application, en créant et en gérant des réplicas de Pods pour assurer la haute disponibilité.  
+
+![](../../static/img/kubernetes/icons/ing.svg) **ing (Ingress)** : Gère l'accès externe aux services dans un cluster, généralement via HTTP ou HTTPS, souvent utilisé pour exposer des applications web.  
+
+![](../../static/img/kubernetes/icons/job.svg) **job (Job)** : Exécute des tâches ponctuelles qui se terminent lorsqu'elles ont accompli leur travail, par exemple pour générer un rapport.  
+
+![](../../static/img/kubernetes/icons/limits.svg) **limits (LimitRange)** : Définit des limites de consommation de ressources (CPU, mémoire) pour les Pods dans un namespace, afin de prévenir une consommation excessive.  
+
+![](../../static/img/kubernetes/icons/netpol.svg) **netpol (NetworkPolicy)** : Contrôle le trafic réseau entre les Pods pour sécuriser les communications internes au cluster.  
+
+![](../../static/img/kubernetes/icons/ns.svg) **ns (Namespace)** : Partitionne des ressources de cluster en unités logiques, souvent utilisé pour séparer les environnements comme production et développement.  
+
+![](../../static/img/kubernetes/icons/pod.svg) **pod (Pod)** : L'unité de base de Kubernetes, représente une ou plusieurs conteneurs tournant ensemble avec des ressources partagées.  
+
+![](../../static/img/kubernetes/icons/pvc.svg) **pvc (PersistentVolumeClaim)** : Demande dynamique d'un espace de stockage pour les Pods, par exemple pour stocker des données persistantes comme les fichiers de base de données.  
+
+![](../../static/img/kubernetes/icons/pv.svg) **pv (PersistentVolume)** : Représente un morceau de stockage physique alloué dans le cluster, utilisé par les Pods via des PersistentVolumeClaims.  
+
+![](../../static/img/kubernetes/icons/rs.svg) **rs (ReplicaSet)** : Assure qu'un nombre spécifique de Pods est en cours d'exécution à tout moment, souvent utilisé par les déploiements pour gérer les réplicas.  
+
+![](../../static/img/kubernetes/icons/sa.svg) **sa (ServiceAccount)** : Utilisé par les Pods pour accéder aux ressources Kubernetes, il définit des identités pour les Pods.  
+
+![](../../static/img/kubernetes/icons/sc.svg) **sc (StorageClass)** : Définit les types de stockage dynamiques disponibles dans un cluster, par exemple pour définir si le stockage est rapide ou économique.  
+
+![](../../static/img/kubernetes/icons/secret.svg) **secret (Secret)** : Stocke des informations sensibles telles que des mots de passe ou des clés API, qui peuvent être utilisées par les Pods.  
+
+![](../../static/img/kubernetes/icons/sts.svg) **sts (StatefulSet)** : Gère des applications stateful (avec état), comme les bases de données, en garantissant que les Pods sont créés dans un ordre spécifique et conservent leur identité.  
+
+![](../../static/img/kubernetes/icons/svc.svg) **svc (Service)** : Expose un ensemble de Pods comme un service réseau stable, souvent utilisé pour l'équilibrage de charge ou pour rendre une application accessible.  
+
+![](../../static/img/kubernetes/icons/vol.svg) **vol (Volume)** : Un répertoire utilisé par un Pod pour stocker des données, pouvant être partagé entre plusieurs conteneurs dans le même Pod ou persister les données.  
 
 ---
+
+#### Ressources non couvertes par cette formation
+
+![](../../static/img/kubernetes/icons/crb.svg)**crb (ClusterRoleBinding)** : Associe un rôle à des utilisateurs ou des groupes dans l'ensemble du cluster, permettant un contrôle d'accès à l'échelle du cluster.
+  
+![](../../static/img/kubernetes/icons/crd.svg) **crd (CustomResourceDefinition)** : Permet de créer des types de ressources personnalisées dans Kubernetes pour gérer des objets spécifiques à votre application.  
+
+![](../../static/img/kubernetes/icons/ds.svg) **ds (DaemonSet)** : Assure que certains Pods fonctionnent sur chaque nœud du cluster, utilisé souvent pour des agents de monitoring ou de logs.
+
+![](../../static/img/kubernetes/icons/ep.svg) **ep (Endpoint)** : Contient les adresses des Pods qui sont les cibles d'un Service, utilisé pour connecter les Pods aux services.
+
+![](../../static/img/kubernetes/icons/group.svg) **group (Group)** : Représente un groupe d'utilisateurs pour la gestion des autorisations et du contrôle d'accès.
+
+![](../../static/img/kubernetes/icons/hpa.svg) **hpa (HorizontalPodAutoscaler)** : Ajuste automatiquement le nombre de Pods en fonction de l'utilisation des ressources, par exemple pour gérer les pics de charge.
+
+
+![](../../static/img/kubernetes/icons/psp.svg) **psp (PodSecurityPolicy)** : Définissait des politiques de sécurité pour les Pods, comme les permissions ou restrictions, mais a été déprécié en Kubernetes 1.21.
+
+![](../../static/img/kubernetes/icons/quota.svg) **quota (ResourceQuota)** : Définit des limites de consommation de ressources pour un namespace donné, par exemple limiter le nombre de Pods ou la quantité de mémoire utilisée.
+
+![](../../static/img/kubernetes/icons/rb.svg) **rb (RoleBinding)** : Lie un rôle à des utilisateurs ou groupes dans un namespace spécifique, pour contrôler l'accès aux ressources.
+
+![](../../static/img/kubernetes/icons/role.svg) **role (Role)** : Définit un ensemble de permissions pour un namespace spécifique, utilisé pour contrôler l'accès aux ressources comme les Pods ou les services.
+
+![](../../static/img/kubernetes/icons/user.svg) **user (User)** : Représente un utilisateur externe pour gérer les permissions et l'accès au cluster.
+
+![](../../static/img/kubernetes/icons/c-role.svg) **c-role (ClusterRole)** : Définit un ensemble de permissions qui peuvent s'appliquer à tout le cluster, plutôt qu'à un namespace spécifique.  
+
+
+---
+
+## Types de clusters 
 
 Désormais il existe de nombreuses solutions dérivées de cette architecture K8S.
 
@@ -440,9 +514,17 @@ Il semble qu'il n'y a qu'une ressource dans notre cluster. Il s'agit du service 
 
 En effet les éléments internes de Kubernetes tournent eux-mêmes sous forme de services et de daemons Kubernetes. Les *namespaces* sont des groupes qui servent à isoler les ressources de façon logique et en termes de droits (avec le *Role-Based Access Control* (RBAC) de Kubernetes).
 
-Pour vérifier cela on peut :
+Pour vérifier cela on peut  afficher la liste totale des namespaces:
 
-- Afficher les namespaces : `kubectl get namespaces`
+```yaml
+kubectl get namespaces
+```
+
+On peut aussi en afficher un seul en demandant une sortie formattée en YAML
+
+```yaml
+kubectl get namespace default -o yaml
+```
 
 ---
 

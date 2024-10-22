@@ -7,15 +7,33 @@ title: Jour 2 - Matin
 
 ## Le stockage et les Volumes dans Docker
 
-Les conteneurs propose un paradigme immutable : on peut les transformers pendant leur execution (ajouter des fichier, changer des configurations) mais ce n'est pas le mode d'utilisation recommandé. En particulier Kubernetes est succeptible de les supprimer et de les recréer automatiquement. Les fichiers ajoutés manuellement pendant l'execution seront alors perdu.
+**Les conteneurs proposent un paradigme immutable : on peut les transformers pendant leur execution (ajouter des fichier, changer des configurations) mais ce n'est pas le mode d'utilisation recommandé.** 
 
-Se pose donc la question de la persistance des données d'une application, par exemple une base de donnée. Dans un environnement conteneurisé toute persistance est permise via des volumes, sortes de disques durs virtuels, qu'on connecte à nos conteneur. Comme un disque ces volumes sont monté à un emplacement du système de fichier du conteneur. En écrivant dans le dossier en question on écrit alors sur ce disque virtuel qui conservera ses données même si le conteneur est supprimé.
+En particulier Kubernetes est succeptible de les supprimer et de les recréer automatiquement.  
+
+ Les fichiers ajoutés manuellement pendant l'exécution seront alors perdus.
+
+---
+
+**Se pose donc la question de la persistance des données d'une application, par exemple une base de donnée.**  
+
+ Dans un environnement conteneurisé toute persistance est permise via des volumes, sortes de disques durs virtuels, qu'on connecte à nos conteneur.  
+
+ Comme un disque ces volumes sont monté à un emplacement du système de fichier du conteneur.  
+
+ En écrivant dans le dossier en question on écrit alors sur ce disque virtuel qui conservera ses données même si le conteneur est supprimé.
+
+--- 
 
 ## Le stockage dans Kubernetes
 
 ### Les Volumes Kubernetes
 
-Comme dans Docker, Kubernetes fournit la possibilité de monter des volumes virtuels dans les conteneurs de nos pod. On liste séparément les volumes de notre pod puis on les monte une ou plusieurs dans les différents conteneurs. Exemple:
+Comme dans Docker, Kubernetes fournit la possibilité de monter des volumes virtuels dans les conteneurs de nos pod.  
+
+ On liste séparément les volumes de notre pod puis on les monte une ou plusieurs dans les différents conteneurs.  
+
+ Exemple:
 
 ```yaml
 apiVersion: v1
@@ -38,56 +56,13 @@ spec:
       type: Directory
 ```
 
-La problématique des volumes et du stockage est plus compliquée dans kubernetes que dans docker car k8s cherche à répondre à de nombreux cas d'usages. [doc officielle](https://kubernetes.io/fr/docs/concepts/storage/volumes/). Il y a donc de nombeux types de volumes kubernetes correspondants à des usages de base et aux solutions proposées par les principaux fournisseurs de cloud.
+La problématique des volumes et du stockage est plus compliquée dans kubernetes que dans docker car k8s cherche à répondre à de nombreux cas d'usages. [doc officielle](https://kubernetes.io/fr/docs/concepts/storage/volumes/).  
+
+ Il y a donc de nombeux types de volumes kubernetes correspondants à des usages de base et aux solutions proposées par les principaux fournisseurs de cloud.
 
 ![](../../static/img/kubernetes/schemas-perso/resources-deps.jpg?width=400px)
 
-<!-- 
-Mentionnons quelques d'usage de base des volumes:
-
-- `hostPath`: monte un dossier du noeud ou est plannifié le pod à l'intérieur du conteneur.
-- `configMap` ou `secret`: pour monter des fichiers de configurations provenant du cluster à l'intérieur des pods
-- `nfs`: stockage réseau classique
-- `cephfs`: monter un volume ceph provenant d'un ceph installé sur le cluster
-- etc.
-
-En plus de la gestion manuelle des volumes avec les option précédentes, kubernetes permet de provisionner dynamiquement du stockage en utilisant des plugins de création de volume grâce à 3 types d'objets: `StorageClass` `PersistentVolume` et `PersistentVolumeClaim`.
-
-### Les types de stockage avec les `StorageClasses`
-
-Le stockage dynamique dans Kubernetes est fourni à travers des types de stockage appelés *StorageClasses* :
-
-- dans le cloud, ce sont les différentes offres de volumes du fournisseur,
-- dans un cluster auto-hébergé c'est par exemple des opérateurs de stockage comme `rook.io` ou `longhorn`(Rancher).
-
-[doc officielle](https://kubernetes.io/docs/concepts/storage/storage-classes/) -->
-
-## Volumes pour la persistence
-
-### Demander des volumes et les liers aux pods :`PersistentVolumes` et `PersistentVolumeClaims`
-
-Quand un conteneur a besoin d'un volume, il crée une *PersistentVolumeClaim* : une demande de volume (persistant). Si une des *StorageClass* du cluster est en capacité de le fournir, alors un *PersistentVolume* est créé et lié à ce conteneur : il devient disponible en tant que volume monté dans le conteneur.
-
-<!-- - les *StorageClasses* fournissent du stockage -->
-- les conteneurs demandent du volume avec les *PersistentVolumeClaims*
-- les *StorageClasses* répondent aux *PersistentVolumeClaims* en créant des objets *PersistentVolumes* : le conteneur peut accéder à son volume.
-
-[doc officielle](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-
-Le provisionning de `PersistentVolume` peut être manuel (on crée un objet `PersistentVolume` en amont ou non. Dans le second cas la création d'un `PersistentVolumeClaim` mène directement à la création d'un volume si possible)
-
-### Liens externes
-
-- [RedHat](https://developers.redhat.com/articles/2022/10/06/kubernetes-storage-concepts)
-- [NetApp](https://bluexp.netapp.com/blog/cvo-blg-5-types-of-kubernetes-volumes-and-how-to-work-with-them)
-
-### Backup de volume
-
-Il existe plusieurs méthodes pour effectuer des sauvegardes de données persistantes dans Kubernetes : 
-
-- Utiliser des outils de backup Kubernetes : Certains outils de sauvegarde Kubernetes, tels que Velero (anciennement Heptio Ark), permettent de sauvegarder et de restaurer des données persistantes. Ces outils peuvent être configurés pour effectuer des sauvegardes régulières des volumes persistants dans votre cluster Kubernetes, puis les stocker dans un emplacement de stockage sécurisé.
-
-- Utiliser des outils classiques de backups plannifiés depuis vos pods (push depuis le pod): Les volumes persistants Kubernetes sont généralement montés en tant que systèmes de fichiers dans les pods. En utilisant des outils de sauvegarde de fichiers tels que rsync, borg, etc. on peut sauvegarder ces volumes persistants sur des emplacements de stockage externes. On peut également utiliser des scripts basés sur kubectl plannifiés depuis un serveur de backup se connectent à l'intérieur des pods pour récupérer les données.
+---
 
 ## Objets de configuration
 
@@ -97,7 +72,9 @@ D'après les recommandations de développement [12factor](https://12factor.net),
 
 Les objets ConfigMaps permettent d'injecter dans des pods des ensemble clés/valeur de configuration en tant que volumes/fichiers de configuration ou variables d'environnement.
 
-Cela permet notamment de centraliser et découpler la configuration du déploiement des pods. Par exemple on peut stocker de façon centraliser le nom de domaine à utiliser pour une application et plusieurs de ses microservices pourront venir la récupérer dans la même configmap.
+Cela permet notamment de centraliser et découpler la configuration du déploiement des pods.  
+
+ Par exemple on peut stocker de façon centraliser le nom de domaine à utiliser pour une application et plusieurs de ses microservices pourront venir la récupérer dans la même configmap.
 
 #### Exemple de configmap et de récupération d'une variable d'environnement
 
@@ -138,13 +115,17 @@ spec:
         - containerPort: 3306
 ```
 
-### les Secrets
+---
+
+### Les Secrets
 
 Les Secrets se manipulent comme des objets ConfigMaps, mais ils sont chiffrés et faits pour stocker des mots de passe, des clés privées, des certificats, des tokens, ou tout autre élément de config dont la confidentialité doit être préservée.
 Un secret se créé avec l'API Kubernetes, puis c'est au pod de demander à y avoir accès.
 
 Il y a plusieurs façons de donner un accès à un secret, notamment :
-- le secret est un fichier que l'on monte en tant que volume dans un conteneur (pas nécessairement disponible à l'ensemble du pod). Il est possible de ne jamais écrire ce secret sur le disque (volume `tmpfs`).
+- le secret est un fichier que l'on monte en tant que volume dans un conteneur (pas nécessairement disponible à l'ensemble du pod).  
+
+ Il est possible de ne jamais écrire ce secret sur le disque (volume `tmpfs`).
 - le secret est une variable d'environnement du conteneur.
 
 Pour définir qui et quelle app a accès à quel secret, on peut utiliser les fonctionnalités "RBAC" de Kubernetes.
@@ -229,6 +210,76 @@ spec:
 
 ---
 
+
+## Volumes pour la persistence
+
+**Mentionnons quelques d'usage de base des volumes:**
+
+- `hostPath`: monte un dossier du noeud ou est plannifié le pod à l'intérieur du conteneur.
+- `configMap` ou `secret`: pour monter des fichiers de configurations provenant du cluster à l'intérieur des pods
+- `nfs`: stockage réseau classique
+- `cephfs`: monter un volume ceph provenant d'un ceph installé sur le cluster
+- etc.
+
+En plus de la gestion manuelle des volumes avec les option précédentes, kubernetes permet de provisionner dynamiquement du stockage en utilisant des plugins de création de volume grâce à 3 types d'objets: `StorageClass` `PersistentVolume` et `PersistentVolumeClaim`.
+
+---
+
+### Les types de stockage avec les `StorageClasses`
+
+Le stockage dynamique dans Kubernetes est fourni à travers des types de stockage appelés *StorageClasses* :
+
+- dans le cloud, ce sont les différentes offres de volumes du fournisseur,
+- dans un cluster auto-hébergé c'est par exemple des opérateurs de stockage comme `rook.io` ou `longhorn`(Rancher).
+
+En savoir plus sur la [doc officielle](https://kubernetes.io/docs/concepts/storage/storage-classes/) 
+
+---
+
+
+### Demander des volumes et les liers aux pods :`PersistentVolumes` et `PersistentVolumeClaims`
+
+![](../../static/img/kubernetes/k8s-pvc.png)
+
+**Quand un conteneur a besoin d'un volume, il crée une `PersistentVolumeClaim` : une demande de volume (persistant).**  
+
+ Si une des `StorageClass` du cluster est en capacité de le fournir, alors un `PersistentVolume` est créé et lié à ce conteneur : il devient disponible en tant que volume monté dans le conteneur.
+
+- les *StorageClasses* représentent le stockage physique accessible au cluster selon les paramètres définis par le groupe admin
+- les conteneurs demandent du volume avec les `PersistentVolumeClaims`
+- les `StorageClasses` répondent aux `PersistentVolumeClaims` en créant des objets `PersistentVolumes` : le conteneur peut accéder à son volume.
+
+En savoir plus sur la [doc officielle](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+
+--- 
+
+**Le provisionning de `PersistentVolume` peut être manuel (on crée un objet `PersistentVolume` en amont ou non.**  
+
+ Dans le second cas la création d'un `PersistentVolumeClaim` mène directement à la création d'un volume si possible)
+
+### Liens externes
+
+- [RedHat](https://developers.redhat.com/articles/2022/10/06/kubernetes-storage-concepts)
+- [NetApp](https://bluexp.netapp.com/blog/cvo-blg-5-types-of-kubernetes-volumes-and-how-to-work-with-them)
+
+### Backup de volume
+
+Il existe plusieurs méthodes pour effectuer des sauvegardes de données persistantes dans Kubernetes : 
+
+- Utiliser des outils de backup Kubernetes : Certains outils de sauvegarde Kubernetes, tels que Velero (anciennement Heptio Ark), permettent de sauvegarder et de restaurer des données persistantes.  
+
+ Ces outils peuvent être configurés pour effectuer des sauvegardes régulières des volumes persistants dans votre cluster Kubernetes, puis les stocker dans un emplacement de stockage sécurisé.
+
+- Utiliser des outils classiques de backups plannifiés depuis vos pods (push depuis le pod): Les volumes persistants Kubernetes sont généralement montés en tant que systèmes de fichiers dans les pods.  
+
+ En utilisant des outils de sauvegarde de fichiers tels que rsync, borg, etc.  
+
+ on peut sauvegarder ces volumes persistants sur des emplacements de stockage externes.  
+
+ On peut également utiliser des scripts basés sur kubectl plannifiés depuis un serveur de backup se connectent à l'intérieur des pods pour récupérer les données.
+
+---
+
 #### Les Services
 
 Dans Kubernetes, un **service** est un objet qui :
@@ -241,9 +292,15 @@ Dans Kubernetes, un **service** est un objet qui :
 
 L’ensemble des pods ciblés par un service est déterminé par un `selector`.
 
-Par exemple, considérons un backend de traitement d’image (*stateless*, c'est-à-dire ici sans base de données) qui s’exécute avec 3 replicas. Ces replicas sont interchangeables et les frontends ne se soucient pas du backend qu’ils utilisent. Bien que les pods réels qui composent l’ensemble `backend` puissent changer, les clients frontends ne devraient pas avoir besoin de le savoir, pas plus qu’ils ne doivent suivre eux-mêmes l'état de l’ensemble des backends.
+Par exemple, considérons un backend de traitement d’image (*stateless*, c'est-à-dire ici sans base de données) qui s’exécute avec 3 replicas.  
 
-L’abstraction du service permet ce découplage : les clients frontend s'addressent à une seule IP avec un seul port dès qu'ils ont besoin d'avoir recours à un backend. Les backends vont recevoir la requête du frontend aléatoirement.
+ Ces replicas sont interchangeables et les frontends ne se soucient pas du backend qu’ils utilisent.  
+
+ Bien que les pods réels qui composent l’ensemble `backend` puissent changer, les clients frontends ne devraient pas avoir besoin de le savoir, pas plus qu’ils ne doivent suivre eux-mêmes l'état de l’ensemble des backends.
+
+L’abstraction du service permet ce découplage : les clients frontend s'addressent à une seule IP avec un seul port dès qu'ils ont besoin d'avoir recours à un backend.  
+
+ Les backends vont recevoir la requête du frontend aléatoirement.
 
 ---
 
@@ -251,9 +308,15 @@ L’abstraction du service permet ce découplage : les clients frontend s'addres
 
 - `ClusterIP`: expose le service **sur une IP interne** au cluster.
 
-- `NodePort`: expose le service depuis l'IP de **chacun des noeuds du cluster** en ouvrant un port directement sur le nœud, entre 30000 et 32767. Cela permet d'accéder aux pods internes répliqués. Comme l'IP est stable on peut faire pointer un DNS ou Loadbalancer classique dessus.
+- `NodePort`: expose le service depuis l'IP de **chacun des noeuds du cluster** en ouvrant un port directement sur le nœud, entre 30000 et 32767.  
 
-- `LoadBalancer`: expose le service en externe à l’aide d'un Loadbalancer de fournisseur de cloud. Les services NodePort et ClusterIP, vers lesquels le Loadbalancer est dirigé sont automatiquement créés.
+ Cela permet d'accéder aux pods internes répliqués.  
+
+ Comme l'IP est stable on peut faire pointer un DNS ou Loadbalancer classique dessus.
+
+- `LoadBalancer`: expose le service en externe à l’aide d'un Loadbalancer de fournisseur de cloud.  
+
+ Les services NodePort et ClusterIP, vers lesquels le Loadbalancer est dirigé sont automatiquement créés.
 
 ![](/img/kubernetes/schemas-perso/k8s-services.drawio.png?width=400px)
 <!-- *Crédits à [Ahmet Alp Balkan](https://medium.com/@ahmetb) pour les schémas* -->
@@ -262,7 +325,9 @@ Deux autres types plus avancés:
 
 - `ExternalName`: Un service `ExternalName`  est typiquement utilisé pour permettre l'accès à un service externe en le mappant à un nom DNS interne, facilitant ainsi la redirection des requêtes sans utiliser un proxy ou un load balancer. (https://stackoverflow.com/questions/54327697/kubernetes-externalname-services)
 
-- `headless` (avec `ClusterIP: None`):  est utilisé pour permettre la découverte directe des pods via leur ip au sein d'un service. Ce mode est souvent utilisé pour des applications nécessitant une connexion directe entre instances, comme les bases de données distribuées ou data broker (kafka). (https://stackoverflow.com/questions/52707840/what-is-a-headless-service-what-does-it-do-accomplish-and-what-are-some-legiti)
+- `headless` (avec `ClusterIP: None`):  est utilisé pour permettre la découverte directe des pods via leur ip au sein d'un service.  
+
+ Ce mode est souvent utilisé pour des applications nécessitant une connexion directe entre instances, comme les bases de données distribuées ou data broker (kafka). (https://stackoverflow.com/questions/52707840/what-is-a-headless-service-what-does-it-do-accomplish-and-what-are-some-legiti)
 
 
 ---
@@ -276,7 +341,9 @@ https://nigelpoulton.com/demystifying-kubernetes-service-discovery/
 
 ## Persister les données de Redis
 
-Actuellement le Redis de notre application ne persiste aucune donnée. On peut par exemple constater que le compteur de visite de la page est réinitialisé à chaque réinstallation.
+Actuellement le Redis de notre application ne persiste aucune donnée.  
+
+ On peut par exemple constater que le compteur de visite de la page est réinitialisé à chaque réinstallation.
 
 Nous allons maintenant utiliser un volume pour résoudre simplement ce problème.
 
@@ -300,13 +367,23 @@ Installons notre application avec `kubectl` et testons en visitant la page
 
 - En rechargeant le site on constate que les données ont été conservées (nombre de visite conservé).
 
-- Allez observer la section stockage dans `Lens`. Commentons ensemble.
+- Allez observer la section stockage dans `Lens`.  
 
-- Supprimer tout avec `kubectl delete -f .`. Que s'est-il passé ? (côté storage)
+ Commentons ensemble.
 
-En l'état les `PersistentVolumes` générés par la combinaison du `PersistentVolumeClaim` et de la `StorageClass` de minikube sont également supprimés en même tant que les PVCs. Les données sont donc perdues et au chargement du site le nombre de visites retombe à 0.
+- Supprimer tout avec `kubectl delete -f .`.  
 
-Pour éviter cela il faut avec une `Reclaim Policy` à `retain` (conserver) et non `delete` comme suit https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/. Les volumes sont alors conservés et les données peuvent être récupérées manuellement. Mais les volumes ne peuvent pas être reconnectés à des PVCs automatiquement.
+ Que s'est-il passé ? (côté storage)
+
+En l'état les `PersistentVolumes` générés par la combinaison du `PersistentVolumeClaim` et de la `StorageClass` de minikube sont également supprimés en même tant que les PVCs.  
+
+ Les données sont donc perdues et au chargement du site le nombre de visites retombe à 0.
+
+Pour éviter cela il faut avec une `Reclaim Policy` à `retain` (conserver) et non `delete` comme suit https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/.  
+
+ Les volumes sont alors conservés et les données peuvent être récupérées manuellement.  
+
+ Mais les volumes ne peuvent pas être reconnectés à des PVCs automatiquement.
 
 Pour récupérer les données on peut:
 

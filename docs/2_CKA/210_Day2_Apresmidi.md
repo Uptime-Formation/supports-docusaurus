@@ -114,6 +114,9 @@ kubectl rollout undo deployment my-app
 
 ## Utilisation des services pour l’automatisation du réseau  
 
+![](../../static/img/kubernetes/k8s-architecture.png)
+
+
 ### Réseau standard de Kubernetes
 
 La configuration réseau standard pour Kubernetes implique l'utilisation de Flannel comme CNI plugin (solution de réseau virtuel compatible Container Network Interface) et de Kube-proxy en mode iptables (configuration par défaut de k3s par exemple mais aussi la configuration la plus simple avec kubeadm etc).
