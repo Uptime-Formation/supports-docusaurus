@@ -29,43 +29,7 @@ book: true
 ## Le programme de la formation et les objectifs
 
 
-### Objectifs
-
-- **Maîtrise de l'architecture Kubernetes** : Comprendre le rôle du control plane, de l'API, de la CLI et des workers
-- **Déploiement automatisé** : Savoir déployer des ressources Kubernetes en utilisant des manifestes YAML, des solutions d'Infrastructure as Code (IaC) comme Helm, et comprendre l'orchestration des ressources
-- **Microservices en production** : Savoir déployer des applications microservices avec Kubernetes en utilisant des Deployments, Services et Ingress et savoir configurer les applications pour un environnement de production en utilisant des ConfigMaps, Secrets et des stratégies de sécurité
-- **Scalabilité et observabilité** : Pouvoir mettre en place le scaling automatique, la collecte de logs et le suivi des métriques natives Kubernetes
-- **Automatisation intégrée** : Maîtriser les automatisations intégrées de Kubernetes, telles que la gestion du réseau, le cycle de vie des conteneurs ou la boucle de réconciliation des ressources. 
-- **Gestion des applications stateful**: Savoir gérer les applications statefuls et assurer la persistance des données à l'aide de StatefulSets et de PersistentVolumes
-
-# Formation Kubernetes pour développeurs — Obtenez la certification CKAD  
-Nombre de jours : 3
-
-**Public visé :** Cette formation est destinée aux développeurs qui souhaitent renforcer leurs compétences en matière de déploiement et de gestion d'applications conteneurisées grâce à Kubernetes.
-
-**Description courte :** Acquérez des compétences pratiques en Kubernetes en 3 jours et préparez-vous efficacement à la certification CKAD pour améliorer votre maîtrise du cloud !
-
-### Description
-
-Cette formation Kubernetes vous permettra d'acquérir les compétences essentielles pour déployer et gérer des applications conteneurisées avec confiance et efficacité. 
-
-Pendant trois jours, vous apprendrez à configurer, sécuriser et maintenir vos applications, tout en assurant leur scalabilité et leur disponibilité.
-
-Vous découvrirez : 
-
-- les qualités de Kubernetes en tant qu'environnement de cloud natif ainsi que les implications opérationnelles et les coûts associés à son adoption,  
-- comment utiliser les outils de surveillance et de journalisation pour garder le contrôle sur vos déploiements, même en environnement de production  
-- comment intégrer Kubernetes dans vos flux de travail DevOps et de développement agile.
-
-À l'issue de cette formation, vous serez prêt à passer la certification CKAD (Certified Kubernetes Application Developer) et à intégrer ces compétences directement dans vos projets.
-
-Que vous soyez développeur débutant ou expérimenté dans l'utilisation de conteneurs, cette formation vous apportera une maîtrise solide des pratiques Kubernetes pour propulser votre carrière dans le cloud.
-
 ---
-
-#### Vous avez un profil plutôt orienté devops ? 
-
-Notre formation [Kubernetes pour les devops]( https://www.humancoders.com/formations/kubernetes) est faite pour vous !
 
 ### Objectifs
 
@@ -76,9 +40,9 @@ Notre formation [Kubernetes pour les devops]( https://www.humancoders.com/format
 * **Automatisation intégrée** : Maîtriser les automatisations intégrées de Kubernetes, telles que la gestion du réseau, le cycle de vie des conteneurs ou la boucle de réconciliation des ressources.   
 * **Gestion des applications stateful**: Savoir gérer les applications statefuls et assurer la persistance des données à l'aide de StatefulSets et de PersistentVolumes
 
-### Programme
+## Programme
 
-#### Jour 1 : Les fondamentaux de Kubernetes
+### Jour 1 : Les fondamentaux de Kubernetes
 
 ##### Matin 
 
@@ -106,7 +70,7 @@ Notre formation [Kubernetes pour les devops]( https://www.humancoders.com/format
 
 ---
 
-#### Jour 2 : Gestion des applications et sécurité
+### Jour 2 : Gestion des applications et sécurité
 
 ##### Matin 
 
@@ -135,7 +99,7 @@ Notre formation [Kubernetes pour les devops]( https://www.humancoders.com/format
 
 ---
 
-#### Jour 3 : Réseau et observabilité
+### Jour 3 : Réseau et observabilité
 
 ##### Matin 
 
