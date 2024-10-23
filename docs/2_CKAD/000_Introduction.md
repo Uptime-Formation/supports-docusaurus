@@ -63,7 +63,10 @@ book: true
 - Compréhension du Pod  
 - Utilisation des Volumes  
 - Gestion des Workloads  
-    
+- Stratégies de déploiement communes   
+  - Stratégies standard : Recreate, RollingUpdate  
+  - Stratégies avancées : Blue/Green et Canary  
+  - Pause et Rollback      
 
 **TP2 : Déploiement avec des manifestes YAML** de deployment
 .
@@ -88,12 +91,8 @@ book: true
 
 **Théorie / Stratégie**
 
-- Stratégies de déploiement communes   
-  - Stratégies standard : Recreate, RollingUpdate  
-  - Stratégies avancées : Blue/Green et Canary  
-  - Pause et Rollback  
 - Utilisation des services pour l’automatisation du réseau  
-- Services
+- Utilisation de l’exposition via Ingress et Gateway  
 
 **TP4 : Ajout de bases de données (StatefulSets) avec des données persistantes** 
 
@@ -106,7 +105,6 @@ book: true
 **Théorie / Stratégie**
 
 - Contrôle du trafic avec Network Policies  
-- Utilisation de l’exposition via Ingress et Gateway  
 - Surveillance et journalisation  
   - Prometheus  
   - Grafana  

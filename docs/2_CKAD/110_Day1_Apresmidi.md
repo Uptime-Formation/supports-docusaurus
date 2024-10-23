@@ -4,20 +4,20 @@ title: Jour 1 - Après-midi
 
 # Jour 1 - Après Midi
 
-
-## Compréhension du Pod  
-
-![](../../static/img/kubernetes/k8s-pod.png)
-
-### Les Pods
+## Les Pods
 
 **Un Pod est l’unité de base d’une application Kubernetes que vous déployez : un Pod est un `groupe atomique de conteneurs`, ce qui veut dire qu'il est garanti que ces conteneurs atterrirons sur le même noeud et seront toujours lancé ensembles et connectés.**
 
-Un Pod comprend en plus des conteneurs, des `ressources de stockage`, `une IP réseau unique`, et des options qui contrôlent comment le ou les conteneurs doivent s’exécuter (ex: `restart policy`). Cette collection de conteneurs tournent ainsicdans le même environnement d'exécution mais les processus sont isolés.
+
+![](../../static/img/kubernetes/k8s-pod.png)
+
+
 
 ---
 
-Plus précisément ces conteneurs étroitement liés et qui partagent :
+**Un Pod comprend en plus des conteneurs, des `ressources de stockage`, `une IP réseau unique`, et des options qui contrôlent comment le ou les conteneurs doivent s’exécuter (ex: `restart policy`). Cette collection de conteneurs tournent ainsicdans le même environnement d'exécution mais les processus sont isolés.**
+
+Plus précisément ces conteneurs étroitement liés partagent :
 
 - des volumes communs
 - la même interface réseau : la même IP, les même noms de domaine internes
@@ -131,28 +131,123 @@ L'objectif est de permettre la haute disponibilité : on veut que notre service 
 
 #### Healthchecks
 
-Fournir à l'application une façon d'indiquer qu'elle est disponible, c'est-à-dire :
+### Rôles des probes dans Kubernetes
 
-- qu'elle est démarrée (_liveness_)
-- qu'elle peut répondre aux requêtes (_readiness_).
+1. **StartupProbe** :
+   - **Rôle** : Vérifie si l'application dans le Pod a démarré correctement. Elle est utilisée pour les applications qui peuvent prendre du temps à démarrer. Tant que cette probe ne réussit pas, Kubernetes ne déclenche pas les autres probes (Liveness ou Readiness).
+   - **Usage concret** : Empêche un Pod de redémarrer prématurément si l'application est lente à démarrer.
+
+2. **LivenessProbe** :
+   - **Rôle** : Vérifie si l'application dans le Pod est toujours en bonne santé et fonctionne. Si la probe échoue, Kubernetes redémarre le conteneur. Elle détecte les situations où une application est bloquée ou plantée.
+   - **Usage concret** : Garantit que l'application est "vivante" et fonctionne correctement en continu.
+
+3. **ReadinessProbe** :
+   - **Rôle** : Vérifie si le Pod est prêt à recevoir du trafic. Si cette probe échoue, Kubernetes retire le Pod du service et arrête de lui envoyer du trafic jusqu'à ce qu'il soit de nouveau prêt.
+   - **Usage concret** : Garantit que l'application est opérationnelle avant de lui envoyer du trafic.
 
 
 ---
 
-#### Application microservices
+#### Types de probe
 
-**Une application composée de nombreux services autonomes communiquant via le réseau. Le calcul pour répondre à une requête est décomposé en différente parties distribuées entre les services. Par exemple:**
-- un service est responsable de la gestion des **clients** et un autre de la gestion des **commandes**.
-- Ce mode de développement implique souvent des architectures complexes pour être mis en oeuvre et kubernetes est pensé pour faciliter leur gestion à grande échelle.
-- Imaginez devoir relancer manuellement des services vitaux pour une application en hébergeant des centaines d'instances : c'est en particulier à ce moment que kubernetes devient indispensable.
+**Kubernetes propose trois types de **probes** (ou sondes) pour surveiller la santé des conteneurs dans un Pod : **HTTP**, **TCP**, et **Exec**.** 
+
+Ces probes permettent à Kubernetes de vérifier si un conteneur fonctionne correctement et s'il est prêt à recevoir du trafic.
+
+- **HTTP Probe** : Vérifie la santé via un endpoint HTTP.
+- **TCP Probe** : Vérifie la disponibilité d'un service en établissant une connexion TCP.
+- **Exec Probe** : Exécute une commande dans le conteneur et vérifie le code de retour.
 
 ---
 
-###### 2 exemples d'application microservices:
+**HTTP Probe** (`httpGet`)
 
-- https://github.com/microservices-patterns/ftgo-application -> fonctionne avec le très bon livre `Microservices pattern` visible sur le readme.
-- https://github.com/GoogleCloudPlatform/microservices-demo -> Exemple d'application microservice de référence de Google pour Kubernetes.
+ **Effectue une requête HTTP GET sur une URL spécifique du conteneur. Si la réponse est un code HTTP compris entre 200 et 399, la sonde est considérée comme réussie.**
 
+  **Exemple :**
+  ```yaml
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  ```
+
+---
+
+**TCP Probe** (`tcpSocket`)
+
+ **Tente d'établir une connexion TCP au conteneur sur un port spécifique. Si la connexion est établie avec succès, la sonde est considérée comme réussie.**
+
+  **Exemple :**
+  ```yaml
+  livenessProbe:
+    tcpSocket:
+      port: 3306
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  ```
+
+---
+
+**Exec Probe** (`exec`)
+
+**Exécute une commande directement dans le conteneur. Si la commande retourne un code de sortie 0, la sonde est considérée comme réussie.**
+
+  **Exemple :**
+  ```yaml
+  livenessProbe:
+    exec:
+      command:
+      - cat
+      - /tmp/healthy
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  ```
+
+---
+
+### Exemple court d'implémentation des trois probes dans un Pod
+
+Voici un exemple de Pod avec une **StartupProbe**, **LivenessProbe**, et **ReadinessProbe** :
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+  - name: my-container
+    image: my-app:latest
+    ports:
+    - containerPort: 8080
+    # Fait une requête HTTP sur `/healthz` toutes les 10 secondes 
+    # et échoue après 30 tentatives si l'application ne démarre pas correctement.
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      failureThreshold: 30
+      periodSeconds: 10
+    # Après 30 secondes, la probe vérifie toutes les 10 secondes que l'application est toujours "vivante"
+    #  en envoyant une requête HTTP à `/healthz`.
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    # Dès 5 secondes après le démarrage du conteneur, Kubernetes vérifie toutes les 5 secondes 
+    # si l'application est prête à recevoir du trafic en vérifiant `/ready`.
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 5
+```
 
 ---
 
@@ -287,6 +382,116 @@ Dans notre modèle, les **ReplicaSet** servent à gérer et sont responsables po
 
 En général on ne les manipule pas directement (c'est déconseillé) même s'il est possible de les modifier et de les créer avec un fichier de ressource. Pour créer des groupes de conteneurs on utilise soit un **Deployment** soit d'autres formes de workloads (**DaemonSet**, **StatefulSet**, **Job**) adaptés à d'autres cas.
 
+
+---
+
+## Stratégies de déploiement communes
+
+### Introduction
+
+Dans Kubernetes, les stratégies de déploiement sont définies dans la directive `strategy` d’un objet **Deployment**. Cette directive contrôle la manière dont les mises à jour des Pods sont gérées lors du déploiement de nouvelles versions d'une application. Il existe plusieurs types de stratégies qui permettent de gérer les interruptions de service et d'optimiser les ressources pendant les déploiements.
+
+Les principales stratégies de déploiement sont les suivantes :
+
+- **Recreate** : Tous les Pods sont supprimés, puis de nouveaux Pods sont créés avec la nouvelle version.
+> Pendant un intervalle aucun Pod n'est disponible, suivi du démarrage des nouveaux Pods.
+- **RollingUpdate** : Mise à jour progressive des Pods, en remplaçant petit à petit les anciens Pods par les nouveaux.
+> Transition progressive avec des Pods des deux versions (ancienne et nouvelle) en fonctionnement pendant la mise à jour.
+- **Stratégies avancées** comme **Blue/Green** et **Canary** offrent des approches plus complexes, souvent gérées en dehors des fonctionnalités de base de Kubernetes, mais supportées via des outils comme Argo Rollouts ou des configurations personnalisées.
+s illustrant les différentes stratégies de déploiement dans Kubernetes :
+> Blue/Green : Deux environnements distincts sont montrés, avec un basculement de Blue à Green.  
+> Canary:  Une petite partie du trafic est envoyée à la nouvelle version avant une montée en charge progressive.
+
+---
+
+### Stratégies standard
+
+#### Recreate
+
+Avec cette stratégie, Kubernetes supprime tous les Pods existants avant de créer les nouveaux Pods avec la nouvelle version de l'application. Cette approche garantit qu'il n'y a pas d'ancienne version en cours d'exécution après le déploiement, mais entraîne un temps d'indisponibilité.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+      - name: my-app-container
+        image: my-app:v2
+```
+
+#### RollingUpdate
+
+La stratégie par défaut dans Kubernetes. Elle consiste à mettre à jour les Pods de manière progressive, avec des Pods de la nouvelle version remplacés petit à petit, tout en gardant certains Pods de l'ancienne version actifs jusqu'à la fin de la mise à jour.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    spec:
+      containers:
+      - name: my-app-container
+        image: my-app:v2
+```
+---
+
+#### Piloter le déploiement de nouvelles versions
+
+- **MaxUnavailable vs MaxSurge** :
+  - **MaxUnavailable** : Indique le nombre maximal de Pods qui peuvent être indisponibles pendant un déploiement. Par exemple, si vous définissez `maxUnavailable: 1`, au maximum un Pod peut être hors service pendant le déploiement, assurant une haute disponibilité.
+  - **MaxSurge** : Indique le nombre maximal de Pods supplémentaires (surge) qui peuvent être créés au-delà du nombre de réplicas définis pendant la mise à jour. Par exemple, avec `maxSurge: 1`, Kubernetes peut créer un Pod supplémentaire pour accélérer la mise à jour sans attendre que les anciens Pods soient terminés.
+
+- **Progress Deadline Seconds** :
+  C'est le délai (en secondes) accordé à Kubernetes pour vérifier que le déploiement progresse correctement. Si, dans ce délai, Kubernetes n'a pas atteint l'avancement attendu (par exemple, la mise à jour d'un certain nombre de Pods), le déploiement est considéré comme échoué. Cela permet de détecter des problèmes rapidement.
+
+- **Revision History Limit** :
+  Ce paramètre contrôle combien d'anciennes révisions d'un déploiement sont conservées dans l'historique. Si ce nombre est dépassé, Kubernetes supprime les révisions les plus anciennes. Cela permet d'éviter une accumulation excessive de versions tout en permettant des rollbacks rapides vers des révisions récentes.
+
+
+---
+
+### Contrôler un déploiement
+
+**Kubernetes permet de suivre un déploiement en cours, voire de le mettre en pause pour l'examiner ou résoudre des problèmes avant de le reprendre.**
+
+- **Observer** un déploiement :
+
+```bash
+kubectl rollout status deployment my-app
+```
+
+- **Pauser** un déploiement :
+
+```bash
+kubectl rollout pause deployment my-app
+```
+
+- **Reprendre** un déploiement en pause :
+
+```bash
+kubectl rollout resume deployment my-app
+```
+
+- **Rollback** à la version précédente :
+
+```bash
+kubectl rollout undo deployment my-app
+```
 
 ---
 
