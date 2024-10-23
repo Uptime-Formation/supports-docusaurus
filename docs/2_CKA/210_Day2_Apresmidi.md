@@ -114,8 +114,6 @@ kubectl rollout undo deployment my-app
 
 ## Utilisation des services pour l’automatisation du réseau  
 
-![](../../static/img/kubernetes/k8s-architecture.png)
-
 
 ### Réseau standard de Kubernetes
 
@@ -152,5 +150,67 @@ Quelques vidéos assez complète sur le réseau :
 - Vidéo sur le fonctionnement détaillé des services (pas du réseau sous jacent comme la précédente mais des objets) : https://www.youtube.com/watch?v=T4Z7visMM4E
 
 
-Les services sont les objets réseau de base. Voir cours précédent sur les objets fondamentaux.
 
+
+---
+
+
+
+#### Les Services
+
+**Les services sont les objets réseau de base.** 
+
+Dans Kubernetes, un **service** est un objet qui :
+- Désigne un ensemble de pods (grâce à des labels) généralement géré par un déploiement.
+- Fournit un endpoint réseau pour les requêtes à destination de ces pods.
+- Configure une politique permettant d’y accéder depuis l'intérieur ou l'extérieur du cluster.
+- Configure un nom de domaine pointant sur le groupe de pods en backend.
+
+
+--- 
+
+
+**L’ensemble des pods ciblés par un service est déterminé par un `selector`.**
+
+Par exemple, considérons un backend de traitement d’image (*stateless*, c'est-à-dire ici sans base de données) qui s’exécute avec 3 replicas.  
+
+ Ces replicas sont interchangeables et les frontends ne se soucient pas du backend qu’ils utilisent.  
+
+ Bien que les pods réels qui composent l’ensemble `backend` puissent changer, les clients frontends ne devraient pas avoir besoin de le savoir, pas plus qu’ils ne doivent suivre eux-mêmes l'état de l’ensemble des backends.
+
+L’abstraction du service permet ce découplage : les clients frontend s'addressent à une seule IP avec un seul port dès qu'ils ont besoin d'avoir recours à un backend.  
+
+ Les backends vont recevoir la requête du frontend aléatoirement.
+
+---
+
+**Les Services sont de trois types principaux :**
+
+- `ClusterIP`: expose le service **sur une IP interne** au cluster.
+
+- `NodePort`: expose le service depuis l'IP de **chacun des noeuds du cluster** en ouvrant un port directement sur le nœud, entre 30000 et 32767.  
+  Cela permet d'accéder aux pods internes répliqués.  
+
+  Comme l'IP est stable on peut faire pointer un DNS ou Loadbalancer classique dessus.
+
+- `LoadBalancer`: expose le service en externe à l’aide d'un Loadbalancer de fournisseur de cloud.  
+   Les services NodePort et ClusterIP, vers lesquels le Loadbalancer est dirigé sont automatiquement créés.
+  
+![](../../static/img/kubernetes/schemas-perso/k8s-services.drawio.png)
+<!-- *Crédits à [Ahmet Alp Balkan](https://medium.com/@ahmetb) pour les schémas* -->
+
+Deux autres types plus avancés:
+
+- `ExternalName`: Un service `ExternalName`  est typiquement utilisé pour permettre l'accès à un service externe en le mappant à un nom DNS interne, facilitant ainsi la redirection des requêtes sans utiliser un proxy ou un load balancer. (https://stackoverflow.com/questions/54327697/kubernetes-externalname-services)
+
+- `headless` (avec `ClusterIP: None`):  est utilisé pour permettre la découverte directe des pods via leur ip au sein d'un service.  
+
+ Ce mode est souvent utilisé pour des applications nécessitant une connexion directe entre instances, comme les bases de données distribuées ou data broker (kafka). (https://stackoverflow.com/questions/52707840/what-is-a-headless-service-what-does-it-do-accomplish-and-what-are-some-legiti)
+
+
+---
+
+### Quelques ressources plus détaillées:
+
+https://nigelpoulton.com/explained-kubernetes-service-ports/
+https://nigelpoulton.com/demystifying-kubernetes-service-discovery/
