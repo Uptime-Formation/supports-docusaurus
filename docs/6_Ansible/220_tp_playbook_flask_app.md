@@ -145,7 +145,7 @@ N'hésitez pas à tester l'option `--diff -v` avec vos commandes pour voir l'ava
 ## Récupérer le code de l'application
 
 - Pour déployer le code de l'application deux options sont possibles.
-  - Télécharger le code dans notre projet et le copier sur chaque serveur avec le module `sync` qui fait une copie rsync.
+  - Télécharger le code dans notre projet et le copier sur chaque serveur avec le module `syncronize` qui fait une copie rsync.
   - Utiliser le module `git`.
 
 - Nous allons utiliser la deuxième option (`git`) qui est plus cohérente pour le déploiement et la gestion des versions logicielles. Allez voir la documentation pour voir comment utiliser ce module.

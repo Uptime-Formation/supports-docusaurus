@@ -63,8 +63,10 @@ La commande échoue car ssh n'est pas configuré sur l'hote mais la machine est 
 - Ajoutez la ligne `hotelocal ansible_host=127.0.0.1 ansible_connection=local` dans l'inventaire par défaut (le chemin est indiqué dans). Et pinguer hotelocal.
 
 ### Autocomplete
+
 ```
-python3 -m pip install --user argcomplete
+sudo apt install python3-argcomplete
+# ou python3 -m pip install --user argcomplete
 activate-global-python-argcomplete --user
 ```
 

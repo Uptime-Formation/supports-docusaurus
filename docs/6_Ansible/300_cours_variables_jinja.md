@@ -158,7 +158,7 @@ Pour transformer la valeur des variables à la volée lors de leur appel on peut
 Les fichiers de templates (.j2) utilisés avec le module template, généralement pour créer des fichiers de configuration peuvent **contenir des variables** et des **filtres** comme les fichier de code (voir au dessus) **mais également** d'autres constructions jinja2 comme:
 
 - Des `if` : `{% if nginx_state == 'present' %}...{% endif %}`.
-- Des boucles `for` : `{% for host in groups['appserver'] %}...{% endfor %}`.
+- Des boucles `for` : `{% for host in groups['appservers'] %}...{% endfor %}`.
 - Des inclusions de templates `{% include 'autre_fichier_template.j2' %}`
 
 ## Imports et includes
