@@ -2,7 +2,7 @@
 title: "TP Bonus - Serveur de contrôle AWX + Ansible Vault" 
 draft: false
 weight: 60
-sidebar_class_name: hidden
+#sidebar_class_name: hidden
 ---
 ## Installer AWX ou Semaphore
 
@@ -19,10 +19,10 @@ sudo semaphore user add --admin --name "Your Name" --login your_login --email yo
 ```
 puis se connecter sur le port 3000
 
-## Installer Docker
+<!-- ## Installer Docker
 Nécessaire pour Minikube ou Rundeck.
 
-`curl https://get.docker.com | sh`
+`curl https://get.docker.com | sh` -->
 
 ## Installer AWX
 
@@ -38,7 +38,7 @@ alias kubectl="sudo k3s kubectl"
 ```bash
 git clone https://github.com/ansible/awx-operator.git
 cd awx-operator
-git checkout tags/2.7.2
+git checkout tags/2.19.1
 
 sudo make deploy
 ```
@@ -85,7 +85,7 @@ kubectl get svc -n awx awx-demo-service -o=jsonpath='{.spec.ports[?(@.nodePort)]
 
 - Allez dans la section planification. Puis visitez l'historique des Jobs.
 
-- Créons maintenant un workflow qui lance d'abord les playbooks `dbservers.yml` et `appservers.yml` puis en cas de réussite le playbook `upgrade_apps.yml`
+<!-- - Créons maintenant un workflow qui lance d'abord les playbooks `dbservers.yml` et `appservers.yml` puis en cas de réussite le playbook `upgrade_apps.yml`
 
 - Voyons ensemble comment configurer un vault Ansible, d'abord dans notre projet Ansible normal en chiffrant le mot de passe utilisé pour le rôle MySQL. Il est d'usage de préfixer ces variables par `secret_`.
 
@@ -93,4 +93,4 @@ kubectl get svc -n awx awx-demo-service -o=jsonpath='{.spec.ports[?(@.nodePort)]
 
 ## Bonus : réimplémentons le load balancing du TP5 via AWX
 
-Dans un template de tâche ou un workflow AWX, manipulez `playbooks/manually_exclude_backend.yml` et/ou d'autres playbooks pour réimplementer le scénario du TP5 dans AWX.
+Dans un template de tâche ou un workflow AWX, manipulez `playbooks/manually_exclude_backend.yml` et/ou d'autres playbooks pour réimplementer le scénario du TP5 dans AWX. -->
