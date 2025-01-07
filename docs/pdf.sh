@@ -2,7 +2,7 @@
 
 which pdfnice &>/dev/null || { echo "!!! Missing pdfnice! Please use the bin/pdfnice script at the root of the project" : exit 1 ; }
 
-#set -e 
+#set -e
 
 
 APP_PATH=$( cd $(dirname $0) && pwd )
@@ -14,20 +14,20 @@ cd "$APP_PATH"
 # Read all the projects in arrays
 declare -a PROJECTS_FULLPATH
 declare -a PROJECTS_DIRNAME
-while read file ; do 
+while read file ; do
     PROJECTS_FULLPATH+=("${file}")
     PROJECTS_DIRNAME+=("$(basename "${file}")")
 done <<< $(find ~+ -maxdepth 1 -type d -name "[0-9]*" | sort -d)
 
 # Select a valid project
 echo -e "# PROJECT SELECTION\n"
-for i in ${!PROJECTS_DIRNAME[@]}; do 
+for i in ${!PROJECTS_DIRNAME[@]}; do
     echo "$i - ${PROJECTS_DIRNAME[$i]}"
 done
-while [[ -z "$FORMATION_NAME" ]]; do 
+while [[ -z "$FORMATION_NAME" ]]; do
     echo -n "Please choose a project [0...n]:"
     read -e -p ": " FORMATION_NUM
-    [[ $FORMATION_NUM -gt 0 ]] || continue 
+    [[ $FORMATION_NUM -gt 0 ]] || continue
     FORMATION_NAME=${PROJECTS_DIRNAME[$FORMATION_NUM]}
     FORMATION_DIR=${PROJECTS_FULLPATH[$FORMATION_NUM]}
 done
@@ -36,13 +36,13 @@ done
 PDF_NAME="$( echo ${FORMATION_NAME} | sed -r "s/^[0-9]*_//").pdf"
 
 
-# Copy markdown files to tmp directory and patch images paths 
+# Copy markdown files to tmp directory and patch images paths
 
 # [[ -d "${TMPDIR}" ]]  && rm -rf "${TMPDIR}" && mkdir "${TMPDIR}"
 
 cp "${FORMATION_DIR}"/*md "${TMPDIR}/"
 cd "${TMPDIR}"
-sed -i -r "s=/img/=../../static/img/=" *md
+sed -i -r 's="/img/="../../static/img/=' *md
 
 # Loop through files and convert them to PDF
 DATE=$(date +"%d/%m/%Y")
