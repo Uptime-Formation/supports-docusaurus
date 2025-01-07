@@ -12,7 +12,7 @@ On va donc télécharger une image Debian de base, explorer son contenu, démarr
 
 ### Étapes 
 
-- **Action** : Télécharger l'image Docker Python/Debian de base `python:3.11-slim-bullseye`  
+- **Action** : Télécharger l'image Docker Python/Debian de base `ubuntu:24-04`  
   **Observation** : L'image apparaît dans la liste des images locales via la commande `docker images`.
 
 
@@ -20,11 +20,11 @@ On va donc télécharger une image Debian de base, explorer son contenu, démarr
   **Observation** : Le conteneur est actif, et les commandes peuvent être exécutées dans son terminal.
 
 
-- **Action** : Arrêter puis redémarrer le conteneur.  
+- **Action** : Quitter le conteneur, puis le redémarrer.  
   **Observation** : Le conteneur est arrêté (`docker ps` ne le montre plus), puis redémarré (`docker ps` le montre à nouveau).
 
 
-- **Action** : Lancer le conteneur en mode daemon (en arrière-plan).  
+- **Action** : Lancer un nouveau conteneur en mode daemon (en arrière-plan) avec la commande `tail -f /dev/null`.  
   **Observation** : Le conteneur tourne en arrière-plan (`docker ps` montre le conteneur en cours d'exécution).
 
 
@@ -32,11 +32,11 @@ On va donc télécharger une image Debian de base, explorer son contenu, démarr
   **Observation** : Voir le processus Docker correspondant à l'instance en cours d'exécution.
 
 
-- **Action** : Installer un serveur web (comme Nginx) dans le conteneur.  
+- **Action** : Installer un serveur web dans un nouveau conteneur lancé en mode interactif avec `apt update && apt install nginx`.  
   **Observation** : Le serveur web s'installe correctement et démarre sans erreurs.
 
 
-- **Action** : Démarrer le serveur Nginx dans le conteneur.  
+- **Action** : Démarrer le serveur Nginx dans le conteneur avec `service nginx start`.  
   **Observation** : Le serveur web fonctionne, et les logs de Nginx confirment qu'il est opérationnel.
 
 
