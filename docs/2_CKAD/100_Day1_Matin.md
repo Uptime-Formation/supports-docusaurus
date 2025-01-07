@@ -61,7 +61,7 @@ Quels sont les composants qui permettent ce processus ?
 
 **Kubernetes est devenu la solution de facto pour résoudre les problématiques de déploiements d'images Docker à l'échelle.**
 
-![](../../static/img/kubernetes/k8s-architecture.png)
+![](../../static/img/kubernetes/k8s-architecture.png)  
 
 #### Les noeuds Kubernetes
 
@@ -73,9 +73,9 @@ Les nœuds d’un cluster sont les machines (serveurs physiques, machines virtue
 
 Pour utiliser Kubernetes, on définit un état souhaité en créant des ressources (pods/conteneurs, volumes, permissions etc). Cet état souhaité et son application est géré par le `control plane` composé des noeuds master.
 
-#### Les noeuds master kubernetes forment le `Control Plane` du Cluster
+#### Les noeuds master kubernetes forment le `Control Plane` du Cluster<br/>
 
-![](../../static/img/kubernetes/schemas-perso//k8s-archi.jpg)
+![](../../static/img/kubernetes/schemas-perso//k8s-archi.jpg)  <br/>
 
 Le control plane est responsable du maintien de l’état souhaité des différents éléments de votre cluster. Lorsque vous interagissez avec Kubernetes, par exemple en utilisant l’interface en ligne de commande `kubectl`, vous communiquez avec les noeuds master de votre cluster (plus précisément l'`API Server`).
 
@@ -142,7 +142,7 @@ Voici la liste des ressources Kubernetes avec des noms longs et une description 
 
 ---
 
-#### Ressources non couvertes par cette formation
+#### Ressources non couvertes par cette formation<br/>
 
 ![](../../static/img/kubernetes/icons/crb.svg)**crb (ClusterRoleBinding)** : Associe un rôle à des utilisateurs ou des groupes dans l'ensemble du cluster, permettant un contrôle d'accès à l'échelle du cluster.
   

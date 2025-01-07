@@ -86,7 +86,7 @@ kubectl expose deployment my-app --type=ClusterIP --port=80 --target-port=8080
 
 ---
 
-**Voici un exemple de fichier YAML pour exposer un Pod via un Service de type **ClusterIP** (le service par défaut, qui n'est accessible qu'au sein du cluster).**
+**Voici un exemple de fichier YAML pour exposer un Pod via un Service de type `ClusterIP` (le service par défaut, qui n'est accessible qu'au sein du cluster).**
 
 
 ```yaml
@@ -196,9 +196,9 @@ Comparaison des controlleurs: <https://medium.com/flant-com/comparing-ingress-co
 
 ### La nouvelle API Gateway
 
-#### Ingress vs. Gateway API :
+#### Ingress vs. Gateway API :<br/>
 
-![](../../static/img/kubernetes/ingress-vs-gateway.png)
+![](../../static/img/kubernetes/ingress-vs-gateway.png)<br/>
 
 - **Ingress** : Le modèle Ingress, traditionnellement utilisé dans Kubernetes, permet de définir des règles pour diriger le trafic HTTP/S entrant vers les services. Bien qu'il soit largement utilisé, il présente des limitations en termes de flexibilité et de contrôle fin du trafic.
 

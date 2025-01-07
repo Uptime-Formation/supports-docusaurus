@@ -398,7 +398,7 @@ Les principales stratégies de déploiement sont les suivantes :
 - **RollingUpdate** : Mise à jour progressive des Pods, en remplaçant petit à petit les anciens Pods par les nouveaux.
 > Transition progressive avec des Pods des deux versions (ancienne et nouvelle) en fonctionnement pendant la mise à jour.
 - **Stratégies avancées** comme **Blue/Green** et **Canary** offrent des approches plus complexes, souvent gérées en dehors des fonctionnalités de base de Kubernetes, mais supportées via des outils comme Argo Rollouts ou des configurations personnalisées.
-s illustrant les différentes stratégies de déploiement dans Kubernetes :
+
 > Blue/Green : Deux environnements distincts sont montrés, avec un basculement de Blue à Green.  
 > Canary:  Une petite partie du trafic est envoyée à la nouvelle version avant une montée en charge progressive.
 
