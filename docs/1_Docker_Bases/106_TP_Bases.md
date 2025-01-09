@@ -14,39 +14,39 @@ On va donc télécharger une image Debian de base, explorer son contenu, démarr
 - **Action** : Télécharger l'image Docker de base `ubuntu:24-04`  
   **Observation** : L'image apparaît dans la liste des images locales via la commande `docker images`.
 
-
-- **Action** : Lancer un conteneur en mode interactif basé sur l'image.  
-  **Observation** : Le conteneur est actif, et les commandes peuvent être exécutées dans son terminal.
-
-
-- **Action** : Quitter le conteneur, puis le redémarrer.  
-  **Observation** : Le conteneur est arrêté (`docker ps` ne le montre plus), puis redémarré (`docker ps` le montre à nouveau).
-
-
-- **Action** : Lancer un nouveau conteneur en mode daemon (en arrière-plan) avec la commande `tail -f /dev/null`.  
+- **Action** : Lancer un nouveau conteneur nommé `mycontainer` en mode daemon (en arrière-plan) avec une commande d'instance Docker  `tail -f /dev/null`.  
   **Observation** : Le conteneur tourne en arrière-plan (`docker ps` montre le conteneur en cours d'exécution).
 
+- **Action** : Arrêter le conteneur, puis le redémarrer.  
+  **Observation** : Le conteneur est arrêté (`docker ps` ne le montre plus), puis redémarré (`docker ps` le montre à nouveau).
 
 - **Action** : Utiliser la commande `ps` sur la machine hôte pour vérifier le processus Docker.  
   **Observation** : Voir le processus Docker correspondant à l'instance en cours d'exécution.
+- 
+- **Action** : Accéder au conteneur en cours d'exécution.  
+  **Observation** : Utillisez la commande `docker exec -it ...`
 
-
-- **Action** : Installer un serveur web dans un nouveau conteneur lancé en mode interactif avec `apt update && apt install nginx`.  
-  **Observation** : Le serveur web s'installe correctement et démarre sans erreurs.
-
+- **Action** : Installer les packages `nginx` et `curl` dans le conteneur avec `apt update && apt install nginx curl`.  
+  **Observation** : Le serveur web s'installe correctement.
 
 - **Action** : Démarrer le serveur Nginx dans le conteneur avec `service nginx start`.  
   **Observation** : Le serveur web fonctionne, et les logs de Nginx confirment qu'il est opérationnel.
 
+- **Action** : Faire un appel http au serveur nginx depuis l'intérieur du conteneur avec `curl http://localhost`.  
+  **Observation** : La page web par défaut de nginx apparaît.
+
+
+- **Action** : Vérifier que les logs de nginx situés dans le dossier `/var/log/nginx` du conteneur sont bien remplis.  
+  **Observation** : le fichier `access.log` contient une entrée relative à curl.
+
 
 **Avancé :**  
 
-- Explorer les autres images Python et Debian sur le Docker Hub. Quelles sont les différences?   
+- Que donne `docker logs mycontainer` ? Pourquoi ? 
 - Utiliser `docker exec` pour accéder au conteneur en arrière-plan et vérifier le statut du serveur web.  
-- Comment accéder à la page d'accueil du serveur web ? Depuis l'instance Docker ? Depuis la machine hôte ?
+- Comment accéder à la page d'accueil du serveur web depuis la machine hôte ?
 - Comment modifier la page d'accueil du serveur web ? Comment le faire rapidement ? Quel sera le problème ?  
 - Configurer le conteneur pour redémarrer automatiquement en cas de panne (`--restart` policy).  
-- Explorer les différents logs du serveur web et du conteneur pour comprendre les interactions.
 
 
 
@@ -54,14 +54,15 @@ On va donc télécharger une image Debian de base, explorer son contenu, démarr
 
 <details><summary>Afficher</summary>
 
-- Télécharger l'image : `docker pull python:3.11-slim-bullseye`  
-- Lancer un conteneur interactif : `docker run -it python:3.11-slim-bullseye bash`  
-- Arrêter le conteneur : `docker stop <container_id>`  
-- Redémarrer le conteneur : `docker start <container_id>`  
-- Lancer le conteneur en mode daemon : `docker run -d docker run -it python:3.11-slim-bullseye bash`  
+- Télécharger l'image : `docker pull ubuntu:24.04`  
+- Lancer le conteneur en mode daemon : `docker run --name mycontainer -d ubuntu:24.04 tail -f /dev/null`  
+- Arrêter le conteneur : `docker stop mycontainer`  
+- Redémarrer le conteneur : `docker start mycontainer`  
 - Vérifier le processus Docker sur la machine hôte : `ps aux | grep docker`  
-- Accéder au conteneur en cours d'exécution : `docker exec -it <container_id> bash`  
-- Installer Nginx dans le conteneur : `apt-get update && apt-get install -y nginx`  
+- Accéder au conteneur en cours d'exécution : `docker exec -it mycontainer bash`  
+- Installer les packages dans le conteneur : `apt-get update && apt-get install -y nginx curl procps`
 - Démarrer Nginx dans le conteneur : `service nginx start`
+- Utiliser curl pour faire un appel HTTP depuis le conteneur : `curl http://localhost`
+- Observer les logs dans le conteneur : `cat /var/log/nginx/access.log` 
 
 </details>

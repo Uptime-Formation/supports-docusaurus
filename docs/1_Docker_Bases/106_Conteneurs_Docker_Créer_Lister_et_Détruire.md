@@ -9,18 +9,13 @@ weight: 7
 ---
 
 
-# Docker pull et chercher sur Docker Hub
-
-- Cherchez l'image de Nginx (un serveur web), et téléchargez la dernière version (`pull`).
-
-```shell
-docker search nginx
-```
-Que se passe-t-il ? 
-
-**La commande run fait appel à docker pull si l'image n'est pas présente.** 
+# Nginx sur le Docker Hub
 
 - Visitez [hub.docker.com](https://hub.docker.com) et cherchez l'image nginx
+
+```shell
+docker run --name nginx -d nginx
+```
 
 ---
 

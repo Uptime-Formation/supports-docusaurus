@@ -13,7 +13,7 @@ Les fichiers nécessaires sont en fin de page.
 
 ### Étapes 
 
-- **Action** : Préparer le répertoire local pour le projet Docker.  
+- **Action** : Préparer le répertoire local et les fichiers pour le projet Docker.  
   **Observation** : Le répertoire contient les fichiers `main.py`, `index.html` et `requirements.txt`.
 
 
@@ -90,6 +90,7 @@ if REDIS_HOST:
 def index():
     # Définir la variable pour savoir si Redis est disponible
     redis_available = redis_client is not None
+    counter_value = redis_client.get('counter') if redis_available else 0
     return render_template('index.html', redis_available=redis_available, counter=counter_value)
 
 
@@ -139,7 +140,7 @@ if __name__ == "__main__":
         <button id="increment-btn">Increment Counter</button>
         <p>Counter: <span id="counter-value">{{ counter }}</span></p>
     {% else %}
-        <p>Redis is not available. Please check your configuration.</p>
+        <p>Redisnot available yet. But you're getting there :).</p>
     {% endif %}
 
     <script>
@@ -209,10 +210,8 @@ ENV APP_PORT=3000
 
 EXPOSE ${APP_PORT}
 
-ENTRYPOINT ["python"]
-CMD ["main.py"]
+CMD ["python","main.py"]
 
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:${APP_PORT}/healthz || exit 1
 ```
 
 ### Avancé 
@@ -228,7 +227,7 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhos
 <details><summary>Afficher</summary>
 
 - Créer le répertoire local : `mkdir MyFirstApp && cd MyFirstApp`  
-- Créer le fichier `Dockerfile` avec l'éditeur de texte.  
+- Créer les fichiers avec l'éditeur de texte.  
 - Ajouter les instructions au `Dockerfile` : voir le contenu fourni précédemment.  
 - Construire l'image Docker : `docker build .`  
 - Vérifier la liste des images : `docker images`  
