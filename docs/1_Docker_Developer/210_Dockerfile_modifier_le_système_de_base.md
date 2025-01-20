@@ -13,7 +13,7 @@ weight: 11
 
 ## Un dockerfile de test
 
-Éxécuter les commandes suivantes.
+Exécuter les commandes suivantes.
 ```shell
 $ mkdir ~/test_dockerfile && cd ~/test_dockerfile 
 $ echo "<h1>Hello</h1>" > ~/test_dockerfile/index.html

@@ -219,7 +219,6 @@ CMD ["python","main.py"]
 - Que se passe-t-il si vous relancez le build de l'image ? 
 - Essayez de modifier le code HTML et de reconstruire l'image en changeant de version.
 - Comment lancer sur un autre port ? Peut-on lancer plusieurs fois la même image ? Sur le même port ? 
-- Pourquoi ça ne marche pas t-il si on essaie de se connecter à la machine via un `docker exec ... bash` ? Comment faire ?
 
 
 ### Solution 
