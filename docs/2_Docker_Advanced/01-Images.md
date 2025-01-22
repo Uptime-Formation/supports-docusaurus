@@ -1,5 +1,5 @@
 ---
-title: Docker Avancé - Les images 
+title:  Les images 
 weight: 6
 ---
 

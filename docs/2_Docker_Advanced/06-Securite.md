@@ -1,5 +1,5 @@
 ---
-title: Docker Avancé - Securite 
+title:  Securite 
 weight: 6
 ---
 

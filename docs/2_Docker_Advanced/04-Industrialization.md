@@ -1,5 +1,5 @@
 ---
-title: Docker Avancé - Industrialisation 
+title:  Industrialisation 
 weight: 6
 ---
 

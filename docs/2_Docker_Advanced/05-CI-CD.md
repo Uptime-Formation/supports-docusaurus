@@ -1,5 +1,5 @@
 ---
-title: Docker Avancé - Intégration et Déploiement Continu
+title:  Intégration et Déploiement Continu
 weight: 6
 ---
 

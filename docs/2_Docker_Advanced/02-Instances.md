@@ -1,5 +1,5 @@
 ---
-title: Docker Avancé - Les instances 
+title:  Les instances 
 weight: 6
 ---
 
