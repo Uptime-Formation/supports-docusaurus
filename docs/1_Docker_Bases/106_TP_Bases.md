@@ -11,7 +11,7 @@ On va donc télécharger une image Debian de base, explorer son contenu, démarr
 
 ### Étapes 
 
-- **Action** : Télécharger l'image Docker de base `ubuntu:24-04`  
+- **Action** : Télécharger l'image Docker de base `ubuntu:24.04`  
   **Observation** : L'image apparaît dans la liste des images locales via la commande `docker images`.
 
 - **Action** : Lancer un nouveau conteneur nommé `mycontainer` en mode daemon (en arrière-plan) avec une commande d'instance Docker  `tail -f /dev/null`.  

@@ -48,7 +48,7 @@ Site officiel : [nomadproject.io](https://www.nomadproject.io/)
 
 ---
 
-## Déploiement 
+## Déploiement mono serveur
 
 Suivre la [documentation d'installation rapide](https://developer.hashicorp.com/nomad/tutorials/get-started/gs-start-a-cluster) et celle de [déploiement d'un cluster local](https://developer.hashicorp.com/nomad/tutorials/get-started/gs-start-a-cluster) sur le site de Nomad.
 
@@ -132,89 +132,131 @@ nomad job stop -purge pytechco-setup
 
 ```
 
-<!--
-## TP
 
-### Créer un cluster 
+## Déploiement avec un serveur et plusieurs clients
 
+On réutilise l'exécutable nomad installé précédemment.
 
-
- export ARCH_CNI=$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64)
-
-**Démarrer un serveur nomad**
+**Déployer Nomad en tant que service**
 
 ```shell
-
-mkdir /etc/nomad.d
+sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
+sudo mkdir --parents /opt/nomad /etc/nomad.d
+sudo chown -R nomad /opt/nomad
 
 ```
 
-```shell
-
-# /etc/nomad.d/nomad.hcl 
+**Créer la configuration commune serveur et clients** 
+```hcl
+# File: /etc/nomad.d/nomad.hcl 
 datacenter = "dc1"
 data_dir = "/opt/nomad"
 ```
 
-
-```shell
-# /etc/nomad/server.hcl
+**Créer la configuration  serveur** 
+```hcl
+# File /etc/nomad.d/server.hcl
+bind_addr = "<ip.du.ser.veur>" 
 server {
   enabled          = true
   bootstrap_expect = 1
 }
 
 ```
+**Créer la configuration  clients** 
 
-```shell
-# /etc/nomad/client.hcl
+```hcl
+# /etc/nomad.d/client.hcl
 client {
   enabled = true
+   server_join{
+      retry_join = ["ip.du.ser.veur"] # IP du serveur NOMAD
+   }
 }
 
 ```
 
+**Créer le service systemd sur le serveur et chaque client**
+
+```ini
+# File: /etc/systemd/system/nomad.service
+
+[Unit]
+Description=Nomad
+Documentation=https://www.nomadproject.io/docs/
+Wants=network-online.target
+After=network-online.target
+
+# When using Nomad with Consul it is not necessary to start Consul first. These
+# lines start Consul before Nomad as an optimization to avoid Nomad logging
+# that Consul is unavailable at startup.
+#Wants=consul.service
+#After=consul.service
+
+[Service]
+
+# Nomad server should be run as the nomad user. Nomad clients
+# should be run as root
+User=nomad
+Group=nomad
+
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d
+KillMode=process
+KillSignal=SIGINT
+LimitNOFILE=65536
+LimitNPROC=infinity
+Restart=on-failure
+RestartSec=2
+
+## Configure unit start rate limiting. Units which are started more than
+## *burst* times within an *interval* time span are not permitted to start any
+## more. Use `StartLimitIntervalSec` or `StartLimitInterval` (depending on
+## systemd version) to configure the checking interval and `StartLimitBurst`
+## to configure how many starts per interval are allowed. The values in the
+## commented lines are defaults.
+
+# StartLimitBurst = 5
+
+## StartLimitIntervalSec is used for systemd versions >= 230
+# StartLimitIntervalSec = 10s
+
+## StartLimitInterval is used for systemd versions < 230
+# StartLimitInterval = 10s
+
+TasksMax=infinity
+OOMScoreAdjust=-1000
+
+[Install]
+WantedBy=multi-user.target
+
 ```
 
+**Démarrer le service, sur le serveur puis les clients**
+```shell
 
-# /etc/nomad/server.hcl
-
-data_dir  = "/var/lib/nomad"
-
-bind_addr = "0.0.0.0" # the default
-
-advertise {
-}
-
-server {
-  enabled          = true
-  bootstrap_expect = 3
-}
-
-client {
-  enabled       = true
-}
-
-plugin "raw_exec" {
-  config {
-    enabled = true
-  }
-}
-
-consul {
-}
-```
-
-# Rejoindre le cluster 
-nomad server join <IP.AUTRE.SERVEUR.LAB>
- 
+sudo systemctl enable nomad
+sudo systemctl start nomad
+sudo systemctl status nomad
 
 ```
 
-#### **Déploiement d’un Conteneur Docker**  
+**Vérifier dans l'interface de Nomad** 
+
+http://<ip.du.ser.veur>:4646/ui
+
+**Exporter la nouvelle adresse du serveur**
+
+```
+
+export NOMAD_ADDR=<ip.du.ser.veur>:4646
+
+```
+
+### **Déploiement d’un Conteneur Docker**  
 **Objectif** : Déployer une application web Nginx avec Nomad.  
 ```hcl
-# Fichier : nginx.nomad
+# Fichier : nginx.hcl
 job "nginx" {  
   group "web" {  
     network {
@@ -234,18 +276,18 @@ job "nginx" {
 ```  
 **Commandes** :  
 ```bash
-nomad job run nginx.nomad.hcl  # Déploiement  
+nomad job run nginx.hcl  # Déploiement  
 nomad job status nginx     # Vérification  
 ```
 
 ---
 
-#### **TP 2 : Scaling Horizontal**  
+### Faire un scaling Horizontal  
 **Objectif** : Passer de 1 à 3 instances de Nginx.  
 ```hcl
-# Modifier le fichier nginx.nomad  
+# Modifier le fichier nginx.hcl  
 group "web" {  
-  count = 3  
+  count = 2  
   ...  
 }  
 ```  
@@ -256,21 +298,3 @@ nomad job run nginx.nomad   # Appliquer
 
 ---
 
-
-#### **TP 4 : Intégration avec Vault**  
-**Objectif** : Injecter un secret dans une application.  
-1. Stocker un secret dans Vault :  
-```bash
-vault kv put secret/app db_password="s3cr3t"  
-```  
-2. Modifier le job Nomad :  
-```hcl
-task "app" {  
-  template {  
-    data = <<EOF  
-DB_PASSWORD={{ with secret "secret/app" }}{{ .Data.db_password }}{{ end }}  
-EOF  
-  }  
-}  
-```
--->
