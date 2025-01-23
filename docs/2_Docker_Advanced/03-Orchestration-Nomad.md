@@ -80,7 +80,7 @@ export NOMAD_ADDR=http://localhost:4646
 nomad node status
 
 # Visiter la page sur pour l'interface
-curl http://<nom.DNS.du.virtual.lab>:4646/ui/jobs
+curl http://nom.DNS.du.virtual.lab:4646/ui/jobs
  
 
 # Lancer un premier job
@@ -96,7 +96,7 @@ docker ps
 cat pytechco-web.nomad.hcl
 nomad job run pytechco-web.nomad.hcl
 docker ps 
-curl http://<nom.DNS.du.virtual.lab>:5000
+curl http://nom.DNS.du.virtual.lab:5000
 
 # Démarrer le job de type batch et lancer sa première exécution 
 cat pytechco-setup.nomad.hcl
@@ -156,7 +156,7 @@ data_dir = "/opt/nomad"
 **Créer la configuration  serveur** 
 ```hcl
 # File /etc/nomad.d/server.hcl
-bind_addr = "<ip.du.ser.veur>" 
+bind_addr = "ip.du.ser.veur" 
 server {
   enabled          = true
   bootstrap_expect = 1
@@ -243,13 +243,13 @@ sudo systemctl status nomad
 
 **Vérifier dans l'interface de Nomad** 
 
-http://<ip.du.ser.veur>:4646/ui
+http://ip.du.ser.veur:4646/ui
 
 **Exporter la nouvelle adresse du serveur**
 
 ```
 
-export NOMAD_ADDR=<ip.du.ser.veur>:4646
+export NOMAD_ADDR=ip.du.ser.veur:4646
 
 ```
 

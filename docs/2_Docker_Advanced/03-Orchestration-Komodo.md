@@ -5,6 +5,28 @@ weight: 6
 
 # Komodo
 
+## La solution Komodo
+
+Liens : 
+- https://komo.do/
+- https://komo.do/docs/
+- https://github.com/mbecker20/komodo
+
+C'est une solution récente mais prometteuse et 100% opensource : 
+
+- v1.12: Support any git provider / docker registry (supports self-hosted providers like Gitea) ✅
+- v1.13: Support "Compose" resource - Paste in a docker compose file and manage it like a Portainer "Stack" ✅
+- v1.14: Manage docker networks, images, volumes in the UI ✅
+- v1.15: Support generic OIDC providers (including self-hosted) ✅
+- v1.16: "Action" resource: Run requests on the Komodo API using snippets of typescript.
+- v1.17: Procedure Schedules: Run procedures at scheduled times, like CRON job.
+- v1.18: Support "Swarm" resource - Manage docker swarms, attach Deployments / Stacks to "Swarm".
+- v1.19+: Support "Cluster" resource - Manage Kubernetes cluster, can attach deployments to "Cluster" (in addition to existing "Server")
+
+Une démo est disponible en ligne sur https://demo.komo.do/ demo : demo
+
+Elle offre une capacité de factory de builds et d'automatisation cf. https://build.komo.do/ komodo : komodo
+
 ## Déploiement du cluster
 
 ### Déploiement du serveur 
@@ -21,7 +43,7 @@ docker compose -p komodo -f komodo/postgres.compose.yaml --env-file komodo/compo
 
 Explorer l'interface sur 
 
-http://<ip.du.ser.veur>:9120
+http://ip.du.ser.veur:9120
 
 ### Ajout de noeuds Komodo client 
 
@@ -86,11 +108,11 @@ docker compose -f compose-komodo-client.yml logs
 
 **Ajouter le client dans l'interface du serveur**
 
-http://<ip.du.ser.veur>:9120/servers
+http://ip.du.ser.veur:9120/servers
 
 Créer un nouveau serveur avec l'url du client komodo
 
-http://<ip.du.cli.ent>:9120
+http://ip.du.cli.ent:9120
 
 
 ## Lancement de recettes compose 
