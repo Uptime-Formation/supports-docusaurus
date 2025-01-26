@@ -9,8 +9,13 @@ weight: 6
 
 La solution s'appuie sur une multitude de ressources qui composent des architectures articulables.
 
-![](../../static/img/kubernetes/Kubernetes_Resources.png)
 ![](../../static/img/kubernetes/k8s-architecture.png)
+![](../../static/img/kubernetes/kubernetes_top_10_patterns.png)
+![](../../static/img/kubernetes/k8s_objects_hierarchy.png)
+![](../../static/img/kubernetes/Kubernetes_Resources.png)
+
+![](../../static/img/kubernetes/k8s-exposed-pod.jpg)
+![](../../static/img/kubernetes/k8s-pod.png)
 
 Désormais il existe de nombreuses solutions dérivées de cette architecture K8S.
 
@@ -86,14 +91,6 @@ Des règles de sécurité réseaux sont définies pour bloquer les flux indésir
 
 Et il existe tout un écosystème de solutions dédiées, comme Falco qui surveille au niveau des appels système que rien d'anormal ne se produise, et logge tous les appels.
 
-
----
-
-### Introduction à Kubernetes
-
-Le fichier `kube-deployment.yml` de l'app [`example-voting-app`](https://github.com/dockersamples/example-voting-app) décrit la même app pour un déploiement dans Kubernetes plutôt que dans Docker Compose ou Docker Swarm.
-
-Tentez de retrouver quelques équivalences entre Docker Compose / Swarm et Kubernetes en lisant attentivement ce fichier qui décrit un déploiement Kubernetes.
 
 ---
 
@@ -225,6 +222,7 @@ Pour régler cela nous devons l'exposer grace à un service :
 
 **Un service permet de créer un point d'accès unique exposant notre déploiement.** 
 
+
 Ici nous utilisons le type Nodeport car nous voulons que le service soit accessible de l'extérieur par l'intermédiaire d'un forwarding de port.
 
 Une méthode pour accéder à un service (quel que soit sont type) en mode développement est de forwarder le traffic par l'intermédiaire de kubectl (et des composants kube-proxy installés sur chaque noeuds du cluster).
@@ -235,6 +233,12 @@ Une méthode pour accéder à un service (quel que soit sont type) en mode déve
 => Un seul conteneur s'affiche. En effet `kubectl port-forward` sert à créer une connexion de developpement/debug qui pointe toujours vers le même pod en arrière plan.
 
 Pour exposer cette application en production sur un véritable cluster, nous devrions plutôt avoir recours à service de type un LoadBalancer. Mais minikube ne propose pas par défaut de loadbalancer. Nous y reviendrons dans le cours sur les objets kubernetes.
+
+---
+
+**Le routage HTTP via Ingress / Gateway API**
+
+![](../../static/img/kubernetes/ingress-vs-gateway.png)
 
 ---
 
@@ -269,14 +273,28 @@ Essayez de la même façon d'afficher le nombre de répliques de notre déploiem
 
 ---
 
-### Des outils CLI supplémentaires
+### Des outils  supplémentaires
 
 `kubectl` est puissant et flexible mais il est peu confortable certaines actions courantes. Il est intéressant d'ajouter d'autres outils pour le complémenter :
 
 - pour visualiser en temps réel les resources du cluster et leur évolution on installera `watch` ou plus confortable `viddy`
-
 - pour ajouter des plugins à kubectl on peut utiliser `krew`: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 - pour changer de cluster et de namespace efficacement on peut utiliser `kubectx` et `kubens`: `kubectl krew install ctx`, `kubectl krew install ns`
 - pour visualiser les logs d'un déploiement/service on peut utiliser `stern`: `kubectl krew install stern`
 
 ---
+
+### Kubernetes dashboard 
+
+**Un dashboard opérationnel est fourni par Kubernetes.**
+
+On peut suivre le tuto à jour ici : https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+
+```shell
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+
+```
+
+Puis créer un user selon les instructions ici : https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
