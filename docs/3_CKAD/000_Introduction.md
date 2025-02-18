@@ -28,6 +28,7 @@ book: true
 
 ## Le programme de la formation et les objectifs
 
+![](../../static/img/ckad/program.png)
 
 ---
 
@@ -123,4 +124,6 @@ book: true
   - Utiliser l’API debug de Kubernetes
 
 **TP6 : Exposition des logs des Pods et des métriques natives de Kubernetes**
+
+---
 

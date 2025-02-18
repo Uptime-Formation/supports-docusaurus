@@ -4,6 +4,20 @@ title: Jour 1 - Après-midi
 
 # Jour 1 - Après Midi
 
+## Crash course 
+
+```shell
+
+kubectl create deployment nginx-deploy --image nginx:latest --replicas 2 
+
+kubectl get all 
+
+kubectl delete deployment nginx-deploy
+
+```
+
+---
+
 ## Les Pods
 
 **Un Pod est l’unité de base d’une application Kubernetes que vous déployez : un Pod est un `groupe atomique de conteneurs`, ce qui veut dire qu'il est garanti que ces conteneurs atterrirons sur le même noeud et seront toujours lancé ensembles et connectés.**
@@ -366,8 +380,33 @@ spec:
 
 - Pour les afficher : `kubectl get deployments`
 
-- La commande `kubectl run` sert à créer un *deployment* à partir d'un modèle. Il vaut mieux utilisez `apply -f`.
+- La commande `kubectl scale` permet de changer le nombre de repliques d'un pod dans le deployement.
 
+---
+
+#### Les selectors
+
+**Kubernetes utilise des tags définis librement pour associer des ressources entre elles.** 
+
+Un `label` (ou un groupe de labels) peut être porté par plusieurs ressources en simultané. 
+
+On peut alors constituer des groupes d'objets sur cette base via les `selectors`.
+
+Exemple de labels génériques :
+
+- "release" : "stable", "release" : "canary"
+- "environment" : "dev", "environment" : "qa", "environment" : "production"
+- "tier" : "frontend", "tier" : "backend", "tier" : "cache"
+- "partition" : "customerA", "partition" : "customerB"
+- "track" : "daily", "track" : "weekly"
+
+---
+
+**Cette logique est utilisée extensivement dans l'architecture de Kubernetes.**
+
+C'est le cas pour les `deployments` : il faut définir les mêmes labels dans le selector et les specs du template.
+
+Vous verrez que c'est aussi le cas pour les `services` au niveau réseau, et il en va de même pour d'autre ressources comme les nodes.
 
 ---
 
@@ -380,7 +419,10 @@ Dans notre modèle, les **ReplicaSet** servent à gérer et sont responsables po
 
 - `kubectl get rs` pour afficher la liste des replicas.
 
-En général on ne les manipule pas directement (c'est déconseillé) même s'il est possible de les modifier et de les créer avec un fichier de ressource. Pour créer des groupes de conteneurs on utilise soit un **Deployment** soit d'autres formes de workloads (**DaemonSet**, **StatefulSet**, **Job**) adaptés à d'autres cas.
+En général on ne les manipule pas directement.  
+
+Pour créer des groupes de conteneurs on utilise soit un **Deployment** soit d'autres formes de workloads (**DaemonSet**, **StatefulSet**, **Job**) adaptés à d'autres cas.
+
 
 
 ---

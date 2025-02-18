@@ -38,7 +38,11 @@ PDF_NAME="$( echo ${FORMATION_NAME} | sed -r "s/^[0-9]*_//").pdf"
 
 # Copy markdown files to tmp directory and patch images paths
 
-# [[ -d "${TMPDIR}" ]]  && rm -rf "${TMPDIR}" && mkdir "${TMPDIR}"
+read -e -n 1 -p "Do you want to clear cache? [Y/n]: "
+REPLY=${REPLY:-Y}
+[[ "N" != ${REPLY^^} ]] && {
+  [[ -d "${TMPDIR}" ]]  && rm -rf "${TMPDIR}" && mkdir "${TMPDIR}"
+}
 
 cp "${FORMATION_DIR}"/*md "${TMPDIR}/"
 cd "${TMPDIR}"
@@ -93,13 +97,9 @@ EOF
   }
 done
 
-# Finish by creating the PDF file
+## Build the PDF file
 echo Uniting pdffiles
 pdfunite ${LIST[@]} "${PDF_NAME}"
 mv ${PDF_NAME} "${APP_PATH}"
 echo "File available : ${APP_PATH}/${PDF_NAME}"
 
-# Cleanup the temp dir
-cd "${APP_PATH}"
-# echo "Cleaning up tmpdir $TMPDIR"
-# rm -rf "${TMPDIR}"

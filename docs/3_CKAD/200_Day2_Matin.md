@@ -16,7 +16,9 @@ Dans Kubernetes, elles sont utilisées pour passer des informations de configura
 
 ---
 
-### Les 12 facteurs : Configuration et Workloads stateless
+### L'Application 12 facteurs : Configuration et Workloads stateless
+
+Référence : https://12factor.net
 
 Le **manifeste des 12 facteurs** est un ensemble de principes pour construire des applications modernes et scalable. Le facteur **III. Config** stipule que la **configuration** (paramètres d'exécution qui changent entre les environnements) doit être séparée du code et injectée dans l'application via des **variables d'environnement**.
 
@@ -334,7 +336,9 @@ metadata:
 type: Opaque
 ```
 
-On peut ensuite monter le secret sous forme d'un fichier dans des pods via un volume comme suit :
+---
+
+**On peut ensuite monter le secret sous forme d'un fichier dans des pods via un volume comme suit :**
 
 ```yaml
 apiVersion: apps/v1
@@ -368,18 +372,32 @@ spec:
 
 ---
 
+**On peut également utiliser le secret comme source pour des variables d'environnement comme suit :**
+
+```yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-pod
+spec:
+  containers:
+  - name: mycontainer
+    image: some-image
+    env:
+    - name: CERT
+      valueFrom:
+        secretKeyRef:
+          name: my-cert
+          key: cert.pem
+```
+
+---
+
 
 ## Volumes pour la persistence
 
-**Mentionnons quelques d'usage de base des volumes:**
-
-- `hostPath`: monte un dossier du noeud ou est plannifié le pod à l'intérieur du conteneur.
-- `configMap` ou `secret`: pour monter des fichiers de configurations provenant du cluster à l'intérieur des pods
-- `nfs`: stockage réseau classique
-- `cephfs`: monter un volume ceph provenant d'un ceph installé sur le cluster
-- etc.
-
-En plus de la gestion manuelle des volumes avec les option précédentes, kubernetes permet de provisionner dynamiquement du stockage en utilisant des plugins de création de volume grâce à 3 types d'objets: `StorageClass` `PersistentVolume` et `PersistentVolumeClaim`.
+**En plus de la gestion manuelle des volumes avec les option précédentes, kubernetes permet de provisionner dynamiquement du stockage en utilisant des plugins de création de volume grâce à 3 types d'objets: `StorageClass` `PersistentVolume` et `PersistentVolumeClaim`.**
 
 ---
 
@@ -398,6 +416,38 @@ En savoir plus sur la [doc officielle](https://kubernetes.io/docs/concepts/stora
 ### Demander des volumes et les liers aux pods :`PersistentVolumes` et `PersistentVolumeClaims`
 
 ![](../../static/img/kubernetes/k8s-pvc.png)
+
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: slow
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+    - name: myfrontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: mypd
+  volumes:
+    - name: mypd
+      persistentVolumeClaim:
+        claimName: myclaim
+
+```
 
 **Quand un conteneur a besoin d'un volume, il crée une `PersistentVolumeClaim` : une demande de volume (persistant).**  
 

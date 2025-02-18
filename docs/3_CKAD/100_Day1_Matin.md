@@ -4,8 +4,21 @@ title: Jour 1 - Matin
 
 # Jour 1 - Matin
 
-## Rappels sur la conteneurisation : images, instances, cycle de vie  
+## Crash course de la session
 
+```shell
+
+kubectl run nginx --image=nginx 
+
+kubectl get pods
+
+kubectl delete pod nginx  
+
+```
+
+--- 
+
+## Rappels sur la conteneurisation : images, instances, cycle de vie  
 
 ### Les images Docker
 
@@ -59,9 +72,19 @@ Quels sont les composants qui permettent ce processus ?
 
 ## Architecture de Kubernetes  
 
-**Kubernetes est devenu la solution de facto pour résoudre les problématiques de déploiements d'images Docker à l'échelle.**
+**Kubernetes est devenu la solution de facto pour résoudre les problématiques de déploiements d'images Docker à l'échelle.**  
+
+---
+
+![](../../static/img/kubernetes/kubernetes_top_10_patterns.png)
+
+---
 
 ![](../../static/img/kubernetes/k8s-architecture.png)  
+
+---
+
+![](../../static/img/kubernetes/k8s_archi1.png)
 
 #### Les noeuds Kubernetes
 
@@ -73,22 +96,28 @@ Les nœuds d’un cluster sont les machines (serveurs physiques, machines virtue
 
 Pour utiliser Kubernetes, on définit un état souhaité en créant des ressources (pods/conteneurs, volumes, permissions etc). Cet état souhaité et son application est géré par le `control plane` composé des noeuds master.
 
+---
+
 #### Les noeuds master kubernetes forment le `Control Plane` du Cluster<br/>
 
 ![](../../static/img/kubernetes/schemas-perso//k8s-archi.jpg)  <br/>
 
-Le control plane est responsable du maintien de l’état souhaité des différents éléments de votre cluster. Lorsque vous interagissez avec Kubernetes, par exemple en utilisant l’interface en ligne de commande `kubectl`, vous communiquez avec les noeuds master de votre cluster (plus précisément l'`API Server`).
+**Le control plane est responsable du maintien de l’état souhaité des différents éléments de votre cluster. Lorsque vous interagissez avec Kubernetes, par exemple en utilisant l’interface en ligne de commande `kubectl`, vous communiquez avec les noeuds master de votre cluster (plus précisément l'`API Server`).**
 
 Le control plane conserve un enregistrement de tous les objets Kubernetes du système. À tout moment, des `boucles de contrôle` s'efforcent de faire converger l’état réel de tous les objets du système pour correspondre à l’état souhaité que vous avez fourni. Pour gérer l’état réel de ces objets sous forme de conteneurs (toujours) avec leur configuration le control plane envoie des instructions aux différents kubelets des noeuds.
 
-Donc concrêtement les noeuds du control plane Kubernetes font tourner, en plus de `kubelet` et `kube-proxy`, un ensemble de services de contrôle:
+--- 
+
+**Donc concrêtement les noeuds du control plane Kubernetes font tourner, en plus de `kubelet` et `kube-proxy`, un ensemble de services de contrôle:**
 
   - `kube-apiserver`: expose l'API (rest) kubernetes, point d'entrée central pour la communication interne (intercomposants) et externe (kubectl ou autre) au cluster.
   - `kube-controller-manager`: controlle en permanence l'état des resources et essaie de le corriger s'il n'est plus conforme.
   - `kube-scheduler`: Surveille et cartographie les resources matérielles et les contraintes de placement des pods sur les différents noeuds pour décider ou doivent être créés ou supprimés les conteneurs/pods.
   - `cloud-controller-manager`: Composant *facultatif* qui gère l'intégration avec le fournisseur de cloud comme par exemple la création automatique de loadbalancers pour exposer les applications kubernetes à l'extérieur du cluster.
 
-L'ensemble de la configuration kubernetes est stockée de façon résiliante (consistance + haute disponilibilité) dans un gestionnaire configuration distributé qui est généralement `etcd`.
+---
+
+**L'ensemble de la configuration kubernetes est stockée de façon résiliante (consistance + haute disponilibilité) dans un gestionnaire configuration distributé qui est généralement `etcd`.**
 
 `etcd` peut être installé de façon redondante sur les noeuds du control plane ou configuré comme un système externe sur un autre ensemble de serveurs.
 
@@ -101,7 +130,10 @@ Lien vers la documentation pour plus de détails sur les composants : https://ku
 **La solution s'appuie sur une multitude de ressources qui composent des architectures articulables.**
 
 ![](../../static/img/kubernetes/Kubernetes_Resources.png)
-Voici la liste des ressources Kubernetes avec des noms longs et une description simplifiée pour débutants :
+
+---
+
+**Voici la liste des ressources Kubernetes avec des noms longs et une description simplifiée pour débutants :**
 
 ![](../../static/img/kubernetes/icons/cm.svg) **cm (ConfigMap)** : Utilisé pour stocker des données de configuration sous forme de paires clé-valeur, par exemple des fichiers de configuration que les Pods peuvent consommer.
    
@@ -369,6 +401,7 @@ On retrouve les mêmes champs obligatoires, car `kubectl` est juste un client d'
 ```yaml
 kubectl run --help
 kubectl run nginx-pod --image nginx:latest
+kubectl run ubuntu-pod --image ubuntu:latest -- tail -f /dev/null
 ```
 
 ---
@@ -427,21 +460,20 @@ Création d'un service simple :
 # API VERSION : MANDATORY 
 apiVersion: v1
 # KIND  : MANDATORY 
-kind: Service
+kind: Pod
 # METADATA  : MANDATORY 
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
-# SPEC : ALL WITH EXCEPTIONS  
+    app: myapp
+  name: myapp
+  namespace: myapp
+# SPEC : MOST API OBJECTS, WITH EXCEPTIONS  
 spec:
-  ports:
-    - port: 443
-      targetPort: 8443
-  selector:
-    k8s-app: kubernetes-dashboard
-  type: NodePort
+  containers:
+  - image: nginx
+    name: myapp
+    resources: {}
+
 ```
 
 ---
@@ -559,5 +591,5 @@ Il a également aussi un namespace `kube-system` dans lequel résident les proce
 
 Pour utiliser un namespace autre que `default` avec `kubectl` il faut :
 
-- le préciser avec l'option `-n` : `kubectl run -n [namespace] [name]  --image [image ex:nginx]`
+- le préciser avec l'option `-n` ou `--namespace` : `kubectl run -n [namespace] [name]  --image [image ex:nginx] -- [command ex: tail -f /dev/null]` 
 - créer une nouvelle configuration dans la kubeconfig pour changer le namespace par defaut.

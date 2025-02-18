@@ -11,11 +11,9 @@ weight: 33
 
 **Nous avons pu constater que lancer plusieurs conteneurs liés avec leur mapping réseau et les volumes liés implique des commandes assez lourdes. Cela devient ingérable si l'on a beaucoup d'applications microservice avec des réseaux et des volumes spécifiques.**
 
-Pour faciliter tout cela et dans l'optique d'**Infrastructure as Code**, Docker introduit un outil nommé **docker-compose** qui permet de décrire de applications multiconteneurs grâce à des fichiers **YAML**.
+Pour faciliter tout cela et dans l'optique d'**Infrastructure as Code**, Docker introduit un outil nommé **docker compose** qui permet de décrire de applications multiconteneurs grâce à des fichiers **YAML**.
 
 Pour bien comprendre qu'il s'agit au départ uniquement de convertir des options de commande Docker en YAML, un site vous permet de convertir une commande `docker run` en fichier Docker Compose : https://www.composerize.com/
-
-Le code est sur https://github.com/docker/compose, docker-compose est un *fat binary* en go qui pèse seulement ~30 Mo.
 
 ---
 
