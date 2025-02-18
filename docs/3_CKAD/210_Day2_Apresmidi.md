@@ -121,6 +121,160 @@ spec:
 
 ---
 
+## DNS Kubernetes
+
+**Le DNS interne de Kubernetes permet aux applications de communiquer facilement entre elles sans nécessiter de configuration manuelle des adresses IP.**
+
+Kubernetes fournit un service DNS interne qui résout automatiquement les noms des ressources du cluster en adresses IP, facilitant ainsi la communication entre les différents composants.
+
+---
+
+## Contacter les services en DNS interne
+
+**Dans Kubernetes, les pods peuvent se contacter directement en utilisant leurs noms DNS internes s’ils se trouvent dans le même namespace.**
+
+Un pod a comme nom de host son `metadata.name` :
+
+```shell
+root@my-app-678c59c7d5-4t259:/# getent ahostsv4 my-app-678c59c7d5-4t259
+10.42.0.123     STREAM my-app-678c59c7d5-4t259
+10.42.0.123     DGRAM  
+10.42.0.123     RAW    
+
+```
+
+Cependant, les pods n'ont pas de DNS direct par défaut. Pour les contacter, un service doit être utilisé, par exemple :
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: my-namespace
+spec:
+  selector:
+    app: my-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+```
+
+Une fois ce service défini, les pods peuvent y accéder avec :
+
+```plaintext
+my-service.my-namespace.svc.cluster.local
+```
+
+---
+
+## Contacter les Services depuis d’autres namespaces
+
+**Pour contacter un service d’un autre namespace, il faut préciser son namespace dans la requête DNS.**
+
+
+Par défaut, un service Kubernetes peut être atteint depuis un autre namespace en utilisant la convention DNS suivante :
+
+```plaintext
+<SERVICE_NAME>.<NAMESPACE>.svc.cluster.local
+```
+
+Exemple : si un service nommé `backend` est situé dans le namespace `production`, il pourra être contacté avec :
+
+```plaintext
+backend.production.svc.cluster.local
+```
+
+Si des restrictions réseau sont appliquées via Network Policies, ces connexions peuvent être limitées.
+
+---
+
+## Requêtes DNS vers l’extérieur
+
+**Kubernetes permet aux pods d’effectuer des requêtes DNS vers l’extérieur en utilisant un résolveur DNS intégré.**
+
+Les pods utilisent par défaut le service `CoreDNS` de Kubernetes pour résoudre les noms externes. Toute requête qui ne correspond pas à un nom interne Kubernetes est transmise aux serveurs DNS externes définis dans `/etc/resolv.conf` du pod.
+
+Exemple de configuration DNS dans un pod :
+
+```plaintext
+search default.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.96.0.10
+options ndots:5
+```
+
+Ici :
+- `search` définit les suffixes DNS à essayer.
+- `nameserver` pointe vers CoreDNS (10.96.0.10 par défaut).
+- `ndots:5` force la résolution des noms courts en les testant avec les suffixes DNS avant d’être envoyés à un DNS externe.
+
+Si un pod fait une requête vers `google.com`, CoreDNS la transfère au résolveur DNS configuré sur le cluster, qui est généralement celui de l’hôte ou un service DNS externe.
+
+Pour personnaliser cette configuration, un ConfigMap peut être utilisé pour modifier le comportement de CoreDNS :
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        forward . /etc/resolv.conf
+    }
+```
+
+Cela permet de rediriger toutes les requêtes externes vers le résolveur DNS par défaut.
+
+---
+
+## DaemonSets et leur utilité pour le DNS
+
+**Les DaemonSets permettent de déployer un pod sur chaque nœud d’un cluster Kubernetes, assurant une disponibilité et une répartition homogène des services critiques.**
+
+Un `DaemonSet` garantit qu’un pod spécifique est exécuté sur tous (ou certains) nœuds du cluster. Il est utile pour les services d’infrastructure comme la journalisation, la surveillance et le DNS.
+
+Exemple de DaemonSet :
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dns-resolver
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: dns-resolver
+  template:
+    metadata:
+      labels:
+        app: dns-resolver
+    spec:
+      containers:
+      - name: dns-resolver
+        image: custom-dns-resolver:latest
+        ports:
+        - containerPort: 53
+```
+
+L’utilisation d’un DaemonSet pour un résolveur DNS est une bonne pratique car :
+- Chaque nœud dispose de son propre pod DNS, réduisant la latence des requêtes.
+- Il assure une résilience et une disponibilité accrues du service DNS.
+- Il évite les goulots d’étranglement en répartissant la charge entre tous les nœuds.
+- Il permet de gérer localement les requêtes DNS sans dépendre uniquement de CoreDNS centralisé.
+
+Cela garantit ainsi une résolution DNS rapide et fiable pour tous les pods du cluster.
+
+---
+
+**Le DNS de Kubernetes est un élément clé pour l’interconnexion des services, simplifiant la découverte et la gestion des dépendances entre les applications déployées. L’utilisation de DaemonSets pour un résolveur DNS distribué améliore encore la robustesse et l’efficacité du système.**
+
+
+
+---
+
 ## Utilisation de l’exposition via Ingress et Gateway  
 
 ### Les objets Ingresses
@@ -166,6 +320,7 @@ spec:
             name: service3
             port:
               number: 80
+
 ```
 
 ---
@@ -258,4 +413,6 @@ spec:
             name: kuard
             port:
               number: 80
+
 ```
+

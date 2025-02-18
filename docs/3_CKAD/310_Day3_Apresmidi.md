@@ -344,4 +344,196 @@ Cette commande injecte un conteneur de debug basé sur l'image `ubuntu` dans le 
 
 ---
 
+## Service Accounts
 
+**Les Service Accounts permettent aux pods d’interagir avec l’API Kubernetes en leur attribuant des identités spécifiques.**
+
+Dans Kubernetes, chaque pod utilise un Service Account pour s’authentifier auprès de l’API Server. Par défaut, les pods utilisent le Service Account `default`, mais il est possible de créer et attribuer des comptes spécifiques pour mieux gérer les permissions.
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: custom-sa
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  serviceAccountName: custom-sa
+  containers:
+  - name: example-container
+    image: nginx
+```
+
+---
+
+**Les Service Accounts posent des questions de sécurité et de gestion des permissions.**
+
+L’utilisation des Service Accounts permet de restreindre et d’affiner les permissions des applications exécutées dans un cluster Kubernetes. Cependant, accorder des permissions trop larges à un Service Account peut représenter un risque de sécurité. Une bonne pratique consiste à combiner les Service Accounts avec des RBAC (Role-Based Access Control) afin de limiter les accès aux ressources strictement nécessaires. 
+
+La gestion des identifiants et des tokens associés aux Service Accounts nécessite également une attention particulière, notamment pour éviter les fuites de données sensibles.
+
+---
+
+## Limit Range
+
+**LimitRange permet de définir des contraintes d’utilisation des ressources (CPU, mémoire) dans un namespace donné.**
+
+
+Kubernetes autorise par défaut une consommation illimitée des ressources, ce qui peut poser des problèmes de contention. `LimitRange` permet d’encadrer l’utilisation des ressources allouées aux pods, garantissant une meilleure stabilité des workloads dans un namespace.
+
+```yaml
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: resource-limits
+spec:
+  limits:
+  - default:
+      cpu: 500m
+      memory: 512Mi
+    defaultRequest:
+      cpu: 250m
+      memory: 256Mi
+    type: Container
+```
+
+---
+
+**Gérer les ressources est essentiel pour éviter les conflits et garantir la performance.**
+
+Dans un cluster partagé, les applications peuvent entrer en concurrence pour les ressources disponibles. Sans limites, un pod peut monopoliser le CPU ou la mémoire, impactant les autres services. `LimitRange` permet d’éviter ces situations en imposant des valeurs minimales et maximales par défaut.
+
+Cependant, si les limites sont trop strictes, certaines applications peuvent ne pas fonctionner correctement. Il est donc essentiel de bien calibrer les valeurs en fonction des besoins réels des workloads, en s’appuyant sur la surveillance et l’observation des métriques de consommation.
+
+---
+
+## Taints and Tolerations
+
+**Taints et Tolerations permettent d’empêcher certains pods de s’exécuter sur certains nœuds du cluster.**
+
+
+Les `Taints` appliqués sur les nœuds empêchent l’ordonnancement des pods sauf si ces derniers possèdent une `Toleration` correspondante. Cela permet de réserver des nœuds spécifiques pour certains types de workloads (par exemple, réserver des nœuds aux applications critiques ou aux workloads nécessitant du GPU).
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "gpu"
+    effect: "NoSchedule"
+  containers:
+  - name: example-container
+    image: nginx
+```
+
+---
+
+**Contrôler le placement des pods permet d’améliorer l’efficacité et la gestion des ressources.**
+
+L’usage des `Taints` et `Tolerations` permet d’empêcher l’exécution de certains pods sur des nœuds critiques ou de restreindre l’accès à des machines spécifiques. Cela est particulièrement utile pour séparer les workloads en fonction de leur criticité ou de leurs besoins matériels.
+
+Cependant, une mauvaise configuration peut entraîner des déséquilibres dans l’ordonnancement des pods et causer des problèmes de disponibilité des applications. Il est donc important de tester et d’ajuster ces paramètres en fonction de l’utilisation réelle du cluster.
+
+---
+
+## Node Affinity
+
+**Node Affinity permet de contraindre l’exécution des pods sur certains nœuds spécifiques en fonction de labels.**
+
+
+Node Affinity est une alternative aux `Taints` et `Tolerations` qui permet d’orienter le placement des pods sur des nœuds spécifiques grâce à des labels et des expressions de règles d’affinité.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "disktype"
+            operator: "In"
+            values:
+            - "ssd"
+  containers:
+  - name: example-container
+    image: nginx
+```
+
+---
+
+**Une gestion fine du placement des pods améliore la performance et la fiabilité.**
+
+Node Affinity est un puissant mécanisme pour s’assurer que certaines applications s’exécutent uniquement sur des nœuds adaptés à leurs besoins. Par exemple, des workloads nécessitant du stockage haute performance peuvent être dirigés vers des nœuds avec disques SSD.
+
+Cependant, une configuration trop restrictive peut entraîner des problèmes de planification des pods s’il n’existe pas de nœuds répondant aux critères définis. Il est donc essentiel d’équilibrer la contrainte et la flexibilité dans l’affectation des pods.
+
+---
+
+## Authentication Authorization
+
+**Authentication et Authorization définissent les mécanismes d’accès et de contrôle des utilisateurs et services dans Kubernetes.**
+
+
+L’authentification et l’autorisation dans Kubernetes sont gérées via plusieurs méthodes, telles que les certificats, tokens, et l’intégration avec des fournisseurs d’identité externes.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+```
+
+---
+
+**Sécuriser l’accès est fondamental pour protéger un cluster Kubernetes.**
+
+L’authentification permet d’identifier les utilisateurs et services accédant à l’API Server, tandis que l’autorisation contrôle leurs actions. Kubernetes supporte plusieurs modes d’authentification et s’appuie sur RBAC pour définir des permissions granulaires.
+
+Une mauvaise configuration des permissions peut exposer un cluster à des risques de sécurité importants. Il est donc crucial de suivre les bonnes pratiques, comme le principe du moindre privilège.
+
+---
+
+## Admission Controller
+
+**Les Admission Controllers permettent de valider ou modifier les requêtes envoyées à l’API Server avant leur exécution.**
+
+
+Les Admission Controllers interviennent avant la persistance des objets Kubernetes, permettant d’appliquer des politiques de sécurité ou d’auditer des requêtes.
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: example-webhook
+webhooks:
+  - name: validate.example.com
+    rules:
+      - apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["create"]
+```
+
+---
+
+**Ils assurent le respect des bonnes pratiques et politiques de sécurité.**
+
+Les Admission Controllers sont utiles pour appliquer des contrôles automatiques sur les ressources déployées. Ils permettent d’éviter des configurations erronées ou non sécurisées.
+
+Toutefois, une mauvaise configuration peut bloquer le bon fonctionnement du cluster. Il est donc essentiel de tester soigneusement les règles mises en place.
+
+---

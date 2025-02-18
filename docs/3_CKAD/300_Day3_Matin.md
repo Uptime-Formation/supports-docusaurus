@@ -157,6 +157,79 @@ Mais lorsqu'on a besoin de faire varier énormément les manifestes selon de nom
 
 ---
 
+```shell
+
+mkdir kustomize
+cd kustomize
+
+# Create a directory to hold the base
+mkdir base
+
+# Create a base/deployment.yaml
+cat <<EOF > base/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+spec:
+  selector:
+    matchLabels:
+      run: my-nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: my-nginx
+    spec:
+      containers:
+      - name: my-nginx
+        image: nginx
+EOF
+
+# Create a base/service.yaml file
+cat <<EOF > base/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx
+  labels:
+    run: my-nginx
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    run: my-nginx
+EOF
+
+# Create a base/kustomization.yaml
+cat <<EOF > base/kustomization.yaml
+resources:
+- deployment.yaml
+- service.yaml
+EOF
+
+mkdir dev
+cat <<EOF > dev/kustomization.yaml
+resources:
+- ../base
+namePrefix: dev-
+EOF
+
+mkdir prod
+cat <<EOF > prod/kustomization.yaml
+resources:
+- ../base
+namePrefix: prod-
+EOF
+
+kubectl kustomize ./prod
+
+```
+
+
+---
+
 ### Helm, package manager pour Kubernetes
 
 **Helm permet de déployer des applications / stacks complètes en utilisant un système de templating pour générer dynamiquement les manifestes kubernetes et les appliquer intelligemment.**
