@@ -227,6 +227,9 @@ kubectl create configmap mysql-config --from-file=mysql.conf
 
 
 ```yaml
+
+# file: mysql.yaml 
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -234,9 +237,9 @@ metadata:
   name: mysql-env
 data:
   MYSQL_DATABASE: mydatabase
-```
+  MYSQL_ROOT_PASSWORD: unsecurepassword
+---
 
-```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -253,25 +256,22 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8
         # Montage via un volume
         volumeMounts:
         - name: config-volume
           mountPath: /etc/mysql/conf.d        
         # Consommation en tant que variables d'environnement
-        env:
-        - name: MYSQL_DATABASE
-          valueFrom:
-            configMapKeyRef:
-                # Utilisation du nom de la config map
+        envFrom:
+        - configMapRef:
               name: mysql-env
-              key: MYSQL_DATABASE
         ports:
         - containerPort: 3306
       volumes:
       - name: config-volume
         configMap:
           name: mysql-config  # Nom de la ConfigMap
+
 
 ```
 
