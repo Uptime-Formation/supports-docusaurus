@@ -482,8 +482,6 @@ Contrairement aux `PersistentVolumeClaims` classiques, qui sont créés manuelle
 
 **Les `VolumeClaimTemplate` simplifient la gestion du stockage en créant des volumes dynamiquement et en les associant aux pods.**
 
-<schema>
-
 Lorsqu’un StatefulSet est déployé avec un `VolumeClaimTemplate`, Kubernetes crée automatiquement un PVC pour chaque pod de l’ensemble. Ces volumes sont nommés en fonction du StatefulSet et de l’index du pod, par exemple :
 
 ```plaintext
