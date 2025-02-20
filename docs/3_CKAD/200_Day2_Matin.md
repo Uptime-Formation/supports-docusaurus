@@ -106,7 +106,8 @@ Utilisez-les pour injecter des configurations spécifiques à l'environnement da
            name: app-config
    ```
 
-   **Utilisation** : Idéal pour des configurations changeantes, comme des URLs d'API, des paramètres spécifiques à un environnement, etc.
+ **Utilisation** : Idéal pour des configurations changeantes, comme des URLs d'API, des paramètres spécifiques à un environnement, etc.  
+
    Les Secrets sont recommandés pour les informations sensibles comme les identifiants, clés d'API, tokens, etc. qui ne doivent pas apparaître dans l'Infra As Code.
 
 ---
@@ -463,7 +464,88 @@ En savoir plus sur la [doc officielle](https://kubernetes.io/docs/concepts/stora
 
 **Le provisionning de `PersistentVolume` peut être manuel (on crée un objet `PersistentVolume` en amont ou non.**  
 
- Dans le second cas la création d'un `PersistentVolumeClaim` mène directement à la création d'un volume si possible)
+Dans le second cas la création d'un `PersistentVolumeClaim` mène directement à la création d'un volume si possible)
+
+---
+
+### Les VolumeClaimTemplate
+
+**Il existe une solution pour automatiser la création de volumes pour les StatefulSets qui ont par définition un besoin de persistance.**
+
+
+
+Les `VolumeClaimTemplate` permettent de créer dynamiquement des volumes persistants pour chaque pod d’un StatefulSet dans Kubernetes.
+
+Contrairement aux `PersistentVolumeClaims` classiques, qui sont créés manuellement, les `VolumeClaimTemplate` sont automatiquement générés par le StatefulSet, garantissant que chaque pod dispose d’un volume dédié et unique.
+
+---
+
+**Les `VolumeClaimTemplate` simplifient la gestion du stockage en créant des volumes dynamiquement et en les associant aux pods.**
+
+<schema>
+
+Lorsqu’un StatefulSet est déployé avec un `VolumeClaimTemplate`, Kubernetes crée automatiquement un PVC pour chaque pod de l’ensemble. Ces volumes sont nommés en fonction du StatefulSet et de l’index du pod, par exemple :
+
+```plaintext
+<pvc-name>-<statefulset-name>-<ordinal>
+```
+
+Si un StatefulSet nommé `web` possède un `VolumeClaimTemplate` avec un nom `data`, alors les PVC créés seront :
+
+```plaintext
+data-web-0
+ data-web-1
+ data-web-2
+```
+
+Cela garantit que chaque pod reçoit un volume unique qui lui est réservé, même en cas de redémarrage ou de reprogrammation.
+
+---
+
+**Voici un exemple de StatefulSet qui utilise un `VolumeClaimTemplate` pour créer automatiquement des volumes persistants pour chaque pod :**
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: "postgres"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_USER
+          value: "xxx"
+        - name: POSTGRES_PASSWORD
+          value: "xxx"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
+```
+
+Dans cet exemple :
+- Chaque pod du StatefulSet aura un volume nommé `data` monté sur `/usr/share/nginx/html`.
+- Kubernetes créera dynamiquement des PVC comme `data-web-0`, `data-web-1`, etc.
+- Ces volumes seront persistants et resteront associés à leurs pods respectifs, même après un redémarrage.
+
 
 ---
 

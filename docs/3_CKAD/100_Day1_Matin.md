@@ -238,7 +238,7 @@ Disponible on premise ou sur de nombreux clouds, OpenShift intègre différents 
 
 ---
 
-### Les fondamentaux de K8S 
+## Les fondamentaux de K8S 
 
 **Tout est un conteneur** 
 
