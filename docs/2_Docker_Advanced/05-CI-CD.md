@@ -15,7 +15,7 @@ En réalité il est préférable de bien distinguer la CI et la CD :
 
 ---
 
-** Les étapes de l'Intégration Continue **
+**Les étapes de l'Intégration Continue**
 
 1. Le build. Cette étape est nécessaire pour les langages compilés ou nécessitant une forme du code exécutable. Ex: make
 2. Les tests du code. Il peut s'agir de tests d'intégration, de tests unitaires ou autres comme des tests d'accessibilité. Ex: pytest
@@ -23,7 +23,7 @@ En réalité il est préférable de bien distinguer la CI et la CD :
 4. Le packaging. On peut alors construire les livrables du code, comme une image Docker. Ex: Packer, Docker
 5. La livraison. On envoie les packages vers le registry correspondant à l'environnement spécifique (si disponible). Ex: Jfrog, Docker Registry 
 
-** Le Déploiement Continu **
+**Le Déploiement Continu**
 
 6. Le provisioning. On réserve les ressources nécessaires au déploiement. Ex: Terraform
 7. Le déploiement. Les charges utiles sont mises à jour dans l'environnement voulu. Ex: K8S, cloud
