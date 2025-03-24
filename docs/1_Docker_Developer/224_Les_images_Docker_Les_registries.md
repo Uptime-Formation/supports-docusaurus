@@ -73,7 +73,7 @@ $ docker push localhost:5000/my-ubuntu
 
 ```shell
 # Supprimer l'image en local
-$ docker image remove ubuntu:16.04
+$ docker image remove ubuntu:latest
 $ docker image remove localhost:5000/my-ubuntu
 ```
 

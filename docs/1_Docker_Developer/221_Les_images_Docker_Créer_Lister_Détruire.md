@@ -62,8 +62,8 @@ La commande `rm` supprime une image spécifique.
 La commande``prune` recherche les images sans conteneur démarré pour les supprimer.
  
 ```shell
-$ docker image pull nginx:1.14
-$ docker image rm  nginx:1.14
+$ docker image pull nginx:1.27
+$ docker image rm  nginx:1.27
 $ docker image pull busybox
 $ docker image prune
 ```  

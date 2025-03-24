@@ -11,8 +11,8 @@ weight: 1
 # Que se passe-t-il quand on pull une image ?
 
 ```shell
-$ docker pull python:3.9
-3.9: Pulling from library/python
+$ docker pull python:3.12
+3.12: Pulling from library/python
 1e4aec178e08: Downloading [=========================================>         ]  45.75MB/55.05MB
 6c1024729fee: Download complete 
 c3aa11fbc85a: Download complete 
@@ -31,13 +31,13 @@ Ces couches ont des identifiants, des hashs, et des poids, donc des contenus, di
 Observez l'historique de construction de l'image avec 
 
 ```shell
-$ docker image history python:3.9
+$ docker image history python:3.12
 ```
 
 On peut également avoir des informations avancées avec 
 
 ```shell
-$ docker image inspect python:3.9
+$ docker image inspect python:3.12
 ```
 
 ---

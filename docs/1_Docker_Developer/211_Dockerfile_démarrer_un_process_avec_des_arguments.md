@@ -37,7 +37,7 @@ ENTRYPOINT command param1 param2
 **Précise le programme de base (le "prompt") avec lequel sera lancé la commande**
 
 ```Dockerfile
-FROM python:3.9
+FROM python:3.12
 ENTRYPOINT ["/usr/bin/python3"]
 ```
 
@@ -74,7 +74,7 @@ La plupart des cas de commandes docker run que nous avons vu jusqu'ici rentrent 
 On utilise ce cas quand on veut créer un conteneur "outil" basé sur un programme "prompt" de base. Exemple donné plus haut:
 
 ```Dockerfile
-FROM python:3.9
+FROM python:3.12
 ENTRYPOINT ["/usr/bin/python3"]
 ```
 
@@ -90,7 +90,7 @@ Vois aussi cowsay plus bas comme outils pour décorer du texte avec Docker. On p
 #### Cas 3 - ENTRYPOINT type ["/usr/bin/python3"] + une CMD
 
 ```Dockerfile
-FROM python:3.9
+FROM python:3.12
 ENTRYPOINT ["/usr/bin/python3"]
 CMD ['-c', 'print("je peux executer du python directement")']
 ```

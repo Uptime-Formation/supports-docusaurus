@@ -84,7 +84,7 @@ On peut également prendre une sorte de "capture" du conteneur (de son système 
 
 ### TP : Une image plus simple
 
-A l'aide de l'image `python:3.9-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
+A l'aide de l'image `python:3.12-alpine` et en remplaçant les instructions nécessaires (pas besoin d'installer `python3-pip` car ce programme est désormais inclus dans l'image de base), repackagez l'app microblog en une image taggée `microblog:slim` ou `microblog:light`. Comparez la taille entre les deux images ainsi construites.
 
 ## Avancé : bien choisir son image de base un choix complexe
 

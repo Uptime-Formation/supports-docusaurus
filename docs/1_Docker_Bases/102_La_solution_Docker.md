@@ -19,11 +19,16 @@ On peut ainsi considérer que Docker est une techno fondatrice, qui n'avait pas 
 
 Désormais Docker tend à devenir un modèle de système qui est amélioré et implementé par différents opérateurs.  
 
+![](../../static/img/docker/docker-os-vm.png)
+![](../../static/img/docker/docker-os-docker.png)
+
 ---
 
 ## Comment ça marche Docker?
 
-![](/img/docker/docker-daemon-architecture.jpg)
+![](../../static/img/docker/docker-daemon-architecture.jpg)
+
+../assets/images/Moby-logo.png
 
 On voit qu'il y a plusieurs couches distinctes
 * ILM / interfaces utilisateurs (docker, docker-compose) et autres, pour gérer le cycle de vie des conteneurs 

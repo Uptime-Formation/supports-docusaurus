@@ -24,7 +24,7 @@ Savez-vous ce que fait la commande `docker commit` ? En quoi est-elle utile ?
 Voici un Dockerfile. Qu'en pensez-vous ? 
 
 ```Dockerfile
-ARG FROM=alpine:3.17.7
+ARG FROM=alpine:3.21
 FROM ${FROM} 
 
 ENV APP="/app"

@@ -102,29 +102,18 @@ sudo service apache2 start
   Au lieu de lancer un tas de serveurs et de les configurer en exécutant le même code sur chacun d'eux, on crée une image autonome avec le logiciel, les fichiers et tous les autres détails pertinents.
   Un autre outil IaC déploie cette image sur les serveurs, qu'il s'agisse de VMs ou de conteneurs.
   Ex: Docker, Packer
-```json
-{
-  "builders": [{
-    "ami_name": "packer-example-",
-    "instance_type": "t2.micro",
-    "region": "us-east-2",
-    "type": "amazon-ebs",
-    "source_ami": "ami-0fb653ca2d3203ac1",
-    "ssh_username": "ubuntu"
-  }],
-  "provisioners": [{
-    "type": "shell",
-    "inline": [
-      "sudo apt-get update",
-      "sudo apt-get install -y php apache2",
-      "sudo git clone https://github.com/brikis98/php-app.git /var/www/html/app"
-    ],
-    "environment_vars": [
-      "DEBIAN_FRONTEND=noninteractive"
-    ],
-    "pause_before": "60s"
-  }]
-}
+
+```dockerfile
+
+FROM httpd:2.4.39
+
+RUN apt upgrade && apt install git libapache2-mod-php && apt clean 
+
+COPY apache2.conf /etc/apache2/apache.conf
+
+RUN git clone https://github.com/brikis98/php-app.git /var/www/html/app
+
+CMD ["apache2", "-d"]
 
 ```
 
