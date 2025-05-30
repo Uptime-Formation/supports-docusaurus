@@ -24,9 +24,73 @@ Dans ce contexte un élément qui a fait le succès de Docker est le Docker Hub 
 
 Il s'agit d'un répertoire public et souvent gratuit d'images (officielles ou non) pour des milliers d'applications pré-configurées.
 
+
+
+On va tester l'image Hello World : [https://hub.docker.com/_/hello-world/](https://hub.docker.com/_/hello-world/)
+
 ---
 
-# Docker Hub: comment ça marche ?
+### Ma première instance Docker
+
+**`hello-world` est l'image Docker la plus simple pour commencer.**
+
+Lancez la commande pour exécuter l'image, nous allons analyser son retour. 
+
+```shell
+
+docker run hello-world
+
+```
+
+---
+
+**Que se passe-t-il si vous relancez la même commande ?**  
+
+Une fois que vous avez téléchargé une image, vous pouvez la voir avec la commande :
+
+```shell
+
+docker images 
+
+```
+
+**Décomposons cette «ligne de commande»** 
+
+```shell
+$ docker run hello-world
+```
+
+* La commande 
+```shell
+"docker" est ici l'exécutable du client docker qu'on appelle sur la machine locale
+```
+* L'argument
+```shell
+"run" est un argument qui indique à l'exécutable ce qu'on veut faire.
+
+En l'occurence c'est une commande Docker.
+
+```
+* Le sous-argument, le paramètre de la commande
+```shell"
+"hello-world"" est le nom d'une image Docker sur le DockerHub 
+```
+
+---
+
+## Docker Hub, chercher une image
+
+Visitez [hub.docker.com](https://hub.docker.com).
+
+C'est l'endroit où va chercher Docker par défaut. 
+
+On nomme cela un registry, on y reviendra.
+
+Par exemple cherchez l'image "ubuntu" sur le Docker Hub.
+
+---
+
+### Docker Hub: comment ça marche ?
 
 - On peut y chercher et trouver presque n'importe quel logiciel au format d'image Docker.
 
@@ -39,30 +103,6 @@ Il s'agit d'un répertoire public et souvent gratuit d'images (officielles ou no
 - On peut aussi juste télécharger l'image : `docker pull <image>`
 
 On peut également y créer un compte gratuit pour pousser et distribuer ses propres images, ou installer son propre serveur de distribution d'images privé ou public, appelé **registry**.
-
----
-
-### Ma première instance Docker
-
-**L'image Docker la plus simple pour commencer est `hello-world`.**
-
-Lancez la commande pour exécuter l'image, nous allons analyser son retour. 
-
-```shell
-
-docker run hello-world
-
-```
-
-Que se passe-t-il si vous relancez la même commande ?  
-
-Une fois que vous avez téléchargé une image, vous pouvez la voir avec la commande :
-
-```shell
-
-docker images 
-
-```
 
 ---
 

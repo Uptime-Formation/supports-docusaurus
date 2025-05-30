@@ -146,7 +146,9 @@ Ce TP vous guide à travers l'installation et la configuration de Longhorn pour 
 
 ---
 
-## La persistance de données : un sujet complEx: ### Historique des technologies de mise à disposition de volumes sur le réseau
+## La persistance de données : un sujet complexe
+
+### Historique des technologies de mise à disposition de volumes sur le réseau
 
 **Les technologies de mise à disposition de volumes sur le réseau ont évolué considérablement au fil des décennies.**
 

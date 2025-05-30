@@ -66,9 +66,6 @@ app = Flask(__name__)
 REDIS_HOST = os.getenv('REDIS_HOST', None)
 REDIS_PORT = os.getenv('REDIS_PORT', 6379)
 
-# Récupération du port d'application depuis les variables d'environnement
-APP_PORT = int(os.getenv('APP_PORT', 3000))
-
 # Connexion à Redis si disponible
 redis_client = None
 counter_value = 0  # Valeur par défaut si Redis n'est pas disponible
@@ -114,7 +111,7 @@ def increment_counter():
     return jsonify({'status': 'error', 'message': 'Redis not available'})
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=APP_PORT)
+    app.run(host='0.0.0.0', port=3000)
 
 
 ```
@@ -184,15 +181,18 @@ redis==4.6.0
 
 
 ```Dockerfile
-FROM python:3.11-slim-bullseye
 
-ARG APP_VERSION=1.0
+ARG APP_VERSION=0.1.0
+ARG IMAGE="python:3.11-slim-bullseye"
+ARG APP_PATH="/app"
 
-LABEL maintainer="support@mytechcompany.io" \
-      version="${APP_VERSION}" \
-      description="Docker image for MyFirstApp - a Flask application with optional Redis support"
+FROM $IMAGE
 
-WORKDIR /app
+LABEL org.opencontainers.image.authors="support@mytechcompany.io" \
+      org.opencontainers.image.version="${APP_VERSION}" \
+      org.opencontainers.image.description="Docker image for MyFirstApp - a Flask application with optional Redis support"
+
+WORKDIR $APP_PATH
 
 RUN apt update && apt install -y curl && apt clean
 
@@ -200,17 +200,17 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN useradd -ms /bin/bash flaskuser && chown -R flaskuser /app
+RUN useradd -ms /bin/bash flaskuser && chown -R flaskuser $APP_PATH
 
 USER flaskuser
 
-COPY . .
+COPY --chown flaskuser . .
 
-ENV APP_PORT=3000
-
-EXPOSE ${APP_PORT}
+EXPOSE 3000
 
 CMD ["python","main.py"]
+
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:3000/healthz || exit 1
 
 ```
 

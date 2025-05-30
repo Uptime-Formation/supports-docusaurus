@@ -19,8 +19,26 @@ On peut ainsi considérer que Docker est une techno fondatrice, qui n'avait pas 
 
 Désormais Docker tend à devenir un modèle de système qui est amélioré et implementé par différents opérateurs.  
 
+---
+## VM vs Docker
+
+
 ![](../../static/img/docker/docker-os-vm.png)
 ![](../../static/img/docker/docker-os-docker.png)
+
+---
+
+## Les instances
+
+![](/img/docker/docker-daemon-architecture.jpg)
+
+---
+
+## Le cycle de vie des instances Docker
+
+![](../../static/img/docker/docker-lifecycle.png)
+
+--- 
 
 ---
 

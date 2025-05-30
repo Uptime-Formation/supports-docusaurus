@@ -100,11 +100,7 @@ $ docker container run
 
 ## Avancé : L'option restart=always
 
-```shell
-$ docker run -d --name redis --restart=always redis --bad-flag 
-```
-Que se passe-t-il quand vous faites la liste des conteneurs ? 
-Stopper le conteneur.
+**Par défaut, le daemon docker ne redémarre pas les process qui sont arrêtés, mais il est possible (et recommandé) de définir une clause de redémarrage à la création.**
 
 ```shell
 $ docker run -d --name redis --restart=always redis
