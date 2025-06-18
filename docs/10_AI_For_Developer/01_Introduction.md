@@ -180,7 +180,7 @@ Wala rangi yake inayofanana na yako.
 
 ---
 
-## Experience 2 : traduire via un LLM un texte long...**
+## Experience 2 : traduire via un LLM un texte long...
 
 **Maintenant, faites traduire un texte de plusieurs milliers de mots à un LLM dans une langue de votre choix.**
 
@@ -193,7 +193,7 @@ https://www.gutenberg.org/ebooks/4772
 
 ## Experience 3 : imaginons la translitération d'une librarie codée dans un langage vers un autre langage.
 
-**Enfin si on considère le code informatique, et qu'on veut obtenir via un LLM une traduction d'un langage vers un autre ?**
+**Considèrons le code informatique, et qu'on veuille obtenir via un LLM une traduction d'un langage vers un autre ?**
 
 - Prenez par exemple le code de la page suivante : https://salsa.debian.org/helmutg/debvm/-/blob/main/bin/debefivm-create?ref_type=heads
 - Copiez le texte
@@ -235,15 +235,15 @@ As a code assistant, you mush convert this program to python.
 
 ## Définition du Lexique
 
-**Parmi ces termes, combien connaissez-vous déjà ?**
+**Parmi ces termes, combien maîtrisez-vous déjà ?**
 
 1. **Chatbot** : Désigne un programme chargé de répondre à des questions ou de fournir des informations à un utilisateur via une interface de dialogue.
 1. **IDE** : Désigne un environnement de développement intégré.
 1. **IA Gen** : Désigne l'ensemble des techniques et outils permettant de générer des contenus via des modèles de langages génératifs, dont le code.  
+1. **Modèle** : Désigne un objet résultant d'un entraînement par Machine Learning sur des données regroupées dans un ou plusieurs datasets. 
 1. **LLM** : Désigne les Modèles de Language de grande taille qui se sont généralisés suite au succès de ChatGPT.
 1. **Prompt** : Désigne le texte qui sert d'entrée à un modèle de langage génératif.
 1. **Token** : Désigne une unité de texte qui peut être traitée par un modèle de langage génératif ex: https://gpt-tokenizer.dev/ 
-1. **Embedding** : Désigne une représentation de mots (ou tokens) par des vecteurs numériques multidimensionnels.
 1. **Agent** : Un programme chargé dans une architecture IA Agentique d'augmenter un LLM.
 1. **Code Gen** : La production de code par IA Générative
 1. **MCP** : Le Model Context Protocol est un standard destiné à augmenter les requêtes vers les LLM et les IDE via des agents.

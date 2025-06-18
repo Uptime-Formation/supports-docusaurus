@@ -19,11 +19,6 @@ https://2025.stateofai.dev/en-US/usage/
 
 On observe une situation inégale selon les profils et les appétences.
 
-- Rejet 
-- Simple assistance  
-- Outillages plus conséquents  
-- Outillage lourd 
-
 ---
 
 **On constate que la grande majorité des utilsateurs vont venir corriger le code fourni par l'IA.**
@@ -41,6 +36,8 @@ Il implique d'avoir des outils qui permettent de refactorer du code de manière 
 - 2000 Gestion CICD : contrôle de version, tests locaux (linters)
 - 2010 Allègement : Eclipse et Netbeans vs. SublimeText, Atom  
 - 2020 Versions cloud : collaboration, association avec les autres outils de développement aux environnements de déploiement
+
+---
 
 **Les outils informatiques du développeur ont constamment évolué dans le sens de l'automation et de l'augmentation de sa capacité.**
 
@@ -79,7 +76,15 @@ Par ordre approximatif
 
 ### Panorama des outils (Jan 2025)
 
+**Voici une proposition de classement des solutions de Code Gen selon leurs capacités.**
+
+Vous allez voir en quoi le rôle du développeur risque d'évoluer avec les solutions les plus avances.   
+
+---
+
 ![](../../static/img/ai/ai-coding-ladnscape-202501.png)
+
+Article source : https://prompt.16x.engineer/blog/ai-coding-l1-l5
 
 ---
 
@@ -107,8 +112,7 @@ Par ordre approximatif
 
 Fournit un encadrement des prompts et une automatisation de la production du code via des outils intégrés.
 
-Ticket to Code 
-IDE with Chat	
+Ex:  Ticket to Code 
 
 <details><summary>Afficher</summary>
 
@@ -138,10 +142,12 @@ IDE with Chat
 
 #### L3 Project-level Generation
 
-Automatise la chaîne de production du code, depuis la création des tickets jusqu'à la production du code en passant par la gestion de la codebase.
+Automatise la chaîne de production du code, depuis la création des tickets jusqu'à la production du code en passant par la gestion de la Pull Request.
 
-Ticket to PR  
-Prompt to UI	
+On passe à une autonomie contrôlée par l'humain de la solution.
+
+Ex: Ticket to PR  
+	
 
 
 <details><summary>Afficher</summary>
@@ -167,9 +173,11 @@ Prompt to UI
 ---
 
 #### L4 AI Software Engineer
-PRD to Production
+
 
 Ces outils visent la mise en production complète d'un produit depuis les spécifications jusqu'au déploiement et à la maintenance.
+
+On passe à une véritable autonomie de la solution.
 
 <details><summary>Afficher</summary>
 
@@ -200,6 +208,8 @@ Ces outils visent la mise en production complète d'un produit depuis les spéci
 #### L5 AI Development Teams
 
 On passe à une architecture multi agents qui collaborent entre eux pour créer et gérer des applications avec des rôles différents.
+
+L'idée est de passer à de échanges entre systèmes autonomes.
 
 <details><summary>Afficher</summary>
 
@@ -234,3 +244,75 @@ Le développeur dans un rôle augmenté :
 - responsable d'exploitation
 - responsable des coûts (Finops, usine logicielle)
 
+--- 
+
+## Le Model Context Protocol
+
+**La techno MCP est sans doute celle qui a marqué le début de l'année 2025.**
+
+Elle a été initiée par l'équipe d'Anthropic qui produit Claude, avec un protocole ouvert, qui permet aujourd'hui le développement d'une grande partie des solutions avancées.
+
+ 
+
+---
+
+**MCP répond à un problème simple : comment fabriquer des outils universels pour étendre les modèles ?**
+
+Les modèles à terme intègreront de mieux en mieux ce type de protocoles pour augmenter les capacités d'actions des programmes à base d'agents.
+
+---
+
+**Sans MCP, il faut que chaque modèle implémente son protocole pour interagir avec l'environnement utilisateur.**
+
+![](./AI.MCP.without.png)
+
+---
+
+**Avec MCP, il existe une couche d'indirection standardisée qui interconnecte de manière normalisée les modèles avec des agents choisis par l'utilisateur.**
+
+![](./AI.MCP.With.png)
+
+---
+
+
+![](./AI.MCP.Architecture.png)
+
+**Les parties prenantes dans le modèle MCP sont**  
+
+- le **Host** : le pilote des opérations (ex: IDE) 
+- le **Client** : une implémentation du protocole qui gère les messages vers un serveur à la fois 
+- le **Server** : une implémentation du protocole locale ou distante qui met à disposition des fonctionnalités 
+
+--- 
+
+**Chaque serveur est conçu pour être léger.**
+
+- simple,
+- indépendant, 
+- invisible des autres, 
+- ignorant du contexte générale,
+- responsable d'exposer ses fonctionnalités
+
+--- 
+
+**Un serveur MCP expose trois grands types de fonctionnalités.**
+
+- **Prompts** : templates interactifs à disposition de l'utilisateur (ex: commandes comme /list ) 
+- **Resources** : données en lecture seule utilisables par le client (ex: contenu du fichier, d'une ressource en BDD) 
+- **Tools** : Actions appelables par le modèle (ex: écrire un fichier)
+
+--- 
+
+**Les agents sont des boucles de rétroaction qui font partie de workflows dits "agentiques".** 
+
+- Lecture et analyse des ressources
+- Prendre des décisions en fonction du contexte
+- Génération de données structurées
+- Gestion des tâches à plusieurs étapes
+- Fournir une assistance interactive
+
+---
+
+**Pour en savoir plus, je vous conseille le module de formation de Hugging Face.** 
+
+Lien :  https://huggingface.co/learn/mcp-course

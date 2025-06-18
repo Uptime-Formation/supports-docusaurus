@@ -19,11 +19,13 @@ Décris le prompt engineering sous forme de haiku en français.
 
 **C'est la revanche des littéraires : pour obtenir une bonne sortie texte, il faut une bonne entrée texte.**
 
-Le prompt est la base de tout LLM : il définit ce qu'il va sortir.
+Le prompt est la base des échanges avec un modèle de language.
 
-le texte est le flux en entrée et sortie d'un LLM et définit ce qu'il va sortir. 
+Son texte est le flux en entrée d'un LLM et définit le texte qui va sortir. 
 
-C'est une raison majeure du succès des LLM : toute personne sachant écrire peut en utiliser un, la barrière est (relativement) basse.
+---
+
+**C'est une raison majeure du succès des LLM : toute personne sachant écrire peut en utiliser un, la barrière est (relativement) basse.**
 
 Pour autant, l'expérience courante des utilisateurs est qu'il faut du temps pour parvenir au résultat attendu.
 

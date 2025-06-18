@@ -162,6 +162,8 @@ Ex: pour construire une solution en Python qui utilise Python, une message queue
 
 **Une nouvelle catégorie de logiciels permet de gérer et générer des prompts à la demande.**
 
+![](./AI.Tools.16xprompt.png)
+
 Une des approches consiste à disposer de fragments de prompts pré-établis et de les assembler pour créer des prompts personnalisés.
 
 - https://github.com/thibaultyou/prompt-library

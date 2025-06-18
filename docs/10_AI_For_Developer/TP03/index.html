@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Excel to Web</title>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <style>
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    #excelTable { margin-top: 20px; }
+    #error { color: red; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <input type="file" id="excelFile" accept=".xlsx,.xls">
+  <div id="excelTable"></div>
+  <div id="error"></div>
+  <script>
+    document.getElementById('excelFile').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      var errorDiv = document.getElementById('error');
+      errorDiv.textContent = '';
+
+      if (!file) {
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, { type: 'array' });
+
+        // Vérifier s'il y a des feuilles dans le workbook
+        if (workbook.SheetNames.length === 0) {
+          errorDiv.textContent = 'Le fichier Excel ne contient aucune feuille.';
+          return;
+        }
+
+        var firstSheetName = workbook.SheetNames[0];
+        var worksheet = workbook.Sheets[firstSheetName];
+
+        // Vérifier si la feuille est vide
+        var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        if (jsonData.length === 0) {
+          errorDiv.textContent = 'La première feuille du fichier Excel est vide.';
+          return;
+        }
+
+        // Générer le tableau HTML
+        var html = '<table>';
+        for (var i = 0; i < jsonData.length; i++) {
+          html += '<tr>';
+          for (var j = 0; j < jsonData[i].length; j++) {
+            if (i === 0) {
+              html += '<th>' + jsonData[i][j] + '</th>';
+            } else {
+              html += '<td>' + jsonData[i][j] + '</td>';
+            }
+          }
+          html += '</tr>';
+        }
+        html += '</table>';
+
+        document.getElementById('excelTable').innerHTML = html;
+      };
+
+      reader.onerror = function() {
+        errorDiv.textContent = 'Erreur lors de la lecture du fichier.';
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+  </script>
+</body>
+</html>

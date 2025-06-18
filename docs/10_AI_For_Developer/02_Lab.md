@@ -4,7 +4,7 @@ title: 1 - Le lab
 
 ## Les outils disponibles sur le lab 
 
-**Pour faciliter votre travail, nous avons installé quelques outils sur le lab.**
+**Pour faciliter votre travail, nous avons installé quelques outils sur votre machine virtuell, votre lab disponible le temps de la formation.**
 
 Ce sont des outils disponibles gratuitement en licence ouverte (open source, open weights).
 
@@ -59,7 +59,9 @@ Les modèles commerciaux offrent des capacités plus avancées et des performanc
 
 --- 
 
-**Attention ollama est lancé via docker dans le lab, il faut appeler la ligne de commande via Docker.**
+**Attention ollama est lancé dans le lab via docker.**
+
+il faut appeler la ligne de commande à travers un appel au conteneur.
 
 ```bash
 
@@ -77,7 +79,9 @@ docker exec ollama ollama pull [model]
 
 Sur la base d'un modèle donné, vous pouvez créer un nouveau modèle personnalisé en ajoutant des instructions dans le fichier.
 
-Voir : https://ollama.readthedocs.io/en/modelfile/
+C'est une forme de **persona** comme on en verra plus tard.
+
+Documentation : https://ollama.readthedocs.io/en/modelfile/
 
 ---
 

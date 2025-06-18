@@ -2,13 +2,13 @@
 title: 3 - Designer avec l'IA
 ---
 
-## Utiliser l'IA pour le design 
+## Utiliser l'IA pour le design de projet informatique
 
 **L'IA Gen est un outil de design intéressant car il permet de challenger ses propres idées.**
 
 Pour bien designer, il faut bien définir le cadre et les contraintes qu'il faut respecter.
 
-En même temps il faut être capable de réfléchir à plusieurs modèles et de les comparer.
+En même temps il faut être capable de réfléchir dans plusieurs directions, les comparer, les enrichir.
 
 ---
 
@@ -22,7 +22,7 @@ Mais il est difficile de générer du sens, d'éviter d'être noyé et de garder
 
 ---
 
-#### Faire au MVP avant d'avoir une vue globale
+#### Faire un MVP avant d'avoir une vue globale
 
 **Les LLMs peuvent vous fournir très rapidement une version 1 de votre application.**
 
@@ -216,9 +216,10 @@ You are a meticulous **Tests Manager** specializing in shift-left QA. Your focus
 **On voit qu'à terme les prompts vont être de plus en plus complexes et composés de différentes sources.**
 
 Voici un exemple de workflow pour automatiser la production des roles avec une source de documentation.
-# Guide de Prompt Engineering - Version Française
 
-## 1. Utiliser un modèle avec réflexion
+---
+
+### 1. Utiliser un modèle avec réflexion
 
 ```
 En tant qu'analyste métier spécialisé dans le développement logiciel, 
@@ -228,7 +229,7 @@ Menez l'entretien dans un style conversationnel, en me posant une question
 à la fois et en livrant un document d'exigences détaillé
 ```
 
-## 2. Continuer avec ce modèle avec réflexion
+### 2. Continuer avec ce modèle avec réflexion
 
 ```
 En tant qu'architecte logiciel expert en <vos frameworks choisis>, 
@@ -237,7 +238,7 @@ aperçu technique détaillé de la structure de projet et de
 l'infrastructure nécessaires pour ce projet
 ```
 
-## 3. Avec cette analyse technique, prendre un modèle plus simple pour la production des rôles
+### 3. Avec cette analyse technique, prendre un modèle plus simple pour la production des rôles
 
 ```
 En tant qu'ingénieur logiciel, spécialisé en <vos frameworks choisis>,
@@ -248,7 +249,7 @@ et d'erreur, afin d'atteindre la couverture de code la plus élevée
 possible pour mon projet
 ```
 
-## 4. Continuer avec un modèle normal
+### 4. Continuer avec un modèle normal
 
 ```
 En tant qu'ingénieur de prompts expert et ingénieur logiciel, spécialisé en 
@@ -264,25 +265,25 @@ dépendances, et créer des prompts IA par test dans le format suivant :
     plus de règles selon vos besoins)
 ```
 
-## 5. Ajouter vos documents dans un dossier ./docs du projet en cours.
+### 5. Ajouter vos documents dans un dossier ./docs du projet en cours.
 
-## 6. Créer un fichier .windsurfrules dans le projet en cours et demander à Windsurf :
+### 6. Créer un fichier .windsurfrules dans le projet en cours et demander à Windsurf :
 
 ```
 Révisez le document d'analyse technique, puis remplissez mon 
 document .windsurfrules avec les règles dont j'ai besoin pour ce projet. 
 Utilisez le modèle suivant :
 
-# Framework de test
+## Framework de test
 - /src/my-test-project
 
-# Projet API
+## Projet API
 - /src/my-api-project
 
-# Documents de contexte
+## Documents de contexte
 - /docs
 
-# Directives de style de codage
+## Directives de style de codage
 - Toujours suivre les principes SOLID
   - etc
 ```
