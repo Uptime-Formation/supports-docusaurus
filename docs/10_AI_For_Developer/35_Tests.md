@@ -43,25 +43,173 @@ Produis un fichier de test unitaire pour le code fourni en prenant en compte les
 
 --- 
 
+## Comment les LLM associent code source et tests : Mécanismes d'apprentissage
+
+**Les LLM orientés code comme Codex, AlphaCode, ou les modèles de GitHub Copilot, apprennent à associer code et tests grâce à leur entraînement sur des datasets massifs de paires code-test.**
+
+---
+
+**Ces datasets leur permettent d'apprendre l'association entre des motifs / structures / patterns.**
+     
+     `def test_...()` → appelle `fonction_x()` avec entrées Y → vérifie sortie Z
+
+
+---
+
+**Puis le modèle utilise l'attention pour relier fonctions de tests et code**
+
+     ```python
+     # Code
+     def add(a, b):
+         return a + b
+     
+     # Test associé (dans un autre fichier)
+     def test_add():
+         assert add(2, 3) == 5  # Lien via le nom 'add'
+     ```
+
+---
+
+**Enfin le modèle va généraliser pour appliquer ces motis à ne nouveaux contextes.**
+
+Une fois qu'il a assimilé le pattern, il le généralise à travers les langages (pytest → JUnit → Jest)
+
+---
+
+### Les LLMs sont-ils de bons testeurs ? 
+
+**En pratique, il est difficile d'obtenir de bons tests sans une réelle participation humaine.**
+
+- **Couverture des tests** :  Les LLM tendent à générer des tests "évidents" mais manquent les cas limites complexes.
+
+- **Hallucinations** :  Peuvent inventer des assertions non valides (ex: `assert is_prime(4) == True`)
+
+- **Biais des données** :  Surreprésentation du Python (45% des datasets) vs langages comme Rust (2%).
+
+---
+
+**La fourniture des documents pour guider la production des tests permet de corriger partiellement ces problèles.**
+
+On revient sur la logique qu'on a défini : écrire un persona qui inclut toutes les règles de production propres à l'équipe / entreprise.
+
+---
 
 ## Automatiser la création de ses tests unitaires (Code to Test)
 
-Basique avec du templating / few shots 
+**C'est une pratique assez triviale en utilisant du templating et/ou du few shots.** 
 
-Les modèles AI Gen spécialisés code ont appris à faire ça. 
+ 
+---
 
-Il faut fournir des documents contextuels pour encadrer la tâche. 
+
+**Pour générer des tests unitaires à partir du code existant, la recette est simple.**
+
+- Utiliser un modèle spécialisé code
+  - Codex
+  - AlphaCode
+- Fournir les informations de contexte adéquates :
+  - code à tester
+  - cadrage et bonnes pratiques des tests
+- Lancer un prompt adapté
+  - *templating* 
+  - *few-shot learning*
+  
+```text
+# Producing Code to Test
+<contraintes>
+Chaque test unitaire doit valider une seule fonctionnalité ou un seul cas de figure.
+Un test unitaire ne doit pas vérifier à la fois la logique d'une fonction et son interaction avec une base de données.
+Les tests unitaires doivent être indépendants les uns des autres.
+</contraintes>
+<code>
+# Contexte pour une fonction de calcul
+def add(a: int, b: int) -> int:
+   """Additionne deux nombres."""
+   return a + b
+
+</code>
+<example>
+
+def multiply(x, y):
+   return x * y
+# Tests générés :
+def test_multiply():
+   assert multiply(2, 3) == 6  # Cas nominal
+   assert multiply(0, 5) == 0  # Valeur limite
+   
+</example>
+<task>
+En tant que spécialiste des tests dans l'entreprise, tu dois génèrer un fichier de tests unitaires pour le code fourni en utilisant le framework pytest.  
+
+Tu dois respecter les contraintes et utiliser l'exemple fourni.
+
+Couvre ces cas :  
+- Cas nominal  
+- Erreurs de type  
+- Valeurs limites  
+- ...
+<task>
+
+   ```
+
+
+**L'IA produira un bon départ, avec des tests couvrant une partie des cas critiques, fournissant ainsi un gain de temps sur les tests répétitifs.**
 
 --- 
 
 ## Test Driven Development (Test to Code) 
 
-Workflow intéressant car débouche sur l'autonomie 
+**On va voir l'autre workflow, qui est intéressant car il débouche sur l'autonomie agentique.** 
 
-on fournit les besoins et les données en entrée / sortie 
+Cette approche va garantir un code *testé* et *spécification-driven*.  
 
-on demande à produire les tests 
+- on fournit les contraintes métiers et les données en entrée / sortie
 
-on demande à produire le code 
+- On demande à produire l'architecture du code (structure, entrées/sorties attendues)
+```markdown
+<persona>... tech lead ... </persona>
+<contraintes> ... </contraintes>
+Fonction : trier_liste(liste: List[int]) -> List[int]
+Exigences :
+- Tri ascendant
+- Gère les listes vides
+- Lève TypeError si entrée non-liste
+```
 
-On veut faire d'abord les tests qui précisent les fonctionnalités de la librairie, puis développer le code sur la base des tests. 
+- On demande à produire les tests 
+```markdown
+
+<persona>... tech lead ... </persona>
+<contraintes> ... </contraintes>
+<contexte>...sortie du tech lead...</contexte>  
+
+Écris des tests pytest pour une la fonction `trier_liste` avec :  
+- Test liste normale : [3, 1, 2] → [1, 2, 3]  
+- Test liste vide : [] → []  
+- Test erreur de type : "abc" → TypeError  
+```
+
+- On demande à produire le code 
+```markdown
+
+<persona>... tech lead ... </persona>
+<contraintes> ... </contraintes>
+<contexte>...sortie du tech lead...</contexte>  
+<contexte>...sortie du testeur...</contexte>  
+
+Écris une fonction Python `trier_liste` qui passe les tests.  
+
+```
+---
+
+**Avec ce type de workflow, on va déboucher sur une boucle de validation**  
+
+En produisant en boucle les tests et le code, l'exécution des tests va corriger les échecs de l'IA.  
+
+---
+
+**Cela implique d'avoir de bonnes spécifications et une bonne définition des données en entrée / sortie .**
+
+Mais si on a fourni toutes les données nécessaires, avec le bon modèle, on se dirige vers une assurance que le code produit fonctionne et est conforme aux spécifications.
+
+---
