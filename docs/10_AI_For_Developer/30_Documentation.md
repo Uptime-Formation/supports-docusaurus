@@ -197,6 +197,61 @@ C'est un moyen de gagner en productivité à terme via une librairie de prompts.
 
 ---
 
+### Un exemple de fichier de contraintes
+
+```text
+# file: bonnes_pratiques_documentation.md
+
+```markdown
+
+## Documentation des classes
+class MaClasse:
+    """Description concise de la classe.
+
+    Attributes:
+        attr1 (type): Description de l'attribut.
+        attr2 (type): Description de l'attribut.
+    """
+
+    def methode(self, param1, param2):
+        """Description concise de la méthode.
+
+        Args:
+            param1 (type): Description.
+            param2 (type): Description.
+
+        Returns:
+            type: Description.
+
+        Raises:
+            ErrorType: Si condition d'erreur.
+        """
+
+## Bonnes pratiques
+1. **Docstrings**:
+   - Utiliser le format Google Style (comme ci-dessus) ou NumPy
+   - Toujours inclure : description, params, returns et raises si applicable
+
+2. **Modules**:
+   - Documenter en tête de fichier avec :
+     - Brève description
+     - Exemple minimal si pertinent
+     - Liste des classes/fonctions principales
+
+3. **Fonctions**:
+   - Décrire l'objectif
+   - Spécifier types params/return
+   - Mentionner effets de bord
+
+4. **Types complexes**:
+   - Utiliser `typing` pour clarifier
+   - Ex: `Dict[str, List[int]]`
+
+5. **Exemples**:
+   - Inclure des exemples courts dans les docstrings
+   - Format exécutable (doctest)
+
+```
 
 ---
 

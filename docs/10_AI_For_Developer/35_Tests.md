@@ -5,7 +5,11 @@ title: 4 - Bien tester
 
 Utilisez l'outil de votre choix pour exécuter le prompt suivant.
 
-Choisissez un fichier à tester. Ex [AlternC](https://github.com/AlternC/AlternC/blob/main/bureau/class/m_quota.php)
+Choisissez un fichier à tester.
+
+Un exemple PHP : [AlternC](https://github.com/AlternC/AlternC/blob/main/bureau/class/m_quota.php)
+
+Voici le prompt à utilier
 
 ```text
 
@@ -21,22 +25,16 @@ Suivre le principe AAA (Arrange, Act, Assert) pour structurer les tests.
 Les tests unitaires doivent valider les scénarios attendus (ex. une fonction qui renvoie un résultat prévu).
 Tester les cas limites de la plage de valeurs (ex. 0, -1, 1000, etc.).
 Vérifier que les erreurs sont levées correctement (ex. division par zéro, paramètres invalides).
-Tester les comportements des dépendances (ex. appel d'une API, lecture d'un fichier).
-Les développeurs négligent souvent de tester les cas d'erreur non gérés (ex. entrées invalides, fichiers corrompus).
-Ajouter des tests pour chaque cas d'erreur possible.
-Les tests unitaires ne mesurent pas la performance (ex. temps d'exécution).
-Les tests unitaires ne vérifient pas les aspects de sécurité (ex. injection SQL, attaques XSS).
-Réutiliser des tests via des méthodes ou des fonctions de test partagées.
 </recommandation>
+
 <fichier>
 
 ... inclure le code ...
 
 <fichier>
+
 <task>
-
 Produis un fichier de test unitaire pour le code fourni en prenant en compte les recommandations.
-
 <task>
 
 ```
@@ -115,34 +113,33 @@ On revient sur la logique qu'on a défini : écrire un persona qui inclut toutes
   - *few-shot learning*
   
 ```text
+
 # Producing Code to Test
 <contraintes>
 Chaque test unitaire doit valider une seule fonctionnalité ou un seul cas de figure.
 Un test unitaire ne doit pas vérifier à la fois la logique d'une fonction et son interaction avec une base de données.
 Les tests unitaires doivent être indépendants les uns des autres.
 </contraintes>
+
 <code>
 # Contexte pour une fonction de calcul
 def add(a: int, b: int) -> int:
    """Additionne deux nombres."""
    return a + b
-
 </code>
-<example>
 
+<example>
 def multiply(x, y):
    return x * y
 # Tests générés :
 def test_multiply():
    assert multiply(2, 3) == 6  # Cas nominal
    assert multiply(0, 5) == 0  # Valeur limite
-   
 </example>
+
 <task>
 En tant que spécialiste des tests dans l'entreprise, tu dois génèrer un fichier de tests unitaires pour le code fourni en utilisant le framework pytest.  
-
 Tu dois respecter les contraintes et utiliser l'exemple fourni.
-
 Couvre ces cas :  
 - Cas nominal  
 - Erreurs de type  
@@ -213,3 +210,76 @@ En produisant en boucle les tests et le code, l'exécution des tests va corriger
 Mais si on a fourni toutes les données nécessaires, avec le bon modèle, on se dirige vers une assurance que le code produit fonctionne et est conforme aux spécifications.
 
 ---
+
+### Exemple 
+
+
+#### Spécifications
+
+"""
+Fonction à tester : somme_listes(listes: List[List[int]]) -> Dict[str, Union[int, str]]
+
+Cas de test :
+1. [Succès] Cas nominal avec plusieurs listes
+   - Input: [[1, 2], [3, 4, 5], []]
+   - Output attendu: {"total": 15, "detail": "3 listes traitées"}
+
+2. [Échec] Type incorrect dans une liste
+   - Input: [[1, "a"], [3, 4]]
+   - Output attendu: TypeError
+
+3. [Échec] Paramètre non liste
+   - Input: "hello"
+   - Output attendu: ValueError
+
+4. [Succès] Liste vide en entrée
+   - Input: []
+   - Output attendu: {"total": 0, "detail": "0 liste traitée"}
+"""
+
+### Prompt testeur 
+
+```text
+
+En tant que testeur Python, génère une classe de test unitaire complète (unittest.TestCase) basée sur les spécifications suivantes.  
+
+**Exigences :**  
+- Utilise `unittest`  
+- Respecte scrupuleusement les cas de test fournis  
+- Ne génère que le code de test, sans explications  
+
+**Spécifications :**  
+{Insérer ici le fichier de spécifications}  
+
+**Contraintes :**  
+- Pas de commentaires superflus  
+- Pas d'implémentation de la fonction à tester  
+- Uniquement la classe `unittest.TestCase`  
+
+
+```
+
+---
+
+### Prompt développeur 
+
+```
+En tant que développeur Python, écris une implémentation de fonction/classe qui passe tous les tests fournis.  
+
+**Exigences :**  
+- Respecte strictement les spécifications et les cas de test  
+- Gère tous les cas d'erreur mentionnés  
+- Ne génère que le code final, sans explications  
+
+**Spécifications :**  
+{Insérer ici le fichier de spécifications}  
+
+**Classe de test :**  
+{Insérer ici la classe de test}  
+
+**Contraintes :**  
+- Pas de commentaires hors docstrings  
+- Pas de modifications des tests  
+- Uniquement le code implémentant la fonction/classe  
+
+```
