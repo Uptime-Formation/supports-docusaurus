@@ -73,6 +73,14 @@ docker exec ollama ollama pull [model]
 
 ```
 
+Testez en exécutant la commande suivante : 
+
+```shell 
+
+docker exec ollama ollama run qwen3:14b "Explain this script $(curl https://raw.githubusercontent.com/Saruspete/oom_manager/refs/heads/master/usr/sbin/oom_manager.sh)"
+
+```
+
 ---
 
 **Sachez qu'Ollama fournit aussi une interface MODELFILE qui est comme un DOCKERFILE pour les modèles LLM.**

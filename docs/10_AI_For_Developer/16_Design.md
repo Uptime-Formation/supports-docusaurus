@@ -1,5 +1,5 @@
 ---
-title: 3 - Designer avec l'IA
+title: 3 - Concevoir avec l'IA
 ---
 
 ## Utiliser l'IA pour le design de projet informatique

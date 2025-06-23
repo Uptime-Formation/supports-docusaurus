@@ -114,7 +114,7 @@ Conclusion : général, avancé, propriétaire.
 
 --- 
 
-
+<!--
 ## Autres références 
 
 ### Windsurf
@@ -122,3 +122,4 @@ Conclusion : général, avancé, propriétaire.
 Windsurf Editor, a standalone AI-powered VSCode fork for access to Cascade, Windsurf Tab, and more.
 
 
+-->

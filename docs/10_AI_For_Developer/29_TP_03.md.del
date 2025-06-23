@@ -65,7 +65,7 @@ Crée un fichier README.md qui explique le fonctionnement de l'application.
 
 **Toujours en incluant les deux fichiers, demandez-lui de réfléchir à une solution conforme au document d'architecture.**
 
-Dans le cas des exemples fournis, il s'agira de réécrire le code du `index.html` en application Spring Boot
+Dans le cas des exemples fournis, il s'agira de réécrire le code du backend en application Spring Boot
 
 <details><summary>Indice</summary>
 

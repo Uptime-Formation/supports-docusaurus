@@ -162,16 +162,6 @@ C'est un mode de raisonnement : écrire les commentaires pour produire un pseudo
 
 ---
 
-### Commenter le code via une fonction IDE
-
-**Une fonctionnalité dans certains outiils permet de faire de la documentation à la volée via une action contextuelle.**
-
-C'est le même comportement que l'autocomplétion / inline editing. 
-
-Pour obtenir le même résultat, on peut sélectionner le texte sur lequel on veut ajouter des commentaires et lancer un prompt zero-shot simple.
-
---- 
-
 ### La documentation comme guide
 
 #### Les fichiers d'orientation 
@@ -182,8 +172,13 @@ Pour obtenir le même résultat, on peut sélectionner le texte sur lequel on ve
 - architecturales : type d'architecture logicielle, performances, plateforme techniques, ...
 - logicielles : découpe en services, runtimes, frameworks, structures, ...
 - sécuritaires : logs, RBAC, règles d'exécution, ...
-- documentaires : types de documentation, formats, ...
 - agentiques : agents, prompts, personas, ...
+
+---
+
+**La dimension documentation est essentielle**
+
+Selon les besoins, on va fournir des documents correspondant aux types de documentation et formats.
 
 --- 
 
@@ -192,8 +187,20 @@ Pour obtenir le même résultat, on peut sélectionner le texte sur lequel on ve
 - L'humain pourra comprendre ce qui est fait et pourquoi
 - La machine pourra s'appuyer sur l'existant pour produire du nouveau code
 
+Ainsi on pourra produire une documentation cohérente au long de la vie du projet.
+
 --- 
+
+**On pourra aussi réutiliser ces guides pour d'autres projets.**
  
+C'est un moyen de gagner en productivité à terme via une librairie de prompts.
+
+---
+
+
+---
+
+
 #### Les fichiers headers
 
 **Afin d'alléger le contexte envoyé à un modèle, on peut utiliser un fichier de résumé (header) pour documenter un fichier complet.**
