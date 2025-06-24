@@ -283,3 +283,18 @@ En tant que développeur Python, écris une implémentation de fonction/classe q
 - Uniquement le code implémentant la fonction/classe  
 
 ```
+
+--- 
+
+### Un fichier Claude.md pour le TDD en Typescript
+
+Référence: 
+- Origine https://github.com/citypaul/.dotfiles/blob/main/claude/.claude/CLAUDE.md
+- Etat 2025 : [](./99_Claude_Testing.md)
+
+Qu'en pensez-vous ? 
+
+- Orientations (TDD, TS) 
+- Long (5k)
+- Négations
+- Répétitions
