@@ -13,7 +13,101 @@ Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour
 
 ---
 
+![](../../static/img/docker/archi_swarm.png)
+---
+
+
+
 ### Introduction à Swarm
+
+**L'architecture de Swarm est composée d'un control plane et de worker nodes.**
+
+Tout est géré via docker qui fournit l'interconnexion réseau, l'élection du service principal dans le control plane, la répartition des conteneurs sur les worker nodes.
+
+Un noeud peut faire partie des deux groupes : être à la fois membre du control plane et héberger des services.
+
+--- 
+
+**Swarm est un composant natif de Docker via swarmkit.**
+
+```shell
+
+$ docker swarm --help 
+
+Usage:  docker swarm COMMAND
+
+Manage Swarm
+
+Commands:
+  ca          Display and rotate the root CA
+  init        Initialize a swarm
+  join        Join a swarm as a node and/or manager
+  join-token  Manage join tokens
+  leave       Leave the swarm
+  unlock      Unlock swarm
+  unlock-key  Manage the unlock key
+  update      Update the swarm
+
+```
+
+
+
+--- 
+![](../../static/img/docker/docker_swarm_ca.png)
+
+**La sécurisation de la communication est assurée par une chaine de certificats x509.** 
+
+Par défaut le premier serveur sur lequel le control plane a été initié va générer une Autorité de Certification racine, mais il est possible d'utiliser une autorité de certification externe. 
+
+Pour rejoindre le cluster dans un rôle ou un autre, il faut fournir 
+
+--- 
+
+### Les services 
+
+**Les services sont la partie opérationnelle de Swarm : ils permettent de répartir des réplicas de conteneurs sur les worker nodes.**
+
+
+```shell
+
+$ docker services --help 
+
+Usage:  docker service COMMAND
+
+Manage services
+
+Commands:
+  create      Create a new service
+  inspect     Display detailed information on one or more services
+  logs        Fetch the logs of a service or task
+  ls          List services
+  ps          List the tasks of one or more services
+  rm          Remove one or more services
+  rollback    Revert changes to a service's configuration
+  scale       Scale one or multiple replicated services
+  update      Update a service
+
+```
+
+---
+
+![](../../static/img/docker/swarm_services.png)
+
+
+---
+
+**Le moyen le plus pratique de gérer les services est d'utiliser des fichiers de type docker compose.**
+
+Certaines parties de la specification Compose sont uniquement destinés aux services
+
+La référence complète de tout ce qu'il est possible de définir est sur : 
+
+> https://github.com/compose-spec/compose-spec/blob/main/05-services.md
+
+
+---
+
+### Mise en oeuvre
 
 - Se grouper par 2 ou 3 pour créer un cluster à partir de vos VM respectives (il faut utiliser une commande Swarm pour récupérer les instructions nécessaires : `docker swarm init` devrait vous orienter).
 
@@ -28,7 +122,9 @@ Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour
 
 ### Créer un service
 
-Afin de visualiser votre installation Swarm, utilisons : <https://github.com/dockersamples/docker-swarm-visualizer>
+Afin de visualiser votre installation Swarm, l'application Portainer est très pratique. 
+
+On peut aussi utiliser Docker swarm vizualizer : <https://github.com/dockersamples/docker-swarm-visualizer>
 
 `docker run -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer`
 
@@ -44,8 +140,6 @@ En ligne de commande :
 #### Avec la clé `deploy:`
 
 A l'aide de la propriété `deploy:` de docker compose, créer un service en 5 exemplaires (`replicas`) à partir de l'image `traefik/whoami` accessible sur le port `9999` et connecté au port `80` des 5 replicas.
-
-
 
 <details><summary>Correction</summary>
 
@@ -156,3 +250,13 @@ Indice : https://www.crunchydata.com/blog/an-easy-recipe-for-creating-a-postgres
 
 
 ---
+
+## Conclusion
+
+**Docker swarm est une solution "out of the box" pour monter un cluster Docker.**
+
+C'est simple et facile à mettre en place. 
+
+Mais cet outil est mal adaptée pour une plateforme mutualisée sur le long terme. 
+
+Elle ne permet pas d'obtenir immédiatement une compartimentation logique, des gestions d'utilisateurs, des comportements avancés tels que les permettent Kubernetes.
