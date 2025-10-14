@@ -13,12 +13,10 @@ Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour
 
 ---
 
-![](../../static/img/docker/archi_swarm.png)
+
 ---
 
-## Docker Swarm
-
-![](../../static/img/docker/docker-swarm-architecture.png)
+## Architecture de Swarm
 
 **Docker Swarm est la solution native d'orchestration de conteneurs de Docker**
 
@@ -28,15 +26,23 @@ Swarm permet de gérer un cluster de machines Docker comme une seule entité vir
 
 **L'architecture de Swarm est composée d'un control plane et de worker nodes.**
 
+![](../../static/img/docker/archi_swarm.png)
+
 Tout est géré via docker qui fournit l'interconnexion réseau, l'élection du service principal dans le control plane, la répartition des conteneurs sur les worker nodes.
 
 Un noeud peut faire partie des deux groupes : être à la fois membre du control plane et héberger des services.
 
 ---
 
+**Les requêtes arrivant sur un noeud du cluster sont routées vers le conteneur adapté le plus proche via le docker proxy.**
+
+![](../../static/img/docker/swarm_routing.jpg)
+
+
+---
+
 ### Les rôles des nœuds (manager, worker)
 
-![](../../static/img/docker/swarm-node-roles.png)
 
 **Un cluster Swarm est composé de nœuds managers et workers :**
 
@@ -57,8 +63,6 @@ $ docker node ls
 ---
 
 ## Différences et relations entre Swarm et Kubernetes
-
-![](../../static/img/docker/swarm-vs-k8s.png)
 
 **Swarm et Kubernetes sont deux orchestrateurs avec des approches différentes :**
 
@@ -243,8 +247,6 @@ $ docker service create \
 
 ## Swarm Manager Locking
 
-![](../../static/img/docker/swarm-raft.png)
-
 **Protection contre la perte de quorum en cas de panne des managers :**
 
 ```shell
@@ -261,13 +263,11 @@ $ docker swarm unlock
 **Fonctionnement :**
 - En cas de perte de quorum, les managers se verrouillent automatiquement
 - Nécessite une clé de déverrouillage pour reprendre le contrôle
-- Protège contre les "split-brain" scenarios
+- Protège contre les scenarios "split-brain" 
 
 ---
 
 ## Les déploiements, rollbacks et le monitoring (Prometheus)
-
-![](../../static/img/docker/swarm-deployment.png)
 
 **Gestion des déploiements et rollbacks :**
 
@@ -313,7 +313,7 @@ services:
 
 ## Les contraintes de placement des conteneurs
 
-![](../../static/img/docker/swarm-placement.png)
+![](https://docs.docker.com/engine/swarm/images/placement_prefs.png)
 
 **Contrôler où les conteneurs sont déployés dans le cluster :**
 
@@ -349,7 +349,7 @@ services:
 
 ## Le clustering, le calcul du quorum et l'algorithme de Raft
 
-![](../../static/img/docker/raft-consensus.png)
+![](../../static/img/docker/docker-raft-consensus.png)
 
 **Architecture de consensus distribué :**
 
@@ -378,8 +378,6 @@ $ docker swarm join-token manager
 ---
 
 ## Une base de données distribuée (Postgres HA)
-
-![](../../static/img/docker/postgres-ha.png)
 
 **Déploiement de PostgreSQL haute disponibilité avec Swarm :**
 

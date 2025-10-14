@@ -28,8 +28,6 @@ La page sécurité de Docker donne de bons indices sur la complexité des action
 
 ### Sécurité des images et contrôle des dépendances (image SHA-pinning)
 
-![](../../static/img/docker/image-security-scanning.png)
-
 **Le pinning par SHA permet de verifier l'intégrité des images et éviter les attaques de type "supply chain" :**
 
 ```dockerfile
@@ -108,7 +106,7 @@ volumes:
 
 ## Outils de posture Docker Bench et CIS pour renforcement de la sécurité
 
-![](../../static/img/docker/cis-benchmark.png)
+![](../../static/img/docker/docker-security-cis-benchmark.png)
 
 **Docker Bench Security automatise les vérifications du CIS Benchmark :**
 
