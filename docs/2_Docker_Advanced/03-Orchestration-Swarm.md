@@ -16,15 +16,63 @@ Aujourd'hui le produit est toujours disponible mais n'a plus de visibilité pour
 ![](../../static/img/docker/archi_swarm.png)
 ---
 
+## Docker Swarm
 
+![](../../static/img/docker/docker-swarm-architecture.png)
 
-### Introduction à Swarm
+**Docker Swarm est la solution native d'orchestration de conteneurs de Docker**
+
+Swarm permet de gérer un cluster de machines Docker comme une seule entité virtuelle.
+
+---
 
 **L'architecture de Swarm est composée d'un control plane et de worker nodes.**
 
 Tout est géré via docker qui fournit l'interconnexion réseau, l'élection du service principal dans le control plane, la répartition des conteneurs sur les worker nodes.
 
 Un noeud peut faire partie des deux groupes : être à la fois membre du control plane et héberger des services.
+
+---
+
+### Les rôles des nœuds (manager, worker)
+
+![](../../static/img/docker/swarm-node-roles.png)
+
+**Un cluster Swarm est composé de nœuds managers et workers :**
+
+- **Manager nodes** : Gèrent l'état du cluster, orchestrent les services, maintiennent le consensus
+- **Worker nodes** : Exécutent les tâches (containers) assignées par les managers
+
+```shell
+# Initialiser un swarm
+$ docker swarm init --advertise-addr <MANAGER-IP>
+
+# Rejoindre un swarm en tant que worker
+$ docker swarm join --token <WORKER-TOKEN> <MANAGER-IP>:2377
+
+# Lister les nœuds
+$ docker node ls
+```
+
+---
+
+## Différences et relations entre Swarm et Kubernetes
+
+![](../../static/img/docker/swarm-vs-k8s.png)
+
+**Swarm et Kubernetes sont deux orchestrateurs avec des approches différentes :**
+
+| Aspect | Docker Swarm | Kubernetes |
+|--------|-------------|------------|
+| Complexité | Simple à déployer | Plus complexe |
+| Scaling | Scaling rapide | Scaling avancé |
+| Écosystème | Intégré Docker | Vaste écosystème |
+| YAML | Syntaxe simple | Syntaxe complexe |
+
+**Kompose** : Outil pour convertir des `docker-compose.yml` en ressources Kubernetes
+
+**Orchestrateur Swarm sur K8S** : Possibilité d'exécuter Swarm dans des pods Kubernetes
+
 
 --- 
 
@@ -158,6 +206,241 @@ services:
 Accédez à votre service depuis un node et actualisez plusieurs fois la page (Ctrl+Maj+R sinon le cache du navigateur vous embêtera). Les informations affichées changent. Pourquoi ?
 
 - Lancez une commande `service scale` pour changer le nombre de *replicas* de votre service et observez le changement avec `docker service ps hello`
+
+
+---
+
+## Administrer les Docker Secrets
+
+![](../../static/img/docker/docker-secrets.png)
+
+**Les secrets permettent de gérer les données sensibles de manière sécurisée :**
+
+```shell
+# Créer un secret depuis un fichier
+$ echo "mon-mot-de-passe" | docker secret create db_password -
+
+# Créer un secret depuis la ligne de commande
+$ docker secret create api_key "ma-clé-secrète"
+
+# Lister les secrets
+$ docker secret ls
+
+# Utiliser un secret dans un service
+$ docker service create \
+    --name webapp \
+    --secret source=db_password,target=/run/secrets/db_password \
+    nginx:latest
+```
+
+**Les secrets sont :**
+- Chiffrés au repos
+- Transmis de manière sécurisée
+- Montrés uniquement aux services autorisés
+- Stockés dans le Raft log du swarm
+
+---
+
+## Swarm Manager Locking
+
+![](../../static/img/docker/swarm-raft.png)
+
+**Protection contre la perte de quorum en cas de panne des managers :**
+
+```shell
+# Vérifier l'état actuel du swarm
+$ docker swarm unlock-key
+
+# Régénérer la clé de déverrouillage
+$ docker swarm unlock-key --rotate
+
+# Déverrouiller un manager verrouillé
+$ docker swarm unlock
+```
+
+**Fonctionnement :**
+- En cas de perte de quorum, les managers se verrouillent automatiquement
+- Nécessite une clé de déverrouillage pour reprendre le contrôle
+- Protège contre les "split-brain" scenarios
+
+---
+
+## Les déploiements, rollbacks et le monitoring (Prometheus)
+
+![](../../static/img/docker/swarm-deployment.png)
+
+**Gestion des déploiements et rollbacks :**
+
+```shell
+# Déployer un service avec mise à jour progressive
+$ docker service create \
+    --name web \
+    --replicas 3 \
+    --update-delay 10s \
+    --update-parallelism 1 \
+    nginx:1.18
+
+# Mettre à jour un service
+$ docker service update \
+    --image nginx:1.19 \
+    web
+
+# Rollback d'un service
+$ docker service update --rollback web
+
+# Surveiller les déploiements
+$ docker service ps web
+```
+
+**Intégration Prometheus :**
+
+```yaml
+version: '3.8'
+services:
+  app:
+    image: mon-app:latest
+    ports:
+      - "8080:8080"
+    deploy:
+      replicas: 3
+    labels:
+      - "com.docker.prometheus.scrape=true"
+      - "com.docker.prometheus.port=8080"
+      - "com.docker.prometheus.path=/metrics"
+```
+
+---
+
+## Les contraintes de placement des conteneurs
+
+![](../../static/img/docker/swarm-placement.png)
+
+**Contrôler où les conteneurs sont déployés dans le cluster :**
+
+```yaml
+version: '3.8'
+services:
+  database:
+    image: postgres:13
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.disk == ssd
+        preferences:
+          - spread: node.labels.datacenter
+
+  cache:
+    image: redis:6
+    deploy:
+      placement:
+        constraints:
+          - node.labels.redis == true
+```
+
+**Types de contraintes :**
+- `node.role == manager|worker`
+- `node.labels.key == value`
+- `engine.labels.key == value`
+- `node.hostname == hostname`
+
+---
+
+## Le clustering, le calcul du quorum et l'algorithme de Raft
+
+![](../../static/img/docker/raft-consensus.png)
+
+**Architecture de consensus distribué :**
+
+```shell
+# Recommandations pour la configuration des managers
+# Nombre impair de managers recommandé
+
+# 3 managers : tolère la perte d'1 manager
+# 5 managers : tolère la perte de 2 managers  
+# 7 managers : tolère la perte de 3 managers
+
+# Ajouter un manager
+$ docker swarm join-token manager
+
+# Calcul du quorum : (n/2) + 1
+# Ex: 3 managers → quorum = 2
+# Ex: 5 managers → quorum = 3
+```
+
+**Algorithme Raft :**
+- Élection de leader
+- Réplication des logs
+- Tolérance aux pannes
+- Cohérence forte
+
+---
+
+## Une base de données distribuée (Postgres HA)
+
+![](../../static/img/docker/postgres-ha.png)
+
+**Déploiement de PostgreSQL haute disponibilité avec Swarm :**
+
+```yaml
+version: '3.8'
+
+services:
+  postgres-primary:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.db == primary
+      restart_policy:
+        condition: on-failure
+
+  postgres-replica:
+    image: postgres:13
+    command: >
+      sh -c "
+        until pg_basebackup -h postgres-primary -D /var/lib/postgresql/data -U replicator -vP -W; 
+        do sleep 2; done &&
+        echo 'host replication replicator 0.0.0.0/0 md5' >> /var/lib/postgresql/data/pg_hba.conf &&
+        cp /var/lib/postgresql/data/postgresql.conf /var/lib/postgresql/data/postgresql.conf.bak &&
+        echo 'hot_standby = on' >> /var/lib/postgresql/data/postgresql.conf &&
+        chown -R postgres:postgres /var/lib/postgresql/data &&
+        su postgres -c 'pg_ctl -D /var/lib/postgresql/data start' &&
+        tail -f /var/lib/postgresql/data/logfile
+      "
+    environment:
+      POSTGRES_USER: replicator
+      POSTGRES_PASSWORD_FILE: /run/secrets/replica_password
+    secrets:
+      - replica_password
+    volumes:
+      - postgres_replica:/var/lib/postgresql/data
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.labels.db == replica
+
+secrets:
+  db_password:
+    external: true
+  replica_password:
+    external: true
+
+volumes:
+  postgres_data:
+  postgres_replica:
+```
 
 ---
 
