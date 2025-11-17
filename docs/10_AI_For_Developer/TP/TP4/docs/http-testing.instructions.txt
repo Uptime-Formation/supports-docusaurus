@@ -1,0 +1,233 @@
+# Instructions Tests HTTP/API REST
+
+## Principe
+
+Les tests HTTP vérifient que l'API REST répond correctement aux requêtes, sans re-tester la logique métier (déjà testée par tests unitaires).
+
+## Types de tests HTTP
+
+### 1. Tests de disponibilité
+Vérifient que le serveur démarre et répond.
+- Exemple : GET / retourne 200 OK
+
+### 2. Tests de contrat API
+Vérifient que les endpoints acceptent les bons formats et rejettent les mauvais.
+- Requête valide → 200 OK
+- Requête invalide → 400 Bad Request
+- Ressource inexistante → 404 Not Found
+- Erreur serveur → 500 Internal Server Error
+
+### 3. Tests d'intégration
+Vérifient le flux complet : requête → traitement → réponse.
+- Données valides → résultats corrects
+- Vérifier structure JSON de la réponse
+- Vérifier valeurs retournées (cohérence métier)
+
+### 4. Tests de gestion d'erreurs
+Vérifient que l'API gère proprement les cas d'erreur.
+- Données manquantes
+- Format invalide
+- Cas limites (données vides, trop grandes, etc.)
+
+## Structure générale des tests HTTP
+
+### Setup (import de l'application)
+- Importer l'application serveur SANS la démarrer
+- Utiliser un framework de mock HTTP (supertest, TestClient, etc.)
+- Pas de serveur réel sur un port réseau
+- Initialiser les données de test si nécessaire
+
+### Teardown (après les tests)
+- Nettoyer les ressources (fichiers temporaires, connexions)
+- Pas besoin d'arrêter un serveur (il ne tourne pas)
+
+### Tests individuels
+- Indépendants : chaque test peut s'exécuter seul
+- Isolés : pas d'effets de bord entre tests
+- Rapides : < 1s par test idéalement
+
+## Ce qu'on teste
+
+### Status codes
+```
+200 OK          → Succès
+201 Created     → Ressource créée
+400 Bad Request → Requête invalide
+401 Unauthorized → Non authentifié
+403 Forbidden    → Non autorisé
+404 Not Found    → Ressource introuvable
+500 Internal Error → Erreur serveur
+```
+
+### Headers
+- Content-Type : application/json, text/html, etc.
+- CORS headers si applicable
+- Custom headers (authentification, etc.)
+
+### Body de la réponse
+- Structure JSON conforme au schéma attendu
+- Clés présentes
+- Types corrects (string, number, array, object)
+- Valeurs cohérentes avec les données envoyées
+
+### Valeurs métier
+- Résultats de calculs corrects (mais limités, le métier est déjà testé)
+- Cohérence bout en bout
+- Pas de re-test exhaustif de la logique métier
+
+## Différence tests unitaires vs tests HTTP
+
+| Aspect | Tests unitaires | Tests HTTP |
+|--------|-----------------|------------|
+| Cible | Fonctions métier | Routes/endpoints |
+| Isolation | Totale | Intégration (serveur + métier) |
+| Vitesse | Très rapide (<10ms) | Plus lent (~100-500ms) |
+| Dépendances | Aucune | Serveur HTTP, réseau |
+| Quantité | Nombreux (1 par cas) | Moins nombreux (1 par route) |
+| Données | En mémoire | Requêtes HTTP réelles |
+
+**Complémentarité** : Les deux sont nécessaires, pas redondants.
+
+## TDD pour API REST
+
+### Cycle RED-GREEN-REFACTOR
+
+**Phase RED** : Écrire test HTTP avant le endpoint
+- Test définit le contrat de l'API
+- Test échoue : endpoint n'existe pas ou ne répond pas correctement
+
+**Phase GREEN** : Implémenter le endpoint
+- Code minimal pour faire passer le test
+- Pas de sur-ingénierie
+
+**Phase REFACTOR** : Améliorer sans casser
+- Optimiser le code
+- Améliorer lisibilité
+- Tests restent verts
+
+## Bonnes pratiques
+
+### Données de test
+- Utiliser des fixtures (données prédéfinies)
+- Pas de dépendances externes (pas d'appels API réels)
+- Données en mémoire ou fichiers de test
+- Générer données si besoin (factories)
+
+### Assertions
+- Vérifier status code d'abord
+- Puis headers
+- Puis structure du body
+- Enfin valeurs spécifiques
+- Messages d'erreur clairs en cas d'échec
+
+### Isolation
+- Chaque test doit pouvoir s'exécuter dans n'importe quel ordre
+- Pas de partage d'état entre tests
+- Cleanup après chaque test si nécessaire
+
+### Performance
+- Tests rapides (éviter timeouts longs)
+- Pas d'attente arbitraire (sleep)
+- Utiliser des assertions avec retry si besoin
+
+## Instructions pour l'Agent IA
+
+### Lors de la génération de tests HTTP
+
+1. **Toujours tester les 4 types**
+   - Au moins 1 test de disponibilité
+   - Au moins 1 test de contrat (cas valide + invalide)
+   - Au moins 1 test d'intégration (bout en bout)
+   - Au moins 1 test de gestion d'erreur
+
+2. **Mock HTTP, pas de serveur réel**
+   - Importer l'application sans app.listen() ou équivalent
+   - Utiliser supertest (Node.js), TestClient (Flask), ou équivalent
+   - Pas de port réseau utilisé
+   - Tests rapides car pas de vraie connexion réseau
+
+3. **Assertions complètes**
+   - Status code : toujours vérifier
+   - Headers : au moins Content-Type
+   - Body structure : vérifier clés présentes et types
+   - Valeurs métier : 1-2 assertions (pas exhaustif)
+
+4. **Ne PAS re-tester le métier**
+   - Les tests HTTP vérifient l'API, pas la logique
+   - Si calculs complexes, ils sont déjà testés unitairement
+   - Tests HTTP = intégration, pas logique détaillée
+
+5. **Gestion d'erreurs explicite**
+   - Tester que erreurs retournent bon status
+   - Vérifier que body contient message d'erreur clair
+   - Pas de stack traces en production
+
+## Frameworks recommandés
+
+Les tests HTTP doivent utiliser des frameworks de mock HTTP :
+- Node.js : **supertest** (avec Jest ou Mocha) - RECOMMANDÉ
+- Python : **Flask.test_client** ou **FastAPI.TestClient** - RECOMMANDÉ
+- Pas de requêtes HTTP réelles (pas `requests` ou `axios` seuls)
+
+**Principe** : Importer l'app, la passer au mock, tester sans réseau.
+
+## Exemple de structure
+
+```
+tests/
+├── unit/              # Tests unitaires (métier)
+│   ├── test_calculations.test.js
+│   └── test_validations.test.js
+└── integration/       # Tests HTTP (API avec mock)
+    ├── test_api_health.test.js
+    ├── test_api_endpoints.test.js
+    └── test_api_errors.test.js
+```
+
+Séparer tests unitaires et tests HTTP dans dossiers différents.
+
+## Exemple de mock HTTP
+
+**Node.js avec supertest** :
+```javascript
+const request = require('supertest');
+const app = require('../server'); // Import sans .listen()
+
+describe('API Tests', () => {
+  test('GET / retourne 200', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).toBe(200);
+  });
+
+  test('POST /api avec données', async () => {
+    const res = await request(app)
+      .post('/api/endpoint')
+      .send({ data: 'test' });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('result');
+  });
+});
+```
+
+**Python avec Flask test_client** :
+```python
+import pytest
+from server import app
+
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+def test_get_home(client):
+    response = client.get('/')
+    assert response.status_code == 200
+
+def test_post_api(client):
+    response = client.post('/api/endpoint', json={'data': 'test'})
+    assert response.status_code == 200
+    assert 'result' in response.json
+```
+
+**Pas de app.run() ou app.listen() dans le code de test.**

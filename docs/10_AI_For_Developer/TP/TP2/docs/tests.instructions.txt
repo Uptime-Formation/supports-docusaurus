@@ -1,0 +1,56 @@
+---
+title: TP2 - Instructions Tests
+---
+
+# Instructions pour TP2 : Tests Automatisés
+
+## Objectif
+
+Apprendre à écrire des tests automatisés pour valider le code généré par l'IA.
+
+## Pourquoi tester ?
+
+Les tests permettent de :
+- Vérifier que le code fonctionne.
+- Détecter les régressions.
+- Documenter le comportement attendu.
+
+## Types de tests
+
+### Tests unitaires
+
+Testent une fonction isolée.
+
+Exemple : Vérifier qu'une fonction de calcul retourne le bon résultat pour des données simples.
+
+### Tests d'intégration
+
+Testent plusieurs composants ensemble.
+
+Exemple : Vérifier qu'un processus complet (lecture de données, calculs, résultats) fonctionne correctement.
+
+### Tests de cas d'erreur
+
+Vérifient le comportement avec des données invalides.
+
+Exemple : Vérifier qu'un fichier manquant ou des données corrompues génèrent des erreurs appropriées.
+
+## Bonnes pratiques
+
+- **Indépendance** : Chaque test doit fonctionner seul.
+- **Clarté** : Utiliser des noms explicites pour décrire ce qui est testé.
+- **Traçabilité** : Documenter les résultats attendus.
+
+## Lancer les tests
+
+Utilisez les outils de test adaptés à votre environnement pour exécuter et valider les tests. Assurez-vous que tous les tests passent avant de continuer.
+
+## Checklist
+
+- [ ] Écrire au moins 5 tests couvrant les cas principaux.
+- [ ] Vérifier que tous les tests passent.
+- [ ] S'assurer que les tests couvrent les fonctionnalités critiques.
+
+## Ressources
+
+Consultez la documentation des outils de test utilisés dans votre projet pour plus de détails.

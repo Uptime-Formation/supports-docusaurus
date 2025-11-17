@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <!-- Titre -->
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Évolution des outils de développement (1980-2025)
+  </text>
+
+  <!-- Ligne de temps centrale -->
+  <line x1="100" y1="200" x2="1100" y2="200" stroke="#9333ea" stroke-width="4" />
+
+  <!-- 1980: Précurseurs -->
+  <g transform="translate(100, 200)">
+    <circle cx="0" cy="0" r="12" fill="#9333ea" />
+    <line x1="0" y1="0" x2="0" y2="-80" stroke="#9333ea" stroke-width="2" />
+    <rect x="-70" y="-130" width="140" height="40" rx="5" fill="#667eea" />
+    <text x="0" y="-107" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">1980</text>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Éditeur texte</text>
+    <text x="0" y="45" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">+ Compilateur</text>
+    <text x="0" y="-150" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">📝</text>
+  </g>
+
+  <!-- 1990: IDEs graphiques -->
+  <g transform="translate(267, 200)">
+    <circle cx="0" cy="0" r="12" fill="#9333ea" />
+    <line x1="0" y1="0" x2="0" y2="80" stroke="#9333ea" stroke-width="2" />
+    <rect x="-70" y="100" width="140" height="40" rx="5" fill="#764ba2" />
+    <text x="0" y="123" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">1990</text>
+    <text x="0" y="-30" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">IDE graphique</text>
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Debugging</text>
+    <text x="0" y="160" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🖥️</text>
+  </g>
+
+  <!-- 2000: CI/CD -->
+  <g transform="translate(434, 200)">
+    <circle cx="0" cy="0" r="12" fill="#9333ea" />
+    <line x1="0" y1="0" x2="0" y2="-80" stroke="#9333ea" stroke-width="2" />
+    <rect x="-70" y="-130" width="140" height="40" rx="5" fill="#f093fb" />
+    <text x="0" y="-107" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">2000</text>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Git + CI/CD</text>
+    <text x="0" y="45" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Tests locaux</text>
+    <text x="0" y="-150" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">⚙️</text>
+  </g>
+
+  <!-- 2010: Éditeurs légers -->
+  <g transform="translate(601, 200)">
+    <circle cx="0" cy="0" r="12" fill="#9333ea" />
+    <line x1="0" y1="0" x2="0" y2="80" stroke="#9333ea" stroke-width="2" />
+    <rect x="-70" y="100" width="140" height="40" rx="5" fill="#4facfe" />
+    <text x="0" y="123" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">2010</text>
+    <text x="0" y="-30" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Allègement</text>
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Sublime, Atom</text>
+    <text x="0" y="160" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">✨</text>
+  </g>
+
+  <!-- 2020: Cloud IDEs -->
+  <g transform="translate(768, 200)">
+    <circle cx="0" cy="0" r="12" fill="#9333ea" />
+    <line x1="0" y1="0" x2="0" y2="-80" stroke="#9333ea" stroke-width="2" />
+    <rect x="-70" y="-130" width="140" height="40" rx="5" fill="#43e97b" />
+    <text x="0" y="-107" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">2020</text>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Cloud IDEs</text>
+    <text x="0" y="45" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Collaboration</text>
+    <text x="0" y="-150" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">☁️</text>
+  </g>
+
+  <!-- 2025: IA intégrée -->
+  <g transform="translate(935, 200)">
+    <circle cx="0" cy="0" r="12" fill="#9333ea" />
+    <line x1="0" y1="0" x2="0" y2="80" stroke="#9333ea" stroke-width="2" />
+    <rect x="-80" y="100" width="160" height="40" rx="5" fill="#fa709a" />
+    <text x="0" y="123" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">2025</text>
+    <text x="0" y="-30" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">IA intégrée</text>
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Agents autonomes</text>
+    <text x="0" y="160" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🤖</text>
+  </g>
+
+  <!-- Flèche de progression -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9333ea" />
+    </marker>
+  </defs>
+  <line x1="1100" y1="200" x2="1120" y2="200" stroke="#9333ea" stroke-width="4" marker-end="url(#arrowhead)" />
+
+  <!-- Légende -->
+  <text x="600" y="370" font-family="Arial, sans-serif" font-size="14" font-style="italic" text-anchor="middle" fill="#64748b">
+    De l'éditeur de texte à l'assistant IA : 45 ans d'évolution continue
+  </text>
+</svg>

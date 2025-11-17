@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <!-- Titre -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Workflow de configuration des outils IA
+  </text>
+
+  <!-- Flèche de progression -->
+  <defs>
+    <marker id="arrowConfig" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9333ea" />
+    </marker>
+  </defs>
+
+  <!-- Étape 1: Initialisation -->
+  <g transform="translate(50, 120)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">📝</text>
+    <text x="80" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">1. Initialisation</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Créer fichiers de base</text>
+    <text x="10" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Templates initiaux</text>
+  </g>
+
+  <line x1="210" y1="170" x2="240" y2="170" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowConfig)" />
+
+  <!-- Étape 2: Configuration -->
+  <g transform="translate(240, 120)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#10b981" stroke="#059669" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">⚙️</text>
+    <text x="80" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">2. Configuration</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Définir personas</text>
+    <text x="10" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Ajouter contraintes</text>
+  </g>
+
+  <line x1="400" y1="170" x2="430" y2="170" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowConfig)" />
+
+  <!-- Étape 3: Test -->
+  <g transform="translate(430, 120)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#f59e0b" stroke="#d97706" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🧪</text>
+    <text x="80" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">3. Test</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Tester avec l'IA</text>
+    <text x="10" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Vérifier comportement</text>
+  </g>
+
+  <line x1="590" y1="170" x2="620" y2="170" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowConfig)" />
+
+  <!-- Étape 4: Affinage -->
+  <g transform="translate(620, 120)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#9f7aea" stroke="#805ad5" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🎯</text>
+    <text x="80" y="55" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">4. Affinage</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Ajuster selon retours</text>
+    <text x="10" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Améliorer prompts</text>
+  </g>
+
+  <!-- Boucle de retour -->
+  <path d="M 700,220 L 700,280 L 320,280 L 320,220" fill="none" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" marker-end="url(#arrowConfig)" />
+  <text x="510" y="295" font-family="Arial, sans-serif" font-size="11" fill="#9333ea" text-anchor="middle">Itération</text>
+
+  <!-- Étape 5: Versionnement -->
+  <g transform="translate(240, 330)">
+    <rect x="0" y="0" width="160" height="90" rx="8" fill="#ef4444" stroke="#dc2626" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">📦</text>
+    <text x="80" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">5. Versionnement</text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Commit dans Git</text>
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Documentation</text>
+  </g>
+
+  <line x1="320" y1="220" x2="320" y2="330" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowConfig)" />
+
+  <!-- Étape 6: Partage -->
+  <g transform="translate(430, 330)">
+    <rect x="0" y="0" width="160" height="90" rx="8" fill="#06b6d4" stroke="#0891b2" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">👥</text>
+    <text x="80" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">6. Partage</text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Diffuser dans l'équipe</text>
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Former les membres</text>
+  </g>
+
+  <line x1="400" y1="375" x2="430" y2="375" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowConfig)" />
+
+  <!-- Maintenance continue -->
+  <g transform="translate(50, 330)">
+    <rect x="0" y="0" width="160" height="90" rx="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="3" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">♻️</text>
+    <text x="80" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">7. Maintenance</text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Mise à jour régulière</text>
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="10" text-anchor="start" fill="white" opacity="0.9">• Adapter aux besoins</text>
+  </g>
+
+  <line x1="210" y1="375" x2="240" y2="375" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowConfig)" />
+
+  <!-- Cycle continu -->
+  <path d="M 130,330 L 130,290 L 700,290 L 700,330" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5" opacity="0.3" />
+  <text x="415" y="308" font-family="Arial, sans-serif" font-size="11" fill="#10b981" text-anchor="middle" font-weight="bold">Cycle continu d'amélioration</text>
+
+  <!-- Note -->
+  <text x="400" y="485" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    La configuration n'est jamais figée : elle évolue avec vos besoins et votre expérience
+  </text>
+</svg>

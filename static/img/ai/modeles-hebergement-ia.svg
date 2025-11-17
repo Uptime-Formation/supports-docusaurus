@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <!-- Titre -->
+  <text x="450" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Modèles d'hébergement des outils IA
+  </text>
+
+  <!-- En-têtes colonnes -->
+  <text x="150" y="90" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#64748b">FACILITÉ</text>
+  <text x="450" y="90" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#64748b">ISOLATION</text>
+  <text x="750" y="90" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#64748b">CONTRÔLE</text>
+
+  <!-- Flèche de progression -->
+  <defs>
+    <marker id="arrowHost" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9333ea" />
+    </marker>
+  </defs>
+  <line x1="100" y1="105" x2="800" y2="105" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowHost)" />
+
+  <!-- 1. Cloud Public -->
+  <g transform="translate(50, 140)">
+    <rect x="0" y="0" width="200" height="140" rx="8" fill="#ef4444" opacity="0.1" stroke="#dc2626" stroke-width="2" />
+    <text x="100" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#dc2626">Cloud Public</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">☁️</text>
+
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">✅ Avantages:</text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">• Facile d'accès</text>
+    <text x="15" y="103" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">• Toujours à jour</text>
+
+    <text x="10" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">❌ Inconvénients:</text>
+    <text x="15" y="140" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">• Données externes</text>
+  </g>
+
+  <!-- 2. Cloud Privé -->
+  <g transform="translate(270, 140)">
+    <rect x="0" y="0" width="200" height="140" rx="8" fill="#f59e0b" opacity="0.1" stroke="#d97706" stroke-width="2" />
+    <text x="100" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#d97706">Cloud Privé</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🔒</text>
+
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">✅ Avantages:</text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="#78350f">• Isolation</text>
+    <text x="15" y="103" font-family="Arial, sans-serif" font-size="10" fill="#78350f">• Personnalisation</text>
+
+    <text x="10" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">❌ Inconvénients:</text>
+    <text x="15" y="140" font-family="Arial, sans-serif" font-size="10" fill="#78350f">• Coûts élevés</text>
+  </g>
+
+  <!-- 3. On-premise -->
+  <g transform="translate(490, 140)">
+    <rect x="0" y="0" width="200" height="140" rx="8" fill="#3b82f6" opacity="0.1" stroke="#2563eb" stroke-width="2" />
+    <text x="100" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2563eb">On-Premise</text>
+    <text x="100" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🏢</text>
+
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">✅ Avantages:</text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="#1e3a8a">• Contrôle total</text>
+    <text x="15" y="103" font-family="Arial, sans-serif" font-size="10" fill="#1e3a8a">• Sécurité max</text>
+
+    <text x="10" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">❌ Inconvénients:</text>
+    <text x="15" y="140" font-family="Arial, sans-serif" font-size="10" fill="#1e3a8a">• Maintenance</text>
+  </g>
+
+  <!-- 4. Modèles Locaux -->
+  <g transform="translate(710, 140)">
+    <rect x="0" y="0" width="180" height="140" rx="8" fill="#10b981" opacity="0.1" stroke="#059669" stroke-width="2" />
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#059669">Modèles Locaux</text>
+    <text x="90" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">💻</text>
+
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#047857">✅ Avantages:</text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Confidentialité 100%</text>
+    <text x="15" y="103" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Pas de réseau</text>
+
+    <text x="10" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#047857">❌ Inconvénients:</text>
+    <text x="15" y="140" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Perfs limitées</text>
+  </g>
+
+  <!-- Recommandations par cas d'usage -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="840" height="150" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
+    <text x="420" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e293b">Recommandations par type de code</text>
+
+    <!-- 4 colonnes -->
+    <g transform="translate(20, 45)">
+      <circle cx="0" cy="0" r="3" fill="#10b981" />
+      <text x="10" y="5" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#047857">Code PUBLIC</text>
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="10" fill="#065f46">→ Cloud public OK</text>
+      <text x="10" y="35" font-family="Arial, sans-serif" font-size="9" fill="#6b7280">Open source, docs</text>
+    </g>
+
+    <g transform="translate(230, 45)">
+      <circle cx="0" cy="0" r="3" fill="#f59e0b" />
+      <text x="10" y="5" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">Code INTERNE</text>
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="10" fill="#92400e">→ Cloud + anonymisation</text>
+      <text x="10" y="35" font-family="Arial, sans-serif" font-size="9" fill="#6b7280">Code métier non sensible</text>
+    </g>
+
+    <g transform="translate(440, 45)">
+      <circle cx="0" cy="0" r="3" fill="#3b82f6" />
+      <text x="10" y="5" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2563eb">Code CONFIDENTIEL</text>
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="10" fill="#1e40af">→ On-premise uniquement</text>
+      <text x="10" y="35" font-family="Arial, sans-serif" font-size="9" fill="#6b7280">Algo propriétaires</text>
+    </g>
+
+    <g transform="translate(660, 45)">
+      <circle cx="0" cy="0" r="3" fill="#ef4444" />
+      <text x="10" y="5" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Code SECRET</text>
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="10" fill="#991b1b">→ Modèles isolés validés</text>
+      <text x="10" y="35" font-family="Arial, sans-serif" font-size="9" fill="#6b7280">Critique sécurité</text>
+    </g>
+
+    <!-- Zone de conseil -->
+    <rect x="10" y="65" width="820" height="60" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" />
+    <text x="420" y="85" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">💡 Conseil</text>
+    <text x="420" y="102" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#78350f">Définissez une politique claire d'utilisation selon la classification des données.</text>
+    <text x="420" y="116" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#78350f">Former les équipes aux risques et auditer régulièrement l'usage des outils.</text>
+  </g>
+
+  <!-- Note -->
+  <text x="450" y="490" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    Le choix du modèle dépend du niveau de sensibilité des données et des contraintes réglementaires
+  </text>
+</svg>

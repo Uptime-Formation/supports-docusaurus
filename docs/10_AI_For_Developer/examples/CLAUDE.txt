@@ -1,0 +1,116 @@
+# Nom du Projet
+
+## Vue d'ensemble
+
+[Description en 2-3 phrases du projet, son objectif, son état actuel]
+
+**Type :** [Web API / Application Frontend / CLI Tool / Microservices / etc.]
+**Stack principal :** [Technologies clés]
+**État :** [En développement / Production / Maintenance]
+
+## Architecture
+
+### Stack technique
+- Backend: Node.js 20 + Express + TypeScript
+- Base de données: PostgreSQL 15
+- Frontend: React 18 + TailwindCSS
+- Tests: Jest + Playwright
+- Déploiement: Docker + Kubernetes
+
+### Structure du projet
+```
+/src
+  /api       - Routes et controllers REST
+  /services  - Logique métier (business logic)
+  /models    - Modèles de données et schémas
+  /utils     - Fonctions utilitaires
+/tests       - Tests unitaires et E2E
+/docs        - Documentation projet et standards
+```
+
+## Conventions et règles
+
+**IMPORTANT : Ne lis pas tous les fichiers systématiquement !**
+Charge uniquement les fichiers pertinents selon le contexte de la tâche.
+
+### Fichiers de référence par contexte
+
+- **Commits et Git :** `/docs/conventions_commits.md`
+  → À lire lors de : création de commits, messages de commit
+
+- **Standards de code :** `/docs/bonnes_pratiques.md`
+  → À lire lors de : écriture de code, refactoring, code review
+
+- **Sécurité :** `/docs/security_checklist.md`
+  → À lire lors de : code manipulant des données sensibles, auth, API publiques
+
+- **Architecture :** `/docs/architecture_decisions.md`
+  → À lire lors de : design de nouvelles features, choix techniques importants
+
+- **Tests :** `/docs/testing_guide.md`
+  → À lire lors de : écriture de tests, vérification de couverture
+
+- **Personas :** `/docs/personas.md`
+  → À lire lors de : besoin d'adopter une perspective spécifique (sécurité, perfs, etc.)
+
+### Stratégie de lecture intelligente
+
+**Exemples de contextes et fichiers à charger :**
+
+| Tâche | Fichiers à lire |
+|-------|----------------|
+| Créer un commit | `conventions_commits.md` |
+| Nouvelle route API | `bonnes_pratiques.md`, `security_checklist.md` |
+| Feature majeure | `architecture_decisions.md`, `personas.md`, `bonnes_pratiques.md` |
+| Fix de bug | `bonnes_pratiques.md` |
+| Code review sécurité | `security_checklist.md`, `bonnes_pratiques.md` |
+| Écrire des tests | `testing_guide.md` |
+
+**Règle d'or :** Charge 1-3 fichiers maximum selon le besoin, jamais tous à la fois.
+
+## Workflows
+
+### Développement d'une nouvelle feature
+1. **Planification** : Lire `architecture_decisions.md` si feature majeure
+2. **Branche** : `git checkout -b feature/nom-feature`
+3. **Implémentation** : Suivre `bonnes_pratiques.md`
+4. **Sécurité** : Vérifier avec `security_checklist.md` si code sensible
+5. **Tests** : Suivre `testing_guide.md` (couverture min 80%)
+6. **Commit** : Format selon `conventions_commits.md`
+7. **Code review** : Au moins 1 approbation
+8. **Merge** : Vers `main` après validation
+
+### Débogage
+- Stack trace complète obligatoire
+- Contexte : fichiers concernés, étapes de reproduction
+- Comportement attendu vs observé
+- Logs pertinents (sans données sensibles)
+
+## Dépendances
+
+Avant d'ajouter une dépendance :
+1. Vérifier si fonctionnalité peut être implémentée sans elle
+2. Package bien maintenu (maj < 6 mois)
+3. Pas de vulnérabilités critiques (`npm audit`)
+4. Documenter la raison dans commit/PR
+
+**Packages interdits :**
+- Avec CVE critiques
+- Abandonnés (pas de maj depuis > 2 ans)
+- Non maintenus
+
+## Commandes utiles
+
+```bash
+npm run dev          # Développement local
+npm run test         # Tests unitaires
+npm run test:e2e     # Tests E2E
+npm run lint         # Linter
+npm run build        # Build production
+```
+
+## Ressources
+
+- API Documentation: `/docs/api.md`
+- Contributing Guide: `/CONTRIBUTING.md`
+- Architecture Decision Records: `/docs/architecture_decisions.md`

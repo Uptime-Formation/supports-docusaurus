@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 600" width="700" height="600">
+  <!-- Titre -->
+  <text x="350" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Compétences émergentes du développeur
+  </text>
+
+  <!-- Pentagone central -->
+  <g transform="translate(350, 280)">
+    <!-- Pentagone externe avec gradient -->
+    <defs>
+      <radialGradient id="pentaGrad">
+        <stop offset="0%" style="stop-color:#9333ea;stop-opacity:0.2" />
+        <stop offset="100%" style="stop-color:#9333ea;stop-opacity:0.05" />
+      </radialGradient>
+    </defs>
+
+    <!-- Lignes de connexion -->
+    <polygon points="0,-150 142.5,-46.35 88.16,121.35 -88.16,121.35 -142.5,-46.35"
+             fill="url(#pentaGrad)" stroke="#9333ea" stroke-width="2" />
+
+    <!-- Centre -->
+    <circle cx="0" cy="0" r="60" fill="#9333ea" opacity="0.1" stroke="#9333ea" stroke-width="3" />
+    <text x="0" y="-10" font-family="Arial, sans-serif" font-size="32" text-anchor="middle">👨‍💻</text>
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#7c3aed">Développeur</text>
+    <text x="0" y="38" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#7c3aed">augmenté</text>
+  </g>
+
+  <!-- 1. Prompt Engineering (haut) -->
+  <g transform="translate(350, 90)">
+    <circle cx="0" cy="0" r="70" fill="#667eea" stroke="#5a67d8" stroke-width="3" />
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="36" text-anchor="middle">💬</text>
+    <text x="0" y="12" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">Prompt</text>
+    <text x="0" y="28" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">Engineering</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">Communiquer</text>
+    <text x="0" y="63" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">avec l'IA</text>
+  </g>
+
+  <!-- 2. Architecture (haut droite) -->
+  <g transform="translate(540, 180)">
+    <circle cx="0" cy="0" r="70" fill="#48bb78" stroke="#38a169" stroke-width="3" />
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="36" text-anchor="middle">🏛️</text>
+    <text x="0" y="12" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">Architecture</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">Vision</text>
+    <text x="0" y="63" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">d'ensemble</text>
+  </g>
+
+  <!-- 3. Validation (bas droite) -->
+  <g transform="translate(470, 410)">
+    <circle cx="0" cy="0" r="70" fill="#4299e1" stroke="#3182ce" stroke-width="3" />
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="36" text-anchor="middle">🔍</text>
+    <text x="0" y="12" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">Validation</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">Évaluation</text>
+    <text x="0" y="63" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">rapide</text>
+  </g>
+
+  <!-- 4. Sécurité (bas gauche) -->
+  <g transform="translate(230, 410)">
+    <circle cx="0" cy="0" r="70" fill="#ed8936" stroke="#dd6b20" stroke-width="3" />
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="36" text-anchor="middle">🔒</text>
+    <text x="0" y="12" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">Sécurité</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">Détection de</text>
+    <text x="0" y="63" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">vulnérabilités</text>
+  </g>
+
+  <!-- 5. Éthique (haut gauche) -->
+  <g transform="translate(160, 180)">
+    <circle cx="0" cy="0" r="70" fill="#9f7aea" stroke="#805ad5" stroke-width="3" />
+    <text x="0" y="-15" font-family="Arial, sans-serif" font-size="36" text-anchor="middle">⚖️</text>
+    <text x="0" y="12" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">Éthique</text>
+    <text x="0" y="50" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">Implications</text>
+    <text x="0" y="63" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="white" opacity="0.9">de l'IA</text>
+  </g>
+
+  <!-- Note en bas -->
+  <text x="350" y="570" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    Ces 5 compétences deviennent essentielles pour travailler efficacement avec l'IA
+  </text>
+</svg>

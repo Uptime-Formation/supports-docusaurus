@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#f9f9f9"/>
+  <text x="50%" y="50" text-anchor="middle" font-size="24" fill="#333">Bonnes pratiques de confidentialité</text>
+
+  <!-- Anonymisation -->
+  <circle cx="200" cy="200" r="50" fill="#d4edda"/>
+  <text x="200" y="200" text-anchor="middle" font-size="16" fill="#333">Anonymisation</text>
+
+  <!-- Data Selection -->
+  <circle cx="400" cy="200" r="50" fill="#d4edda"/>
+  <text x="400" y="200" text-anchor="middle" font-size="16" fill="#333">Sélection des données</text>
+
+  <!-- Validation -->
+  <circle cx="600" cy="200" r="50" fill="#d4edda"/>
+  <text x="600" y="200" text-anchor="middle" font-size="16" fill="#333">Validation</text>
+
+  <!-- Traceability -->
+  <circle cx="400" cy="400" r="50" fill="#d4edda"/>
+  <text x="400" y="400" text-anchor="middle" font-size="16" fill="#333">Traçabilité</text>
+</svg>

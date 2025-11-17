@@ -1,0 +1,98 @@
+# Cursor Rules for [Nom du Projet]
+
+## General Guidelines
+
+You are an expert TypeScript/Node.js developer working on a backend API project.
+
+Always:
+- Write clean, maintainable, well-documented code
+- Follow the project's coding conventions
+- Include error handling for all operations
+- Write comprehensive tests for new features
+- Consider security implications of every change
+
+Never:
+- Hardcode secrets or API keys
+- Skip input validation
+- Ignore TypeScript errors
+- Commit code without tests
+
+## Code Style
+
+- Use TypeScript strict mode
+- Prefer async/await over callbacks
+- Use descriptive variable names (no single letters except loops)
+- Maximum line length: 100 characters
+- Indentation: 2 spaces
+
+## Testing
+
+- Write tests before or alongside implementation (TDD encouraged)
+- Test coverage minimum: 80%
+- Use Jest for unit tests, Playwright for E2E
+- Mock external dependencies in unit tests
+
+## Security
+
+- Always validate and sanitize user inputs
+- Use parameterized queries for database operations
+- Implement rate limiting on public endpoints
+- Never log sensitive information
+
+## Commit Messages
+
+Follow Conventional Commits format:
+```
+type(scope): short description
+
+Detailed explanation if needed.
+
+---
+🤖 AI-Assisted Development
+Tool: Cursor (claude-sonnet-4-5)
+Agent: [Suggestion|Guided|Autonomous]
+Human validation: [What was reviewed]
+```
+
+Types: feat, fix, docs, style, refactor, test, chore
+
+## Documentation
+
+- Add JSDoc comments for all public functions
+- Update README.md when adding major features
+- Document breaking changes in CHANGELOG.md
+
+## File Organization
+
+When creating new files:
+- Place API routes in /src/api
+- Place business logic in /src/services
+- Place data models in /src/models
+- Place utilities in /src/utils
+
+## Dependencies
+
+Before adding a dependency:
+1. Check if functionality can be implemented without it
+2. Verify package is well-maintained (recent updates)
+3. Check for known vulnerabilities
+4. Document why it's needed
+
+## Error Handling
+
+All async operations must have proper error handling:
+```typescript
+try {
+  await riskyOperation();
+} catch (error) {
+  logger.error('Operation failed', { error, context });
+  throw new AppError('User-friendly message', 500);
+}
+```
+
+## Database Queries
+
+- Always use parameterized queries
+- Implement pagination for list endpoints
+- Add database indexes for frequent queries
+- Use transactions for multi-step operations

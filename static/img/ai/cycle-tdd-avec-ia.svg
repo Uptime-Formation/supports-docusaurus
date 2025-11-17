@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 600" width="700" height="600">
+  <!-- Titre -->
+  <text x="350" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Cycle TDD assisté par l'IA
+  </text>
+
+  <!-- Définir les flèches -->
+  <defs>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444" />
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6" />
+    </marker>
+  </defs>
+
+  <!-- Cercle central avec flèches formant le cycle -->
+  <g transform="translate(350, 320)">
+    <!-- Flèche circulaire pour montrer le cycle -->
+    <path d="M 0,-150 A 150,150 0 0,1 130,-75" fill="none" stroke="#9333ea" stroke-width="3" opacity="0.3" />
+    <path d="M 130,-75 A 150,150 0 0,1 130,75" fill="none" stroke="#9333ea" stroke-width="3" opacity="0.3" />
+    <path d="M 130,75 A 150,150 0 0,1 0,150" fill="none" stroke="#9333ea" stroke-width="3" opacity="0.3" />
+    <path d="M 0,150 A 150,150 0 0,1 -130,75" fill="none" stroke="#9333ea" stroke-width="3" opacity="0.3" />
+    <path d="M -130,75 A 150,150 0 0,1 -130,-75" fill="none" stroke="#9333ea" stroke-width="3" opacity="0.3" />
+    <path d="M -130,-75 A 150,150 0 0,1 -20,-145" fill="none" stroke="#9333ea" stroke-width="3" opacity="0.3" marker-end="url(#arrowBlue)" />
+  </g>
+
+  <!-- 1. Spécifications (haut) -->
+  <g transform="translate(350, 120)">
+    <rect x="-80" y="-40" width="160" height="70" rx="8" fill="#f59e0b" stroke="#d97706" stroke-width="3" />
+    <text x="0" y="-10" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">1. Spécifications</text>
+    <text x="0" y="10" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Définir les cas</text>
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">de test</text>
+    <text x="90" y="10" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">📝</text>
+  </g>
+
+  <!-- 2. Générer tests (haut droite) -->
+  <g transform="translate(530, 210)">
+    <rect x="-80" y="-35" width="160" height="70" rx="8" fill="#ef4444" stroke="#dc2626" stroke-width="3" />
+    <text x="0" y="-5" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">2. Tests (IA)</text>
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Générer les tests</text>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">qui échouent</text>
+    <text x="90" y="15" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">🧪</text>
+    <!-- Flèche vers 2 -->
+    <line x1="-90" y1="-20" x2="-140" y2="-60" stroke="#ef4444" stroke-width="3" marker-end="url(#arrowRed)" />
+  </g>
+
+  <!-- 3. Code (droite) -->
+  <g transform="translate(530, 360)">
+    <rect x="-80" y="-35" width="160" height="70" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="3" />
+    <text x="0" y="-5" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">3. Code (IA)</text>
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Implémenter</text>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">pour passer tests</text>
+    <text x="90" y="15" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">💻</text>
+    <!-- Flèche vers 3 -->
+    <line x1="-10" y1="-45" x2="-10" y2="-85" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowBlue)" />
+  </g>
+
+  <!-- 4. Exécution (bas droite) -->
+  <g transform="translate(410, 490)">
+    <rect x="-75" y="-30" width="150" height="60" rx="8" fill="#10b981" stroke="#059669" stroke-width="3" />
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">4. Exécution</text>
+    <text x="0" y="18" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Tests passent ✓</text>
+    <text x="80" y="5" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">✅</text>
+    <!-- Flèche vers 4 -->
+    <line x1="-50" y1="-40" x2="-70" y2="-90" stroke="#10b981" stroke-width="3" marker-end="url(#arrowGreen)" />
+  </g>
+
+  <!-- 5. Refactoring (bas gauche) -->
+  <g transform="translate(210, 490)">
+    <rect x="-75" y="-30" width="150" height="60" rx="8" fill="#9333ea" stroke="#7c3aed" stroke-width="3" />
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">5. Refactoring</text>
+    <text x="0" y="18" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Améliorer</text>
+    <text x="-80" y="5" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">♻️</text>
+    <!-- Flèche vers 5 -->
+    <line x1="80" y1="-10" x2="140" y2="-10" stroke="#9333ea" stroke-width="3" marker-end="url(#arrowBlue)" />
+  </g>
+
+  <!-- 6. Validation (gauche) -->
+  <g transform="translate(170, 360)">
+    <rect x="-80" y="-35" width="160" height="70" rx="8" fill="#8b5cf6" stroke="#7c3aed" stroke-width="3" />
+    <text x="0" y="-5" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">6. Validation</text>
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Tests toujours</text>
+    <text x="0" y="30" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">verts ✓</text>
+    <text x="-90" y="15" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">🔍</text>
+    <!-- Flèche vers 6 -->
+    <line x1="30" y1="-50" x2="50" y2="-100" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrowBlue)" />
+  </g>
+
+  <!-- Robot IA au centre -->
+  <g transform="translate(350, 320)">
+    <circle cx="0" cy="0" r="45" fill="#fbbf24" opacity="0.2" />
+    <text x="0" y="-5" font-family="Arial, sans-serif" font-size="32" text-anchor="middle">🤖</text>
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">Assistant IA</text>
+  </g>
+
+  <!-- Note -->
+  <text x="350" y="580" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    L'IA intervient aux étapes 2 (tests) et 3 (code), le développeur valide et refactorise
+  </text>
+</svg>

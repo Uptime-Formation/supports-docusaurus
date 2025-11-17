@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Titre -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Les 6 principaux cas d'usage de l'IA pour les développeurs
+  </text>
+
+  <!-- Définition des dégradés -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38f9d7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fa709a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fee140;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#30cfd0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#330867;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Cas 1: Génération de code -->
+  <g transform="translate(100, 100)">
+    <rect width="200" height="120" rx="10" fill="url(#grad1)" />
+    <text x="100" y="35" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">💻</text>
+    <text x="100" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Génération</text>
+    <text x="100" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">de code</text>
+    <text x="100" y="105" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Autocomplétion</text>
+  </g>
+
+  <!-- Cas 2: Documentation -->
+  <g transform="translate(350, 100)">
+    <rect width="200" height="120" rx="10" fill="url(#grad2)" />
+    <text x="100" y="35" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">📚</text>
+    <text x="100" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Documentation</text>
+    <text x="100" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">automatique</text>
+    <text x="100" y="105" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Docstrings &amp; API</text>
+  </g>
+
+  <!-- Cas 3: Tests -->
+  <g transform="translate(600, 100)">
+    <rect width="150" height="120" rx="10" fill="url(#grad3)" />
+    <text x="75" y="35" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">🧪</text>
+    <text x="75" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Création</text>
+    <text x="75" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">de tests</text>
+    <text x="75" y="105" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Tests unitaires</text>
+  </g>
+
+  <!-- Cas 4: Débogage -->
+  <g transform="translate(100, 280)">
+    <rect width="200" height="120" rx="10" fill="url(#grad4)" />
+    <text x="100" y="35" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">🐛</text>
+    <text x="100" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Débogage</text>
+    <text x="100" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">assisté</text>
+    <text x="100" y="105" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Analyse erreurs</text>
+  </g>
+
+  <!-- Cas 5: Revue de code -->
+  <g transform="translate(350, 280)">
+    <rect width="200" height="120" rx="10" fill="url(#grad5)" />
+    <text x="100" y="35" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">👁️</text>
+    <text x="100" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Revue</text>
+    <text x="100" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">de code</text>
+    <text x="100" y="105" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Code smell</text>
+  </g>
+
+  <!-- Cas 6: Optimisation -->
+  <g transform="translate(600, 280)">
+    <rect width="150" height="120" rx="10" fill="url(#grad6)" />
+    <text x="75" y="35" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">⚡</text>
+    <text x="75" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Optimisation</text>
+    <text x="75" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">performances</text>
+    <text x="75" y="105" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Complexité</text>
+  </g>
+
+  <!-- Légende centrale -->
+  <g transform="translate(325, 460)">
+    <circle cx="75" cy="30" r="50" fill="#9333ea" opacity="0.1" />
+    <text x="75" y="25" font-family="Arial, sans-serif" font-size="36" text-anchor="middle">🤖</text>
+    <text x="75" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2c3e50">IA pour devs</text>
+  </g>
+</svg>

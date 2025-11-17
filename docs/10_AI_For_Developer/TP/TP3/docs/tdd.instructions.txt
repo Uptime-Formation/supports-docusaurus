@@ -1,0 +1,26 @@
+## Règles pour les tests
+
+### Structure des tests
+- 1 fichier de classe ou librairie = au moins 1 fichier de test
+- 3 tests minimum par fonction : cas nominal, données vides, cas limite
+- Noms de tests explicites 
+
+### Assertions
+- 1 assertion = 1 comportement vérifié
+- Messages d'erreur clairs en cas d'échec
+- Valeurs attendues explicites (pas de calculs dans les assertions)
+
+### Isolation
+- Tests indépendants (ordre d'exécution non déterministe)
+- Pas d'effets de bord (fichiers, base de données, API)
+- Données de test en dur dans le test (pas de fichiers externes)
+- Mocks, puppets, ou autres outils simulant des comportements réalistes pour isoler les tests et éviter les dépendances externes
+
+### Données de test 
+- Les données de test doivent toujours être générées par un humain pour garantir leur pertinence et leur alignement avec les scénarios réels.
+- Les données reflètent des cas d'usage concrets et variés, y compris des cas limites.
+
+### Lisibilité
+- Pattern AAA : Arrange (préparer données) → Act (appeler fonction) → Assert (vérifier résultat)
+- Commentaires uniquement si le test n'est pas auto-explicite
+- Pas de logique complexe dans les tests (if/else, boucles)

@@ -1,0 +1,124 @@
+# Instructions Architecture Hexagonale (Ports & Adaptateurs)
+
+## Principe fondamental
+
+L'architecture hexagonale sépare le **cœur métier** (domaine) de l'**infrastructure** (technique).
+
+**Règle d'or** : Le cœur métier ne doit JAMAIS dépendre de l'infrastructure.
+
+## Concepts clés
+
+### Cœur métier (hexagone central)
+- Fonctions/classes contenant la logique business
+- Règles métier pures (calculs, validations, algorithmes)
+- Indépendant de toute technologie (pas de dépendance vers framework, BDD, HTTP, etc.)
+- Testable en isolation avec des données en mémoire
+
+### Ports (interfaces)
+- Points d'entrée/sortie du cœur métier
+- Abstractions définies PAR le métier
+- Exemples :
+  - Port d'entrée : `AnalyzeData(data) → results`
+  - Port de sortie : `SaveResults(results) → void`
+
+### Adaptateurs (implémentations)
+- Connectent le monde extérieur au cœur métier
+- Implémentent les ports
+- Exemples d'adaptateurs d'entrée :
+  - CLI : lit arguments, appelle le métier, affiche résultat
+  - HTTP : reçoit requête, appelle le métier, retourne JSON
+  - Queue : consomme message, appelle le métier
+- Exemples d'adaptateurs de sortie :
+  - Fichier : écrit résultats dans CSV/JSON
+  - Base de données : persist résultats
+  - API externe : envoie résultats vers autre service
+
+## Avantages
+
+1. **Testabilité** : Cœur métier testable sans infrastructure
+2. **Évolutivité** : Ajouter adaptateurs sans modifier le métier
+3. **Indépendance** : Changer de framework/BDD sans réécrire le métier
+4. **Maintenabilité** : Logique métier isolée, facile à comprendre
+5. **Réutilisabilité** : Même métier utilisable par plusieurs adaptateurs
+
+## Instructions pour l'Agent IA
+
+### Lors de l'ajout d'un nouvel adaptateur
+
+1. **IDENTIFIER le cœur métier existant**
+   - Quelles sont les fonctions/classes métier ?
+   - Sont-elles déjà pures (sans dépendances infrastructure) ?
+   - Les tests métier existent-ils ?
+
+2. **NE JAMAIS MODIFIER le cœur métier**
+   - Le métier reste identique
+   - Les signatures de fonctions ne changent pas
+   - Les tests métier restent verts SANS modification
+
+3. **CRÉER un nouvel adaptateur**
+   - L'adaptateur appelle le métier existant
+   - L'adaptateur fait la traduction entrée/sortie
+   - L'adaptateur gère les détails techniques (parsing, sérialisation, protocole)
+
+4. **GARDER les tests métier inchangés**
+   - Preuve que le métier n'a pas changé
+   - Les tests métier doivent passer sans modification
+   - Créer de NOUVEAUX tests pour l'adaptateur
+
+### Pattern d'implémentation
+
+**Mauvais** (métier dépend de l'infrastructure) :
+```
+function analyzeData(httpRequest) {
+  const data = parseCSVFromHTTP(httpRequest)  // ❌ HTTP dans métier
+  const results = calculate(data)
+  return toJSON(results)  // ❌ JSON dans métier
+}
+```
+
+**Bon** (séparation claire) :
+```
+// CŒUR MÉTIER (pur, sans dépendances)
+function analyzeData(data) {
+  return calculate(data)  // ✅ Logique pure
+}
+
+// ADAPTATEUR HTTP (infrastructure)
+function httpHandler(request) {
+  const data = parseCSVFromHTTP(request)  // Adaptateur fait le parsing
+  const results = analyzeData(data)       // Appelle le métier
+  return toJSON(results)                  // Adaptateur fait la sérialisation
+}
+```
+
+## Détection du cœur métier
+
+Le cœur métier est identifiable par :
+- Fonctions sans effet de bord (même entrée → même sortie)
+- Pas de dépendance vers librairies d'infrastructure
+- Testable avec données en mémoire uniquement
+- Contient la logique métier (calculs, règles, validations)
+
+## Refactoring vers architecture hexagonale
+
+Si le code n'est pas encore hexagonal :
+
+1. **Extraire le métier** : Isoler calculs/règles dans fonctions pures
+2. **Créer les adaptateurs** : Séparer I/O (lecture/écriture) du métier
+3. **Inverser dépendances** : Métier définit interfaces, adaptateurs implémentent
+4. **Tester** : Tests métier en isolation, tests adaptateurs avec mocks
+
+## Gestion des dépendances
+
+**Direction des dépendances** : Infrastructure → Métier (jamais l'inverse)
+
+```
+CLI ──→ ┐
+HTTP ──→ ├─→ MÉTIER ←─┐
+Queue ──→ ┘           ├── Fichiers
+                      ├── BDD
+                      └── API
+```
+
+Les adaptateurs dépendent du métier.
+Le métier ne dépend de rien.

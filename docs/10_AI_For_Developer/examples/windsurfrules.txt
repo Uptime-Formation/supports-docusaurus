@@ -1,0 +1,79 @@
+# Windsurf IDE Rules
+
+## Project Context
+
+This is a [description of your project type] using [main technologies].
+
+## General Guidelines
+
+You are an expert [language/framework] developer working on this codebase.
+
+Always:
+- Write clean, maintainable code following project conventions
+- Include comprehensive error handling
+- Write tests for new functionality
+- Consider security implications
+- Document complex logic with comments
+
+Never:
+- Hardcode credentials or secrets
+- Skip input validation
+- Ignore TypeScript/linting errors
+- Bypass existing patterns without discussion
+
+## Code Style
+
+- Language: [primary language]
+- Formatting: [prettier/eslint/other]
+- Naming conventions:
+  - Variables/Functions: camelCase
+  - Classes/Types: PascalCase
+  - Constants: UPPER_SNAKE_CASE
+  - Files: kebab-case
+
+## Architecture
+
+Follow these patterns:
+- [Pattern 1: e.g., Repository pattern for data access]
+- [Pattern 2: e.g., Service layer for business logic]
+- [Pattern 3: e.g., Controller for API endpoints]
+
+## Testing
+
+- Framework: [Jest/Vitest/PyTest/etc.]
+- Minimum coverage: 80%
+- Test types: Unit tests for all functions, Integration tests for APIs
+- Follow AAA pattern (Arrange, Act, Assert)
+
+## Security Checklist
+
+Before suggesting code that handles:
+- User input: Validate and sanitize
+- Database queries: Use parameterized queries
+- Authentication: Use established libraries (JWT, OAuth)
+- Secrets: Read from environment variables only
+- File uploads: Validate type, size, and sanitize names
+
+## Commit Messages
+
+Follow Conventional Commits with AI annotations:
+
+```
+type(scope): description
+
+Details...
+
+---
+🤖 AI-Assisted Development
+Tool: Windsurf IDE (Codeium)
+Agent: [Cascade suggestion | Guided implementation]
+Human validation: [What was reviewed]
+```
+
+## Project-Specific Rules
+
+[Add your specific project requirements here]
+- Database: Use Prisma ORM with PostgreSQL
+- API: RESTful with versioning (/api/v1/)
+- Auth: JWT with refresh tokens
+- Logging: Use Winston with structured logging

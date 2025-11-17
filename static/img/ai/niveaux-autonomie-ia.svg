@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Titre -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Les 4 niveaux d'autonomie de l'IA en développement
+  </text>
+
+  <!-- Dégradés -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Échelle verticale avec flèche -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#9333ea" />
+    </marker>
+  </defs>
+  <line x1="100" y1="520" x2="100" y2="100" stroke="#9333ea" stroke-width="4" marker-end="url(#arrow)" />
+
+  <!-- Label autonomie -->
+  <text x="50" y="310" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#9333ea" transform="rotate(-90 50 310)">
+    Autonomie croissante
+  </text>
+
+  <!-- Niveau 1 - Assistance ponctuelle -->
+  <g transform="translate(150, 430)">
+    <rect width="600" height="90" rx="10" fill="url(#grad1)" />
+    <text x="20" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">Niveau 1</text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Assistance ponctuelle</text>
+    <text x="320" y="35" font-family="Arial, sans-serif" font-size="13" fill="white">• Autocomplétion de code</text>
+    <text x="320" y="55" font-family="Arial, sans-serif" font-size="13" fill="white">• Suggestions contextuelles</text>
+    <text x="320" y="75" font-family="Arial, sans-serif" font-size="13" fill="white">• Correction syntaxique</text>
+    <text x="560" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">💡</text>
+  </g>
+
+  <!-- Niveau 2 - Génération guidée -->
+  <g transform="translate(150, 320)">
+    <rect width="600" height="90" rx="10" fill="url(#grad2)" />
+    <text x="20" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">Niveau 2</text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Génération guidée</text>
+    <text x="320" y="35" font-family="Arial, sans-serif" font-size="13" fill="white">• Production de fonctions complètes</text>
+    <text x="320" y="55" font-family="Arial, sans-serif" font-size="13" fill="white">• Génération de tests</text>
+    <text x="320" y="75" font-family="Arial, sans-serif" font-size="13" fill="white">• Documentation automatique</text>
+    <text x="560" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🔧</text>
+  </g>
+
+  <!-- Niveau 3 - Autonomie surveillée -->
+  <g transform="translate(150, 210)">
+    <rect width="600" height="90" rx="10" fill="url(#grad3)" />
+    <text x="20" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">Niveau 3</text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Autonomie surveillée</text>
+    <text x="320" y="35" font-family="Arial, sans-serif" font-size="13" fill="white">• Implémentation de features complètes</text>
+    <text x="320" y="55" font-family="Arial, sans-serif" font-size="13" fill="white">• Refactoring de modules</text>
+    <text x="320" y="75" font-family="Arial, sans-serif" font-size="13" fill="white">• Résolution de bugs</text>
+    <text x="560" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">⚙️</text>
+  </g>
+
+  <!-- Niveau 4 - Autonomie contrôlée -->
+  <g transform="translate(150, 100)">
+    <rect width="600" height="90" rx="10" fill="url(#grad4)" />
+    <text x="20" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">Niveau 4</text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Autonomie contrôlée</text>
+    <text x="320" y="35" font-family="Arial, sans-serif" font-size="13" fill="white">• Développement de bout en bout</text>
+    <text x="320" y="55" font-family="Arial, sans-serif" font-size="13" fill="white">• Gestion des Pull Requests</text>
+    <text x="320" y="75" font-family="Arial, sans-serif" font-size="13" fill="white">• Maintenance du code</text>
+    <text x="560" y="50" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🤖</text>
+  </g>
+
+  <!-- Note en bas -->
+  <text x="400" y="570" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    Plus le niveau est élevé, plus la surveillance et la validation humaine sont critiques
+  </text>
+</svg>

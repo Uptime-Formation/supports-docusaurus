@@ -1,0 +1,72 @@
+---
+title: TP X - Titre
+---
+
+**Description courte du TP et ce qu'on va apprendre.**
+
+**Durée : XX minutes**
+
+### Contexte
+
+Description du contexte métier ou du besoin client.
+
+### Contraintes pédagogiques
+
+Vous êtes libres d'utiliser l'outil de votre choix (Python, Node.js, Rust, etc.).
+
+Les fichiers fournis sont disponibles dans [le dossier sources](./sources/).
+
+## Focus IA
+
+<liste des focus IA></liste>
+
+## Objectif
+
+À la fin de ce TP, vous devez avoir réussi les objectifs suivants :
+- Objectif 1
+- Objectif 2
+- Objectif 3
+
+## Fichiers fournis 
+
+## Contraintes techniques
+
+- Contrainte 1
+- Contrainte 2
+- Contrainte 3
+
+## Étape X
+
+Description de l'étape.
+
+- **Action** : Ce que l'étudiant doit faire
+  **Observation** : Ce qu'il doit voir/vérifier
+
+<details><summary>Indice</summary>
+
+Exemple de prompt ou indice pour guider l'étudiant.
+
+</details>
+
+### Avancé
+
+Questions pour aller plus loin :
+- Que se passe-t-il si... ?
+- Comment pourriez-vous améliorer... ?
+- Sauriez-vous expliquer pourquoi... ?
+
+### Solution
+
+<details><summary>Afficher</summary>
+
+Solution complète avec code et explications.
+
+</details>
+
+### Synthèse
+
+Qu'est-ce qui a bien fonctionné ?
+
+Quels sont les problèmes rencontrés ?
+
+Quelles compétences avez-vous développées avec l'IA ?

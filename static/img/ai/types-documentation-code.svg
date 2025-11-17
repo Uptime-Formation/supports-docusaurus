@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <!-- Titre -->
+  <text x="450" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Les types de documentation du code
+  </text>
+
+  <!-- Centre: Le code -->
+  <g transform="translate(450, 250)">
+    <circle cx="0" cy="0" r="60" fill="#9333ea" stroke="#7c3aed" stroke-width="3" />
+    <text x="0" y="-10" font-family="Arial, sans-serif" font-size="32" text-anchor="middle">💻</text>
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">CODE</text>
+  </g>
+
+  <!-- 6 types de documentation autour -->
+
+  <!-- 1. Documentation interne (haut) -->
+  <g transform="translate(450, 100)">
+    <rect x="-90" y="-40" width="180" height="60" rx="8" fill="#667eea" stroke="#5a67d8" stroke-width="2" />
+    <text x="0" y="-10" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Interne</text>
+    <text x="0" y="8" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Commentaires</text>
+    <text x="0" y="23" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Docstrings</text>
+    <line x1="0" y1="20" x2="0" y2="130" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 2. Guide dev (haut droite) -->
+  <g transform="translate(670, 150)">
+    <rect x="-80" y="-35" width="160" height="60" rx="8" fill="#48bb78" stroke="#38a169" stroke-width="2" />
+    <text x="0" y="-5" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Guide Dev</text>
+    <text x="0" y="13" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Structure</text>
+    <text x="0" y="28" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Workflow</text>
+    <line x1="-80" y1="0" x2="-170" y2="60" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 3. API (droite) -->
+  <g transform="translate(700, 280)">
+    <rect x="-70" y="-30" width="140" height="60" rx="8" fill="#4299e1" stroke="#3182ce" stroke-width="2" />
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">API</text>
+    <text x="0" y="18" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">OpenAPI / Swagger</text>
+    <line x1="-70" y1="0" x2="-190" y2="0" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 4. README (bas droite) -->
+  <g transform="translate(650, 400)">
+    <rect x="-75" y="-30" width="150" height="60" rx="8" fill="#ed8936" stroke="#dd6b20" stroke-width="2" />
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">README</text>
+    <text x="0" y="18" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Guide utilisateur</text>
+    <line x1="-75" y1="-10" x2="-140" y2="-90" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 5. Architecture (bas gauche) -->
+  <g transform="translate(250, 400)">
+    <rect x="-75" y="-30" width="150" height="60" rx="8" fill="#9f7aea" stroke="#805ad5" stroke-width="2" />
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Architecture</text>
+    <text x="0" y="18" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Diagrammes</text>
+    <line x1="75" y1="-10" x2="140" y2="-90" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 6. Changelog (gauche) -->
+  <g transform="translate(200, 280)">
+    <rect x="-70" y="-30" width="140" height="60" rx="8" fill="#f56565" stroke="#e53e3e" stroke-width="2" />
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Changelog</text>
+    <text x="0" y="18" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white" opacity="0.9">Historique</text>
+    <line x1="70" y1="0" x2="190" y2="0" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- Note -->
+  <text x="450" y="480" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    L'IA peut aider à générer et maintenir tous ces types de documentation
+  </text>
+</svg>

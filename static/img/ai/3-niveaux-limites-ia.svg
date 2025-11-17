@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Titre -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Les 3 niveaux de maîtrise de l'IA pour le code
+  </text>
+
+  <!-- Pyramide inversée pour montrer la progression -->
+
+  <!-- Niveau 1 (bas - le plus large) - Débutant -->
+  <g transform="translate(400, 480)">
+    <polygon points="-300,0 300,0 250,-90 -250,-90" fill="#ef4444" opacity="0.8" stroke="#dc2626" stroke-width="3" />
+
+    <text x="0" y="-60" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="white">Niveau 1 - Difficultés initiales</text>
+
+    <text x="-200" y="-30" font-family="Arial, sans-serif" font-size="14" text-anchor="start" fill="white">❌ Le code fonctionne-t-il ?</text>
+    <text x="0" y="-30" font-family="Arial, sans-serif" font-size="14" text-anchor="start" fill="white">❌ Le code est-il bon ?</text>
+    <text x="-200" y="-10" font-family="Arial, sans-serif" font-size="14" text-anchor="start" fill="white">❌ Les dépendances sont-elles sûres ?</text>
+
+    <g transform="translate(230, -50)">
+      <circle cx="0" cy="0" r="25" fill="#fef3c7" opacity="0.3" />
+      <text x="0" y="10" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">😟</text>
+    </g>
+  </g>
+
+  <!-- Flèche de progression -->
+  <defs>
+    <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#9333ea" />
+    </marker>
+  </defs>
+  <line x1="100" y1="460" x2="100" y2="120" stroke="#9333ea" stroke-width="4" marker-end="url(#arrowUp)" />
+  <text x="70" y="290" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#9333ea" transform="rotate(-90 70 290)">
+    Progression
+  </text>
+
+  <!-- Niveau 2 (milieu) - Intermédiaire -->
+  <g transform="translate(400, 340)">
+    <polygon points="-220,0 220,0 180,-80 -180,-80" fill="#f59e0b" opacity="0.8" stroke="#d97706" stroke-width="3" />
+
+    <text x="0" y="-50" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="white">Niveau 2 - Productivité</text>
+
+    <text x="-150" y="-20" font-family="Arial, sans-serif" font-size="13" text-anchor="start" fill="white">✅ Éviter le copier/coller</text>
+    <text x="0" y="-20" font-family="Arial, sans-serif" font-size="13" text-anchor="start" fill="white">✅ Généraliser les bonnes pratiques</text>
+    <text x="-150" y="-2" font-family="Arial, sans-serif" font-size="13" text-anchor="start" fill="white">✅ Standardiser les formats</text>
+
+    <g transform="translate(180, -40)">
+      <circle cx="0" cy="0" r="25" fill="#fef3c7" opacity="0.3" />
+      <text x="0" y="10" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">🤔</text>
+    </g>
+  </g>
+
+  <!-- Niveau 3 (haut - le plus étroit) - Expert -->
+  <g transform="translate(400, 200)">
+    <polygon points="-140,0 140,0 110,-70 -110,-70" fill="#10b981" opacity="0.8" stroke="#059669" stroke-width="3" />
+
+    <text x="0" y="-40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="white">Niveau 3 - Maîtrise agentique</text>
+
+    <text x="-80" y="-10" font-family="Arial, sans-serif" font-size="13" text-anchor="start" fill="white">🚀 Mode agentique</text>
+    <text x="15" y="-10" font-family="Arial, sans-serif" font-size="13" text-anchor="start" fill="white">🚀 Personas maîtrisés</text>
+
+    <g transform="translate(110, -35)">
+      <circle cx="0" cy="0" r="25" fill="#fef3c7" opacity="0.3" />
+      <text x="0" y="10" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">😎</text>
+    </g>
+  </g>
+
+  <!-- Risques associés -->
+  <g transform="translate(520, 150)">
+    <rect x="0" y="0" width="250" height="130" rx="5" fill="#fef2f2" stroke="#dc2626" stroke-width="2" />
+    <text x="125" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#dc2626">⚠️ Risques de stagnation</text>
+
+    <text x="10" y="50" font-family="Arial, sans-serif" font-size="11" fill="#991b1b">Niveau 1 :</text>
+    <text x="10" y="65" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">• Usage superficiel</text>
+
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="11" fill="#991b1b">Niveau 2 :</text>
+    <text x="10" y="100" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">• Limité aux POC</text>
+    <text x="10" y="115" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">• Complexité avec legacy</text>
+  </g>
+
+  <!-- Solutions -->
+  <g transform="translate(520, 300)">
+    <rect x="0" y="0" width="250" height="160" rx="5" fill="#f0fdf4" stroke="#10b981" stroke-width="2" />
+    <text x="125" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#059669">💡 Pour progresser</text>
+
+    <text x="10" y="50" font-family="Arial, sans-serif" font-size="11" fill="#047857">1→2 : Bonnes pratiques</text>
+    <text x="15" y="65" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Personas clairs</text>
+    <text x="15" y="79" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Fichiers de contraintes</text>
+
+    <text x="10" y="100" font-family="Arial, sans-serif" font-size="11" fill="#047857">2→3 : Mode agentique</text>
+    <text x="15" y="115" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Windsurf, Claude Code</text>
+    <text x="15" y="129" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Autonomie encadrée</text>
+    <text x="15" y="143" font-family="Arial, sans-serif" font-size="10" fill="#065f46">• Cadrage avec personas</text>
+  </g>
+
+  <!-- Note -->
+  <text x="400" y="570" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    La progression nécessite apprentissage, pratique et mise en place de bonnes pratiques
+  </text>
+</svg>

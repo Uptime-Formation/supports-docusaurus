@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+  <!-- Titre -->
+  <text x="450" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Types de fichiers d'instruction pour les outils IA
+  </text>
+
+  <!-- Centre: Le projet -->
+  <g transform="translate(450, 300)">
+    <rect x="-80" y="-60" width="160" height="120" rx="10" fill="#9333ea" stroke="#7c3aed" stroke-width="3" />
+    <text x="0" y="-20" font-family="Arial, sans-serif" font-size="32" text-anchor="middle">📁</text>
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Votre Projet</text>
+    <text x="0" y="35" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white" opacity="0.9">+ Configuration IA</text>
+  </g>
+
+  <!-- Fichiers autour du projet -->
+
+  <!-- 1. CLAUDE.md (haut gauche) -->
+  <g transform="translate(150, 120)">
+    <rect x="0" y="0" width="180" height="100" rx="8" fill="#667eea" stroke="#5a67d8" stroke-width="2" />
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">CLAUDE.md</text>
+    <text x="10" y="45" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Claude Code</text>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Contexte projet</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">architecture, conventions</text>
+    <text x="10" y="90" font-family="Arial, sans-serif" font-size="10" fill="white">workflows</text>
+    <line x1="180" y1="70" x2="290" y2="220" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 2. .cursorrules (haut) -->
+  <g transform="translate(360, 100)">
+    <rect x="0" y="0" width="180" height="80" rx="8" fill="#48bb78" stroke="#38a169" stroke-width="2" />
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">.cursorrules</text>
+    <text x="10" y="45" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Cursor IDE</text>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Règles globales</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">par projet</text>
+    <line x1="90" y1="80" x2="90" y2="180" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 3. .github/copilot-instructions.md (haut droite) -->
+  <g transform="translate(570, 120)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="#4299e1" stroke="#3182ce" stroke-width="2" />
+    <text x="100" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">.github/</text>
+    <text x="100" y="35" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">copilot-instructions.md</text>
+    <text x="10" y="55" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: GitHub Copilot</text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Conventions code</text>
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="10" fill="white">frameworks, patterns</text>
+    <line x1="0" y1="70" x2="-90" y2="220" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 4. .aider.conf.yml (droite) -->
+  <g transform="translate(620, 340)">
+    <rect x="0" y="0" width="180" height="80" rx="8" fill="#ed8936" stroke="#dd6b20" stroke-width="2" />
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">.aider.conf.yml</text>
+    <text x="10" y="45" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Aider CLI</text>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Config modèle</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">git, edit format</text>
+    <line x1="0" y1="40" x2="-90" y2="0" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 5. .windsurfrules (bas droite) -->
+  <g transform="translate(570, 450)">
+    <rect x="0" y="0" width="180" height="80" rx="8" fill="#9f7aea" stroke="#805ad5" stroke-width="2" />
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">.windsurfrules</text>
+    <text x="10" y="45" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Windsurf IDE</text>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Règles et</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">préférences Windsurf</text>
+    <line x1="20" y1="0" x2="-50" y2="-90" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 6. conventions_commits.md (bas) -->
+  <g transform="translate(320, 470)">
+    <rect x="0" y="0" width="200" height="90" rx="8" fill="#f56565" stroke="#e53e3e" stroke-width="2" />
+    <text x="100" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">conventions_commits.md</text>
+    <text x="10" y="45" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Tous les outils</text>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Conventional commits</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">+ annotations IA</text>
+    <line x1="100" y1="0" x2="100" y2="-110" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 7. bonnes_pratiques.md (bas gauche) -->
+  <g transform="translate(100, 450)">
+    <rect x="0" y="0" width="180" height="90" rx="8" fill="#10b981" stroke="#059669" stroke-width="2" />
+    <text x="90" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">bonnes_pratiques.md</text>
+    <text x="10" y="40" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Tous les outils</text>
+    <text x="10" y="55" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Standards code</text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" fill="white">sécurité, performance</text>
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="10" fill="white">architecture</text>
+    <line x1="160" y1="20" x2="290" y2="-90" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- 8. .clinerules (gauche) -->
+  <g transform="translate(100, 320)">
+    <rect x="0" y="0" width="160" height="80" rx="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="2" />
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">.clinerules</text>
+    <text x="10" y="45" font-family="Arial, sans-serif" font-size="10" fill="white">Pour: Cline (VSCode)</text>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">Contenu: Règles</text>
+    <text x="10" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">d'agent Cline</text>
+    <line x1="160" y1="40" x2="290" y2="20" stroke="#9333ea" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" />
+  </g>
+
+  <!-- Note en bas -->
+  <text x="450" y="585" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+    Chaque outil a son format de configuration, mais les principes restent les mêmes
+  </text>
+</svg>

@@ -1,0 +1,130 @@
+## Commit Message Format
+
+All commits must follow the **Conventional Commits** specification with AI traceability annotations.
+
+### Template
+
+```text
+type(scope): short description (max 72 characters)
+
+[Optional body with detailed explanation:
+- What changed
+- Why it changed
+- Important implementation details]
+
+---
+🤖 AI-Assisted Development
+Tool: [Tool name + version]
+Agent: [Suggestion | Guided | Autonomous]
+Prompt type: [Description of the request]
+Context files: [Files provided to AI]
+Human validation:
+  - Functionality: [✓/✗ Status]
+  - Tests: [✓/✗ Status and coverage if applicable]
+  - Code review: [✓/✗ Status]
+```
+
+---
+
+## Commit Types
+
+Use these standardized types:
+
+| Type | Usage | Example |
+|------|-------|---------|
+| `feat` | New feature | `feat(cli): add CSV parsing functionality` |
+| `fix` | Bug fix | `fix(calc): correct total calculation rounding` |
+| `docs` | Documentation only | `docs(readme): add usage examples` |
+| `style` | Code formatting (no logic change) | `style(app): format with black/prettier` |
+| `refactor` | Code restructuring (no behavior change) | `refactor(core): extract calculation functions` |
+| `perf` | Performance improvement | `perf(parser): optimize CSV reading` |
+| `test` | Add or update tests | `test(calc): add edge cases for empty data` |
+| `build` | Build system or dependencies | `build(deps): add pytest dependency` |
+| `ci` | CI/CD configuration | `ci(github): add test workflow` |
+| `chore` | Maintenance tasks | `chore(gitignore): add Python cache files` |
+
+---
+
+## Guidelines for AI Agent
+
+### Writing commit messages
+
+1. **Use imperative mood** (present tense):
+   - ✅ "add feature"
+   - ❌ "added feature" or "adds feature"
+
+2. **Keep first line under 72 characters**
+
+3. **Provide context in the body** when the change is not trivial:
+   - What was the problem?
+   - How does this solve it?
+   - Any side effects or considerations?
+
+4. **Always include AI annotations footer** (see template above)
+
+5. **Reference related files** in the body when relevant
+
+### Scopes
+
+Use these common scopes (or create new ones if needed):
+
+- `cli` - Command-line interface
+- `core` - Core business logic
+- `api` - API endpoints
+- `server` - Web server
+- `test` - Testing infrastructure
+- `docs` - Documentation
+- `config` - Configuration files
+
+---
+
+## Examples
+
+### Example 1: Initial implementation (TP1)
+
+```text
+feat(cli): implement CSV sales analysis
+
+Add command-line tool to analyze e-commerce sales data:
+- Read CSV files with 8 columns (order_id, date, product, etc.)
+- Calculate total sales amount
+- Identify top 3 products by quantity
+- Compute revenue by city
+- Display results in formatted console output
+
+Implementation uses Python csv.DictReader for parsing.
+Results are formatted with 2 decimal precision for currency.
+
+---
+🤖 AI-Assisted Development
+Tool: Claude Code v1.2 (claude-sonnet-4-5-20250929)
+Agent: Guided implementation from requirements
+Prompt type: Feature request with functional specifications
+Context files: requirements.md, sales.csv
+Human validation:
+  - Functionality: ✓ Tested with provided sales.csv
+  - Tests: ✗ Not implemented yet (TP2)
+  - Code review: ✓ Logic validated manually
+```
+
+### Example 2: Bug fix
+
+```text
+fix(calc): correct top products sorting order
+
+Top products were sorted by name instead of quantity.
+Changed sort key from product_name to quantity with reverse=True.
+
+Verified with test data: Laptop (4) now appears before Mouse (3).
+
+---
+🤖 AI-Assisted Development
+Tool: Claude Code v1.2
+Agent: Autonomous debugging
+Prompt type: Bug report with expected behavior
+Context files: app.py, sales.csv
+Human validation:
+  - Functionality: ✓ Output now matches expected results
+  - Tests: ✗ Not applicable (pre-testing phase)
+  - Code review: ✓ Simple sort fix validated
+```

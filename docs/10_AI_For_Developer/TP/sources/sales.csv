@@ -1,0 +1,7 @@
+order_id,date,product_id,product_name,quantity,price,customer_city,status
+ORD-001,2024-01-15,P001,Laptop,1,899.99,Paris,completed
+ORD-001,2024-01-15,P045,Mouse,2,25.50,Paris,completed
+ORD-002,2024-01-16,P001,Laptop,1,899.99,Lyon,pending
+ORD-003,2024-01-17,P102,Keyboard,1,79.99,Marseille,completed
+ORD-004,2024-01-17,P001,Laptop,2,899.99,Paris,completed
+ORD-005,2024-01-18,P045,Mouse,1,25.50,Lyon,completed
