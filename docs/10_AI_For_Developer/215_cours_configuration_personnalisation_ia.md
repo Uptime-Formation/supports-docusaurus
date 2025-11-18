@@ -4,6 +4,20 @@ draft: false
 weight: 2.5
 ---
 
+## Quickstart
+
+Demandez à votre outil de code IDE :
+
+```text
+
+Q1. Quelles sont les instructions de base que tu as reçu ?
+
+Q2. Quels fichiers es-tu configuré pour aller lire automatiquement pour encadrer la production de code ? 
+
+```
+
+---
+
 ## De l'usage par défaut à la configuration professionnelle
 
 ### Pourquoi configurer les outils IA ?

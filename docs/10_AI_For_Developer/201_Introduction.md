@@ -16,6 +16,13 @@ weight: 1
 
 ---
 
+## A propos de vous
+
+- Parcours ?
+- Attentes ?
+
+---
+
 ## Objectifs de la formation
  
 Les outils qu'on va utiliser ne sont pas intelligents, l'objectif c'est que ce soit vous qui le soyez. 
@@ -26,44 +33,22 @@ Les outils qu'on va utiliser ne sont pas intelligents, l'objectif c'est que ce s
 
 **Pratique** :  Savoir comment mettre en oeuvre efficacement une production basée sur l'IA
 
----
+--- 
 
-### Mises en oeuvre
+## Définition du Lexique
 
-**Durant cette formation nous allons développer vos compétences suivantes :**
+**Parmi ces termes, combien maîtrisez-vous déjà ?**
 
-- Designer : concevoir des architectures et des projets
-- Documenter : décrire comment fonctionne votre projet
-- Tester : maîtriser le code produit et le rendre robuste
-- Développer : écrire du code de qualité
-
----
-
-## A propos de vous
-
-- Parcours ?
-- Attentes ?
-
----
-
-## La seule chose qui ne change jamais, c'est le changement
-
-- Les gens évoluent
-- Les techniques évoluent
-- Les langages évoluent
-- Les socles d'exécution évoluent
-- Les applications évoluent
-- Les normes d'échanges entre applications évoluent
-
----
-
-**Une référence à connaître : The Pragmatic Programmer**
-
-- Vous êtes en charge, individuellement et au sein des organisations. 
-
-- Vous avez la responsabilité de faire un bon travail qui vous enrichit. 
-
-- Vous devez acquérir l'expérience nécessaire pour atteindre un niveau d'expertise suffisant (3/4) 
+1. **Chatbot** : Désigne un programme chargé de répondre à des questions ou de fournir des informations à un utilisateur via une interface de dialogue.
+1. **IDE** : Désigne un environnement de développement intégré.
+1. **IA Gen** : Désigne l'ensemble des techniques et outils permettant de générer des contenus via des modèles de langages génératifs, dont le code.  
+1. **Modèle** : Désigne un objet résultant d'un entraînement par Machine Learning sur des données regroupées dans un ou plusieurs datasets. 
+1. **LLM** : Désigne les Modèles de Language de grande taille qui se sont généralisés suite au succès de ChatGPT.
+1. **Prompt** : Désigne le texte qui sert d'entrée à un modèle de langage génératif.
+1. **Token** : Désigne une unité de texte qui peut être traitée par un modèle de langage génératif ex: https://gpt-tokenizer.dev/ 
+1. **Agent** : Un programme chargé dans une architecture IA Agentique d'augmenter un LLM.
+1. **Code Gen** : La production de code par IA Générative
+1. **MCP** : Le Model Context Protocol est un standard destiné à augmenter les requêtes vers les LLM et les IDE via des agents.
 
 ---
 
@@ -162,19 +147,24 @@ As a code assistant, you mush convert this program to python.
 - Il va falloir intégrer de nombreuses bonnes pratiques pour réaliser des applications performantes et sécurisées.
 
 
---- 
+---
 
-## Définition du Lexique
 
-**Parmi ces termes, combien maîtrisez-vous déjà ?**
+## La seule chose qui ne change jamais, c'est le changement
 
-1. **Chatbot** : Désigne un programme chargé de répondre à des questions ou de fournir des informations à un utilisateur via une interface de dialogue.
-1. **IDE** : Désigne un environnement de développement intégré.
-1. **IA Gen** : Désigne l'ensemble des techniques et outils permettant de générer des contenus via des modèles de langages génératifs, dont le code.  
-1. **Modèle** : Désigne un objet résultant d'un entraînement par Machine Learning sur des données regroupées dans un ou plusieurs datasets. 
-1. **LLM** : Désigne les Modèles de Language de grande taille qui se sont généralisés suite au succès de ChatGPT.
-1. **Prompt** : Désigne le texte qui sert d'entrée à un modèle de langage génératif.
-1. **Token** : Désigne une unité de texte qui peut être traitée par un modèle de langage génératif ex: https://gpt-tokenizer.dev/ 
-1. **Agent** : Un programme chargé dans une architecture IA Agentique d'augmenter un LLM.
-1. **Code Gen** : La production de code par IA Générative
-1. **MCP** : Le Model Context Protocol est un standard destiné à augmenter les requêtes vers les LLM et les IDE via des agents.
+- Les gens évoluent
+- Les techniques évoluent
+- Les langages évoluent
+- Les socles d'exécution évoluent
+- Les applications évoluent
+- Les normes d'échanges entre applications évoluent
+
+---
+
+**Une référence à connaître : The Pragmatic Programmer**
+
+- Vous êtes en charge, individuellement et au sein des organisations. 
+
+- Vous avez la responsabilité de faire un bon travail qui vous enrichit. 
+
+- Vous devez acquérir l'expérience nécessaire pour atteindre un niveau d'expertise suffisant (3/4) 

@@ -4,6 +4,18 @@ draft: false
 weight: 2
 ---
 
+## Quickstart
+
+Suite à la discussion concernant votre rôle dans la chaîne de production informatique, demandez au LLM:
+
+```
+
+Résume la discussion sous forme d'un fichier d'instructions destiné à un assistant chargé d'effectuer mes tâches répétitives.
+
+```
+
+---
+
 ## Collaboration IA / Développeur
 
 ### Le développeur comme chef d'orchestre
@@ -91,21 +103,115 @@ Par ordre approximatif :
 - Emacs
 - XCode
 
+--- 
+
 **Aujourd'hui, tous ces IDE exposent une capacité à utiliser des outils d'IA via des plugins.**
+
+- Copilot
+- Claude
+- ProxyAI (Intellij)
+- etc.
+
+
+![](./AI.Documentation.Copilot.gif)
+
+---
+
+**Tous ces plugins commencent à offrir les mêmes fonctionnalités**
+
+- Accès à des LLM via un compte dédié ou les API des fournisseurs*
+- Autocomplétion : la base depuis Copilot
+- Fenêtre de chat : intégration du chatbot dans l'IDE
+- Mode Agentique : intégration dans le système et l'outillage
+
+---
+
+**Aujourd'hui, les agents les plus évolués sont ceux qui intègrent "le mode agentique"**
+
+Cela signifie qu'ils vont passer :
+
+- d'une suite d'interactions humain-machine à une boucle de la machine qui va s'auto alimenter
+- d'une mise à disposition d'outils destinés à "augmenter" la machine
+
+
+---
+
+## Les nouvelless IHM CodeGen
+
+### Les IDE spécialisés
+
+**De nouvelles solutions d'IDE avec des fonctionnalités d'IA Générative ont émergé depuis quelques années**
+
+![](./AI.IDE.Meme.png)
+
+---
+
+**La différence avec un IDE équipé d'un bon plugin n'est pas toujours apparente.**
+
+En effet les plugins de VSCode ou PyCharm ont accès à des capacités étendues.
+
+Et le coût de développement d'un nouvel IDE extensible et efficient explique que tout le monde utilise la base opensource de VSCode.
+
+Par exemple, la solution Codium a évolué dnas un sens IA alors qu'à l'origine c'était un simple forl de VSCode.
+
+--- 
+
+**Parmi les exceptions, l'IDE Zed est un nouveau développement basé sur le langage Rust qui intègre le mode agentique.**
+
+Mais si vous voulez faire du python... vous risquez de ne pas trouver ça compétitif avec PyCharm.
+
+---
+
+### Le retour du terminal 
+
+**Claude Code est une solution très populaire pour le développement IA Gen fin 2025.**
+
+Elle permet d'interagir avec les agents en mode "texte" / REPL, et supporte un fonctionnement via des commandes.
+
+
+```shell
+
+  /add-dir                           Add a new working directory
+  /agents                            Manage agent configurations
+  /bashes                            List and manage background tasks
+  /clear (reset, new)                Clear conversation history and free up context
+  /compact                           Clear conversation history but keep a summary in context. Optional: /compact
+                                     [instructions for summarization]
+  /config (theme)                    Open config panel
+  /context                           Visualize current context usage as a colored grid
+  /cost                              Show the total cost and duration of the current session
+  /doctor                            Diagnose and verify your Claude Code installation and settings
+  /exit (quit)                       Exit the REPL
+```
+
+---
+
+**Les terminaux encouragent une expérience "en profondeur" et permettent de gérer plusieurs tâches en parralèle.**
+
+![](AI.Workflow.Claude.jpg)
+
+---
+
+**Par exemple dans un terminal, je travaille sur un nouveau projet pendant que dans l'autre je corrige un bug applicatif.**
+
+Je peux associer mon IDE à Claude Code, et ouvrir un terminal à côté pour surveiller les actions. 
+
+Mais le design rend la solution plus addictive et fait entrer dans une boucle intensive d'échanges.
+
+--- 
+
+**Attention à la consommation de tokens.**
+
+Claude Code --tout comme copilot-cli qui suit dans ses pas-- vous affiche la quantité de tokens consommées sur votre quota.
+
+En effet il n'est pas rare que les utilisateurs saturent rapidement leur quota...
+
 
 ---
 
 ## Impact sur le rôle du développeur
 
-### Nouvelles responsabilités
 
-**Le développeur dans un rôle augmenté devient :**
-- Un manager de robots
-- Un responsable de produit
-- Un responsable d'exploitation
-- Un responsable des coûts (Finops, usine logicielle)
-
----
 
 ### Compétences émergentes
 
@@ -160,28 +266,6 @@ Le développeur dans un rôle augmenté :
 
 ---
 
-## Qu'est-ce qu'un (bon) développeur ? 
-
-**La question n'est pas simple :)**
-
-- Une personne qui sait bien coder ?
-- Une personne qui sait bien résoudre des problèmes ?
-- Une personne qui travaille bien en équipe ? 
-- Une personne qui maîtrise un langage de programmation ?
-- Une personne qui maîtrise un domaine technique ?
-- Une personne qui a beaucoup d'expérience ?
-- Une personne qui sait bien utiliser des outils de développement ? 
-- Une personne qui fournit rapidement des fonctionnalités ? 
-- Une personne qui fournit du code élégant ?
-- Une personne qui sait respecter les contraintes et les besoins ?
-- Une personne qui sait innover et anticiper les besoins futurs ?
-- Une personne qui documente bien ?
-- Une personne qui respecte les normes ?
-- Une personne qui fait des programmes performants ? 
-- Une personne qui fait des programmes qui ont du succès ? 
-
-
---- 
 
 :::tip Prochaine étape
 Dans le module suivant, nous verrons concrètement **l'assistance à la génération de code** avec les outils et techniques pratiques.

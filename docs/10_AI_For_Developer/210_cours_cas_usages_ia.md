@@ -4,6 +4,22 @@ draft: false
 weight: 1
 ---
 
+## Quickstart 
+
+Demandez à votre LLM :
+
+```
+
+Interroge moi pour identifier :
+- mon rôle dans la chaîne de production informatique ; 
+- ma vision personnelle de ce rôle ;
+- quelles sont les bonnes pratiques que j'observe.
+
+```
+
+---
+
+
 ## Tendances actuelles de l'IA pour les développeurs
 
 ### État des lieux de la relation IA / Dev
@@ -59,7 +75,7 @@ Chaque décennie apporte une nouvelle couche d'abstraction et d'automatisation. 
 
 ### Avant de commencer, une expérience
 
-**Si vous n'avez jamais utilisé un LLM pour faire du code, c'est le moment.**
+**Si vous n'avez jamais utilisé un LLM pour générer du code, c'est le moment.**
 
 🔗 [Project Euler - Problem 1](https://projecteuler.net/problem=1)
 
@@ -233,10 +249,9 @@ Cas d'usage :
 **L'IA peut générer des tests unitaires, d'intégration et end-to-end.**
 
 Cas d'usage :
-- Tests unitaires automatiques
-- Cas limites (edge cases)
-- Mocks et stubs
-- Tests de régression
+- Tests unitaires 
+- Tests HTTP
+- Test d'acceptance
 
 ---
 
@@ -248,7 +263,6 @@ Cas d'usage :
 - Analyse de stack traces
 - Suggestions de corrections
 - Identification de patterns problématiques
-- Refactoring de code legacy
 
 ---
 
@@ -298,70 +312,32 @@ Cas d'usage :
 
 ---
 
-## La seule chose qui ne change jamais, c'est le changement
+**On voit que la définition est très complexe.**
 
-- Les gens évoluent
-- Les techniques évoluent
-- Les langages évoluent
-- Les socles d'exécution évoluent
-- Les applications évoluent
-- Les normes d'échanges entre applications évoluent
+Il faut 
 
-**Une référence à connaître : The Pragmatic Programmer**
+- de l'expérience
+- de l'expertise
+- de la rigueur
+- de l'attention au détail
 
-- Vous êtes en charge, individuellement et au sein des organisations.
-
-- Vous avez la responsabilité de faire un bon travail qui vous enrichit.
-
-- Vous devez acquérir l'expérience nécessaire pour atteindre un niveau d'expertise suffisant (3/4)
 
 ---
 
-## L'IA : un outil dans la boîte à outils
+Mais il faut aussi la prise en compte de tout le contexte
 
-![L'IA dans la boîte à outils](../../static/img/ai/boite-outils-developpeur-avec-ia.svg)
+- la demande
+- l'application
+- l'entreprisse
+- le temps disponible
+- les moyens disponible
+- les exigences de performance, de sécurité
+- etc.
 
-**Les idées clés :**
+--- 
 
-- Ce sont des outils dans la boîte à outils, il faut savoir quand utiliser quoi.
-- Sans une bonne maîtrise des fondamentaux vous risquez de stagner et mal utiliser les outils.
-- L'IA Gen commence par être un stagiaire/assistant qu'il faut surveiller.
-- Le rôle de développeur va se complexifier et cumuler de plus en plus de responsabilités grâce à l'assistance de l'IA.
-- Il va falloir intégrer de nombreuses bonnes pratiques pour réaliser des applications performantes et sécurisées.
+**Au final, est-ce que vous avez déjà formalisé votre approche personnelle par rapport au code ?**
 
-:::warning Attention
-L'IA est un **assistant**, pas un **remplacement**. La responsabilité finale du code produit reste celle du développeur. Une bonne maîtrise des fondamentaux est indispensable pour utiliser efficacement l'IA.
-:::
+C'est ce qu'il va falloir faire avec les outils de l'intelligence artificielle pour parvenir à des résultats professionnels.
 
----
 
-## Synthèse du module
-
-**Ce que vous devez retenir de ce cours :**
-
-✅ **Tendances actuelles**
-- La majorité des développeurs trouvent un équilibre avec l'IA après adaptation
-- L'évolution des outils continue : de l'éditeur texte aux agents autonomes
-
-✅ **Validation du code généré**
-- Le code est instrumentable et testable (avantage majeur)
-- La validation humaine reste indispensable
-- Tests syntaxiques ≠ tests fonctionnels
-
-✅ **Les 6 cas d'usage principaux**
-1. Génération de code
-2. Documentation automatique
-3. Création de tests
-4. Débogage assisté
-5. Revue de code
-6. Optimisation des performances
-
-✅ **Principes fondamentaux**
-- L'IA est un outil parmi d'autres dans la boîte à outils
-- La maîtrise des fondamentaux reste essentielle
-- Le développeur garde la responsabilité finale
-- Le rôle se complexifie et s'enrichit grâce à l'IA
-
-:::tip Prochaine étape
-Dans le module suivant, nous explorerons **l'impact de l'IA sur le workflow de développement** et comment collaborer efficacement avec ces outils.
-:::

@@ -4,11 +4,37 @@ draft: false
 weight: 7
 ---
 
-## Introduction
-
 **L'utilisation de l'IA dans le développement soulève des questions éthiques et réglementaires importantes.**
 
 Ces enjeux doivent être pris en compte dès la conception des projets, particulièrement dans les environnements professionnels et réglementés.
+
+---
+
+## Écologie et gâchis énergétique
+
+**La consommation en énergie des datacenters est très importante, ce n'est pas un secret.**
+
+Les acteurs du marché sont engagés dans une course qui vise à faire consommer au maximum des ressources par les utilisateurs.
+
+Leurs investissements dans de nouveaux datacenters dédiés à l'IA nécessitent que les consommateurs deviennent dépendants de ce genre d'outils.
+
+---
+
+**En tant que développeurs, il faut être conscient de ces enjeux.**
+
+Choisir le meilleur modèle pour son besoin : pas toujours besoin des plus gourmands.
+
+Les modèles locaus sont ainsi réputés moins gourmands en énergie et viennent responsabiliser l'utilisateur.
+
+Et si la tâche est vraiment simple, une action manuelle est plus rapide et moins coûteuse.
+
+--- 
+
+**La quantié de tokens envoyée est un autre sujet.**
+
+Il peut être utile de commencer une nouvelle discussion si le contexte de la précédente n'a pas de sens.
+
+En économisant des tokens, on économise de l'énergie et de l'argent.
 
 ---
 
@@ -371,4 +397,46 @@ L'AI Act marque une étape importante dans la régulation de l'IA, encourageant 
 - **Organisations** : Infrastructure adéquate
 - **Fournisseurs** : Transparence
 - **Régulateurs** : Cadre légal
+
+
+
+---
+
+## Le remplacement des devs dans le monde du travail
+
+### La course à l'armement
+
+**Les investissements de la Silicon Valley dans l'IA sont colossaux : il faudra un jour rentabiliser ça.**
+
+Le remplacement des salariés du code par des IAs est une manière de voir les choses.
+
+De ce point de vue il y a effectivement un risque sur l'emploi.
+
+--- 
+
+**D'un autre côté, on observe que parmi les sociétés qui investissent énormément, il y a des hyper scalers du cloud public.**
+
+Leur objectif pourrait aussi être de voir la consommation de projets cloud augmenter exponentiellement avec une informatisation galopante et généralisée.
+
+--- 
+
+### Une menace pour les juniors 
+
+**Il apparaît certain que les plus fragiles sont aujourd'hui les personnes en début de carrière.**
+
+L'automatisation va remplacer les tâches répétitives allouées aux entrants dans l'industrie.  
+
+--- 
+
+**Comme on l'a vu au départ, l'expertise est une nécessité pour contrôler les hallucinations actuelles des modèles.**
+
+Cette expertise s'acquiert avec l'expérience : que se passe-t-il quand il n'y a plus de nouveaux entrants dans la profession.
+
+Mais on l'a aussi vu, cette expertise risque de s'éroder avec le temps en déléguant la création du code.
+
+--- 
+
+**Il n'y a pas aujourd'hui de réponse connue et maîtrisée à ces projets.** 
+
+La seule certitude c'est que le secteur va continuer à évoluer au gré des évolutions techniques qui sont beaucoup plus rapides que les évolutions sociales.
 

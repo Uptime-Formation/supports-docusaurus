@@ -3,6 +3,27 @@ title: Adapter l'IA à votre stack technique
 draft: false
 weight: 3
 ---
+## Quickstart
+
+Demandez à votre outil de code IDE :
+
+```text
+
+<contexte>
+L'application doit afficher une page HTML statique.
+La page statis fait un appel AJAX à une méthode GET /time de l'application doit retourner l'heure du serveur.
+Le résultat de la requête est affiché dans la page statique.
+Utilise la librairie jQuery pour l'appel AJAX.
+Gère les erreurs potentielles de l'appel AJAX. 
+</contexte>
+<task>
+1. Ecris le code d'une application Python Flask dont les fonctionnalités sont définies dans le contexte
+2. Ecris le Dockerfile qui permet de charger les dépendances et lancer l'application  
+3. Ecris la documentation README.md du projet incluant la commande pour build et lancer l'application via Docker.
+</task>
+```
+
+---
 
 ## Piloter l'IA pour le code
 
@@ -22,7 +43,9 @@ weight: 3
 Avec l'IA, on réfléchit et documente d'abord, puis le code est généré. C'est l'inverse du workflow traditionnel.
 :::
 
-C'est un mode de raisonnement : écrire les commentaires pour produire un pseudo code.
+---
+
+**Écrire les commentaires sous forme de pseudo-code permet de définir le squelette d'un script.**
 
 ```text
 # Read pattern from input variable #1
@@ -34,6 +57,13 @@ C'est un mode de raisonnement : écrire les commentaires pour produire un pseudo
   # For each search hit, accumulate the line in a variable and increment a counter
 # Print the total number of hits and the matching lines
 ```
+--- 
+
+**Ce mode de fonctionnement est compatible avec l'IA Gen.** 
+
+Il définira un plan fonctionnelle que votre modèle LLM pourra suivre. 
+
+Pour autant il ne suffira pas : quel langage ? quels standards de code ? Etc.
 
 ---
 
