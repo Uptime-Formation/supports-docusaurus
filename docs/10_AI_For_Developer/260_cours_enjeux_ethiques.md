@@ -10,6 +10,20 @@ Ces enjeux doivent être pris en compte dès la conception des projets, particul
 
 ---
 
+## Responsabilité collective
+
+**L'éthique de l'IA est une responsabilité partagée :**
+
+- **Développeurs** : Usage responsable
+- **Managers** : Politiques claires
+- **Organisations** : Infrastructure adéquate
+- **Fournisseurs** : Transparence
+- **Régulateurs** : Cadre légal
+
+
+
+---
+
 ## Écologie et gâchis énergétique
 
 **La consommation en énergie des datacenters est très importante, ce n'est pas un secret.**
@@ -35,6 +49,22 @@ Et si la tâche est vraiment simple, une action manuelle est plus rapide et moin
 Il peut être utile de commencer une nouvelle discussion si le contexte de la précédente n'a pas de sens.
 
 En économisant des tokens, on économise de l'énergie et de l'argent.
+
+---
+
+### Impact environnemental
+
+**L'IA a un coût environnemental :**
+
+- Entraînement des modèles : consommation énergétique massive
+- Inférence : requêtes continuelles vers des datacenters
+- Stockage : duplication des modèles
+
+**Bonnes pratiques :**
+- Utiliser l'IA de manière ciblée et pertinente
+- Préférer les modèles locaux quand possible
+- Optimiser les prompts pour réduire les itérations
+- Choisir des fournisseurs avec des engagements environnementaux
 
 ---
 
@@ -122,6 +152,83 @@ Le choix du modèle d'hébergement dépend directement du niveau de sensibilité
 - Logger les interactions avec l'IA
 - Auditer l'usage des outils
 - Documenter les décisions
+
+---
+
+## Risques liés à la qualité du code
+
+**L'utilisation massive de l'IA pour générer du code peut avoir des effets néfastes sur la qualité globale des projets.**
+
+Ces risques doivent être anticipés et gérés par des pratiques adaptées.
+
+---
+
+### 1. Réduction de la qualité : non-conformité aux exigences
+
+**Le code généré par l'IA peut ne pas respecter les standards et exigences du projet.**
+
+- Non-respect des conventions de code de l'équipe
+- Architecture incohérente avec le reste du projet
+- Code fonctionnel mais mal structuré
+- Absence de gestion des cas limites
+
+**C'est tout l'enjeu de cette formation** : apprendre à guider l'IA avec des spécifications claires et à valider systématiquement le code produit.
+
+---
+
+### 2. Extension de la surface d'attaque
+
+**Du code mal sécurisé peut être introduit et exposer l'entreprise.**
+
+Risques identifiés :
+- Injection SQL, XSS, CSRF non gérés
+- Gestion incorrecte des authentifications
+- Exposition de données sensibles
+- Dépendances vulnérables suggérées par l'IA
+
+**La formation a montré comment scanner le code produit** avec des outils d'analyse statique (linters de sécurité, SAST) pour détecter ces vulnérabilités avant qu'elles n'atteignent la production.
+
+---
+
+### 3. Augmentation de la dette technique
+
+**Du code difficile à maintenir peut rapidement s'accumuler.**
+
+Symptômes courants :
+- Code dupliqué au lieu de refactorisé
+- Abstractions absentes ou mal conçues
+- Documentation insuffisante
+- Tests manquants ou superficiels
+
+**La formation a répondu à ce risque** via le TDD (Test-Driven Development) et le Spec-Driven Development, qui garantissent un code testable et conforme aux spécifications dès sa création.
+
+---
+
+### 4. Érosion des compétences des développeurs
+
+**Le rôle d'orchestrateur de robots risque de faire baisser les compétences en analyse de code.**
+
+Conséquences potentielles :
+- Difficulté à debugger sans assistance IA
+- Perte de compréhension des fondamentaux
+- Incapacité à évaluer la qualité du code généré
+- Dépendance excessive aux outils
+
+**Solution** : maintenir une pratique régulière sans IA, effectuer des revues de code approfondies et comprendre chaque ligne acceptée.
+
+---
+
+### 5. Surcharge de la QA
+
+**La forte augmentation de code mal produit peut augmenter la charge de travail des équipes qualité.**
+
+Impact sur les équipes QA :
+- Volume de code à revoir en hausse
+- Qualité moyenne des apports en baisse
+- Bugs plus nombreux et plus variés
+- Tests de non-régression plus complexes
+
+**Mitigation** : mettre en place des gates de qualité automatisés (CI/CD, tests automatiques, analyse statique) pour filtrer le code avant revue humaine.
 
 ---
 
@@ -240,22 +347,6 @@ Le choix du modèle d'hébergement dépend directement du niveau de sensibilité
 - Biais dans les noms de variables/fonctions
 
 **Rester vigilant et critique** face aux suggestions de l'IA.
-
----
-
-### Impact environnemental
-
-**L'IA a un coût environnemental :**
-
-- Entraînement des modèles : consommation énergétique massive
-- Inférence : requêtes continuelles vers des datacenters
-- Stockage : duplication des modèles
-
-**Bonnes pratiques :**
-- Utiliser l'IA de manière ciblée et pertinente
-- Préférer les modèles locaux quand possible
-- Optimiser les prompts pour réduire les itérations
-- Choisir des fournisseurs avec des engagements environnementaux
 
 ---
 
@@ -385,20 +476,6 @@ L'AI Act classe les systèmes d'IA en quatre niveaux de risque :
 4. **Restez informé** : Suivez les mises à jour de l'AI Act et les bonnes pratiques.
 
 L'AI Act marque une étape importante dans la régulation de l'IA, encourageant des pratiques responsables et éthiques.
-
----
-
-### Responsabilité collective
-
-**L'éthique de l'IA est une responsabilité partagée :**
-
-- **Développeurs** : Usage responsable
-- **Managers** : Politiques claires
-- **Organisations** : Infrastructure adéquate
-- **Fournisseurs** : Transparence
-- **Régulateurs** : Cadre légal
-
-
 
 ---
 
