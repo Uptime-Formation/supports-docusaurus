@@ -1,5 +1,5 @@
 ---
-title: Cours - Les différents contrôleurs pour les pods
+title: Les différents contrôleurs pour les pods
 draft: false
 ---
 

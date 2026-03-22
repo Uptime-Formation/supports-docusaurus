@@ -1,6 +1,6 @@
 ---
 draft: false
-title: Cours - Le réseau dans Kubernetes
+title: Le réseau dans Kubernetes
 ---
 
 

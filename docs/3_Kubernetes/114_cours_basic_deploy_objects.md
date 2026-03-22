@@ -1,5 +1,5 @@
 ---
-title: Cours - Objets Fondamentaux pour déployer une application
+title: Objets Fondamentaux pour déployer une application
 draft: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 draft: false
-title: Cours - Les problématiques de persistence et de stockage dans Kubernetes 
+title: Les problématiques de persistence et de stockage dans Kubernetes 
 ---
 
 ## Le stockage et les Volumes dans Docker

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="500">
   <!-- Titre -->
   <text x="450" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
     Modèles d'hébergement des outils IA
@@ -108,14 +108,14 @@
     </g>
 
     <!-- Zone de conseil -->
-    <rect x="10" y="65" width="820" height="60" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" />
-    <text x="420" y="85" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">💡 Conseil</text>
-    <text x="420" y="102" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#78350f">Définissez une politique claire d'utilisation selon la classification des données.</text>
-    <text x="420" y="116" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#78350f">Former les équipes aux risques et auditer régulièrement l'usage des outils.</text>
+    <rect x="10" y="165" width="820" height="60" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" />
+    <text x="420" y="185" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">💡 Conseil</text>
+    <text x="420" y="202" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#78350f">Définissez une politique claire d'utilisation selon la classification des données.</text>
+    <text x="420" y="216" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#78350f">Former les équipes aux risques et auditer régulièrement l'usage des outils.</text>
   </g>
 
   <!-- Note -->
-  <text x="450" y="490" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
+  <text x="450" y="590" font-family="Arial, sans-serif" font-size="13" font-style="italic" text-anchor="middle" fill="#64748b">
     Le choix du modèle dépend du niveau de sensibilité des données et des contraintes réglementaires
   </text>
 </svg>

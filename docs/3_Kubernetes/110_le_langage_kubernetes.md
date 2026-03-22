@@ -1,5 +1,5 @@
 ---
-title: Cours - Le langage Kubernetes
+title: Le langage Kubernetes
 draft: false
 # sidebar_position: 8
 ---

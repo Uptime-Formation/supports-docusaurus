@@ -1,5 +1,5 @@
 ---
-title: Cours - objets de configuration 
+title: objets de configuration 
 draft: false
 ---
 
