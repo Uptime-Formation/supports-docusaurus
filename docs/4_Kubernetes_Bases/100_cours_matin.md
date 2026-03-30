@@ -52,6 +52,56 @@ Aujourd'hui avec Docker et Kubernetes :
 
 ---
 
+## Rappels sur la conteneurisation : images, instances, cycle de vie  
+
+### Les images Docker
+
+![](../../static/img/docker/docker-image-layers.png)
+
+
+**Chaque layer correspond à une information qui peut être mise en cache**
+
+Quel est l'intérêt ? 
+
+Quelles sont les impacts en terme de construction de Dockerfiles ?
+
+Savez-vous ce que fait la commande `docker commit` ? En quoi est-elle utile ? 
+
+---
+
+### Les instances
+
+![](../../static/img/docker/docker-daemon-architecture.jpg)
+
+**Une instance est l'exécution d'un process dans un espace de conteneurisation sur la base d'un exécutable dans une image Docker.**
+
+Quels sont les composants qui permettent ce processus ? 
+
+---
+
+### Le cycle de vie des instances Docker
+
+![](../../static/img/docker/docker-lifecycle.png)
+
+**Docker gère les images et les instance de la création à la destruction.**
+
+---
+
+### Les volumes Docker
+
+![](../../static/img/docker/docker-volumes.png)
+
+**Le montage de volumes dans Docker se base sur les processus des montages dans Linux.**
+
+---
+
+### Les réseaux Docker
+
+
+![](../../static/img/docker/docker-network.png)
+
+**Les réseaux Docker sont automatisés : DNS, IP Address Management, et plus.**
+
 ## Docker : un gestionnaire de process
 
 **Un conteneur Docker est un process isolé** — il tourne dans son propre espace de noms (namespace Linux), avec ses propres ressources.
@@ -69,6 +119,81 @@ root      293777  0.0  0.1  ...                       \_ /portainer
 ```
 
 **Chaque image Docker est spécialisée pour lancer un seul process.** Docker surveille l'état des conteneurs, les relance en cas de problème, les arrête.
+
+---
+
+## Les images Docker : couches et immutabilité
+
+**Docker construit les images comme une série de "couches" de fichiers successives** — c'est l'**Union Filesystem**.
+
+Chaque instruction du Dockerfile crée une nouvelle couche. Les couches déjà existantes sont mises en cache et réutilisées.
+
+![](/img/overlay_constructs.jpg)
+
+**Avantages :**
+- Économie de place : les couches communes entre images sont partagées
+- Mise en cache : seules les couches modifiées sont reconstruites
+- **Immutabilité** : on ne modifie jamais une image "dans le fond" — au lancement d'un conteneur, Docker ajoute une couche read/write par dessus la pile
+
+**Ce qu'on voit lors d'un `docker pull` :**
+```shell
+$ docker pull python:3.9
+3.9: Pulling from library/python
+1e4aec178e08: Downloading [=====>  ]  45MB/55MB
+6c1024729fee: Download complete
+aa54add66b3a: Downloading [=====>  ]  53MB/54MB
+...
+```
+Chaque ligne est une couche distincte — elle a un hash unique, un poids, un contenu propre.
+
+---
+
+## Le Dockerfile : l'IaC de Docker
+
+**Le Dockerfile est ce qui rapproche Docker des outils d'Infrastructure as Code.**
+
+C'est un fichier qui définit toutes les conditions nécessaires pour que le process de l'application se lance correctement :
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN yarn install --production
+RUN adduser -D nodejs
+USER nodejs
+CMD ["node", "src/index.js"]
+EXPOSE 3000
+```
+
+Ça inclut : les packages, les utilisateurs, les fichiers de configuration, le code applicatif, le lancement du process, les ports réseau.
+
+**L'image Docker est «prête à consommer»** — avantage : simple à lancer. Inconvénient : opaque si on ne connaît pas son contenu.
+
+À comparer avec les autres outils d'IaC :
+- **Terraform** : déploie des ressources cloud
+- **Ansible** : configure des serveurs
+- **Dockerfile** : construit une image reproductible contenant une application
+
+---
+
+## Les registries : distribuer les images
+
+**Un registry est un dépôt d'images Docker.** Les entreprises utilisent des registries privés pour ne pas exposer leurs images.
+
+Registries publics/SaaS courants :
+- **Docker Hub** — le registry public par défaut
+- **ghcr.io** (GitHub), **gcr.io** (Google), **quay.io** (RedHat — scan sécurité inclus)
+- **Gitlab / GitHub** — intégrés dans le workflow DevOps
+
+On-premise :
+- **Harbor** — solution CNCF open-source, puissante
+- **Docker Registry** — pour les besoins simples
+
+```shell
+docker pull nginx:1.25          # récupère depuis Docker Hub
+docker push monregistry/monapp  # pousse vers un registry privé
+docker login monregistry        # s'authentifier
+```
 
 ---
 
