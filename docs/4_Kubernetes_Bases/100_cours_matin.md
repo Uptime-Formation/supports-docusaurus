@@ -405,3 +405,80 @@ kubectl port-forward svc/<service> 8080:8080
 | `kubens` | Changer de namespace par défaut — `kubectl krew install ns` |
 | `viddy` / `watch` | Observer l'évolution des ressources en temps réel |
 | `stern` | Agréger les logs de plusieurs pods — `kubectl krew install stern` |
+
+---
+
+## Mutualisation du cluster : cgroups et quotas
+
+**Un cluster Kubernetes est mutualisé** — plusieurs équipes ou applications partagent les mêmes nodes. Il faut éviter qu'une application monopolise toutes les ressources.
+
+Linux gère les ressources des process via les **cgroups** (control groups) : CPU, mémoire, I/O. Kubernetes s'appuie dessus pour appliquer des limites par conteneur.
+
+Deux mécanismes en Kubernetes :
+
+- **ResourceQuota** : limite les ressources totales consommables dans un namespace
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 4Gi
+```
+
+- **LimitRange** : définit des limites par conteneur dans un namespace (plancher et plafond)
+
+Ces mécanismes permettent de faire cohabiter une équipe dev et une équipe prod sur le même cluster, avec des budgets de ressources distincts.
+
+---
+
+## Sécurité : accès au cluster et communication
+
+**Un cluster Kubernetes expose une API HTTP(S).** Toutes les communications entre kubectl, les composants internes et l'API server sont chiffrées en **TLS**.
+
+### Authentification : certificats utilisateurs
+
+Pour s'authentifier auprès de l'API, un utilisateur présente un **certificat client** signé par l'autorité de certification (CA) du cluster. C'est ce certificat qui est stocké dans le kubeconfig.
+
+```
+kubectl → HTTPS + certificat client → kube-apiserver → vérifie avec la CA du cluster
+```
+
+### Autorisation : RBAC
+
+Une fois authentifié, Kubernetes vérifie les **droits** via le **Role-Based Access Control (RBAC)** :
+- **Role** / **ClusterRole** : liste d'actions autorisées sur des ressources
+- **RoleBinding** : associe un rôle à un utilisateur ou groupe
+
+### Compartimentation : les namespaces
+
+Les namespaces ne sont pas seulement organisationnels — ils sont la **frontière de sécurité de base** dans Kubernetes :
+- On applique des RBAC par namespace : une équipe ne voit et ne modifie que ses propres ressources
+- On applique des quotas par namespace
+- Les NetworkPolicies (vues dans les formations suivantes) s'appliquent par namespace
+
+---
+
+## Packaging & templating : l'IaC est obligatoire
+
+**En Kubernetes, gérer son infrastructure à la main (commandes impératives) n'est pas viable** au-delà du TP.
+
+Les raisons :
+- Pas de traçabilité : qui a changé quoi, quand, pourquoi ?
+- Pas de reproductibilité : impossible de recréer exactement le même environnement
+- Pas de rollback fiable sans historique
+
+**La règle : tous les manifestes YAML dans Git.** C'est la base de l'IaC appliquée à Kubernetes.
+
+```
+Code → Git → kubectl apply  (approche minimale)
+Code → Git → ArgoCD/Flux    (approche GitOps, vue dans Développeur)
+```
+
+Pour les cas complexes (plusieurs environnements, valeurs variables), on utilise des outils de templating :
+- **Kustomize** : patches et overlays sur des YAML existants (intégré à kubectl)
+- **Helm** : gestionnaire de packages avec templates (vu dans Développeur)
+
+Pour Bases : **`kubectl apply -f` sur des fichiers YAML dans Git suffit.**
