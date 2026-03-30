@@ -9,10 +9,12 @@
 - **Kubernetes Avancé**
 
 **Target structure per formation**:
-- Each formation = 1 full day of work
-- Each day = 2 half-days = 2 TPs minimum (morning TP + afternoon TP)
+- Each formation = 1 full day of work (Avancé = 2 days)
+- Each day = 2 half-days = exactly **2 cours + 2 TPs** per day
+- Each half-day = 1 cours file + 1 TP file
 - Morning half-days are usually shorter
 - TPs are central — course content supports them, not the other way around
+- **Do not add more files than this structure allows** — max 4 content files per day (2 cours + 2 TP)
 
 **Constraints**:
 - No assumptions about file content — explore with user before assigning
@@ -23,23 +25,29 @@
 - Every structural decision requires user validation before execution
 
 **Workflow**:
-1. Explore source directories together, file by file
-2. User decides which file goes where
-3. Record the mapping here (section 3)
-4. User validates the full mapping
-5. Execute moves with `git mv`
-6. Verify with `npm start`
+1. For each target formation, create empty target files named `target_cours_[topic].md` and `target_tp_[topic].md` based on the pedagogical topics defined in section 3
+2. For each source directory, read each file and match content against target files
+3. If content matches and offers value: copy relevant content into the target file (no duplication, no invention)
+4. If in doubt: ask the user before copying
+5. Record all source→target mappings in section 3
+6. User validates the full mapping and content
+7. Rename target files to final names with numeric prefixes
+8. Verify with `npm start`
 
 ---
 
 ## 2. How to Do It
 
-- Show the user the file list of one source directory at a time
-- For each file: read title/first lines, present to user, ask for target
-- Record decisions in section 3 as we go
-- Only execute moves once the full mapping is validated by user
-- Use `git mv` to preserve git history
-- Test navigation after moves
+- Create target files first (`target_cours_[topic].md`, `target_tp_[topic].md`) — one cours + one TP per half-day
+- Each target formation has exactly **2 cours + 2 TPs** per day (max 4 content files per day)
+- Read source files and extract only content that matches the target topic
+- No duplication across target files — each piece of content goes to exactly one target
+- No invention — only copy content that exists in source files
+- Do not put too much information — be selective, the TP is the core unit
+- When in doubt about a match, ask the user
+- Record source→target decisions in section 3 as we go
+- Use `git mv` or `cp` as appropriate (moves for unique content, copies for shared sources)
+- Test navigation after final renaming
 
 ---
 
@@ -131,12 +139,26 @@ Advanced topics. **2 full days.**
 - **TP matin** : TBD
 - **TP après-midi** : TBD
 
-### File mapping
-_To be filled during exploration_
+### File mapping — Kubernetes Bases
 
-| Source file | Target formation | Notes |
+| Source file | Target file | Notes |
 |---|---|---|
-| | | |
+| `3_Docker+Kube/101_Pourquoi_Docker_Les_pratiques_de_déploiement.md` | `target_cours_matin` | Deployment problem history |
+| `3_Docker+Kube/103_Pourquoi_Docker_Qu_est_ce_qu_un_process.md` | `target_cours_matin` | Docker as process manager |
+| `3_Docker+Kube/201_L_évolution_de_l_écosystème_des_orchestrateurs.md` | `target_cours_matin` | Why orchestration / why K8s |
+| `3_Docker+Kube/220_histoire_k8s.md` | `target_cours_matin` | K8s history |
+| `3_Docker+Kube/221_objectifs_k8s.md` | `target_cours_matin` | K8s objectives |
+| `3_Docker+Kube/225_aperçu_de_K8S.md` | `target_cours_matin` | K8s overview |
+| `4_Kubernetes/120_cours_different_cluster_types.md` | `target_cours_matin` | Cluster types / cost & capacity |
+| `3_Docker+Kube/214_Passer_des_informations_Les_variables_d_environnement.md` | `target_cours_matin` | Env variables |
+| `3_Docker+Kube/230_tp_k8s_cli.md` | `target_tp_matin` | kubectl CLI exploration |
+| `4_CKAD/105_TP1.md` | `target_tp_matin` | Deploy single pod + kubeconfig |
+| `3_Docker+Kube/240_le_langage_kubernetes.md` | `target_cours_apres_midi` | K8s API, YAML, kubectl apply |
+| `3_Docker+Kube/250_cours_basic_deploy_objects.md` | `target_cours_apres_midi` | Pods, Deployments, Labels |
+| `4_Kubernetes/112_tp_deploy_using_files.md` | `target_tp_apres_midi` | Deploy with YAML files |
+| `4_CKAD/115_TP2.md` | `target_tp_apres_midi` | Deployment + scaling + probes + rollout |
+| `3_Docker+Kube/108_*`, `109_*`, `110_*`, `121_*` | Docker formation | Docker internals — not for Bases |
+| `4_CKAD/100_Day1_Matin.md`, `110_Day1_Apresmidi.md` | skipped | Agenda files, structure reference only |
 
 ---
 
