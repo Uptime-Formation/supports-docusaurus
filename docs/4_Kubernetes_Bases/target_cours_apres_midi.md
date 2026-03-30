@@ -122,6 +122,8 @@ spec:
 
 > Un pod seul n'est **pas recommandé** en production — il n'a pas de self-healing ni de gestion de version. Utilisez un Deployment.
 
+**Un pod est largement immutable** : on ne peut pas changer le nom d'un conteneur ou sa commande après création. Pour modifier ces propriétés, il faut supprimer et recréer le pod. C'est précisément pour ça qu'on utilise un Deployment — il gère ce cycle automatiquement.
+
 ---
 
 ## Les Deployments
@@ -163,6 +165,30 @@ spec:
 kubectl get deployments
 kubectl get rs          # ReplicaSets — ne pas manipuler directement
 kubectl get pods
+kubectl get all -n <namespace>   # toutes les ressources d'un namespace
+```
+
+### Stratégie de déploiement
+
+Le champ `strategy.type` contrôle comment Kubernetes remplace les pods lors d'une mise à jour :
+- **`Recreate`** : supprime tous les anciens pods, puis crée les nouveaux (interruption courte)
+- **`RollingUpdate`** (défaut) : remplace progressivement, pod par pod (zero-downtime)
+
+```yaml
+spec:
+  strategy:
+    type: Recreate
+```
+
+### Rollout : gérer les mises à jour
+
+Chaque `kubectl apply` qui change les conteneurs crée une nouvelle **révision** du Deployment. Kubernetes gère deux ReplicaSets en parallèle pendant la transition.
+
+```bash
+kubectl rollout status deployment/<nom>         # suivre la progression
+kubectl rollout history deployment/<nom>        # voir les révisions
+kubectl rollout history deployment/<nom> --revision=2  # détail d'une révision
+kubectl rollout undo deployment/<nom>           # revenir à la révision précédente
 ```
 
 ---
@@ -187,6 +213,80 @@ selector:
 
 ---
 
+## Les Services
+
+Un **Service** crée un point d'accès stable vers un ensemble de pods — il sélectionne les pods via leurs **labels** et répartit le trafic entre eux (load balancing).
+
+Les **endpoints** sont la liste des IPs des pods actuellement sélectionnés par un Service. Si le selector ne correspond à aucun pod, les endpoints sont vides et le trafic ne passe plus.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+  selector:
+    app: demonstration   # doit correspondre aux labels des pods
+```
+
+```bash
+kubectl get services
+kubectl describe service <nom>   # voir les endpoints
+```
+
+---
+
+## Les health checks (Probes)
+
+Kubernetes dispose de trois types de sondes pour surveiller l'état des conteneurs :
+
+- **`startupProbe`** : vérifie que l'application a bien démarré. Tant qu'elle n'est pas validée, les autres probes ne s'exécutent pas. Utile pour les applications lentes au démarrage.
+- **`readinessProbe`** : vérifie que le conteneur est **prêt à recevoir du trafic**. Tant qu'elle échoue, le pod est retiré des endpoints du Service.
+- **`livenessProbe`** : vérifie que le conteneur est **vivant**. Si elle échoue, Kubernetes redémarre le conteneur.
+
+Paramètres courants :
+- `initialDelaySeconds` : délai avant le premier check (évite les faux positifs au démarrage)
+- `periodSeconds` : fréquence des checks
+- `failureThreshold` : nombre d'échecs avant action
+
+```yaml
+containers:
+  - name: mon-app
+    startupProbe:
+      exec:
+        command: ["/bin/sh", "-c", "test -f /tmp/started"]
+      failureThreshold: 30
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /healthy
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+```
+
+---
+
+## Observer les événements
+
+`kubectl get events` affiche l'historique des événements du cluster — créations, erreurs, scheduling, probes :
+
+```bash
+kubectl get events --sort-by .lastTimestamp -n <namespace>
+kubectl get events -w -n <namespace>   # mode watch — suit les événements en temps réel
+```
+
+---
+
 ## Débugger des conteneurs
 
 ```bash
@@ -195,6 +295,7 @@ kubectl logs <pod-name> -c <conteneur-name>      # si plusieurs conteneurs dans 
 kubectl exec -it <pod-name> -- /bin/sh           # shell interactif
 kubectl exec -it <pod-name> -c <nom> -- /bin/sh  # sur un conteneur spécifique
 kubectl describe pod <pod-name>                  # événements et état détaillé
+kubectl describe deployment <nom>                # état et événements du deployment
 kubectl port-forward <pod-name> 8080:8080        # forward de port (debug seulement)
 kubectl cp <pod-name>:/chemin/fichier ./local    # copier un fichier depuis un pod
 kubectl top pods                                 # ressources CPU/RAM consommées

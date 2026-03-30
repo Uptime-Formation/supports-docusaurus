@@ -172,3 +172,111 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 - **OpenShift** : distribution Red Hat, intègre build, registry, monitoring
 
 > Opérer un cluster de production Kubernetes "à la main" est complexe : mises à jour régulières (support 2 ans par version), choix réseau, stockage distribué (ex: Ceph). Ne pas sous-estimer.
+
+---
+
+## kubectl — le client universel
+
+`kubectl` est le point d'entrée universel pour contrôler tout type de cluster Kubernetes. C'est un client en ligne de commande qui communique en REST avec l'API du cluster.
+
+### Commandes de base
+
+```bash
+kubectl get <resource>            # lister des ressources
+kubectl get <resource> <nom>      # afficher une ressource précise
+kubectl describe <resource> <nom> # détail complet + événements
+kubectl create <resource>         # créer une ressource de façon impérative
+kubectl run <nom> --image=<image> # créer un pod de façon impérative
+kubectl apply -f <fichier.yaml>   # créer ou mettre à jour (déclaratif)
+kubectl delete <resource> <nom>   # supprimer une ressource
+kubectl logs <pod>                # afficher les logs d'un conteneur
+kubectl exec -it <pod> -- /bin/sh # ouvrir un shell interactif dans un conteneur
+kubectl scale deployment <nom> --replicas=N  # changer le nombre de réplicas
+kubectl expose deployment <nom> --type=NodePort --port=<port>  # créer un Service
+```
+
+### Flags courants
+
+```bash
+-n <namespace>        # cibler un namespace spécifique
+--namespace <ns>      # équivalent de -n
+-A / --all-namespaces # toutes les ressources de tous les namespaces
+-o yaml               # afficher la ressource en YAML complet
+-o jsonpath='...'     # extraire une valeur précise en jsonpath
+```
+
+### Filtrer avec jsonpath
+
+`jsonpath` permet d'extraire une information précise de la sortie kubectl :
+
+```bash
+kubectl get pod <nom> -o jsonpath='{.spec.containers[0].image}'  # image du premier conteneur
+kubectl get pod <nom> -o jsonpath='{.status.phase}'              # état du pod
+```
+
+---
+
+## Le kubeconfig
+
+Pour se connecter à un cluster, `kubectl` a besoin de trois informations :
+- l'**adresse de l'API** Kubernetes
+- un **nom d'utilisateur**
+- un **certificat** client
+
+Ces informations sont stockées dans un fichier YAML appelé **kubeconfig**, par défaut à `~/.kube/config`.
+
+```bash
+kubectl config view              # afficher le kubeconfig
+kubectl config get-contexts      # lister les contextes disponibles
+kubectl config use-context <nom> # basculer vers un autre contexte/cluster
+```
+
+Un kubeconfig peut contenir **plusieurs clusters** (contextes). Chaque contexte associe un cluster, un utilisateur, et un namespace par défaut. C'est le mécanisme de base pour le multi-cluster.
+
+---
+
+## Les namespaces en pratique
+
+Les namespaces sont des espaces de travail isolés. En pratique :
+
+```bash
+kubectl get namespaces                      # lister les namespaces
+kubectl create namespace <nom>              # créer un namespace
+kubectl get pods -n <namespace>             # resources d'un namespace
+kubectl get all -A                          # tout le cluster
+kubectl config set-context --current --namespace <nom>  # changer le namespace par défaut
+```
+
+---
+
+## Les Services : exposer une application
+
+Un **Service** crée un point d'accès stable vers un ensemble de pods sélectionnés par leurs labels.
+
+Type **NodePort** : expose le service sur un port du node (accessible depuis l'extérieur du cluster) :
+
+```bash
+kubectl expose deployment <nom> --type=NodePort --port=8080 --name=<service-nom>
+kubectl get services   # affiche le port 3xxxx assigné
+```
+
+Type **port-forward** (debug uniquement) : tunnel temporaire vers un pod ou service :
+
+```bash
+kubectl port-forward svc/<service> 8080:8080
+# Attention : pointe toujours vers le même pod — pas de load balancing
+```
+
+---
+
+## Outils complémentaires
+
+`kubectl` est puissant mais peut être complété par :
+
+| Outil | Usage |
+|---|---|
+| `krew` | Gestionnaire de plugins kubectl — `https://krew.sigs.k8s.io` |
+| `kubectx` | Changer de cluster rapidement — `kubectl krew install ctx` |
+| `kubens` | Changer de namespace par défaut — `kubectl krew install ns` |
+| `viddy` / `watch` | Observer l'évolution des ressources en temps réel |
+| `stern` | Agréger les logs de plusieurs pods — `kubectl krew install stern` |

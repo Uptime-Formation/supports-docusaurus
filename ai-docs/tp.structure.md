@@ -138,3 +138,18 @@ Ends with a forward pointer: "**Prochaine étape** : Au TP suivant, vous..."
 - **Horizontal rules (`---`) between major sections** — improves scanability
 - **Checkboxes (`- ✅`) for objectives and learning outcomes** — visual progress tracking
 - **Bold for emphasis on key terms and actions** — not decorative
+
+## Cours/TP pairing rule
+
+**Every concept, command, tool, or flag used in a TP must be introduced in its paired cours.**
+
+The cours is not a comprehensive reference — it is the minimum required to attempt the TP. If a student has only read the cours, they should know what every item in the TP is, even if they need the hints to use it correctly.
+
+Checklist when writing or reviewing a TP:
+- For every `kubectl <command>` used: is it mentioned in the cours?
+- For every flag used (`-n`, `-A`, `-o yaml`, `--namespace`, etc.): is it explained?
+- For every tool referenced (`krew`, `kubectx`, `stern`, etc.): is it introduced?
+- For every K8s object manipulated (Service, ReplicaSet, probe types, etc.): is it explained?
+- For every concept relied upon (kubeconfig, rollout, endpoints, etc.): is it covered?
+
+**When reviewing a TP against its cours**: read the TP first, list every concept and command, then verify each one appears in the cours. Add missing items to the cours — do not remove them from the TP.
