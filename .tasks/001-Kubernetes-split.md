@@ -208,11 +208,104 @@ Advanced topics. **2 full days.**
 
 ---
 
+### File mapping — Kubernetes Advanced_1 (Jour 1)
+
+#### Target: `100_cours_matin.md` — Observabilité
+
+| Section | Source | Type |
+|---|---|---|
+| Historique des logs | `5_Kubernetes-Advanced/310-Logs.md` | À REPRENDRE |
+| Architecture de collecte (forwarder, stockage, requêtage) | `5_Kubernetes-Advanced/310-Logs.md` | À REPRENDRE |
+| Normalisation des logs, labels, Fluentd | `5_Kubernetes-Advanced/310-Logs.md` | À REPRENDRE |
+| Solutions intégrées (operators, cloud) | `5_Kubernetes-Advanced/310-Logs.md` | À REPRENDRE |
+| Historique des métriques | `5_Kubernetes-Advanced/320-Metrics.md` | À REPRENDRE |
+| Prometheus : fonctionnement, PULL, PromQL, TSDB | `5_Kubernetes-Advanced/320-Metrics.md` | À REPRENDRE |
+| Exposer ses propres métriques (Python) | `5_Kubernetes-Advanced/320-Metrics.md` | À REPRENDRE |
+| Comparaison des interfaces d'accès aux métriques | `5_Kubernetes-Advanced/320-Metrics.md` | À REPRENDRE |
+
+#### Target: `110_tp_matin.md` — TP Observabilité
+
+| Section | Source | Type |
+|---|---|---|
+| TP logging (Banzai Cloud Logging Operator + Elasticsearch + Grafana) | `5_Kubernetes-Advanced/310-Logs.md` | À REPRENDRE |
+| TP métriques (Prometheus Operator + Grafana + dashboard) | `5_Kubernetes-Advanced/320-Metrics.md` | À REPRENDRE |
+
+#### Target: `200_cours_apres_midi.md` — Autoscaling & Operators
+
+| Section | Source | Type |
+|---|---|---|
+| HPA : quickstart, mécanismes internes, métriques custom | `5_Kubernetes-Advanced/410-Horizontal.md` | À REPRENDRE |
+| Difficultés HPA (faux positifs, synchronisation, pannes) | `5_Kubernetes-Advanced/410-Horizontal.md` | À REPRENDRE |
+| VPA : fonctionnement, avantages, exemple config | `5_Kubernetes-Advanced/420-Vertical.md` | À REPRENDRE |
+| Cluster Autoscaler : sources, problèmes récurrents | `5_Kubernetes-Advanced/420-Vertical.md` | À REPRENDRE |
+| Right-sizing | — | À ÉCRIRE |
+| Eviction, cordon, drain, node typologies | — | À ÉCRIRE |
+| Taints, tolerations, affinity | `5_Kubernetes_Advanced_2/02_Architecture.md` (affinité) | À ÉCRIRE principalement |
+| Operator pattern : controllers, réconciliation | `5_Kubernetes-Advanced/500-Run5-Operators.md` | À REPRENDRE |
+| Custom Operators (Kubebuilder, CRDs, gestion versions) | `5_Kubernetes-Advanced/510-Custom-Operator.md` | À REPRENDRE |
+| Bonnes pratiques operators (sécurité, OLM, webhooks) | `5_Kubernetes-Advanced/510-Custom-Operator.md` | À REPRENDRE |
+| Exemple d'operator (Kubi LDAP) | `5_Kubernetes-Advanced/520-Example-Operator.md` | À REPRENDRE |
+| GitOps platform from scratch (ArgoCD deploy) | — | À ÉCRIRE |
+
+#### Target: `210_tp_apres_midi.md` — TP Autoscaling & Operators
+
+| Section | Source | Type |
+|---|---|---|
+| TP HPA avec métrique personnalisée | `5_Kubernetes-Advanced/410-Horizontal.md` | À REPRENDRE |
+| TP MySQL Operator | `5_Kubernetes-Advanced/` (TP MySQL Operator) | À REPRENDRE |
+
+---
+
+### File mapping — Kubernetes Advanced_2 (Jour 2)
+
+#### Target: `100_cours_matin.md` — Installation & Réseau
+
+| Section | Source | Type |
+|---|---|---|
+| Installation Kubernetes (KaaS, kubeadm, k3s, HA) | `5_Kubernetes_Advanced_2/03_Installation-de-Kubernetes.md` | À REPRENDRE |
+| CNI : Flannel, Calico, Cilium, Network Policies | `5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md` | À REPRENDRE |
+| Technologies CNI (eBPF, VXLAN, BGP) | `5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md` | À REPRENDRE |
+| Certificats TLS : historique, cert-manager, Vault, SPIFFE | `5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md` | À REPRENDRE |
+| Packaging clusters — full IaC provisioning | — | À ÉCRIRE |
+| PS1 multi-cluster (kubectx, prompt shell) | — | À ÉCRIRE |
+
+#### Target: `110_tp_matin.md` — TP Installation & CNI
+
+| Section | Source | Type |
+|---|---|---|
+| TP Cilium (install, Network Policies, Hubble) | `5_Kubernetes-Advanced/` (TP Cilium) | À REPRENDRE |
+| TP cert-manager + LetsEncrypt sur k3s/Traefik | `5_Kubernetes-Advanced/` (TP cert-manager) | À REPRENDRE |
+
+#### Target: `200_cours_apres_midi.md` — Service Mesh, Sécurité & User Management
+
+| Section | Source | Type |
+|---|---|---|
+| Service Mesh : historique, architecture, sidecar vs ambient | `5_Kubernetes-Advanced/230-Run2-Service-Mesh.md` + `5_Kubernetes_Advanced_2/07_Service-Mesh-avec-Istio.md` | À REPRENDRE |
+| Istio : mTLS, observabilité, blue/green | `5_Kubernetes_Advanced_2/07_Service-Mesh-avec-Istio.md` | À REPRENDRE |
+| Linkerd : quickstart, Viz | `5_Kubernetes-Advanced/230-Run2-Service-Mesh.md` | À REPRENDRE |
+| Ingress vs Gateway API (in-depth) | `5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md` + `5_Kubernetes-Advanced/250-Run2-Ingress.md` | À REPRENDRE |
+| RBAC avancé, ServiceAccounts, team management | `5_Kubernetes_Advanced_2/05_Administration-de-Kubernetes.md` | À REPRENDRE |
+| Vault by HashiCorp | `5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md` | À REPRENDRE |
+| DevSecOps — running old workloads | — | À ÉCRIRE |
+| Persistance avancée (CSI, Longhorn, Volume Snapshots) | `5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md` | À REPRENDRE |
+
+#### Target: `210_tp_apres_midi.md` — TP Service Mesh & Sécurité
+
+| Section | Source | Type |
+|---|---|---|
+| TP Istio + mTLS + Bookinfo | `5_Kubernetes-Advanced/230-Run2-Service-Mesh.md` | À REPRENDRE |
+| TP Vault Operator + secrets | `5_Kubernetes-Advanced/330-Security.md` | À REPRENDRE |
+
+---
+
 ## 4. Plan & Progress
 
-- [ ] **Step 1** — Define what goes in each target formation (with user)
-- [ ] **Step 2** — Explore source dirs with user, assign each file
-- [ ] **Step 3** — User validates full mapping
-- [ ] **Step 4** — Execute moves with `git mv`
-- [ ] **Step 5** — Verify build and navigation (`npm start`)
-- [ ] **Step 6** — Clean up empty/obsolete directories
+- [x] **Step 1** — Define what goes in each target formation (with user)
+- [x] **Step 2** — Explore source dirs, assign each file (Bases + Dev done; Advanced mapped above)
+- [x] **Step 3** — User validates full mapping
+- [x] **Step 4** — Execute content build (Bases + Dev + Tips done)
+- [ ] **Step 5** — Build Advanced_1 files (squelettes + reprise existant)
+- [ ] **Step 6** — Build Advanced_2 files (squelettes + reprise existant)
+- [ ] **Step 7** — Écriture des sections manquantes (par l'utilisateur)
+- [ ] **Step 8** — Verify build and navigation (`npm start`)
+- [ ] **Step 9** — Clean up empty/obsolete directories
