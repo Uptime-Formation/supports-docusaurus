@@ -1,6 +1,6 @@
 ---
 title: "Cours Matin - Des conteneurs à Kubernetes"
-draft: true
+draft: false
 ---
 
 ## La problématique d'exécution universelle des applications

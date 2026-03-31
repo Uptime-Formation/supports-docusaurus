@@ -139,6 +139,52 @@ Advanced topics. **2 full days.**
 - **TP matin** : TBD
 - **TP après-midi** : TBD
 
+### File mapping — Kubernetes Développeur
+
+#### Content topics checklist
+
+- [x] ConfigMaps (création, utilisation comme env vars et volumes)
+- [x] Secrets (création, types, utilisation dans pods)
+- [ ] Deployments avec strategies (Recreate, RollingUpdate, paramètres) — covered in Bases, not repeated
+- [x] StatefulSets (cas d'usage, headless service, stable identité)
+- [x] Jobs et CronJobs
+- [x] Services (ClusterIP, LoadBalancer) + DNS interne
+- [x] Ingress (règles, TLS, annotations)
+- [ ] Gateway API (intro, différences avec Ingress) — déplacé en Avancé
+- [x] Volumes et PVCs (StorageClass, ReadWriteMany vs Once)
+- [x] PersistentVolumes + dynamic provisioning
+
+#### Transversal threads checklist
+
+- [x] **GitOps** : gestion manifests via Git, intro ArgoCD
+- [x] **Cluster mutualization** : requests/limits pour workloads
+- [x] **Security** : image scanning (Trivy), versioning images, intro NetworkPolicy, SecurityContext
+- [x] **Debugging** : troubleshooting commun, logs, events, kubectl describe
+- [x] **CI/CD** : IaC tools (Kustomize, Helm), pipeline de déploiement avec promotion et environnements
+- [x] **Multi-cluster** : différents environnements, différents paramètres (Kustomize overlays)
+- [x] **Packaging & templating** : Helm vs Kustomize — choisir son outil
+- [x] **Cost & capacity** : autoscaling (HPA)
+
+#### Source files used
+
+| Source file | Target file | Notes |
+|---|---|---|
+| `4_Kubernetes/144_cours_configuration_objects.md` | `100_cours_matin` | ConfigMaps + Secrets |
+| `4_Kubernetes/152_cours_alt_pod_controllers.md` | `100_cours_matin` | Jobs, CronJobs, StatefulSets, DaemonSets |
+| `4_Kubernetes/140_cours_k8s_storage.md` | `100_cours_matin` | Volumes, PVC, StorageClass |
+| `4_CKAD/205_TP3.md` | `110_tp_matin` | ConfigMaps/Secrets/Volumes/SecurityContext |
+| `4_CKAD/215_TP4.md` | `110_tp_matin` | StatefulSets/Redis/PVCs |
+| `4_Kubernetes/142_cours_k8s_networks.md` | `200_cours_apres_midi` | Services, Ingress, certmanager, CNI |
+| `4_Kubernetes/314_cours_opt_k8s_security.md` | `200_cours_apres_midi` | NetworkPolicy, RBAC, image security |
+| `4_Kubernetes/150_cours_methodes_install_apps.md` | `200_cours_apres_midi` | Kustomize, Helm, Operators, CRDs |
+| `4_Kubernetes/305_tp_opt_k8s_install_argocd.md` | `200_cours_apres_midi` | ArgoCD/GitOps concept |
+| `4_Kubernetes/340_cours_opt_k8s_design_architecture_components.md` | `200_cours_apres_midi` | HPA/Metrics Server |
+| `4_CKAD/305_TP5.md` | `210_tp_apres_midi` | NetworkPolicies/CronJobs |
+| `4_CKAD/315_TP6.md` | `target_tp_apres_midi` | Ingress |
+| `4_Kubernetes/112_tp_deploy_using_files.md` | already in Bases | skip |
+
+---
+
 ### File mapping — Kubernetes Bases
 
 | Source file | Target file | Notes |

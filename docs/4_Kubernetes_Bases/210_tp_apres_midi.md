@@ -1,6 +1,6 @@
 ---
 title: "TP Après-midi - Déploiement avec des manifestes YAML"
-draft: true
+draft: false
 ---
 
 **Déployer un Pod avec deux conteneurs, puis le convertir en Deployment scalable, via des manifestes YAML.**

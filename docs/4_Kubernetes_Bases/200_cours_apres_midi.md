@@ -1,6 +1,6 @@
 ---
 title: "Cours Après-midi - Le langage Kubernetes et les objets de base"
-draft: true
+draft: false
 ---
 
 ## L'API et les objets Kubernetes

@@ -1,6 +1,6 @@
 ---
 title: "TP Matin - Premiers pas avec kubectl"
-draft: true
+draft: false
 ---
 
 **Installer Kubernetes, explorer le cluster et déployer un premier pod.**
