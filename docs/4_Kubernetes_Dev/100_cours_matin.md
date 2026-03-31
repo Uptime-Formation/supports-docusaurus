@@ -233,6 +233,8 @@ Les conteneurs sont immutables : Kubernetes peut les supprimer et recréer autom
 ### PersistentVolumeClaim (PVC)
 
 Pour du stockage persistant, le flux est :
+
+![](/img/kubernetes/k8s-pvc.png)
 1. Un pod crée une **PersistentVolumeClaim** (demande de volume)
 2. La **StorageClass** répond en créant un **PersistentVolume**
 3. Le PVC et le PV sont liés — le pod peut accéder au volume

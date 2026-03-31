@@ -56,6 +56,8 @@ Aujourd'hui avec Docker et Kubernetes :
 
 ### Les images Docker
 
+![](../../static/img/docker/docker-image-engine-kernel-levels.png)
+
 ![](../../static/img/docker/docker-image-layers.png)
 
 
@@ -69,13 +71,18 @@ Savez-vous ce que fait la commande `docker commit` ? En quoi est-elle utile ?
 
 ---
 
-### Les instances
-
-![](../../static/img/docker/docker-daemon-architecture.jpg)
 
 **Une instance est l'exécution d'un process dans un espace de conteneurisation sur la base d'un exécutable dans une image Docker.**
 
 Quels sont les composants qui permettent ce processus ? 
+
+---
+
+
+### Le docker Engine
+
+![](../../static/img/docker/docker-daemon-architecture.jpg)
+
 
 ---
 
@@ -128,7 +135,7 @@ root      293777  0.0  0.1  ...                       \_ /portainer
 
 Chaque instruction du Dockerfile crée une nouvelle couche. Les couches déjà existantes sont mises en cache et réutilisées.
 
-![](/img/overlay_constructs.jpg)
+![](../assets/images/overlay_constructs.jpg)
 
 **Avantages :**
 - Économie de place : les couches communes entre images sont partagées
@@ -232,6 +239,7 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 
 ---
 
+
 ## Histoire de Kubernetes
 
 - **2003-2004** : Google crée le système **Borg** — gestion interne de centaines de milliers de jobs sur des dizaines de milliers de machines
@@ -243,7 +251,13 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 - **Depuis 2018** : leader incontesté, EKS/GKE/AKS en services managés, écosystème CNCF en explosion
 
 ---
+## Pourquoi Kubernetes
 
+
+
+![](../../static/img/kubernetes/100-why-k8s.png)
+
+---
 ## Objectifs et architecture de Kubernetes
 
 **Kubernetes est :**

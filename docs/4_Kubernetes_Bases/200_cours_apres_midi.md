@@ -168,6 +168,22 @@ kubectl get pods
 kubectl get all -n <namespace>   # toutes les ressources d'un namespace
 ```
 
+### Ne jamais utiliser le tag `latest` en production
+
+Quand plusieurs replicas d'un Deployment utilisent `image: monapp:latest`, chaque pod peut finir par avoir une version différente selon le moment où il a été schedulé. Si `latest` pointe vers une nouvelle image avec un breaking change, certains pods tournent l'ancienne version, d'autres la nouvelle — l'application est incohérente.
+
+**La règle** : utiliser un tag de version explicite (`monapp:1.4.2`) ou le hash de commit (`monapp:abc1234`). Ainsi tous les replicas tournent exactement la même image.
+
+```yaml
+# À éviter
+image: monapp:latest
+
+# Recommandé
+image: monapp:1.4.2
+# ou avec le hash de commit
+image: registry.example.com/monapp:abc1234f
+```
+
 ### Stratégie de déploiement
 
 Le champ `strategy.type` contrôle comment Kubernetes remplace les pods lors d'une mise à jour :
@@ -216,6 +232,8 @@ selector:
 ## Les Services
 
 Un **Service** crée un point d'accès stable vers un ensemble de pods — il sélectionne les pods via leurs **labels** et répartit le trafic entre eux (load balancing).
+
+![](/img/kubernetes/k8s-exposed-pod.jpg)
 
 Les **endpoints** sont la liste des IPs des pods actuellement sélectionnés par un Service. Si le selector ne correspond à aucun pod, les endpoints sont vides et le trafic ne passe plus.
 

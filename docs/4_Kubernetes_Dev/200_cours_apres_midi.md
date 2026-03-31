@@ -19,6 +19,8 @@ DNS interne : chaque Service est accessible via `<service>.<namespace>.svc.clust
 ### Ingress
 
 Un **Ingress** est un objet pour gérer dynamiquement le reverse proxy HTTP/HTTPS dans Kubernetes. Il permet :
+
+![](/img/kubernetes/ingress-loadbalancer-chain-nginx.com.png)
 - Le virtual hosting (plusieurs domaines, un seul point d'entrée)
 - Le routage par chemin (`/api` → service A, `/app` → service B)
 - La terminaison TLS/SSL
