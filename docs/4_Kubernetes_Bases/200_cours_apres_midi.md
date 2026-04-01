@@ -72,27 +72,12 @@ On peut décrire **plusieurs ressources dans un seul fichier**, séparées par `
 
 ---
 
-## Les Namespaces
-
-**Tous les objets Kubernetes sont rangés dans des namespaces — des espaces de travail isolés.**
-
-Cette isolation permet :
-- d'éviter les conflits de nom entre applications
-- de ne voir que ce qui concerne une tâche particulière
-- de créer des **limites de ressources** (CPU, RAM) par namespace
-- de définir des **rôles et permissions** RBAC par namespace
-
-```bash
-kubectl get pods                    # namespace default
-kubectl get pods -n kube-system     # namespace kube-system
-kubectl get pods -A                 # tous les namespaces
-```
-
-Kubernetes fait tourner ses propres composants dans `kube-system` sous forme de pods.
-
----
-
 ## Les Pods
+
+
+
+
+![](../../static/img/kubernetes/k8s-pod.png)
 
 **Le Pod est l'unité de base d'une application Kubernetes** — un groupe atomique de conteneurs garantis de tourner sur le même node, toujours ensemble.
 
@@ -125,8 +110,24 @@ spec:
 **Un pod est largement immutable** : on ne peut pas changer le nom d'un conteneur ou sa commande après création. Pour modifier ces propriétés, il faut supprimer et recréer le pod. C'est précisément pour ça qu'on utilise un Deployment — il gère ce cycle automatiquement.
 
 ---
+**Un pod peut contenir trois types de conteneurs aux rôles distincts :**
+
+**Init containers** : s'exécutent séquentiellement avant les conteneurs principaux, jusqu'à complétion. Utilisés pour des tâches de préparation (attendre une base de données, pré-charger des fichiers). 
+
+Leurs ressources sont comptées séparément — le scheduler retient le maximum entre les requests des init containers et celles des conteneurs standards.
+
+**Conteneurs standards** : les conteneurs applicatifs qui tournent en parallèle  pendant toute la vie du pod. Ce sont eux qui définissent l'essentiel du budget de
+ ressources du pod.
+
+**Ephemeral containers** : ajoutés temporairement à un pod déjà en cours d'exécution pour le débogage (kubectl debug). 
+
+Ils ne peuvent pas être définis dans le manifeste initial, ne redémarrent pas, et s'exécutent dans le cgroup du pod existant — leurs ressources sont contraintes par ce qui a déjà été alloué au pod, et ne modifient pas sa classe QoS.
+
+---
 
 ## Les Deployments
+
+![](../../static/img/kubernetes/wiki-ciscolinux-co-uk-russiandolls.png)
 
 **Le Deployment est l'objet à créer en pratique** pour déployer une application. C'est un objet de plus haut niveau qui pilote des ReplicaSets et des Pods.
 
@@ -180,9 +181,12 @@ image: monapp:latest
 
 # Recommandé
 image: monapp:1.4.2
+
 # ou avec le hash de commit
 image: registry.example.com/monapp:abc1234f
 ```
+
+--- 
 
 ### Stratégie de déploiement
 
@@ -193,8 +197,10 @@ Le champ `strategy.type` contrôle comment Kubernetes remplace les pods lors d'u
 ```yaml
 spec:
   strategy:
-    type: Recreate
+    type: RollingUpdate
 ```
+
+--- 
 
 ### Rollout : gérer les mises à jour
 
@@ -305,7 +311,9 @@ kubectl get events -w -n <namespace>   # mode watch — suit les événements en
 
 ---
 
-## Débugger des conteneurs
+## Débugger avec Kuberentes
+
+**Le debug de vos pods est parfois compliqué. Revue des outils.**
 
 ```bash
 kubectl logs <pod-name>                          # logs du conteneur
@@ -317,4 +325,155 @@ kubectl describe deployment <nom>                # état et événements du depl
 kubectl port-forward <pod-name> 8080:8080        # forward de port (debug seulement)
 kubectl cp <pod-name>:/chemin/fichier ./local    # copier un fichier depuis un pod
 kubectl top pods                                 # ressources CPU/RAM consommées
+
+# Conteneur éphémère dans un pod existant (sans le redémarrer)
+kubectl debug <pod-name> -it --image=busybox
+
+# Copie du pod avec une image de debug
+kubectl debug <pod-name> -it --copy-to=pod-debug --image=busybox
+
+# Debug d'un nœud (monte le filesystem du nœud dans /host)
+kubectl debug node/<node-name> -it --image=busybox
+```
+
+---
+
+## Les 10 erreurs les plus courantes
+
+### Méthode générale
+
+Avant tout diagnostic, trois commandes à enchaîner :
+
+```bash
+kubectl describe pod <pod-name>   # état, événements, erreurs de scheduling
+kubectl logs <pod-name>           # sortie de l'application
+kubectl get events --sort-by='.lastTimestamp'  # historique du cluster
+```
+
+Valider un fichier YAML sans l'appliquer : `kubectl apply --dry-run=client -f fichier.yaml`
+
+---
+
+### 1. CrashLoopBackOff
+
+Le pod démarre, crashe, redémarre en boucle. Kubernetes augmente progressivement le délai entre les tentatives.
+
+**Causes** : l'application plante au démarrage — mauvaise commande, variable d'environnement manquante, dépendance inaccessible.
+
+```bash
+kubectl logs <pod-name>             # voir pourquoi l'app crashe
+kubectl logs <pod-name> --previous  # logs du crash précédent
+```
+
+---
+
+### 2. ImagePullBackOff / ErrImagePull
+
+Kubernetes ne peut pas télécharger l'image.
+
+**Causes** : nom ou tag incorrect, registry privé sans secret, image inexistante.
+
+```bash
+kubectl describe pod <pod-name>   # message d'erreur précis
+# Si registry privé : créer un imagePullSecret et le référencer dans le pod
+```
+
+---
+
+### 3. OOMKilled
+
+Le conteneur a dépassé sa `limit` mémoire et a été tué par le kernel.
+
+**Causes** : limit mémoire trop basse, fuite mémoire dans l'application.
+
+```bash
+kubectl describe pod <pod-name>   # champ "Last State: OOMKilled"
+kubectl top pod <pod-name>        # consommation réelle
+```
+
+---
+
+### 4. CreateContainerConfigError
+
+La configuration demandée par le conteneur ne peut pas être créée.
+
+**Causes** : Secret, ConfigMap ou volume référencé dans le YAML qui n'existe pas (ou mauvaise clé).
+
+```bash
+kubectl describe pod <pod-name>          # indique quel objet est introuvable
+kubectl get secret,configmap -n <namespace>
+```
+
+---
+
+### 5. NodeNotReady
+
+Un nœud est indisponible — les pods qui y tournent passent en `Unknown` ou sont évincés.
+
+```bash
+kubectl get nodes
+kubectl describe node <node-name>  # conditions : MemoryPressure, DiskPressure, NetworkUnavailable
+```
+
+---
+
+### 6. Pod en Pending
+
+Le pod n'est pas schedulé — il attend sur la liste d'attente du scheduler.
+
+**Causes** : ressources insuffisantes sur les nœuds, PVC non lié, `nodeSelector` ou taint bloquant.
+
+```bash
+kubectl describe pod <pod-name>   # section "Events" indique pourquoi le scheduling échoue
+kubectl top nodes                 # ressources disponibles par nœud
+```
+
+---
+
+### 7. FailedScheduling
+
+Le scheduler a cherché un nœud et n'en a trouvé aucun compatible.
+
+**Causes** : requests trop élevées, taints sans toleration, nodeSelector trop restrictif.
+
+```bash
+kubectl describe pod <pod-name>   # "0/3 nodes are available: insufficient cpu..."
+```
+
+---
+
+### 8. ContainerCannotRun
+
+Le conteneur ne démarre pas du tout — avant même que l'application s'exécute.
+
+**Causes** : entrypoint incorrect, permissions manquantes, fichier requis absent.
+
+```bash
+kubectl describe pod <pod-name>
+kubectl logs <pod-name>
+# Tester localement : docker run --rm <image> <commande>
+```
+
+---
+
+### 9. Exit Code 1 / 125
+
+**Code 1** : erreur générique de l'application. **Code 125** : la commande du conteneur a échoué avant même que l'app démarre.
+
+```bash
+kubectl logs <pod-name>
+# Tester localement : docker run --rm <image> pour reproduire
+```
+
+---
+
+### 10. Pod bloqué en Init / Waiting
+
+Les init containers ne se terminent pas — le pod reste en `Init:0/1` indéfiniment.
+
+**Causes** : init container qui attend un service jamais disponible, image incorrecte, volume non monté.
+
+```bash
+kubectl describe pod <pod-name>   # état de chaque init container
+kubectl logs <pod-name> -c <init-container-name>
 ```

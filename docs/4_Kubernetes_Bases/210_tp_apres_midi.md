@@ -5,22 +5,16 @@ draft: false
 
 **Déployer un Pod avec deux conteneurs, puis le convertir en Deployment scalable, via des manifestes YAML.**
 
-**Durée : ~3h**
-
-### Contexte
-
-Vous allez redéployer l'application `demonstration` du TP matin, mais cette fois **en utilisant `kubectl apply -f`** et des fichiers YAML. C'est la méthode recommandée — les fichiers sont versionnables dans Git, contrairement aux commandes impératives.
-
 ---
 
 ## Focus
 
-- ✅ **kubectl apply** : Déployer et mettre à jour via des fichiers YAML
-- ✅ **Pod multi-conteneurs** : Comprendre ce que ça implique (réseau partagé, logs séparés)
-- ✅ **Deployment** : Comprendre la différence avec un Pod simple — self-healing, rollout
+- ✅ **kubectl apply** : Déployer et mettre à jour via des fichiers YAML déclaratifs
+- ✅ **Pod multi-conteneurs** : Comprendre le réseau partagé, les logs séparés, l'immutabilité partielle
+- ✅ **Deployment** : Self-healing, rollout automatique, gestion des ReplicaSets
 - ✅ **kubectl exec / logs** : Débugger un conteneur en cours d'exécution
-- ✅ **Scaling et rollout** : Modifier le nombre de réplicas, observer les ReplicaSets
-- ✅ **Service NodePort** : Exposer l'application à l'extérieur du cluster
+- ✅ **Scaling et rollout** : Modifier le nombre de réplicas, observer la bascule progressive
+- ✅ **Service NodePort** : Exposer l'application à l'extérieur du cluster et comprendre le rôle des labels
 
 ---
 
@@ -35,32 +29,28 @@ Vous allez redéployer l'application `demonstration` du TP matin, mais cette foi
 
 ## Préparation
 
-Supprimez les ressources du TP matin pour repartir proprement :
-
-```bash
-kubectl delete deployment demonstration
-kubectl delete service demonstration-service
-```
-
 Créez un dossier `tp2_yaml/` et ouvrez-le dans VSCode.
 
 ---
 
 ## Étape 1 - Déployer un Pod avec deux conteneurs
 
-**Objectif** : Comprendre le Pod multi-conteneurs — les deux conteneurs partagent le même réseau.
+**Objectif** : Comprendre le modèle multi-conteneurs de Kubernetes. Les deux conteneurs d'un même pod partagent la même adresse IP et peuvent se parler via `localhost`. Ils ont en revanche des processus, des logs et un système de fichiers distincts. On va aussi observer qu'un pod est largement immutable : certaines propriétés ne peuvent pas être modifiées à chaud.
 
-- **Action** : Créer un fichier `demo-pod.yaml` avec un Pod contenant `rancher-demo` et `redis`
-  **Observation** : `kubectl get pod rancher-demo-pod` montre le pod — vérifiez les deux conteneurs (2 carrés verts dans Lens, ou `2/2` dans kubectl)
+- **Action** : Créer un fichier `demo-pod.yaml` avec un Pod contenant `rancher-demo` (port 8080) et `redis` (port 6379). Les images à utiliser sont `monachus/rancher-demo:latest` et `docker.io/library/redis:latest`.  
+  **Observation** : `kubectl get pod rancher-demo-pod` affiche `2/2 Running` — les deux conteneurs sont prêts.
 
-- **Action** : Modifier le **label** du pod et réappliquer
-  **Observation** : Kubernetes met à jour le pod
+- **Action** : Consulter les logs de chaque conteneur séparément avec `-c`.  
+  **Observation** : Chaque conteneur a sa propre sortie. `rancher-demo` logue les requêtes HTTP, `redis` logue son démarrage.
 
-- **Action** : Modifier le **nom d'un conteneur** et réappliquer
-  **Observation** : Kubernetes refuse — un pod est largement immutable. Il faut le supprimer et recréer.
+- **Action** : Modifier le **label** du pod (`app: rancher-demo` → `app: demo-v2`) et réappliquer.  
+  **Observation** : Kubernetes met à jour le pod — les labels sont mutables.
 
-- **Action** : Explorer le pod avec `exec`
-  **Observation** : Vous êtes dans le shell du conteneur
+- **Action** : Modifier le **nom d'un conteneur** (`redis-container` → `redis-db`) et réappliquer.  
+  **Observation** : Kubernetes refuse la modification — le nom d'un conteneur fait partie de la spec immutable. Il faut supprimer le pod et le recréer.
+
+- **Action** : Ouvrir un shell dans le conteneur `rancher-demo-container` avec `kubectl exec`.  
+  **Observation** : Vous êtes dans le conteneur. Vérifiez que redis est joignable sur `localhost:6379`.
 
 <details><summary>Indice</summary>
 
@@ -78,7 +68,7 @@ spec:
       name: rancher-demo-container
       ports:
         - containerPort: 8080
-    - image: redis
+    - image: docker.io/library/redis:latest
       name: redis-container
       ports:
         - containerPort: 6379
@@ -88,7 +78,9 @@ spec:
 kubectl apply -f demo-pod.yaml
 kubectl get pod rancher-demo-pod
 kubectl logs rancher-demo-pod -c rancher-demo-container
+kubectl logs rancher-demo-pod -c redis-container
 kubectl exec -it rancher-demo-pod -c rancher-demo-container -- /bin/sh
+# Dans le shell : wget -qO- localhost:8080
 kubectl delete -f demo-pod.yaml
 ```
 
@@ -98,19 +90,21 @@ kubectl delete -f demo-pod.yaml
 
 ## Étape 2 - Déployer avec un Deployment
 
-**Objectif** : Passer à la méthode recommandée — le Deployment gère la mise à jour et le self-healing.
+**Objectif** : Passer à la méthode recommandée en production. Un Deployment pilote un ReplicaSet qui maintient le nombre souhaité de pods. Si un pod disparaît (crash, nœud perdu), le ReplicaSet en recrée un automatiquement. Le Deployment ajoute la gestion des mises à jour : il crée un nouveau ReplicaSet et bascule progressivement les pods vers la nouvelle version.
 
-- **Action** : Créer un fichier `demo-deploy.yaml` décrivant un Deployment `demonstration`
-  **Observation** : `kubectl get deployment demonstration` est en état `Ready 1/1`
+Les labels jouent ici un rôle critique : le `selector.matchLabels` du Deployment doit correspondre exactement aux labels du `template`. C'est ce mécanisme qui permet au Deployment de "trouver" ses pods.
 
-- **Action** : Modifier le nom d'un conteneur et réappliquer
-  **Observation** : Contrairement au Pod, le Deployment crée un nouveau pod avec les bonnes caractéristiques et supprime l'ancien
+- **Action** : Créer `demo-deploy.yaml` avec un Deployment `demonstration`, 1 réplica, image `monachus/rancher-demo:latest`, stratégie `Recreate`.  
+  **Observation** : `kubectl get deployment demonstration` est en état `1/1 Ready`. Observer également le ReplicaSet créé automatiquement avec `kubectl get rs`.
 
-- **Action** : Changer le nombre de réplicas à 3 et réappliquer
-  **Observation** : 3 pods sont créés
+- **Action** : Modifier le nom d'un conteneur dans le YAML et réappliquer.  
+  **Observation** : Contrairement au Pod seul, le Deployment gère le cycle — il supprime l'ancien pod et en crée un nouveau avec la nouvelle spec.
 
-- **Action** : Modifier le `matchLabels` du selector avec une valeur incorrecte et réappliquer
-  **Observation** : Kubernetes refuse ou crée un nouveau ReplicaSet orphelin — les labels sont critiques
+- **Action** : Changer le nombre de réplicas à 3 et réappliquer.  
+  **Observation** : 3 pods sont créés. Le ReplicaSet passe à `3/3`. `kubectl get pods` montre les trois instances avec des noms générés automatiquement.
+
+- **Action** : Modifier le `matchLabels` du selector avec une valeur incorrecte (ex: `nom-app: erreur`) et réappliquer.  
+  **Observation** : Kubernetes refuse la modification — le selector d'un Deployment est immutable. C'est une protection : changer le selector orpheliserait les pods existants.
 
 <details><summary>Indice</summary>
 
@@ -145,6 +139,7 @@ spec:
 ```bash
 kubectl apply -f demo-deploy.yaml
 kubectl get deployment demonstration
+kubectl get rs
 kubectl describe deployment demonstration
 ```
 
@@ -152,18 +147,21 @@ kubectl describe deployment demonstration
 
 ---
 
-## Étape 3 - Exposer avec un Service NodePort
+## Étape 3 - Exposer avec un Service NodePort et tester les rollouts
 
-**Objectif** : Rendre l'application accessible depuis l'extérieur du cluster.
+**Objectif** : Un Service NodePort ouvre un port fixe sur chaque nœud du cluster et redirige le trafic vers les pods sélectionnés par ses labels. On va observer concrètement comment le selector relie le Service aux pods, puis enchaîner avec un rollout de version pour voir comment Kubernetes gère la bascule.
 
-- **Action** : Créer un fichier `demo-svc.yaml` avec un Service NodePort
-  **Observation** : `kubectl get services` montre le service avec un port 3xxxx. Accédez à l'application via l'IP du node et ce port — le nombre de réplicas devrait s'afficher.
+- **Action** : Créer `demo-svc.yaml` avec un Service `NodePort` ciblant le Deployment via ses labels.  
+  **Observation** : `kubectl get services` montre le port 3xxxx assigné. Accédez à `http://<IP-du-node>:<nodePort>` — l'interface de rancher-demo s'affiche et montre le nombre de réplicas actifs.
 
-- **Action** : Modifier le `selector` du Service avec un mauvais label et réappliquer
-  **Observation** : L'application n'est plus accessible. Dans Lens, les endpoints sont vides (None).
+- **Action** : Modifier le `selector` du Service avec un mauvais label et réappliquer.  
+  **Observation** : L'application n'est plus accessible. `kubectl describe service demo-service` montre `Endpoints: <none>` — le Service n'a plus de pods cibles.
 
-- **Action** : Corriger le selector
-  **Observation** : L'application est de nouveau accessible, les endpoints sont remplis avec les IPs des pods.
+- **Action** : Corriger le selector et réappliquer.  
+  **Observation** : Les endpoints se repopulent immédiatement avec les IPs des pods. L'application est de nouveau accessible.
+
+- **Action** : Modifier la stratégie du Deployment en `RollingUpdate`, changer l'image en `monachus/rancher-demo:2` et réappliquer.  
+  **Observation** : `kubectl rollout status deployment/demonstration` suit la progression pod par pod. `kubectl get rs` montre deux ReplicaSets coexistant brièvement pendant la bascule.
 
 <details><summary>Indice</summary>
 
@@ -186,80 +184,14 @@ spec:
 ```bash
 kubectl apply -f demo-svc.yaml
 kubectl get services
+kubectl describe service demo-service   # vérifier les Endpoints
 # Accéder via : http://<IP-du-node>:<nodePort>
-```
 
-</details>
-
----
-
-## Étape 4 - Déployer le TP matin en YAML (Deployment ubuntu)
-
-**Objectif** : Convertir le pod ubuntu du TP matin en Deployment, ajouter des health checks.
-
-- **Action** : Créer un fichier `ubuntu-deploy.yaml` avec un Deployment `ubuntu` dans `mynamespace`, 3 réplicas, image `ubuntu:latest`, commande `tail -f /dev/null`
-  **Observation** : 3 pods ubuntu tournent dans `mynamespace`
-
-- **Action** : Ajouter `startupProbe`, `livenessProbe` et `readinessProbe`
-  **Observation** : Le déploiement prend plus de temps à être Ready lors d'un apply
-
-- **Action** : Observer les ReplicaSets créés
-  **Observation** : Les ReplicaSets et Pods ont le même préfixe que le Deployment
-
-- **Action** : Changer l'image en `ubuntu:22.04` et réappliquer
-  **Observation** : Kubernetes crée un nouveau ReplicaSet et bascule progressivement les pods
-
-<details><summary>Indice</summary>
-
-```yaml
-# ubuntu-deploy.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ubuntu
-  namespace: mynamespace
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: ubuntu
-  template:
-    metadata:
-      labels:
-        app: ubuntu
-    spec:
-      containers:
-      - name: ubuntu
-        image: ubuntu:latest
-        command: ["/bin/sh", "-c", "tail -f /dev/null"]
-        startupProbe:
-          exec:
-            command: ["/bin/sh", "-c", "date >> /tmp/startupprobe.txt"]
-          failureThreshold: 30
-          periodSeconds: 10
-        readinessProbe:
-          exec:
-            command: ["/bin/sh", "-c", "date >> /tmp/readinessprobe.txt"]
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          exec:
-            command: ["/bin/sh", "-c", "date >> /tmp/livenessprobe.txt"]
-          initialDelaySeconds: 15
-          periodSeconds: 10
-```
-
-```bash
-kubectl apply -f ubuntu-deploy.yaml
-kubectl get all -n mynamespace
-kubectl rollout status deployment/ubuntu -n mynamespace
-kubectl rollout history deployment/ubuntu -n mynamespace
-```
-
-Pour suivre les opérations en temps réel :
-```bash
-kubectl -n mynamespace get events --sort-by .lastTimestamp
-kubectl -n mynamespace get events -w&
+# Rollout
+kubectl rollout status deployment/demonstration
+kubectl rollout history deployment/demonstration
+kubectl rollout undo deployment/demonstration   # revenir à la version précédente
+kubectl get rs                                  # observer les deux ReplicaSets
 ```
 
 </details>
@@ -268,9 +200,8 @@ kubectl -n mynamespace get events -w&
 
 ### Avancé
 
-- Utiliser `kubectl rollout undo deployment/ubuntu -n mynamespace` pour revenir à la version précédente
-- Inspecter l'historique avec `kubectl rollout history --revision=2 deployment/ubuntu -n mynamespace`
-- Utiliser `kubectl scale deployment ubuntu --replicas=5 -n mynamespace` sans modifier le YAML
+- Utiliser `kubectl scale deployment demonstration --replicas=5` sans modifier le YAML — puis observer ce qui se passe si on réapplique le YAML avec `replicas: 3`
+- Inspecter le détail d'une révision : `kubectl rollout history deployment/demonstration --revision=2`
 - Récupérer la correction complète : `git clone -b tp_rancher_demo_files https://github.com/Uptime-Formation/corrections_tp.git`
 
 ---
@@ -280,12 +211,9 @@ kubectl -n mynamespace get events -w&
 <details><summary>Afficher</summary>
 
 ```bash
-# Supprimer les ressources du TP matin
-kubectl delete deployment demonstration
-kubectl delete service demonstration-service
-
 # Déployer le pod multi-conteneurs
 kubectl apply -f demo-pod.yaml
+kubectl logs rancher-demo-pod -c rancher-demo-container
 kubectl exec -it rancher-demo-pod -c rancher-demo-container -- /bin/sh
 kubectl delete -f demo-pod.yaml
 
@@ -296,12 +224,13 @@ kubectl get all
 # Exposer avec le Service
 kubectl apply -f demo-svc.yaml
 kubectl get services
+kubectl describe service demo-service
 
-# Deployment ubuntu avec probes
-kubectl apply -f ubuntu-deploy.yaml
-kubectl rollout status deployment/ubuntu -n mynamespace
-kubectl rollout history deployment/ubuntu -n mynamespace
-kubectl rollout undo deployment/ubuntu -n mynamespace
+# Rollout
+kubectl rollout status deployment/demonstration
+kubectl rollout history deployment/demonstration
+kubectl rollout undo deployment/demonstration
+kubectl get rs
 ```
 
 </details>

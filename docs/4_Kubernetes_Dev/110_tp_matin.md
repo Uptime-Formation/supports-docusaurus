@@ -4,8 +4,6 @@ title: TP matin — Kubernetes Développeur
 
 **Configurer des applications avec ConfigMaps, Secrets, Volumes et StatefulSets.**
 
-**Durée : 1h30**
-
 ### Contexte
 
 Vous êtes développeur dans une équipe qui déploie une stack applicative sur Kubernetes. Votre mission ce matin est de gérer correctement la configuration (ConfigMaps, Secrets), le stockage persistant (PVC), et de déployer une base de données Redis en mode StatefulSet avec persistance garantie.

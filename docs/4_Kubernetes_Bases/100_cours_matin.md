@@ -260,6 +260,12 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 ---
 ## Objectifs et architecture de Kubernetes
 
+
+
+
+
+![](../../static/img/kubernetes/kubernetes_top_10_patterns.png)
+
 **Kubernetes est :**
 - Une plateforme d'orchestration **résiliente** : elle recrée automatiquement les ressources manquantes
 - Une plateforme **sans vendor lock-in** : fonctionne sur cloud privé et cloud public
@@ -268,6 +274,7 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 - Une plateforme **customisable** : framework extensible via CRD et opérateurs
 
 **Architecture :**
+![](../../static/img/kubernetes/k8s-architecture.png)
 
 - **Control Plane** : cerveau du cluster
   - `kube-apiserver` : point d'entrée central (REST)
@@ -371,6 +378,26 @@ kubectl config use-context <nom> # basculer vers un autre contexte/cluster
 ```
 
 Un kubeconfig peut contenir **plusieurs clusters** (contextes). Chaque contexte associe un cluster, un utilisateur, et un namespace par défaut. C'est le mécanisme de base pour le multi-cluster.
+
+---
+
+## Les Namespaces
+
+**Tous les objets Kubernetes sont rangés dans des namespaces — des espaces de travail isolés.**
+
+Cette isolation permet :
+- d'éviter les conflits de nom entre applications
+- de ne voir que ce qui concerne une tâche particulière
+- de créer des **limites de ressources** (CPU, RAM) par namespace
+- de définir des **rôles et permissions** RBAC par namespace
+
+```bash
+kubectl get pods                    # namespace default
+kubectl get pods -n kube-system     # namespace kube-system
+kubectl get pods -A                 # tous les namespaces
+```
+
+Kubernetes fait tourner ses propres composants dans `kube-system` sous forme de pods.
 
 ---
 

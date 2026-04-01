@@ -61,10 +61,10 @@ source .bash_aliases
 
 **Objectif** : Avoir un cluster Kubernetes opérationnel.
 
-- **Action** : Installer k3s via le script officiel
+- **Action** : Installer k3s via le script officiel    
   **Observation** : La commande `kubectl get nodes` retourne un node en état `Ready`
 
-- **Action** : Vérifier les versions client et serveur
+- **Action** : Vérifier les versions client et serveur  
   **Observation** : `kubectl version` affiche les deux versions — elles devraient être dans la même version mineure (ex: `1.28.x`)
 
 <details><summary>Indice</summary>
@@ -87,7 +87,7 @@ kubectl version
 
 **Objectif** : Travailler efficacement en ligne de commande.
 
-- **Action** : Installer l'autocomplétion kubectl et les alias du tips ci-dessus
+- **Action** : Installer l'autocomplétion kubectl et les alias du tips ci-dessus  
   **Observation** : La touche `<Tab>` complète les commandes et noms de ressources kubectl
 
 <details><summary>Indice</summary>
@@ -108,16 +108,16 @@ La liste complète des raccourcis : https://blog.heptio.com/kubectl-resource-sho
 
 **Objectif** : Comprendre la structure d'un cluster Kubernetes.
 
-- **Action** : Afficher le kubeconfig
+- **Action** : Afficher le kubeconfig  
   **Observation** : Le fichier indique le cluster, l'utilisateur et le contexte courant. Repérez l'adresse de l'API server et le certificat.
 
-- **Action** : Lister les nodes et leurs caractéristiques
+- **Action** : Lister les nodes et leurs caractéristiques  
   **Observation** : `kubectl describe node/<nom>` montre les ressources disponibles, les labels, et les pods qui tournent dessus
 
-- **Action** : Lister tous les namespaces, puis toutes les ressources de `kube-system`
+- **Action** : Lister tous les namespaces, puis toutes les ressources de `kube-system`  
   **Observation** : Le namespace `kube-system` contient les composants internes de Kubernetes eux-mêmes sous forme de pods
 
-- **Action** : Lister toutes les ressources de tous les namespaces
+- **Action** : Lister toutes les ressources de tous les namespaces  
   **Observation** : `kubectl get all -A` montre tout le cluster
 
 <details><summary>Indice</summary>
@@ -140,7 +140,7 @@ kubectl describe namespace/kube-system
 
 **Objectif** : Isoler vos ressources dans un espace dédié.
 
-- **Action** : Créer le namespace `mynamespace`
+- **Action** : Créer le namespace `mynamespace`  
   **Observation** : Il apparaît dans `kubectl get namespaces`
 
 <details><summary>Indice</summary>
@@ -157,13 +157,13 @@ kubectl create namespace mynamespace
 
 **Objectif** : Créer et explorer un déploiement impératif.
 
-- **Action** : Créer un déploiement `demonstration` avec l'image `monachus/rancher-demo`
+- **Action** : Créer un déploiement `demonstration` avec l'image `monachus/rancher-demo`  
   **Observation** : `kubectl describe deployment/demonstration` montre les événements de création
 
-- **Action** : Scaler le déploiement à 5 réplicas
+- **Action** : Scaler le déploiement à 5 réplicas  
   **Observation** : `kubectl get pods` montre 5 pods, les événements de scaling apparaissent dans le describe
 
-- **Action** : Exposer le déploiement via un service NodePort sur le port 8080
+- **Action** : Exposer le déploiement via un service NodePort sur le port 8080  
   **Observation** : `kubectl get services` montre le service avec un port 3xxxx assigné
 
 <details><summary>Indice</summary>
@@ -188,16 +188,16 @@ kubectl get services
 
 **Objectif** : Créer, observer, exécuter des commandes dans et supprimer un pod.
 
-- **Action** : Lancer un pod `ubuntu` avec l'image `ubuntu:latest` dans `mynamespace`, commande `tail -f /dev/null`
+- **Action** : Lancer un pod `ubuntu` avec l'image `ubuntu:latest` dans `mynamespace`, commande `tail -f /dev/null`  
   **Observation** : Le pod est en état `Running` dans `kubectl get pod -n mynamespace`
 
-- **Action** : Inspecter le pod avec `get` et `describe`
+- **Action** : Inspecter le pod avec `get` et `describe`  
   **Observation** : `describe` montre les événements, l'image, le node, les conditions du pod
 
-- **Action** : Afficher le manifeste YAML complet du pod
+- **Action** : Afficher le manifeste YAML complet du pod  
   **Observation** : Le YAML généré décrit l'état complet tel que Kubernetes le voit
 
-- **Action** : Supprimer le pod
+- **Action** : Supprimer le pod  
   **Observation** : Le pod disparaît de la liste
 
 <details><summary>Indice</summary>
@@ -223,7 +223,7 @@ kubectl delete pod ubuntu -n mynamespace
 
 **Objectif** : Découvrir l'écosystème kubectl.
 
-- **Action** : Installer `krew` (gestionnaire de plugins kubectl) puis `kubectx` et `kubens`
+- **Action** : Installer `krew` (gestionnaire de plugins kubectl) puis `kubectx` et `kubens`  
   **Observation** : `kubectx` liste vos contextes, `kubens` liste vos namespaces et permet d'en choisir un par défaut
 
 <details><summary>Indice</summary>

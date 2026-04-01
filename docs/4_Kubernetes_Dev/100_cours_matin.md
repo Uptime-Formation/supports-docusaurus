@@ -2,6 +2,11 @@
 title: Cours matin — Kubernetes Développeur
 ---
 
+
+
+![](../../static/img/kubernetes/Kubernetes_Resources.png)
+
+
 ## Les objets de configuration : ConfigMaps et Secrets
 
 D'après les recommandations [12factor](https://12factor.net), la configuration de nos programmes doit venir de l'environnement — séparée du code.
@@ -231,6 +236,8 @@ Les conteneurs sont immutables : Kubernetes peut les supprimer et recréer autom
 - **`persistentVolumeClaim`** : volume persistant via le système PVC/StorageClass
 
 ### PersistentVolumeClaim (PVC)
+
+![](../../static/img/kubernetes/k8s-pvc.png)
 
 Pour du stockage persistant, le flux est :
 
