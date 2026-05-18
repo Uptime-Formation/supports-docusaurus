@@ -1,225 +1,75 @@
 ---
-title: "TP Matin - Réseau & Certificats"
+title: "TP Matin - Certificats TLS automatiques avec cert-manager"
 draft: false
 ---
 
-<!-- TPs FOURNIS PAR L'UTILISATEUR — intégrer quand disponible -->
+## TP — HTTPS automatique avec cert-manager et Let's Encrypt
 
-## TP Cilium : Network Policies avec eBPF
+**Installer cert-manager, configurer un ClusterIssuer Let's Encrypt, déployer une application avec un Ingress TLS et observer la chaîne d'émission du certificat.**
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/220-Run2-CNI.md ## TP -->
+### Objectif
 
-**Déployer Cilium comme CNI et expérimenter les Network Policies pour contrôler les flux réseau entre pods.**
-
-### Prérequis
-
-- Un cluster Kubernetes fonctionnel (kind ou kubeadm)
-- `helm` installé
-- `cilium` CLI installé
-
----
-
-### Étape 1 : Installer Cilium via Helm
-
-```sh
-helm repo add cilium https://helm.cilium.io/
-helm repo update
-
-helm install cilium cilium/cilium \
-  --namespace kube-system \
-  --set kubeProxyReplacement=strict \
-  --set k8sServiceHost=<CONTROL_PLANE_IP> \
-  --set k8sServicePort=6443
-```
-
-Vérifier l'installation :
-
-```sh
-cilium status
-cilium connectivity test
-```
-
----
-
-### Étape 2 : Déployer une application de test
-
-```yaml
-# Namespace de test
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cilium-test
----
-# Pod frontend
-apiVersion: v1
-kind: Pod
-metadata:
-  name: frontend
-  namespace: cilium-test
-  labels:
-    app: frontend
-spec:
-  containers:
-  - name: nginx
-    image: nginx
-    ports:
-    - containerPort: 80
----
-# Pod backend
-apiVersion: v1
-kind: Pod
-metadata:
-  name: backend
-  namespace: cilium-test
-  labels:
-    app: backend
-spec:
-  containers:
-  - name: nginx
-    image: nginx
-    ports:
-    - containerPort: 80
----
-# Pod external (simulateur de trafic externe)
-apiVersion: v1
-kind: Pod
-metadata:
-  name: external
-  namespace: cilium-test
-  labels:
-    app: external
-spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command: ["sleep", "3600"]
-```
-
-```sh
-kubectl apply -f test-pods.yaml
-kubectl get pods -n cilium-test
-```
-
----
-
-### Étape 3 : Vérifier la connectivité par défaut
-
-```sh
-# Depuis le pod external, tenter de joindre le backend
-kubectl exec -n cilium-test external -- wget -qO- --timeout=5 http://backend.cilium-test.svc.cluster.local
-
-# Depuis le frontend, tenter de joindre le backend
-kubectl exec -n cilium-test frontend -- wget -qO- --timeout=5 http://backend.cilium-test.svc.cluster.local
-```
-
-Par défaut, tous les pods peuvent communiquer entre eux.
-
----
-
-### Étape 4 : Appliquer une Network Policy restrictive
-
-```yaml
-# Autoriser uniquement le frontend à accéder au backend
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-frontend-to-backend
-  namespace: cilium-test
-spec:
-  podSelector:
-    matchLabels:
-      app: backend
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: frontend
-    ports:
-    - protocol: TCP
-      port: 80
-```
-
-```sh
-kubectl apply -f network-policy.yaml
-```
-
----
-
-### Étape 5 : Vérifier l'isolation
-
-```sh
-# Ce call doit RÉUSSIR (frontend → backend autorisé)
-kubectl exec -n cilium-test frontend -- wget -qO- --timeout=5 http://backend.cilium-test.svc.cluster.local
-
-# Ce call doit ÉCHOUER (external → backend bloqué)
-kubectl exec -n cilium-test external -- wget -qO- --timeout=5 http://backend.cilium-test.svc.cluster.local
-```
-
----
-
-### Étape 6 : Observer avec Hubble (optionnel)
-
-```sh
-# Activer Hubble
-helm upgrade cilium cilium/cilium \
-  --namespace kube-system \
-  --reuse-values \
-  --set hubble.relay.enabled=true \
-  --set hubble.ui.enabled=true
-
-# Ouvrir l'UI Hubble
-cilium hubble ui &
-
-# Observer les flux en CLI
-hubble observe --namespace cilium-test --follow
-```
-
----
-
-### Points à explorer
-
-- Appliquer une politique d'egress pour bloquer les requêtes sortantes vers l'extérieur
-- Comparer le comportement avec une Network Policy `deny-all` suivie de règles d'autorisation granulaires
-- Observer dans Hubble les flux autorisés vs rejetés
-
----
-
-## TP cert-manager : HTTPS automatique avec Let's Encrypt
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/240-Run2-Certificates.md ## TP -->
-
-**Installer cert-manager et obtenir automatiquement un certificat TLS via Let's Encrypt pour une application exposée par un Ingress.**
+À la fin de ce TP, vous aurez :
+- Installé cert-manager et ses CRDs
+- Créé un `ClusterIssuer` Let's Encrypt (staging puis production)
+- Déployé `rancher-demo` avec 3 replicas et un Ingress TLS
+- Observé la chaîne cert-manager : `Certificate` → `CertificateRequest` → `Order` → `Challenge`
+- Accédé à l'application en HTTPS
 
 ### Prérequis
 
-- Un cluster Kubernetes avec accès internet
-- Un Ingress Controller déployé (Traefik ou nginx)
-- Un nom de domaine pointant vers le cluster
+- Un cluster Kubernetes k3s avec Traefik (inclus par défaut)
+- Votre DNS de lab : `<VIRTUAL_LAB_DNS>` — remplacez cette valeur par votre hostname réel partout dans ce TP (ex: `sacha.brx2022.uptime-formation.fr`)
 
 ---
 
-### Étape 1 : Installer cert-manager
+## Étape 1 : Installer cert-manager
 
-```sh
+cert-manager est distribué comme un ensemble de manifestes officiels. Il installe ses propres CRDs et trois composants.
+
+- **Action** :
+
+```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+
+# Attendre que les 3 composants soient Ready
+kubectl rollout status deployment/cert-manager -n cert-manager --timeout=120s
+kubectl rollout status deployment/cert-manager-cainjector -n cert-manager --timeout=120s
+kubectl rollout status deployment/cert-manager-webhook -n cert-manager --timeout=120s
 ```
 
-Vérifier l'installation :
+- **Observation** : Trois pods Running dans le namespace `cert-manager` :
 
-```sh
+```bash
 kubectl get pods -n cert-manager
-# 3 pods doivent être Running : cert-manager, cert-manager-cainjector, cert-manager-webhook
 ```
+
+```
+NAME                                      READY   STATUS
+cert-manager-...                          1/1     Running
+cert-manager-cainjector-...               1/1     Running
+cert-manager-webhook-...                  1/1     Running
+```
+
+Vérifiez les CRDs installées :
+
+```bash
+kubectl get crd | grep cert-manager.io
+```
+
+Les CRDs clés : `certificates`, `certificaterequests`, `clusterissuers`, `challenges`, `orders` — chaque étape du cycle de vie d'un certificat a sa propre ressource Kubernetes.
 
 ---
 
-### Étape 2 : Créer un ClusterIssuer Let's Encrypt (staging)
+## Étape 2 : Créer les ClusterIssuers Let's Encrypt
 
-Toujours commencer par staging pour éviter les rate limits de production :
+Un `ClusterIssuer` définit **comment** cert-manager doit obtenir des certificats. On crée toujours staging et production en parallèle — staging sert à valider la configuration sans risquer les rate limits de production.
+
+- **Action** :
 
 ```yaml
+# clusterissuers.yaml
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -234,123 +84,7 @@ spec:
     - http01:
         ingress:
           class: traefik
-```
-
-```sh
-kubectl apply -f clusterissuer-staging.yaml
-kubectl describe clusterissuer letsencrypt-staging
-```
-
 ---
-
-### Étape 3 : Déployer une application de test
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: whoami
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: whoami
-  template:
-    metadata:
-      labels:
-        app: whoami
-    spec:
-      containers:
-      - name: whoami
-        image: traefik/whoami
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: whoami
-  namespace: default
-spec:
-  selector:
-    app: whoami
-  ports:
-  - port: 80
-    targetPort: 80
-```
-
-```sh
-kubectl apply -f whoami.yaml
-```
-
----
-
-### Étape 4 : Créer l'Ingress avec annotation cert-manager
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: whoami-ingress
-  namespace: default
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-staging"
-spec:
-  tls:
-  - hosts:
-    - whoami.votre-domaine.com
-    secretName: whoami-tls
-  rules:
-  - host: whoami.votre-domaine.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: whoami
-            port:
-              number: 80
-```
-
-```sh
-kubectl apply -f ingress.yaml
-```
-
----
-
-### Étape 5 : Suivre l'émission du certificat
-
-```sh
-# Observer la création du Certificate
-kubectl describe certificate whoami-tls
-
-# Observer le CertificateRequest
-kubectl get certificaterequest
-
-# Observer le Challenge ACME
-kubectl get challenge
-
-# Observer l'Order ACME
-kubectl get order
-```
-
-En quelques minutes, le certificat passe de l'état `False` à `True` :
-
-```sh
-kubectl get certificate whoami-tls -w
-# NAME        READY   SECRET       AGE
-# whoami-tls  True    whoami-tls   2m
-```
-
----
-
-### Étape 6 : Passer en production
-
-Une fois le staging validé, créer le ClusterIssuer production :
-
-```yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -367,18 +101,216 @@ spec:
           class: traefik
 ```
 
-Mettre à jour l'annotation de l'Ingress :
+```bash
+kubectl apply -f clusterissuers.yaml
+sleep 5
+kubectl get clusterissuer
+```
 
-```sh
-kubectl annotate ingress whoami-ingress \
-  cert-manager.io/cluster-issuer=letsencrypt-prod --overwrite
+- **Observation** : Les deux `ClusterIssuer` passent en `READY: True` en quelques secondes — cert-manager s'est enregistré auprès des serveurs ACME Let's Encrypt.
+
+```bash
+kubectl describe clusterissuer letsencrypt-staging | grep -A 5 "Conditions:"
+# Message: The ACME account was registered with the ACME server
+```
+
+> Le challenge `http01` signifie que Let's Encrypt va vérifier que vous contrôlez le domaine en effectuant une requête HTTP sur `http://<VIRTUAL_LAB_DNS>/.well-known/acme-challenge/<token>`. cert-manager crée automatiquement un pod et un Ingress temporaires pour répondre à ce challenge.
+
+---
+
+## Étape 3 : Déployer rancher-demo avec Ingress TLS
+
+- **Action** : Remplacez `<VIRTUAL_LAB_DNS>` par votre hostname de lab, puis appliquez :
+
+```yaml
+# rancher-demo.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rancher-demo
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rancher-demo
+  template:
+    metadata:
+      labels:
+        app: rancher-demo
+    spec:
+      containers:
+      - name: rancher-demo
+        image: monachus/rancher-demo:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rancher-demo
+  namespace: default
+spec:
+  selector:
+    app: rancher-demo
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rancher-demo
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"   # ← déclenche cert-manager
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - <VIRTUAL_LAB_DNS>        # REMPLACER
+    secretName: rancher-demo-tls
+  rules:
+  - host: <VIRTUAL_LAB_DNS>   # REMPLACER
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: rancher-demo
+            port:
+              number: 80
+```
+
+```bash
+kubectl apply -f rancher-demo.yaml
+kubectl rollout status deployment/rancher-demo --timeout=60s
+```
+
+<details><summary>Indice — je ne sais pas où remplacer &lt;VIRTUAL_LAB_DNS&gt;</summary>
+
+Il y a 3 occurrences à remplacer dans le fichier YAML : dans `spec.tls[0].hosts[0]`, dans `spec.rules[0].host`, et dans le commentaire. Cherchez `<VIRTUAL_LAB_DNS>` dans le fichier avec `grep`.
+
+Votre DNS de lab vous est communiqué au démarrage de la session — il ressemble à `prenom.brxYYYY.uptime-formation.fr`.
+
+</details>
+
+- **Observation** : L'annotation `cert-manager.io/cluster-issuer` sur l'Ingress suffit à déclencher cert-manager — il détecte l'Ingress, crée automatiquement un objet `Certificate` et lance le processus d'émission.
+
+```bash
+kubectl get certificate -n default
+# NAME               READY   SECRET             AGE
+# rancher-demo-tls   False   rancher-demo-tls   5s   ← False le temps du challenge
 ```
 
 ---
 
-### Points à explorer
+## Étape 4 : Observer la chaîne d'émission
 
-- Que se passe-t-il si le DNS ne pointe pas encore correctement ?
-- Inspecter le contenu du Secret TLS : `kubectl get secret whoami-tls -o yaml`
-- Tester le renouvellement automatique en simulant une expiration proche
-- Comparer avec un `Issuer` (namespace-scoped) vs `ClusterIssuer` (cluster-wide)
+cert-manager décompose l'émission d'un certificat en plusieurs objets Kubernetes — chacun peut être inspecté indépendamment.
+
+- **Action** :
+
+```bash
+# La ressource de haut niveau
+kubectl describe certificate rancher-demo-tls -n default
+
+# La demande de signature
+kubectl get certificaterequest -n default
+
+# L'ordre ACME passé à Let's Encrypt
+kubectl get order -n default
+
+# Le challenge HTTP01 (visible pendant l'émission, disparaît après)
+kubectl get challenge -n default
+
+# La séquence complète dans les events
+kubectl get events -n default --sort-by='.lastTimestamp' | grep -i cert
+```
+
+<details><summary>Indice — le challenge reste en &lt;pending&gt; depuis plusieurs minutes</summary>
+
+Vérifiez que votre DNS pointe bien vers l'IP publique du cluster :
+
+```bash
+dig <VIRTUAL_LAB_DNS> +short
+# doit retourner l'IP de votre lab
+```
+
+Si le DNS ne résout pas encore, le serveur ACME ne peut pas atteindre le pod solver créé par cert-manager. Attendez la propagation DNS (peut prendre quelques minutes), puis vérifiez l'état du challenge :
+
+```bash
+kubectl describe challenge -n default
+# Section "Events" — le message d'erreur indique la cause exacte
+```
+
+</details>
+
+- **Observation** : La séquence d'events montre le cycle complet :
+
+```
+CreateCertificate    ingress/rancher-demo      Successfully created Certificate
+OrderCreated         certificaterequest/...    Created Order resource
+Presented            challenge/...             Presented challenge using HTTP-01
+DomainVerified       challenge/...             Domain "<VIRTUAL_LAB_DNS>" verified
+Issuing              certificate/...           The certificate has been successfully issued
+Complete             order/...                 Order completed successfully
+```
+
+Quand `kubectl get certificate rancher-demo-tls` affiche `READY: True`, le Secret TLS est créé :
+
+```bash
+kubectl get secret rancher-demo-tls -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -dates -issuer
+# issuer=CN=(...Let's Encrypt...)
+# notAfter=... (90 jours)
+```
+
+---
+
+## Étape 5 : Inspecter le certificat émis
+
+- **Action** :
+
+```bash
+# Vérifier le contenu du Secret TLS créé par cert-manager
+kubectl get secret rancher-demo-tls -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -dates -issuer
+```
+
+- **Observation** : Le certificat est signé par la CA staging de Let's Encrypt, valide 90 jours. L'issuer indique `(STAGING)` — normal pour un lab.
+
+> **En production**, on utiliserait `letsencrypt-prod` dès le départ. Le passage de staging à prod se fait en changeant une seule annotation sur l'Ingress — cert-manager détecte le changement et renouvelle le certificat automatiquement :
+> ```bash
+> kubectl annotate ingress rancher-demo \
+>   cert-manager.io/cluster-issuer=letsencrypt-prod --overwrite
+> ```
+> Le certificat prod est valide 90 jours et se renouvelle automatiquement à 2/3 de sa durée de vie — sans intervention manuelle.
+
+---
+
+## Questions de réflexion
+
+- Quelle est la différence entre un `Issuer` (namespace-scoped) et un `ClusterIssuer` ?
+- Pourquoi utiliser staging avant production ? Quels sont les rate limits de Let's Encrypt prod ?
+- Que se passe-t-il si le DNS de votre lab ne pointe pas encore vers le cluster au moment du challenge ?
+- Comment cert-manager sait-il que le certificat doit être renouvelé ?
+
+---
+
+## Nettoyage
+
+```bash
+kubectl delete ingress rancher-demo
+kubectl delete deployment,svc rancher-demo
+kubectl delete secret rancher-demo-tls
+kubectl delete clusterissuer letsencrypt-staging letsencrypt-prod
+kubectl delete -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+```

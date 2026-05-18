@@ -1,262 +1,240 @@
 ---
-title: "TP Après-midi - Service Mesh & Secrets"
+title: "TP Après-midi - Secrets : chiffrement etcd et Vault"
 draft: false
 ---
 
-<!-- TPs FOURNIS PAR L'UTILISATEUR — intégrer quand disponible -->
+## TP — Gestion des secrets : du base64 à Vault
 
-## TP Istio : mTLS avec l'application Bookinfo
+**Comprendre pourquoi les Kubernetes Secrets natifs ne sont pas sécurisés par défaut, activer le chiffrement at-rest dans etcd, puis mettre en place Vault comme gestionnaire centralisé avec rotation automatique.**
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/230-Run2-Service-Mesh.md ## TP Istio -->
+### Objectif
 
-**Installer Istio avec mTLS activé par défaut et vérifier que les flux entre microservices sont chiffrés.**
-
-### Prérequis
-
-- Un cluster Kubernetes fonctionnel
-- `istioctl` installé
-- `kubectl` configuré
-
----
-
-### Étape 1 : Installer Istio
-
-```bash
-# Télécharger Istio
-curl -L https://istio.io/downloadIstio | sh -
-cd istio-*
-export PATH=$PWD/bin:$PATH
-
-# Installer avec le profil demo (mTLS activé par défaut)
-istioctl install --set profile=demo --set values.global.controlPlaneSecurityEnabled=true
-
-# Vérifier l'installation
-kubectl get pods -n istio-system
-```
-
-Tous les pods dans `istio-system` doivent être en état `Running`.
-
----
-
-### Étape 2 : Déployer l'application Bookinfo
-
-```bash
-# Activer l'injection automatique du sidecar Envoy
-kubectl label namespace default istio-injection=enabled
-
-# Déployer Bookinfo
-kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
-
-# Exposer via Istio Gateway
-kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-
-# Vérifier les services
-kubectl get services
-kubectl get pods
-```
-
-Les services `productpage`, `details`, `reviews`, `ratings` doivent être déployés.
-
----
-
-### Étape 3 : Vérifier que mTLS est actif
-
-```bash
-# Vérifier la PeerAuthentication par défaut
-kubectl get peerauthentication -n istio-system
-
-# Le mode doit être STRICT
-kubectl describe peerauthentication -n istio-system
-```
-
----
-
-### Étape 4 : Accéder à l'application
-
-```bash
-# Récupérer l'IP du gateway Istio
-kubectl get svc istio-ingressgateway -n istio-system
-
-# Tester l'application
-curl -s http://<EXTERNAL-IP>/productpage | grep -o "<title>.*</title>"
-```
-
----
-
-### Étape 5 : Vérifier le chiffrement mTLS entre services
-
-```bash
-# Vérifier les flux TLS entre pods
-# Remplacer <source-pod> par le nom réel du pod productpage
-istioctl authn tls-check <source-pod> details.default.svc.cluster.local
-istioctl authn tls-check <source-pod> reviews.default.svc.cluster.local
-istioctl authn tls-check <source-pod> ratings.default.svc.cluster.local
-```
-
-La colonne `TLS mode` doit afficher `mutual` pour chaque service.
-
----
-
-### Étape 6 : Tester une politique d'autorisation
-
-Refuser tout accès sauf depuis `productpage` :
-
-```yaml
-apiVersion: security.istio.io/v1beta1
-kind: AuthorizationPolicy
-metadata:
-  name: allow-productpage-to-details
-  namespace: default
-spec:
-  selector:
-    matchLabels:
-      app: details
-  rules:
-  - from:
-    - source:
-        principals: ["cluster.local/ns/default/sa/bookinfo-productpage"]
-    to:
-    - operation:
-        methods: ["GET"]
-```
-
-```bash
-kubectl apply -f authpolicy.yaml
-
-# Vérifier que productpage peut accéder à details
-curl -s http://<EXTERNAL-IP>/productpage
-
-# Tenter un accès direct depuis un pod non autorisé
-kubectl exec -it deploy/reviews -- curl http://details:9080/details/0
-# Doit retourner 403 Forbidden
-```
-
----
-
-### Points à explorer
-
-- Installer Kiali pour visualiser le graphe de services et les flux mTLS
-- Tester un canary deployment via `VirtualService` et `DestinationRule`
-- Observer l'impact en ressources des sidecars (CPU/mémoire par pod)
-- Comparer les latences avec et sans service mesh (`kubectl top pods`)
-
----
-
-## TP Vault : Gestion des secrets dans Kubernetes
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/330-Security.md ## TP Vault -->
-
-**Mettre en place HashiCorp Vault pour la gestion des secrets dans un cluster Kubernetes en utilisant le Vault Operator.**
-
-Référence : https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator
+À la fin de ce TP, vous aurez :
+- Observé qu'un secret Kubernetes est lisible en clair dans etcd sans chiffrement
+- Réinstallé k3s avec chiffrement activé et vérifié que les secrets sont opaques dans etcd
+- Déployé Vault en mode dev et créé un secret via son API
+- Installé le Vault Secrets Operator et synchronisé un secret Vault vers un Kubernetes Secret
+- Déployé un pod qui consomme le secret en variable d'environnement
+- Observé la rotation automatique du secret sans redéploiement
 
 ### Prérequis
 
-- Un cluster Kubernetes fonctionnel
+- Un cluster k3s fonctionnel
 - `helm` installé
-- `vault` CLI installé
+- `etcdctl` sera installé dans le TP
 
 ---
 
-### Étape 1 : Installer Vault via Helm
+## Étape 1 : Installer k3s avec etcd et observer les secrets en clair
 
-```sh
+Par défaut, k3s utilise SQLite comme datastore. Pour pouvoir inspecter etcd directement, on démarre k3s avec `--cluster-init` qui active etcd.
+
+- **Action** : Réinstaller k3s proprement avec etcd.
+
+```bash
+# Désinstaller k3s existant
+/usr/local/bin/k3s-uninstall.sh
+
+# Réinstaller avec etcd (sans chiffrement pour l'instant)
+curl -sfL https://get.k3s.io | sh -s - --cluster-init
+
+# Attendre que le nœud soit Ready
+until kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+kubectl get nodes
+```
+
+- **Observation** : Le nœud a le rôle `control-plane,etcd` — etcd est actif.
+
+Installer `etcdctl` pour interroger etcd directement :
+
+```bash
+ETCD_VERSION="v3.5.5"
+curl -sL "https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz" \
+  | tar -zxv --strip-components=1 -C /usr/local/bin etcd-${ETCD_VERSION}-linux-amd64/etcdctl
+```
+
+---
+
+## Étape 2 : Créer un secret et lire sa valeur dans etcd
+
+- **Action** :
+
+```bash
+kubectl create secret generic db-credentials \
+  --from-literal=username=admin \
+  --from-literal=password=S3cr3tP@ssw0rd
+```
+
+Lire le secret via kubectl — on voit la valeur encodée en base64 :
+
+```bash
+kubectl get secret db-credentials -o jsonpath='{.data.password}' | base64 -d
+```
+
+Maintenant lire directement dans etcd :
+
+```bash
+ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/var/lib/rancher/k3s/server/tls/etcd/server-ca.crt \
+  --cert=/var/lib/rancher/k3s/server/tls/etcd/client.crt \
+  --key=/var/lib/rancher/k3s/server/tls/etcd/client.key \
+  get /registry/secrets/default/db-credentials | strings
+```
+
+- **Observation** : Le mot de passe `S3cr3tP@ssw0rd` et le nom d'utilisateur `admin` apparaissent **en clair** dans etcd. Le base64 de kubectl n'est pas du chiffrement — c'est juste un encodage. Toute personne ayant accès à etcd peut lire tous les secrets du cluster.
+
+---
+
+## Étape 3 : Réinstaller avec chiffrement activé
+
+- **Action** :
+
+```bash
+/usr/local/bin/k3s-uninstall.sh
+
+curl -sfL https://get.k3s.io | sh -s - --cluster-init --secrets-encryption
+
+until kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+```
+
+Vérifier que le chiffrement est actif :
+
+```bash
+k3s secrets-encrypt status
+```
+
+- **Observation** :
+
+```
+Encryption Status: Enabled
+Current Rotation Stage: start
+Active  Key Type  Name
+------  --------  ----
+ *      AES-CBC   aescbckey
+```
+
+Créer le même secret et lire dans etcd :
+
+```bash
+kubectl create secret generic db-credentials \
+  --from-literal=username=admin \
+  --from-literal=password=S3cr3tP@ssw0rd
+
+ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/var/lib/rancher/k3s/server/tls/etcd/server-ca.crt \
+  --cert=/var/lib/rancher/k3s/server/tls/etcd/client.crt \
+  --key=/var/lib/rancher/k3s/server/tls/etcd/client.key \
+  get /registry/secrets/default/db-credentials | strings | head -5
+```
+
+- **Observation** : La valeur commence par `k8s:enc:aescbc:v1:aescbckey:` suivie de données illisibles. Le contenu est chiffré avec AES-CBC — même avec un accès direct à etcd, le secret est protégé.
+
+> Le chiffrement at-rest protège contre l'accès direct à la base de données etcd, mais **pas** contre un attaquant qui a accès à l'API Kubernetes — `kubectl get secret` fonctionne toujours. Pour un contrôle plus fin (audit, rotation, politiques d'accès), il faut Vault.
+
+---
+
+## Étape 4 : Déployer Vault en mode dev
+
+Vault en mode dev démarre déverrouillé avec un token root fixe — pratique pour un TP, jamais en production.
+
+- **Action** :
+
+```bash
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
 
-# Installer Vault en mode dev (pour le TP uniquement)
-helm install vault hashicorp/vault \
+helm upgrade --install vault hashicorp/vault \
   --namespace vault \
   --create-namespace \
-  --set "server.dev.enabled=true"
+  --set "server.dev.enabled=true" \
+  --set "server.dev.devRootToken=root"
 
-# Vérifier l'installation
+kubectl wait pod/vault-0 -n vault --for=condition=Ready --timeout=120s
 kubectl get pods -n vault
 ```
 
----
+- **Observation** : Vault et son agent injector sont Running. Créer un secret via l'API Vault :
 
-### Étape 2 : Configurer l'authentification Kubernetes
+```bash
+kubectl exec -n vault vault-0 -- vault kv put secret/app/db \
+  username=admin \
+  password=S3cr3tP@ssw0rd
 
-```sh
-# Se connecter au pod Vault
-kubectl exec -it vault-0 -n vault -- /bin/sh
-
-# Dans le pod Vault :
-# Activer l'auth Kubernetes
-vault auth enable kubernetes
-
-# Configurer le backend Kubernetes
-vault write auth/kubernetes/config \
-  kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
-
-exit
+kubectl exec -n vault vault-0 -- vault kv get secret/app/db
 ```
 
----
+Le secret est stocké dans Vault avec métadonnées (version, timestamp) — Vault garde l'historique de toutes les versions.
 
-### Étape 3 : Créer un secret dans Vault
+<details><summary>Indice — vault kv get retourne une erreur de permission</summary>
 
-```sh
-# Accéder au pod Vault
-kubectl exec -it vault-0 -n vault -- /bin/sh
+En mode dev, le token root est `root`. Si vous obtenez une erreur d'authentification, exportez le token :
 
-# Activer le moteur KV v2
-vault secrets enable -path=secret kv-v2
-
-# Créer un secret
-vault kv put secret/app/config \
-  username="admin" \
-  password="monmotdepasse"
-
-# Vérifier
-vault kv get secret/app/config
-
-exit
+```bash
+kubectl exec -n vault vault-0 -- env VAULT_TOKEN=root vault kv get secret/app/db
 ```
 
+</details>
+
 ---
 
-### Étape 4 : Installer le Vault Secrets Operator
+## Étape 5 : Vault Secrets Operator — synchroniser vers un K8s Secret
 
-```sh
-helm install vault-secrets-operator hashicorp/vault-secrets-operator \
+Le Vault Secrets Operator (VSO) est un operator Kubernetes qui surveille des CRDs `VaultStaticSecret` et les synchronise automatiquement vers des Kubernetes Secrets natifs. Les pods n'ont pas besoin de parler à Vault directement.
+
+- **Action** : Installer VSO et configurer l'authentification Kubernetes.
+
+```bash
+helm upgrade --install vault-secrets-operator hashicorp/vault-secrets-operator \
   --namespace vault-secrets-operator-system \
   --create-namespace \
   --set defaultVaultConnection.enabled=true \
   --set defaultVaultConnection.address="http://vault.vault.svc.cluster.local:8200"
+
+kubectl rollout status deployment/vault-secrets-operator-controller-manager \
+  -n vault-secrets-operator-system --timeout=120s
 ```
 
----
+Configurer le backend Kubernetes dans Vault (politique + rôle) :
 
-### Étape 5 : Créer une politique et un rôle Vault
-
-```sh
-kubectl exec -it vault-0 -n vault -- /bin/sh
-
-# Créer la politique d'accès
+```bash
+kubectl exec -n vault vault-0 -- sh -c '
+vault auth enable kubernetes 2>/dev/null || true
+vault write auth/kubernetes/config \
+  kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
 vault policy write app-policy - <<EOF
-path "secret/data/app/config" {
+path "secret/data/app/db" {
   capabilities = ["read"]
 }
 EOF
-
-# Créer le rôle Kubernetes
 vault write auth/kubernetes/role/app-role \
   bound_service_account_names=app-sa \
   bound_service_account_namespaces=default \
   policies=app-policy \
   ttl=24h
-
-exit
+'
 ```
 
----
-
-### Étape 6 : Synchroniser le secret vers Kubernetes
+Créer le ServiceAccount et les ressources VSO :
 
 ```yaml
-# VaultAuth — connexion au Vault
+# vso-resources.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-sa
+  namespace: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault-connection
+  namespace: default
+spec:
+  address: http://vault.vault.svc.cluster.local:8200
+---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
@@ -265,76 +243,126 @@ metadata:
 spec:
   method: kubernetes
   mount: kubernetes
+  vaultConnectionRef: vault-connection
   kubernetes:
     role: app-role
     serviceAccount: app-sa
 ---
-# VaultStaticSecret — synchronisation du secret
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
-  name: app-config
+  name: app-db-secret
   namespace: default
 spec:
   type: kv-v2
   mount: secret
-  path: app/config
+  path: app/db
   destination:
-    name: app-config-secret
+    name: app-db-credentials
     create: true
   vaultAuthRef: app-vault-auth
   refreshAfter: 30s
 ```
 
-```sh
-# Créer le ServiceAccount
-kubectl create serviceaccount app-sa
-
-# Appliquer les ressources
-kubectl apply -f vault-secret.yaml
-
-# Vérifier que le Kubernetes Secret a été créé
-kubectl get secret app-config-secret -o yaml
+```bash
+kubectl apply -f vso-resources.yaml
+sleep 10
+kubectl get secret app-db-credentials -n default
+kubectl get secret app-db-credentials -o jsonpath='{.data.password}' | base64 -d
 ```
+
+- **Observation** : VSO a créé automatiquement le Kubernetes Secret `app-db-credentials` en synchronisant depuis Vault. Dans Git, on ne stocke que la référence (`path: app/db`) — jamais la valeur.
+
+<details><summary>Indice — le K8s Secret n'apparaît pas après 10 secondes</summary>
+
+Vérifier l'état du VaultStaticSecret :
+
+```bash
+kubectl describe vaultstaticsecret app-db-secret
+# Section "Events" — indique la cause de l'échec (auth, path, etc.)
+
+# Vérifier que le VaultAuth est valide
+kubectl describe vaultauth app-vault-auth
+```
+
+</details>
 
 ---
 
-### Étape 7 : Utiliser le secret dans un pod
+## Étape 6 : Pod consommant le secret + rotation automatique
+
+- **Action** :
 
 ```yaml
+# app-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
   name: app-pod
+  namespace: default
 spec:
   serviceAccountName: app-sa
   containers:
   - name: app
     image: busybox
-    command: ["sh", "-c", "echo username=$USERNAME && sleep 3600"]
+    command: ["sh", "-c", "echo DB_USER=$DB_USERNAME && echo DB_PASS=$DB_PASSWORD && sleep 3600"]
     env:
-    - name: USERNAME
+    - name: DB_USERNAME
       valueFrom:
         secretKeyRef:
-          name: app-config-secret
+          name: app-db-credentials
           key: username
-    - name: PASSWORD
+    - name: DB_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: app-config-secret
+          name: app-db-credentials
           key: password
 ```
 
-```sh
+```bash
 kubectl apply -f app-pod.yaml
+kubectl wait pod/app-pod --for=condition=Ready --timeout=60s
 kubectl logs app-pod
 ```
 
+- **Observation** : Le pod affiche `DB_PASS=S3cr3tP@ssw0rd` — il a reçu la valeur depuis le K8s Secret synchronisé par VSO.
+
+Maintenant modifiez le secret dans Vault et observez la rotation automatique :
+
+```bash
+# Modifier le secret dans Vault
+kubectl exec -n vault vault-0 -- vault kv put secret/app/db \
+  username=admin \
+  password=N3wP@ssw0rd_2026
+
+# Attendre le refresh (refreshAfter: 30s)
+sleep 35
+
+# Le K8s Secret est mis à jour automatiquement
+kubectl get secret app-db-credentials -o jsonpath='{.data.password}' | base64 -d
+```
+
+- **Observation** : Le Kubernetes Secret contient maintenant `N3wP@ssw0rd_2026` — sans aucune intervention manuelle.
+
+> **Limite importante** : les variables d'environnement d'un pod sont fixées au démarrage. Le pod `app-pod` voit toujours l'ancienne valeur — il faut le redémarrer pour qu'il lise la nouvelle. Les secrets montés en **volume** peuvent être relus dynamiquement, mais cela demande que l'application surveille le fichier. C'est la même contrainte avec les ConfigMaps mis à jour dynamiquement.
+
 ---
 
-### Points à explorer
+## Questions de réflexion
 
-- Modifier le secret dans Vault et observer le Secret Kubernetes se mettre à jour automatiquement après `refreshAfter`
-- Activer l'audit dans Vault : `vault audit enable file file_path=/vault/logs/audit.log`
-- Comparer avec External Secrets Operator (autre approche pour le même besoin)
-- Tester la révocation d'accès en supprimant le rôle Vault
+- Quelle est la différence entre un secret en base64 et un secret chiffré dans etcd ?
+- Pourquoi le chiffrement at-rest seul ne suffit pas pour une sécurité complète des secrets ?
+- Que se passe-t-il si le pod Vault redémarre en mode dev ? Les secrets sont-ils perdus ?
+- Comment VSO sait-il que le secret Vault a changé pour déclencher la synchronisation ?
+
+---
+
+## Nettoyage
+
+```bash
+kubectl delete pod app-pod
+kubectl delete -f vso-resources.yaml
+helm uninstall vault-secrets-operator -n vault-secrets-operator-system
+helm uninstall vault -n vault
+kubectl delete namespace vault vault-secrets-operator-system
+```
