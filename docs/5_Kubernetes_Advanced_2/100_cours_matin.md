@@ -5,8 +5,6 @@ draft: false
 
 ## Installation de Kubernetes
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes_Advanced_2/03_Installation-de-Kubernetes.md (squelette) + 5_Kubernetes-Advanced/010-Revision.md -->
-
 ### Kubernetes as a Service
 
 Les clouds publics proposent des clusters Kubernetes entièrement managés — le control plane est géré par le provider, vous ne gérez que les nodes :
@@ -43,8 +41,6 @@ Pour un cluster de production, le control plane doit être redondant :
 
 ## Container Runtime Interface (CRI)
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md ## Container Engine -->
-
 **Un container engine (runtime de conteneur) gère la création, la gestion et l'exécution des conteneurs, en respectant la norme OCI.**
 
 | Outil | Usage | Note |
@@ -59,8 +55,6 @@ Pour un cluster de production, le control plane doit être redondant :
 ---
 
 ## Container Network Interface (CNI)
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md ## CNI -->
 
 **La spécification CNI standardise la configuration des réseaux de conteneurs.** Elle définit une interface commune entre les runtimes de conteneurs et les plugins réseau.
 
@@ -115,8 +109,6 @@ Outils CNI-spécifiques :
 ---
 
 ## Persistance : Container Storage Interface (CSI)
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md ## La persistance -->
 
 **Kubernetes standardise l'intégration des solutions de stockage via CSI (Container Storage Interface).**
 
@@ -191,8 +183,6 @@ spec:
 ---
 
 ## Certificats TLS dans Kubernetes
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes_Advanced_2/02_Architecture-de-Kubernetes.md ## Certificats -->
 
 ### Historique
 

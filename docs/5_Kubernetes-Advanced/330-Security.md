@@ -32,6 +32,7 @@ On va lancer un test de sécurité de notre cluster Kubernetes avec [Kube-bench]
    ```sh
    kubectl delete -f kube-bench.yaml
    ```
+
 ---
 
 ## La sécurité 

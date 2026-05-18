@@ -1,7 +1,17 @@
 ---
 title: Kubernetes - Bonnes pratiques
-draft: false
+author: [Alban CROMMER]
+date: "%DATE%"
+keywords: [Kubernetes, Devops]
+titlepage: true
+titlepage-color: "99e0ff"
+titlepage-text-color: "3366ff"
+titlepage-rule-color: "3366ff"
+titlepage-rule-height: 4
+book: true
 ---
+
+# Tips for Kubernetes
 
 Cette page regroupe les principales bonnes pratiques à connaître pour opérer des clusters Kubernetes en production. Elles sont issues de l'expérience terrain et couvrent aussi bien la sécurité, la fiabilité que l'organisation des équipes.
 

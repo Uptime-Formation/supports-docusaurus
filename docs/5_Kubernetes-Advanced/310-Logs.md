@@ -8,6 +8,7 @@ weight: 310
 **Kubernetes a repris les idées de drivers et d'API de Docker pour la gestion des logs et les a étendues à une plateforme d'orchestration de conteneurs à grande échelle, offrant une solution standardisée, flexible et centralisée pour la collecte et l'analyse des logs.**
 
 ---
+
 ### Avant Docker
 
 **Dans les infrastructures traditionnelles, les logs étaient souvent gérés de manière centralisée au niveau du système d'exploitation ou du serveur.**
@@ -346,6 +347,7 @@ data:
     </filter>
 
 ```
+
 ---
 
 ### La boucle Input / Parser / Filter / Buffer / Router

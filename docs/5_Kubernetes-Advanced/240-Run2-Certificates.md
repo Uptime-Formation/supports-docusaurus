@@ -161,6 +161,7 @@ Le modèle Gateway API offre une approche plus flexible et puissante pour gérer
 2. **Intégration avec les Services Mesh :** Les services mesh peuvent s'intégrer avec Gateway API pour déléguer certaines tâches de gestion TLS, en utilisant des certificats fournis par le mesh ou des certificats configurés directement dans la Gateway API.
 
 ---
+
 ## Principales solutions de gestion des certificats dans Kubernetes
 
 **Voyons leurs capacités respectives, et comment elles peuvent gérer des infrastructures PKI privées ou ACME.**

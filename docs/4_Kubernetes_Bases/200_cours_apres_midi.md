@@ -3,12 +3,16 @@ title: "Cours Après-midi - Le langage Kubernetes et les objets de base"
 draft: false
 ---
 
+# Après-midi
+
 ## L'API et les objets Kubernetes
 
 **Utiliser Kubernetes consiste à déclarer des objets grâce à l'API pour décrire l'état souhaité du cluster** : quelles applications exécuter, quelles images elles utilisent, le nombre de replicas, les ressources réseau et disque disponibles, etc.
 
 On définit des objets de deux façons :
+
 - **Impératif** : `kubectl run <conteneur>`, `kubectl expose`, `kubectl create`
+
 - **Déclaratif** : décrire un objet dans un fichier YAML et le passer à `kubectl apply -f monobjet.yaml`
 
 **Kubernetes est complètement automatisable** — vous pouvez aussi écrire des programmes qui utilisent directement l'API.
@@ -27,29 +31,6 @@ kubectl delete -f object.yaml   # supprime
 C'est la méthode recommandée en production — les fichiers YAML sont la source de vérité.
 
 ---
-
-## Le YAML
-
-Kubernetes décrit ses ressources en YAML. À quoi ça ressemble :
-
-```yaml
-- marché:
-    lieu: Marché de la Place
-    fruits:
-      - nom: pomme
-        couleur: "verte"
-      - nom: poires
-        couleur: jaune
-    légumes:
-      - courgettes
-      - salade
-```
-
-**Règles importantes :**
-- Alignement avec **2 espaces** (pas de tabulations)
-- Des listes (tirets `-`)
-- Des dictionnaires de paires **clé: valeur**
-- Les extensions Kubernetes et YAML dans VSCode vous aident à repérer les erreurs
 
 ### Structure de base d'un objet Kubernetes
 
@@ -82,6 +63,7 @@ On peut décrire **plusieurs ressources dans un seul fichier**, séparées par `
 **Le Pod est l'unité de base d'une application Kubernetes** — un groupe atomique de conteneurs garantis de tourner sur le même node, toujours ensemble.
 
 Les conteneurs d'un pod partagent :
+
 - des volumes communs
 - la même interface réseau (même IP, mêmes noms de domaine internes)
 - peuvent se parler en IPC
@@ -110,6 +92,7 @@ spec:
 **Un pod est largement immutable** : on ne peut pas changer le nom d'un conteneur ou sa commande après création. Pour modifier ces propriétés, il faut supprimer et recréer le pod. C'est précisément pour ça qu'on utilise un Deployment — il gère ce cycle automatiquement.
 
 ---
+
 **Un pod peut contenir trois types de conteneurs aux rôles distincts :**
 
 **Init containers** : s'exécutent séquentiellement avant les conteneurs principaux, jusqu'à complétion. Utilisés pour des tâches de préparation (attendre une base de données, pré-charger des fichiers). 
@@ -125,6 +108,78 @@ Ils ne peuvent pas être définis dans le manifeste initial, ne redémarrent pas
 
 ---
 
+### Le pattern Sidecar
+
+Sur le schéma, les trois conteneurs standards sont étiquetés `app`, `logs` et `proxy`. Ce n'est pas un hasard : c'est l'illustration du **pattern sidecar**.
+
+**Un sidecar est un conteneur secondaire qui tourne aux côtés du conteneur applicatif principal pour lui ajouter une responsabilité transverse**, sans modifier son code.
+
+Parce qu'ils partagent le même réseau, les mêmes volumes et le même cycle de vie, les conteneurs d'un pod peuvent se diviser le travail proprement :
+
+| Rôle | Ce qu'il fait | Exemples |
+|---|---|---|
+| **app** | Logique métier uniquement | Votre service Python, Go, Java |
+| **logs** | Collecte et relaie les logs vers un agrégateur | Fluent Bit, Filebeat |
+| **proxy** | Intercepte le trafic réseau entrant et sortant | Envoy, Nginx, Linkerd proxy |
+
+```yaml
+spec:
+  containers:
+  - name: app
+    image: mon-api:1.2.0
+    volumeMounts:
+    - name: logs
+      mountPath: /var/log/app
+  - name: log-shipper          # sidecar : collecte les logs écrits par app
+    image: fluent/fluent-bit:3
+    volumeMounts:
+    - name: logs
+      mountPath: /var/log/app
+  volumes:
+  - name: logs
+    emptyDir: {}
+```
+
+Le conteneur `app` écrit ses logs dans un volume partagé. Le sidecar `log-shipper` les lit et les envoie vers le système de centralisation — sans que l'application ait besoin de connaître Fluent Bit.
+
+**Avantages du pattern sidecar :**
+- Séparation des responsabilités : l'équipe applicative gère `app`, l'équipe infra gère les sidecars
+- Réutilisable sur n'importe quel pod, quelle que soit la technologie de l'application
+- Pas de modification du code applicatif
+
+---
+
+### Sidecar natif : initContainers avec restartPolicy (K8s ≥ 1.29)
+
+Le problème historique du sidecar classique : tous les conteneurs d'un pod démarrent en parallèle. Rien ne garantit que le proxy réseau ou l'agent de logs est prêt avant que l'application commence à traiter du trafic.
+
+**Depuis Kubernetes 1.29**, un init container peut être déclaré comme sidecar natif en lui ajoutant `restartPolicy: Always`. Il bénéficie alors d'un cycle de vie hybride :
+
+- **Il démarre avant les conteneurs principaux** (comme un init container classique)
+- **Il reste actif toute la vie du pod** (comme un conteneur standard)
+- **Il reçoit SIGTERM après les conteneurs principaux** lors de l'arrêt du pod
+
+```yaml
+spec:
+  initContainers:
+  - name: proxy                # sidecar natif : démarre avant app, reste actif
+    image: envoy:v1.29
+    restartPolicy: Always      # c'est ce champ qui le transforme en sidecar natif
+  containers:
+  - name: app
+    image: mon-api:1.2.0
+```
+
+| | Sidecar classique | Sidecar natif (init + restartPolicy) |
+|---|---|---|
+| **Ordre de démarrage** | Parallèle avec app | Avant app (garanti) |
+| **Arrêt** | En même temps que app | Après app |
+| **Cas d'usage** | Logs, métriques simples | Proxy réseau, agent secrets, tout ce qui doit être prêt avant app |
+
+C'est la solution retenue par les service meshes comme Istio et Linkerd pour injecter leur proxy sans dépendre d'une injection automatique externe.
+
+---
+
 ## Les Deployments
 
 ![](../../static/img/kubernetes/wiki-ciscolinux-co-uk-russiandolls.png)
@@ -134,8 +189,10 @@ Ils ne peuvent pas être définis dans le manifeste initial, ne redémarrent pas
 Architecture en poupées russes : **Deployment → ReplicaSet → Pods → Conteneurs**
 
 **Responsabilités du Deployment :**
+
 - **Tracking de versions** : gère la coexistence de plusieurs versions lors des mises à jour
 - **RolloutStrategy** : montée de version automatique en haute disponibilité (zero-downtime)
+
 - **Self-healing** via le ReplicaSet : recrée automatiquement les pods qui tombent
 
 ```yaml
@@ -191,6 +248,7 @@ image: registry.example.com/monapp:abc1234f
 ### Stratégie de déploiement
 
 Le champ `strategy.type` contrôle comment Kubernetes remplace les pods lors d'une mise à jour :
+
 - **`Recreate`** : supprime tous les anciens pods, puis crée les nouveaux (interruption courte)
 - **`RollingUpdate`** (défaut) : remplace progressivement, pod par pod (zero-downtime)
 
@@ -239,7 +297,7 @@ selector:
 
 Un **Service** crée un point d'accès stable vers un ensemble de pods — il sélectionne les pods via leurs **labels** et répartit le trafic entre eux (load balancing).
 
-![](/img/kubernetes/k8s-exposed-pod.jpg)
+![](../../static/img/kubernetes/k8s-exposed-pod.jpg)
 
 Les **endpoints** sont la liste des IPs des pods actuellement sélectionnés par un Service. Si le selector ne correspond à aucun pod, les endpoints sont vides et le trafic ne passe plus.
 
@@ -268,12 +326,15 @@ kubectl describe service <nom>   # voir les endpoints
 Kubernetes dispose de trois types de sondes pour surveiller l'état des conteneurs :
 
 - **`startupProbe`** : vérifie que l'application a bien démarré. Tant qu'elle n'est pas validée, les autres probes ne s'exécutent pas. Utile pour les applications lentes au démarrage.
+
 - **`readinessProbe`** : vérifie que le conteneur est **prêt à recevoir du trafic**. Tant qu'elle échoue, le pod est retiré des endpoints du Service.
 - **`livenessProbe`** : vérifie que le conteneur est **vivant**. Si elle échoue, Kubernetes redémarre le conteneur.
 
 Paramètres courants :
+
 - `initialDelaySeconds` : délai avant le premier check (évite les faux positifs au démarrage)
 - `periodSeconds` : fréquence des checks
+
 - `failureThreshold` : nombre d'échecs avant action
 
 ```yaml

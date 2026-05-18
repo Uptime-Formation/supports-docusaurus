@@ -1,7 +1,9 @@
 ---
 title: "Cours Matin - Des conteneurs à Kubernetes"
-draft: false
 ---
+
+# Kubernetes : les bases
+
 
 ## La problématique d'exécution universelle des applications
 
@@ -13,13 +15,14 @@ draft: false
 ```
 
 Les applications ont des contraintes à gérer :
-- versions du code : *J'ai codé une nouvelle fonctionnalité, comment j'intègre ça en prod ?*
-- différents environnements (dev, prod) : *J'ai testé sur la dev, on le passe en prod ?*
-- fichiers de configuration par environnement : *Qui connaît le mot de passe de la DB de prod ?*
-- dépendances internes (librairies, modules) : *Comment j'intègre en prod la librairie qui lit des fichiers Excel ?*
-- dépendances externes (bases de données) : *J'ai ajouté un redis pour stocker du cache, comment on déploie ça en prod ?*
-- options de lancement du process : *Tu savais pas que l'appli crash sans l'option `-XX:+UseZGC` ?*
-- processus de mise à jour : *La nouvelle version de la DB marche pas avec l'ancienne version du code, on fait quoi ?*
+
+- versions du code : *J'ai codé une nouvelle fonctionnalité, comment j'intègre ça en prod ?*  
+- différents environnements (dev, prod) : *J'ai testé sur la dev, on le passe en prod ?*  
+- fichiers de configuration par environnement : *Qui connaît le mot de passe de la DB de prod ?*  
+- dépendances internes (librairies, modules) : *Comment j'intègre en prod la librairie qui lit des fichiers Excel ?*  
+- dépendances externes (bases de données) : *J'ai ajouté un redis pour stocker du cache, comment on déploie ça en prod ?*  
+- options de lancement du process : *Tu savais pas que l'appli crash sans l'option `-XX:+UseZGC` ?*  
+- processus de mise à jour : *La nouvelle version de la DB marche pas avec l'ancienne version du code, on fait quoi ?*  
 
 ---
 
@@ -38,17 +41,19 @@ Les applications ont des contraintes à gérer :
 ### L'Infrastructure As Code
 
 **Progressivement, on essaie de formaliser l'applicatif pour maximiser :**
-- la capacité de développer et de tester
-- la sécurité de l'application
-- la capacité d'évolution et de changement
+
+- la capacité de développer et de tester  
+- la sécurité de l'application  
+- la capacité d'évolution et de changement  
 
 Aujourd'hui avec Docker et Kubernetes :
-- Les différents environnements utilisent les mêmes images
-- Chaque image correspond à un état du code dans git
-- Les options de configuration par environnement sont dans l'image
-- Les dépendances internes sont dans l'image
-- La mise à jour est gérée par un orchestrateur
-- Les backups sont automatisés par l'orchestrateur
+
+- Les différents environnements utilisent les mêmes images  
+- Chaque image correspond à un état du code dans git  
+- Les options de configuration par environnement sont dans l'image  
+- Les dépendances internes sont dans l'image  
+- La mise à jour est gérée par un orchestrateur  
+- Les backups sont automatisés par l'orchestrateur  
 
 ---
 
@@ -114,10 +119,11 @@ Quels sont les composants qui permettent ce processus ?
 **Un conteneur Docker est un process isolé** — il tourne dans son propre espace de noms (namespace Linux), avec ses propres ressources.
 
 Un `process` est un programme en cours d'exécution. Pour chaque process, le système :
-- lui attribue un numéro unique (PID)
-- lui associe un utilisateur
-- lui alloue de la mémoire et du temps de calcul
-- maintient des statistiques le concernant
+
+- lui attribue un numéro unique (PID)  
+- lui associe un utilisateur  
+- lui alloue de la mémoire et du temps de calcul  
+- maintient des statistiques le concernant  
 
 ```
 USER         PID %CPU %MEM    VSZ   RSS TTY   STAT  COMMAND
@@ -138,9 +144,11 @@ Chaque instruction du Dockerfile crée une nouvelle couche. Les couches déjà e
 ![](../assets/images/overlay_constructs.jpg)
 
 **Avantages :**
-- Économie de place : les couches communes entre images sont partagées
-- Mise en cache : seules les couches modifiées sont reconstruites
-- **Immutabilité** : on ne modifie jamais une image "dans le fond" — au lancement d'un conteneur, Docker ajoute une couche read/write par dessus la pile
+
+- Économie de place : les couches communes entre images sont partagées  
+- Mise en cache : seules les couches modifiées sont reconstruites  
+
+- **Immutabilité** : on ne modifie jamais une image "dans le fond" — au lancement d'un conteneur, Docker ajoute une couche read/write par dessus la pile  
 
 **Ce qu'on voit lors d'un `docker pull` :**
 ```shell
@@ -177,9 +185,11 @@ EXPOSE 3000
 **L'image Docker est «prête à consommer»** — avantage : simple à lancer. Inconvénient : opaque si on ne connaît pas son contenu.
 
 À comparer avec les autres outils d'IaC :
-- **Terraform** : déploie des ressources cloud
-- **Ansible** : configure des serveurs
-- **Dockerfile** : construit une image reproductible contenant une application
+
+- **Terraform** : déploie des ressources cloud  
+- **Ansible** : configure des serveurs  
+
+- **Dockerfile** : construit une image reproductible contenant une application  
 
 ---
 
@@ -188,13 +198,15 @@ EXPOSE 3000
 **Un registry est un dépôt d'images Docker.** Les entreprises utilisent des registries privés pour ne pas exposer leurs images.
 
 Registries publics/SaaS courants :
-- **Docker Hub** — le registry public par défaut
-- **ghcr.io** (GitHub), **gcr.io** (Google), **quay.io** (RedHat — scan sécurité inclus)
-- **Gitlab / GitHub** — intégrés dans le workflow DevOps
+
+- **Docker Hub** — le registry public par défaut  
+- **ghcr.io** (GitHub), **gcr.io** (Google), **quay.io** (RedHat — scan sécurité inclus)  
+- **Gitlab / GitHub** — intégrés dans le workflow DevOps  
 
 On-premise :
-- **Harbor** — solution CNCF open-source, puissante
-- **Docker Registry** — pour les besoins simples
+
+- **Harbor** — solution CNCF open-source, puissante  
+- **Docker Registry** — pour les besoins simples  
 
 ```shell
 docker pull nginx:1.25          # récupère depuis Docker Hub
@@ -211,7 +223,7 @@ docker login monregistry        # s'authentifier
 ```yaml
 # Dans un manifeste Kubernetes
 env:
-  - name: MA_VARIABLE
+  - name: MA_VARIABLE  
     value: "ma-valeur"
 ```
 
@@ -231,9 +243,10 @@ maVar = os.environ.get('MA_VAR')
 ## L'évolution de l'écosystème des orchestrateurs
 
 Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer :
-- Qui tourne sur quel serveur ?
-- Comment remplacer un conteneur qui plante ?
-- Comment mettre à jour sans interruption ?
+
+- Qui tourne sur quel serveur ?  
+- Comment remplacer un conteneur qui plante ?  
+- Comment mettre à jour sans interruption ?  
 
 **Kubernetes représente plus de 50% des conteneurs déployés en production.** Docker Swarm n'a jamais décollé. Nomad, Mesos, CoreOS ont perdu de la traction. AWS ECS/EKS, GKE, AKS suivent tous les API Kubernetes.
 
@@ -242,15 +255,19 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 
 ## Histoire de Kubernetes
 
-- **2003-2004** : Google crée le système **Borg** — gestion interne de centaines de milliers de jobs sur des dizaines de milliers de machines
-- **2013** : Evolution vers **Omega**, planificateur flexible et évolutif
-- **2014** : Google open-source Kubernetes, Microsoft, RedHat, IBM et Docker rejoignent immédiatement
-- **2015** : Kubernetes v1.0, création de la **CNCF** (Cloud Native Computing Foundation)
-- **2016** : Helm, Minikube, première adoption massive (Pokémon Go!)
-- **2017** : GitHub migre sur Kubernetes, lancement d'Istio (Google + IBM)
-- **Depuis 2018** : leader incontesté, EKS/GKE/AKS en services managés, écosystème CNCF en explosion
+- **2003-2004** : Google crée le système **Borg** — gestion interne de centaines de milliers de jobs sur des dizaines de milliers de machines  
+
+- **2013** : Evolution vers **Omega**, planificateur flexible et évolutif  
+- **2014** : Google open-source Kubernetes, Microsoft, RedHat, IBM et Docker rejoignent immédiatement  
+
+- **2015** : Kubernetes v1.0, création de la **CNCF** (Cloud Native Computing Foundation)  
+- **2016** : Helm, Minikube, première adoption massive (Pokémon Go!)  
+
+- **2017** : GitHub migre sur Kubernetes, lancement d'Istio (Google + IBM)  
+- **Depuis 2018** : leader incontesté, EKS/GKE/AKS en services managés, écosystème CNCF en explosion  
 
 ---
+
 ## Pourquoi Kubernetes
 
 
@@ -258,6 +275,7 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 ![](../../static/img/kubernetes/100-why-k8s.png)
 
 ---
+
 ## Objectifs et architecture de Kubernetes
 
 
@@ -267,25 +285,28 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 ![](../../static/img/kubernetes/kubernetes_top_10_patterns.png)
 
 **Kubernetes est :**
-- Une plateforme d'orchestration **résiliente** : elle recrée automatiquement les ressources manquantes
-- Une plateforme **sans vendor lock-in** : fonctionne sur cloud privé et cloud public
-- Une plateforme de **déploiement** : gère les multi-instances et les rotations de version en zero-downtime
-- Une plateforme **mutualisable** : séparation par namespace, RBAC, quotas
-- Une plateforme **customisable** : framework extensible via CRD et opérateurs
+
+- Une plateforme d'orchestration **résiliente** : elle recrée automatiquement les ressources manquantes  
+- Une plateforme **sans vendor lock-in** : fonctionne sur cloud privé et cloud public  
+
+- Une plateforme de **déploiement** : gère les multi-instances et les rotations de version en zero-downtime  
+- Une plateforme **mutualisable** : séparation par namespace, RBAC, quotas  
+
+- Une plateforme **customisable** : framework extensible via CRD et opérateurs  
 
 **Architecture :**
 ![](../../static/img/kubernetes/k8s-architecture.png)
 
-- **Control Plane** : cerveau du cluster
-  - `kube-apiserver` : point d'entrée central (REST)
-  - `kube-controller-manager` : surveille et corrige l'état des ressources
-  - `kube-scheduler` : décide sur quel node placer chaque pod
-  - `etcd` : base de données distribuée stockant toute la configuration
+- **Control Plane** : cerveau du cluster  
+  - `kube-apiserver` : point d'entrée central (REST)  
+  - `kube-controller-manager` : surveille et corrige l'état des ressources  
+  - `kube-scheduler` : décide sur quel node placer chaque pod  
+  - `etcd` : base de données distribuée stockant toute la configuration  
 
-- **Nodes** : machines qui font tourner les conteneurs
-  - `kubelet` : contrôle la création et l'état des pods sur le node
-  - `kube-proxy` : gestion réseau
-  - Runtime de conteneur : `containerd` ou `cri-o`
+- **Nodes** : machines qui font tourner les conteneurs  
+  - `kubelet` : contrôle la création et l'état des pods sur le node  
+  - `kube-proxy` : gestion réseau  
+  - Runtime de conteneur : `containerd` ou `cri-o`  
 
 **Tout passe par l'API** — kubectl, les outils CI/CD, les opérateurs... tout est une API.
 
@@ -312,10 +333,12 @@ Quand on a beaucoup de conteneurs sur plusieurs machines, il faut les orchestrer
 
 ### On-premise (production)
 
-- **kubeadm** : outil officiel d'installation et de maintenance
-- **Kubespray** : kubeadm + Ansible, approche IaC recommandée
-- **Rancher** : écosystème complet open-source (monitoring Prometheus, Istio, Longhorn)
-- **OpenShift** : distribution Red Hat, intègre build, registry, monitoring
+- **kubeadm** : outil officiel d'installation et de maintenance  
+
+- **Kubespray** : kubeadm + Ansible, approche IaC recommandée  
+- **Rancher** : écosystème complet open-source (monitoring Prometheus, Istio, Longhorn)  
+
+- **OpenShift** : distribution Red Hat, intègre build, registry, monitoring  
 
 > Opérer un cluster de production Kubernetes "à la main" est complexe : mises à jour régulières (support 2 ans par version), choix réseau, stockage distribué (ex: Ceph). Ne pas sous-estimer.
 
@@ -365,9 +388,10 @@ kubectl get pod <nom> -o jsonpath='{.status.phase}'              # état du pod
 ## Le kubeconfig
 
 Pour se connecter à un cluster, `kubectl` a besoin de trois informations :
-- l'**adresse de l'API** Kubernetes
-- un **nom d'utilisateur**
-- un **certificat** client
+
+- l'**adresse de l'API** Kubernetes  
+- un **nom d'utilisateur**  
+- un **certificat** client  
 
 Ces informations sont stockées dans un fichier YAML appelé **kubeconfig**, par défaut à `~/.kube/config`.
 
@@ -386,10 +410,11 @@ Un kubeconfig peut contenir **plusieurs clusters** (contextes). Chaque contexte 
 **Tous les objets Kubernetes sont rangés dans des namespaces — des espaces de travail isolés.**
 
 Cette isolation permet :
-- d'éviter les conflits de nom entre applications
-- de ne voir que ce qui concerne une tâche particulière
-- de créer des **limites de ressources** (CPU, RAM) par namespace
-- de définir des **rôles et permissions** RBAC par namespace
+
+- d'éviter les conflits de nom entre applications  
+- de ne voir que ce qui concerne une tâche particulière  
+- de créer des **limites de ressources** (CPU, RAM) par namespace  
+- de définir des **rôles et permissions** RBAC par namespace  
 
 ```bash
 kubectl get pods                    # namespace default
@@ -457,7 +482,7 @@ Linux gère les ressources des process via les **cgroups** (control groups) : CP
 
 Deux mécanismes en Kubernetes :
 
-- **ResourceQuota** : limite les ressources totales consommables dans un namespace
+- **ResourceQuota** : limite les ressources totales consommables dans un namespace  
 ```yaml
 apiVersion: v1
 kind: ResourceQuota
@@ -469,7 +494,7 @@ spec:
     limits.memory: 4Gi
 ```
 
-- **LimitRange** : définit des limites par conteneur dans un namespace (plancher et plafond)
+- **LimitRange** : définit des limites par conteneur dans un namespace (plancher et plafond)  
 
 Ces mécanismes permettent de faire cohabiter une équipe dev et une équipe prod sur le même cluster, avec des budgets de ressources distincts.
 
@@ -490,15 +515,17 @@ kubectl → HTTPS + certificat client → kube-apiserver → vérifie avec la CA
 ### Autorisation : RBAC
 
 Une fois authentifié, Kubernetes vérifie les **droits** via le **Role-Based Access Control (RBAC)** :
-- **Role** / **ClusterRole** : liste d'actions autorisées sur des ressources
-- **RoleBinding** : associe un rôle à un utilisateur ou groupe
+
+- **Role** / **ClusterRole** : liste d'actions autorisées sur des ressources  
+- **RoleBinding** : associe un rôle à un utilisateur ou groupe  
 
 ### Compartimentation : les namespaces
 
 Les namespaces ne sont pas seulement organisationnels — ils sont la **frontière de sécurité de base** dans Kubernetes :
-- On applique des RBAC par namespace : une équipe ne voit et ne modifie que ses propres ressources
-- On applique des quotas par namespace
-- Les NetworkPolicies (vues dans les formations suivantes) s'appliquent par namespace
+
+- On applique des RBAC par namespace : une équipe ne voit et ne modifie que ses propres ressources  
+- On applique des quotas par namespace  
+- Les NetworkPolicies (vues dans les formations suivantes) s'appliquent par namespace  
 
 ---
 
@@ -507,19 +534,22 @@ Les namespaces ne sont pas seulement organisationnels — ils sont la **frontiè
 **En Kubernetes, gérer son infrastructure à la main (commandes impératives) n'est pas viable** au-delà du TP.
 
 Les raisons :
-- Pas de traçabilité : qui a changé quoi, quand, pourquoi ?
-- Pas de reproductibilité : impossible de recréer exactement le même environnement
-- Pas de rollback fiable sans historique
+
+- Pas de traçabilité : qui a changé quoi, quand, pourquoi ?  
+- Pas de reproductibilité : impossible de recréer exactement le même environnement  
+
+- Pas de rollback fiable sans historique  
 
 **La règle : tous les manifestes YAML dans Git.** C'est la base de l'IaC appliquée à Kubernetes.
 
 ```
 Code → Git → kubectl apply  (approche minimale)
-Code → Git → ArgoCD/Flux    (approche GitOps, vue dans Développeur)
+Code → Git → ArgoCD/Flux    (approche GitOps)
 ```
 
 Pour les cas complexes (plusieurs environnements, valeurs variables), on utilise des outils de templating :
-- **Kustomize** : patches et overlays sur des YAML existants (intégré à kubectl)
-- **Helm** : gestionnaire de packages avec templates (vu dans Développeur)
+
+- **Kustomize** : patches et overlays sur des YAML existants (intégré à kubectl)  
+- **Helm** : gestionnaire de packages avec templates (vu dans Développeur)  
 
 Pour Bases : **`kubectl apply -f` sur des fichiers YAML dans Git suffit.**

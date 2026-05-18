@@ -100,7 +100,8 @@ kubectl apply -f hpa.yaml
 ```
 
 ---
- ### Historique des infrastructures haute disponibilité des origines à Kubernetes
+
+### Historique des infrastructures haute disponibilité des origines à Kubernetes
 
 **Les infrastructures haute disponibilité (HA) ont évolué considérablement depuis les premières architectures client-serveur.**
 
@@ -144,6 +145,7 @@ Les cas de faux positifs peuvent survenir, par exemple, lors de pics temporaires
 On peut provoquer des stress CPU via des outils de test comme https://github.com/narmidm/k8s-pod-cpu-stressor.
 
 ---
+
 ## Difficultés à configurer le HPA et histoires de pannes
 
 Configurer le Horizontal Pod Autoscaler (HPA) dans Kubernetes peut présenter plusieurs défis et risques, notamment :

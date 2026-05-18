@@ -5,8 +5,6 @@ draft: false
 
 ## Scale Up vs Scale Out
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/420-Vertical.md ## Définition -->
-
 | Approche | Description | Usage Kubernetes |
 |---|---|---|
 | **Scale Up** | Augmenter les ressources d'un nœud existant (CPU, RAM) | VPA — ajuste les resources par pod |
@@ -17,8 +15,6 @@ Kubernetes utilise principalement le scale out pour gérer les charges de travai
 ---
 
 ## Horizontal Pod Autoscaler (HPA)
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/410-Horizontal.md -->
 
 **Le HPA ajuste dynamiquement le nombre de replicas d'un déploiement en fonction de métriques (CPU, mémoire, métriques personnalisées).**
 
@@ -76,8 +72,6 @@ Au-delà du CPU, il est possible de scaler sur :
 
 ## Vertical Pod Autoscaler (VPA)
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/420-Vertical.md ## VPA -->
-
 **Le VPA ajuste automatiquement les requests et limits CPU/mémoire des pods en fonction des besoins réels.**
 
 Contrairement au HPA qui ajoute des pods, le VPA modifie les ressources allouées à chaque pod individuel.
@@ -120,8 +114,6 @@ spec:
 
 ## Cluster Autoscaler
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/420-Vertical.md ## Cluster Autoscaler -->
-
 **Le Cluster Autoscaler ajuste automatiquement le nombre de nœuds du cluster en fonction des besoins en ressources.**
 
 ### Fonctionnement
@@ -143,21 +135,111 @@ spec:
 
 ## Right-sizing et gestion des coûts
 
-<!-- A REDIGER -->
+**Le right-sizing consiste à aligner les `requests` et `limits` déclarées sur la consommation réelle des workloads.**
 
-> **À ÉCRIRE** : Right-sizing — comment identifier et corriger les workloads sur- ou sous-dimensionnés. Outils (Goldilocks, VPA en mode Off), métriques à surveiller (requests vs utilisation réelle), processus de revue régulière des ressources.
+Un cluster mal dimensionné présente typiquement ce paradoxe : faible utilisation réelle (10-15% CPU) mais forte réservation (70-80%). Le scheduler ne peut plus placer de nouveaux pods — le Cluster Autoscaler ajoute des nœuds inutilement, la facture cloud monte.
+
+### Identifier les workloads mal dimensionnés
+
+```bash
+# Consommation réelle des pods (nécessite metrics-server)
+kubectl top pods -A --sort-by=cpu
+kubectl top pods -A --sort-by=memory
+
+# Comparer requests vs utilisation dans Grafana
+# Métrique : container_cpu_usage_seconds_total vs kube_pod_container_resource_requests
+```
+
+Le ratio à surveiller : **utilisation réelle / requests déclarées**. Un ratio < 20% est un signal fort de sur-provisionnement.
+
+### VPA en mode `Off` : recommandations sans action
+
+Le VPA en mode `Off` observe la consommation sur la durée et génère des recommandations sans jamais modifier les pods. C'est l'outil de diagnostic idéal.
+
+```yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: myapp-vpa-audit
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: myapp
+  updatePolicy:
+    updateMode: "Off"   # recommandations uniquement, aucun redémarrage
+```
+
+```bash
+kubectl describe vpa myapp-vpa-audit
+# Affiche : Lower Bound, Target, Upper Bound pour CPU et mémoire
+```
+
+### Goldilocks : tableau de bord des recommandations VPA
+
+**[Goldilocks](https://github.com/FairwindsOps/goldilocks)** (Fairwinds) déploie un VPA en mode `Off` sur chaque Deployment du namespace et expose une interface web avec les recommandations.
+
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install goldilocks fairwinds-stable/goldilocks --namespace goldilocks --create-namespace
+
+# Activer sur un namespace
+kubectl label namespace <namespace> goldilocks.fairwinds.com/enabled=true
+```
+
+### Bonne pratique
+
+- Faire tourner VPA/Goldilocks en mode `Off` pendant **1 à 2 semaines** pour couvrir les cycles de charge
+- Ajuster les requests en visant le **P95 de la consommation** observée
+- Recalibrer après chaque changement de charge significatif (nouvelle fonctionnalité, montée en trafic)
 
 ---
 
 ## Eviction, Cordon et Drain
 
-<!-- A REDIGER -->
+### Cordon et Drain : préparer la maintenance d'un nœud
 
-> **À ÉCRIRE** :
-> - `kubectl cordon` : marquer un nœud comme non-schedulable
-> - `kubectl drain` : évacuer les pods d'un nœud avant maintenance
-> - Eviction : mécanisme Kubernetes pour récupérer des ressources sous pression (eviction policies, QoS classes)
-> - Node conditions : MemoryPressure, DiskPressure, PIDPressure
+Avant de mettre un nœud en maintenance (mise à jour OS, remplacement matériel), il faut l'évacuer proprement sans interrompre les applications.
+
+**`kubectl cordon`** marque un nœud comme non-schedulable : aucun nouveau pod ne sera placé dessus, mais les pods existants continuent de tourner.
+
+```bash
+kubectl cordon <node-name>
+# Le nœud passe en état "SchedulingDisabled"
+kubectl get nodes
+```
+
+**`kubectl drain`** va plus loin : il expulse tous les pods du nœud (sauf les DaemonSets), puis le marque comme non-schedulable. Les pods sont recréés ailleurs par leurs contrôleurs (Deployment, StatefulSet...).
+
+```bash
+kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
+# --ignore-daemonsets : ne pas bloquer sur les DaemonSets (ils ne peuvent pas être déplacés)
+# --delete-emptydir-data : accepter la perte des volumes emptyDir
+```
+
+Après la maintenance, remettre le nœud en service :
+
+```bash
+kubectl uncordon <node-name>
+```
+
+> Un pod sans contrôleur (pod nu) bloque le drain par défaut — utiliser `--force` pour l'expulser, mais il sera **définitivement perdu**.
+
+---
+
+### Eviction : récupérer des ressources sous pression
+
+L'**eviction** est le mécanisme par lequel le kubelet expulse automatiquement des pods quand un nœud manque de ressources (mémoire, disque, PID).
+
+Conditions surveillées par le kubelet :
+
+| Condition | Déclencheur |
+|---|---|
+| `MemoryPressure` | Mémoire disponible sous le seuil |
+| `DiskPressure` | Espace disque ou inodes insuffisants |
+| `PIDPressure` | Nombre de processus trop élevé |
+
+Quand une condition est active, le kubelet choisit quels pods expulser en fonction de leur **classe QoS**.
 
 ### Classes QoS et ordre d'éviction
 
@@ -186,15 +268,6 @@ resources:
 
 ## Taints, Tolerations et Affinity
 
-<!-- A REDIGER (source partielle : 5_Kubernetes_Advanced_2/02_Architecture ## Affinité) -->
-
-> **À ÉCRIRE** :
-> - **Taints** : marquer un nœud pour repousser certains pods (`kubectl taint`)
-> - **Tolerations** : autoriser un pod à être schedulé sur un nœud tainté
-> - **Node Affinity** : exprimer des préférences ou contraintes de scheduling basées sur les labels des nœuds
-> - **Pod Anti-Affinity** : éviter que deux pods du même service se retrouvent sur le même nœud (exemple : YAML HPA avec `podAntiAffinity`)
-> - Cas d'usage : nœuds GPU, nœuds dédiés à certaines équipes, HA géographique
-
 ### Principe Taints / Tolerations
 
 Un **Taint** est appliqué sur un nœud pour le rendre sélectif — il repousse tous les pods qui ne déclarent pas de **Toleration** correspondante.
@@ -222,8 +295,6 @@ Effets possibles : `NoSchedule` (pas de nouveau scheduling), `PreferNoSchedule` 
 ---
 
 ## Le pattern Operator
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/500-Run5-Operators.md -->
 
 ![](/img/kubernetes/500-Operators.png)
 
@@ -266,8 +337,6 @@ Différence détectée ?
 ---
 
 ## Custom Operators avec Kubebuilder
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/510-Custom-Operator.md -->
 
 ![](/img/kubernetes/k8s-operator-schema.png)
 
@@ -361,8 +430,6 @@ Les **webhooks de conversion** traduisent automatiquement les anciennes versions
 
 ## Exemple d'Operator réel : Kubi (k8s + LDAP)
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/520-Example-Operator.md -->
-
 **Kubi** est une solution d'accès et de gestion de clusters Kubernetes intégrant Active Directory.
 
 Source : https://github.com/ca-gip/kubi
@@ -377,15 +444,3 @@ Source : https://github.com/ca-gip/kubi
 - Voyez-vous un contrôleur ? Comment fonctionne-t-il ?
 - Que pensez-vous de la structure et de la documentation ?
 
----
-
-## GitOps platform from scratch
-
-<!-- A REDIGER -->
-
-> **À ÉCRIRE** : Déployer une plateforme GitOps complète depuis zéro.
-> - Concepts : Git comme source de vérité, réconciliation continue
-> - ArgoCD : installation, Application CRD, App of Apps pattern
-> - Structure du repo GitOps : environnements, overlays Kustomize
-> - Promotion : dev → staging → prod
-> - Gestion des secrets dans un workflow GitOps (Sealed Secrets, External Secrets Operator)

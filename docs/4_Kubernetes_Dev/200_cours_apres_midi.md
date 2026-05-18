@@ -36,7 +36,7 @@ Un seul Ingress Controller reçoit tout le trafic entrant et route vers les bons
 - Routage par chemin (`/api` → service A, `/static` → service B)
 - Terminaison TLS mutualisée (un seul certificat, plusieurs apps)
 
-![](/img/kubernetes/ingress.png)
+![](../../static/img/kubernetes/ingress.png)
 
 Pour utiliser des Ingresses, il faut d'abord installer un **Ingress Controller** :
 - Un déploiement conteneurisé d'un reverse proxy (nginx, Traefik, etc.) intégré avec l'API Kubernetes
@@ -334,9 +334,54 @@ helm delete mon-wordpress
 
 ## GitOps avec ArgoCD
 
-**ArgoCD** est un opérateur Kubernetes qui implémente la méthode GitOps : il surveille un dépôt Git et réconcilie automatiquement l'état du cluster avec ce qui est déclaré dans Git.
+### Infrastructure as Code et YAML comme source de vérité
 
-ArgoCD ajoute des types d'objets (CRDs) dont le type `Application` :
+**Pourquoi ne pas appliquer les manifestes YAML à la main ?**
+- Impossible de savoir quelle version a été appliquée en dernier — ni par qui, ni pourquoi
+- Aucun moyen simple de revenir en arrière sur un changement en production
+- L'état réel du cluster diverge progressivement des fichiers dans le repo
+
+L'approche **Infrastructure as Code** répond à ça : tout ce qui tourne dans le cluster est décrit dans des fichiers YAML versionnés dans Git — pas de commande impérative, pas de modification manuelle en prod. L'historique Git *est* l'historique du cluster.
+
+**Le GitOps** va un cran plus loin : Git n'est pas seulement un endroit où stocker des fichiers, c'est la **seule source de vérité**. L'état déclaré dans Git *est* l'état réel du cluster. Tout changement passe par un commit — auditable, réversible, soumis à review via une Pull Request.
+
+```
+Dev         → commit YAML dans Git
+Git         → source de vérité unique
+ArgoCD      → surveille Git, réconcilie le cluster en continu
+Cluster     → reflète exactement ce qui est dans Git
+```
+
+### Kustomize et Helm dans un workflow GitOps
+
+ArgoCD supporte nativement Kustomize et Helm — il sait les appliquer sans étape intermédiaire.
+
+**Avec Kustomize** : le repo Git contient les bases et les overlays. ArgoCD pointe vers l'overlay de l'environnement cible.
+
+```yaml
+source:
+  repoURL: https://github.com/monorg/mon-repo.git
+  targetRevision: main
+  path: overlays/prod          # ArgoCD applique kubectl kustomize overlays/prod
+```
+
+**Avec Helm** : ArgoCD peut référencer un chart depuis un repo Helm ou depuis le dépôt Git directement, avec les valeurs de l'environnement.
+
+```yaml
+source:
+  repoURL: https://github.com/monorg/mon-repo.git
+  targetRevision: main
+  path: charts/mon-app
+  helm:
+    valueFiles:
+    - values-prod.yaml         # valeurs spécifiques à la prod
+```
+
+Dans les deux cas, la promotion entre environnements (dev → staging → prod) se fait en mettant à jour le fichier de valeurs ou l'overlay correspondant dans Git — pas en exécutant une commande.
+
+### ArgoCD : l'opérateur de réconciliation
+
+**ArgoCD** surveille un dépôt Git et rapproche en continu l'état du cluster avec ce qui y est déclaré. Il ajoute un type d'objet `Application` :
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -355,10 +400,60 @@ spec:
     path: k8s/
 ```
 
-Dans une gestion GitOps :
-- Les manifestes YAML (ou le chart Helm) sont dans Git
-- ArgoCD surveille le dépôt
-- Un commit sur la branche cible déclenche automatiquement le déploiement
+Si un opérateur modifie manuellement une ressource dans le cluster, ArgoCD détecte la dérive et la signale (ou la corrige automatiquement selon la configuration).
+
+### Drift : quand le cluster diverge de Git
+
+Le **drift** est l'écart entre l'état déclaré dans Git et l'état réel du cluster. Il arrive quand quelqu'un applique un manifeste à la main, modifie une ressource avec `kubectl edit`, ou qu'un contrôleur tiers mute une ressource sans passer par Git.
+
+ArgoCD expose un statut de synchronisation sur chaque `Application` : `Synced` (cluster = Git) ou `OutOfSync` (dérive détectée). Par défaut il signale sans corriger — c'est le comportement recommandé pour commencer, car une correction automatique agressive peut surprendre une équipe qui n'a pas encore le réflexe GitOps.
+
+Pour activer la correction automatique, on configure `syncPolicy.automated` avec `selfHeal: true` :
+
+```yaml
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true    # ArgoCD écrase toute modification manuelle
+      prune: true       # supprime aussi les ressources absentes de Git
+```
+
+La bonne pratique : activer `selfHeal` en prod une fois que l'équipe est disciplinée sur les workflows Git, et garder un mode `manual` en dev pour permettre l'expérimentation. Dans tous les cas, bannir `kubectl edit` sur des ressources gérées par ArgoCD — toute modification manuelle sera soit écrasée, soit source de confusion.
+
+---
+
+### Avancé : GitOps sans accès direct à Git (OCI Artifacts)
+
+Dans un workflow GitOps classique, ArgoCD doit pouvoir accéder au dépôt Git en temps réel — ce qui pose deux problèmes en production :
+
+- **Sécurité** : le cluster a besoin d'un accès réseau et d'un token vers le dépôt Git (souvent hébergé sur GitHub, GitLab…)
+- **Performance** : sur un grand cluster avec de nombreuses `Application`, ArgoCD poll Git fréquemment — potentiellement soumis au rate limiting
+
+Une approche alternative, parfois appelée **"Gitless GitOps"**, consiste à publier la configuration rendue (les manifestes finaux, après Kustomize ou Helm) comme un **artefact OCI** dans un registry de conteneurs, et à faire pointer ArgoCD sur ce registry plutôt que sur Git directement.
+
+```
+CI pipeline   → kustomize build overlays/prod | argocd-image-updater push
+              → pousse l'artefact OCI dans registry.example.com/config/mon-app:v1.2.3
+
+ArgoCD        → source: oci://registry.example.com/config/mon-app:v1.2.3
+              → plus besoin d'accès à Git depuis le cluster
+```
+
+```yaml
+source:
+  repoURL: oci://registry.example.com/config/mon-app
+  targetRevision: v1.2.3       # tag OCI = version de la config
+  path: .
+```
+
+**Avantages** :
+- Le cluster n'a accès qu'au registry (déjà nécessaire pour les images) — pas à Git
+- Les manifestes publiés sont immuables et reproductibles (tag de version explicite)
+- Flux plus simple à sécuriser en réseau isolé ou air-gapped
+
+**Inconvénient** : la CI doit publier l'artefact à chaque changement — une étape supplémentaire dans le pipeline.
+
+> Flux CD (l'alternative à ArgoCD maintenue par la CNCF) supporte nativement les sources OCI depuis la v0.32.
 
 ---
 
@@ -480,6 +575,98 @@ spec:
 Avec cette configuration, sur un cluster à 3 zones et 6 réplicas : Kubernetes garantit au plus 1 pod d'écart entre les zones (2-2-2), et tente de ne pas mettre plusieurs réplicas sur le même nœud.
 
 > Depuis Kubernetes v1.30, des contraintes par défaut au niveau cluster peuvent être configurées par l'admin — les workloads en héritent automatiquement sans avoir à les déclarer dans chaque Deployment.
+
+---
+
+### 4. Pod Anti-Affinity — éviter la cohabitation
+
+Les **Topology Spread Constraints** équilibrent la distribution globale. La **Pod Anti-Affinity** exprime une règle plus ciblée : "ne pas placer ce pod sur un nœud où tourne déjà un pod avec tel label."
+
+Cas d'usage typique : un Deployment avec 3 réplicas d'un service critique. On veut garantir qu'aucun nœud n'héberge deux réplicas — une panne nœud ne doit emporter qu'un seul réplica.
+
+```yaml
+spec:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:   # contrainte dure
+      - labelSelector:
+          matchLabels:
+            app: mon-app       # ne pas co-localiser avec un pod qui a ce label
+        topologyKey: kubernetes.io/hostname              # un nœud = un domaine
+```
+
+Avec `requiredDuringSchedulingIgnoredDuringExecution`, le scheduler refuse de placer le pod si la contrainte ne peut pas être respectée — le pod reste en `Pending` plutôt que de violer la règle.
+
+Avec `preferredDuringSchedulingIgnoredDuringExecution`, la contrainte est une préférence : le scheduler essaie de la respecter, mais place quand même le pod si aucun nœud ne convient.
+
+```yaml
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:  # contrainte souple
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app: mon-app
+          topologyKey: kubernetes.io/hostname
+```
+
+> `IgnoredDuringExecution` signifie que si un nœud acquiert un nouveau pod après le scheduling, les pods existants ne sont pas expulsés — la contrainte s'applique uniquement au moment du placement.
+
+---
+
+### Tip avancé : rendre la répartition optimale automatique avec Kyverno
+
+Déclarer une `podAntiAffinity` dans chaque Deployment est fastidieux et oubliable. Une approche plus robuste : **laisser un outil de gestion de politiques l'injecter automatiquement**.
+
+**Kyverno** est un admission controller Kubernetes qui peut muter les ressources à la volée — il intercepte chaque `Deployment` soumis à l'API et lui ajoute une règle d'anti-affinité si elle n'est pas déjà présente.
+
+La policy officielle [insert-pod-antiaffinity](https://kyverno.io/policies/other/create-pod-antiaffinity/create-pod-antiaffinity/) fait exactement ça :
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: insert-pod-antiaffinity
+spec:
+  rules:
+  - name: insert-pod-antiaffinity
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+    preconditions:
+      all:
+      - key: "{{request.object.spec.template.metadata.labels.app || ''}}"
+        operator: NotEquals
+        value: ""
+    mutate:
+      patchStrategicMerge:
+        spec:
+          template:
+            spec:
+              +(affinity):
+                +(podAntiAffinity):
+                  +(preferredDuringSchedulingIgnoredDuringExecution):
+                  - weight: 1
+                    podAffinityTerm:
+                      topologyKey: kubernetes.io/hostname
+                      labelSelector:
+                        matchExpressions:
+                        - key: app
+                          operator: In
+                          values:
+                          - "{{request.object.spec.template.metadata.labels.app}}"
+```
+
+Points clés de cette policy :
+- Elle s'applique à tout `Deployment` qui a un label `app` (précondition)
+- Le préfixe `+()` signifie "ajoute seulement si absent" — elle ne remplace jamais une affinity déjà déclarée
+- Elle injecte une contrainte `preferred` (souple) sur `kubernetes.io/hostname` — les pods préfèrent des nœuds différents, sans bloquer le scheduling si c'est impossible
+
+Le résultat : **tous les nouveaux Deployments du cluster bénéficient d'une répartition optimale par défaut**, sans aucune modification des manifestes applicatifs.
 
 ---
 

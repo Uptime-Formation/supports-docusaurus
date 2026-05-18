@@ -60,6 +60,7 @@ spec:
 ```sh
 kubectl apply -f rancher-demo.yaml
 ```
+
 ---
 
 
@@ -111,6 +112,7 @@ curl -H "Host: %YOURDOMAIN%" http://%YOUR_IP%
 ```
 
 ---
+
 ## Les Solutions de Gestion du Trafic dans Kubernetes
 
 **Il existe une variété d'options pour répondre aux besoins spécifiques des applications modernes.**

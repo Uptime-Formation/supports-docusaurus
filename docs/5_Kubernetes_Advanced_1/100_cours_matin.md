@@ -5,8 +5,6 @@ draft: false
 
 ## Historique de la gestion des logs
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/310-Logs.md ## Historique de la gestion des logs -->
-
 **Kubernetes a repris les idées de drivers et d'API de Docker pour la gestion des logs et les a étendues à une plateforme d'orchestration de conteneurs à grande échelle, offrant une solution standardisée, flexible et centralisée pour la collecte et l'analyse des logs.**
 
 ---
@@ -53,8 +51,6 @@ Kubernetes permet l'intégration avec Fluentd, Prometheus, Grafana, et ELK, qui 
 
 ## Enjeux liés à la standardisation de la collecte de logs
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/310-Logs.md ## Enjeux -->
-
 La standardisation de la collecte de logs est essentielle pour assurer la cohérence, l'efficacité et la sécurité dans les environnements de production.
 
 Les principaux enjeux :
@@ -66,8 +62,6 @@ Les principaux enjeux :
 ---
 
 ## Architecture de centralisation des logs
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/310-Logs.md ## Architecture + méthodes de collecte -->
 
 **On conçoit cette problématique comme une architecture avec différents composants :**
 
@@ -99,8 +93,6 @@ Chaque ligne de log passe par différentes étapes avant d'être stockée :
 ---
 
 ## La normalisation des logs
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/310-Logs.md ## La normalisation -->
 
 Voici un exemple de log brut généré par un microservice Python :
 
@@ -143,8 +135,6 @@ Les labels les plus couramment utilisés :
 
 ## Problèmes en infrastructure à grande échelle
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/310-Logs.md ## Problèmes -->
-
 - **Fiabilité** : En cas de panne du serveur central, les Aggregators servent de buffer local jusqu'au rétablissement.
 - **Scalabilité** : Elasticsearch, MongoDB, InfluxDB doivent être configurés pour des lectures/écritures intensives.
 - **Sécurité et conformité** : Communications SSL/TLS, conformité GDPR/HIPAA/PCI-DSS.
@@ -153,8 +143,6 @@ Les labels les plus couramment utilisés :
 ---
 
 ## Solutions intégrées pour le logging dans Kubernetes
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/310-Logs.md ## Solutions intégrées -->
 
 | Solution | Type | Stack |
 |---|---|---|
@@ -170,8 +158,6 @@ Les labels les plus couramment utilisés :
 
 ## Historique de la collecte des métriques
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## Historique -->
-
 **L'évolution de la collecte des métriques, des premiers outils SNMP aux solutions modernes comme Prometheus et Kubernetes, a considérablement amélioré l'automatisation et la flexibilité.**
 
 - **1990s — SNMP** : Collecte centralisée de métriques réseau via agents sur les équipements
@@ -183,8 +169,6 @@ Les labels les plus couramment utilisés :
 ---
 
 ## La métrologie et les métriques
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## La métrologie -->
 
 **La métrologie concerne la collecte, l'analyse et l'interprétation des données de performance et de fonctionnement des systèmes et applications.**
 
@@ -207,8 +191,6 @@ Les labels les plus couramment utilisés :
 ---
 
 ## Fonctionnement de Prometheus
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## Fonctionnement -->
 
 **Prometheus est un système de surveillance et d'alerte open-source conçu pour collecter des métriques et des événements en temps réel.**
 
@@ -248,8 +230,6 @@ memory_usage_bytes{instance="localhost"} 38482900
 
 ## Exposer les métriques de son application
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## Exposer les métriques -->
-
 Exemple en Python avec `prometheus_client` :
 
 ```python
@@ -269,8 +249,6 @@ Les métriques sont alors disponibles sur `http://localhost:8000/metrics` dans l
 
 ## Les Time Series Databases (TSDB)
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## TSDB -->
-
 Les TSDB sont spécialement optimisées pour stocker, indexer et interroger des données chronologiques.
 
 Spécificités : insertion rapide, compression, indexation temporelle, politiques de rétention, aggregation et downsampling.
@@ -285,8 +263,6 @@ Spécificités : insertion rapide, compression, indexation temporelle, politique
 ---
 
 ## PromQL
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## PromQL -->
 
 **PromQL** est le langage de requête de Prometheus pour interroger les métriques de séries temporelles.
 
@@ -310,8 +286,6 @@ PromQL est utilisé dans Grafana pour les tableaux de bord et dans Prometheus po
 
 ## Vue d'ensemble des composants de collecte des métriques
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## Vue d'ensemble -->
-
 | Composant | Fourni par | Type de métriques | Utilisation |
 |---|---|---|---|
 | Metrics Server | Kubernetes | CPU, Mémoire | Autoscaling (HPA, VPA) |
@@ -324,10 +298,155 @@ PromQL est utilisé dans Grafana pour les tableaux de bord et dans Prometheus po
 
 ## Comparaison des interfaces de visualisation
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/320-Metrics.md ## Comparaison -->
-
 | Interface | Sources supportées | Points forts |
 |---|---|---|
 | **Grafana** | Prometheus, InfluxDB, Elasticsearch, et plus | Multi-source, alerting avancé, écosystème de plugins |
 | **Kibana** | Principalement Elasticsearch | Analyse de logs, visualisations variées |
 | **Chronograf** | Principalement InfluxDB | Focalisé métriques InfluxDB |
+
+---
+
+## GitOps platform from scratch
+
+Les bases GitOps (IaC, ArgoCD, Kustomize, drift) sont couvertes dans le cours Kubernetes Dev. Cette section s'intéresse à la mise en œuvre à l'échelle : comment structurer un repo GitOps pour plusieurs environnements, comment ArgoCD gère lui-même ses propres applications, et comment traiter les secrets dans ce workflow.
+
+### Structure du repo GitOps multi-environnements
+
+Un repo GitOps bien structuré sépare les **bases** (commun à tous les environnements) des **overlays** (variantes par environnement). ArgoCD supporte nativement Kustomize et Helm — les deux peuvent coexister dans le même repo selon les besoins de chaque application.
+
+**Avec Kustomize** (adapté aux manifestes internes, variabilité limitée) :
+
+```
+gitops-repo/
+├── apps/
+│   ├── mon-api/
+│   │   ├── base/
+│   │   │   ├── deployment.yaml
+│   │   │   ├── service.yaml
+│   │   │   └── kustomization.yaml
+│   │   └── overlays/
+│   │       ├── dev/
+│   │       │   └── kustomization.yaml   # 1 replica, image tag dev
+│   │       ├── staging/
+│   │       │   └── kustomization.yaml   # 2 replicas, image tag rc
+│   │       └── prod/
+│   │           └── kustomization.yaml   # 3 replicas, image tag v1.2.3
+│   └── mon-infra/
+│       └── values-prod.yaml             # Helm values pour les composants infra
+└── argocd/
+    └── applications/                    # les objets Application ArgoCD
+```
+
+**Avec Helm** (adapté aux composants tiers, charts publics) : ArgoCD pointe vers un chart Helm avec un fichier de valeurs par environnement.
+
+```yaml
+source:
+  repoURL: https://github.com/monorg/gitops-repo.git
+  targetRevision: main
+  path: charts/mon-api
+  helm:
+    valueFiles:
+    - values-prod.yaml
+```
+
+Chaque overlay ou fichier de valeurs ne redéfinit que ce qui change. Une promotion de staging vers prod se résume à mettre à jour le tag dans l'overlay prod et merger la PR.
+
+---
+
+### App of Apps : orchestrer les applications depuis ArgoCD
+
+Quand le nombre d'`Application` ArgoCD augmente, les créer manuellement une par une devient ingérable. Le pattern **App of Apps** résout ça : une `Application` parente pointe vers un répertoire qui contient d'autres objets `Application`.
+
+```yaml
+# argocd/root-app.yaml — l'Application qui gère toutes les autres
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/monorg/gitops-repo.git
+    targetRevision: main
+    path: argocd/applications      # ce dossier contient d'autres Application
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      selfHeal: true
+```
+
+ArgoCD déploie `root`, qui déploie toutes les `Application` enfants déclarées dans `argocd/applications/`. Ajouter une application au cluster = ajouter un fichier dans ce dossier et merger.
+
+**Limites à connaître** : le pattern introduit une hiérarchie qui peut devenir difficile à debugger si elle est trop profondément imbriquée. Les politiques de synchronisation entre parent et enfants doivent être explicites pour éviter les désynchronisations. Pour les environnements complexes avec de nombreuses variantes, l'**ApplicationSet** (natif ArgoCD) est souvent plus adapté — il génère automatiquement des `Application` à partir de générateurs (liste d'environnements, clusters, etc.) sans nécessiter de hiérarchie parent/enfant.
+
+---
+
+### Promotion entre environnements
+
+La promotion n'est pas un mécanisme ArgoCD — c'est un workflow Git. Les deux approches courantes :
+
+**Branches par environnement** : `main` → dev, `staging` → staging, `prod` → prod. Une promotion = un merge de branche. Simple, mais les branches divergent vite et la gestion des conflits devient lourde.
+
+**Dossiers par environnement sur une seule branche** (recommandé) : tout est sur `main`, la promotion = une PR qui met à jour le tag dans l'overlay cible. L'historique est linéaire et lisible.
+
+```bash
+# Exemple de promotion staging → prod via script CI
+OLD=$(yq '.images[0].newTag' apps/mon-api/overlays/prod/kustomization.yaml)
+NEW=$(yq '.images[0].newTag' apps/mon-api/overlays/staging/kustomization.yaml)
+sed -i "s/$OLD/$NEW/" apps/mon-api/overlays/prod/kustomization.yaml
+git commit -am "promote mon-api $NEW to prod"
+git push origin main
+```
+
+---
+
+### Secrets dans un workflow GitOps
+
+Les Kubernetes Secrets ne peuvent pas être committés en clair dans Git. Deux approches standard :
+
+**Sealed Secrets** (Bitnami) : un contrôleur dans le cluster détient une clé privée. On chiffre le secret avec la clé publique correspondante — le résultat (`SealedSecret`) peut être commité dans Git en toute sécurité. Seul le cluster peut le déchiffrer.
+
+```bash
+# Chiffrer un secret pour le commiter dans Git
+kubectl create secret generic db-password \
+  --from-literal=password=s3cr3t \
+  --dry-run=client -o yaml | \
+  kubeseal --format yaml > db-password-sealed.yaml
+```
+
+Sealed Secrets est simple à adopter, mais la rotation d'un secret nécessite de re-seal et commiter — et la clé privée du contrôleur doit être sauvegardée soigneusement (perte = impossibilité de déchiffrer).
+
+**External Secrets Operator (ESO)** : les secrets restent dans un gestionnaire externe (Vault, AWS Secrets Manager, GCP Secret Manager…). ESO crée automatiquement les Kubernetes Secrets correspondants dans le cluster en les synchronisant à intervalle régulier. Dans Git, on ne stocke que la référence — jamais la valeur.
+
+```yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: db-password
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-backend
+    kind: ClusterSecretStore
+  target:
+    name: db-password
+  data:
+  - secretKey: password
+    remoteRef:
+      key: secret/prod/db
+      property: password
+```
+
+ESO est puissant mais introduit une complexité réelle : l'opérateur lui-même doit être bootstrappé avec des credentials pour accéder au gestionnaire externe — ce qui crée un problème de poule et d'œuf (comment gérer le premier secret ?). Une approche courante est d'injecter ce secret initial via un overlay GitOps patchant les credentials, tout en les gardant hors du repo principal.
+
+**Piège commun aux deux approches** : quand un secret est mis à jour dans le gestionnaire externe (ou re-sealed), le Kubernetes Secret est mis à jour — mais les pods qui le montent en variable d'environnement ne le voient pas. Ils ne reçoivent les nouvelles valeurs qu'au prochain redémarrage. Les pods qui montent les secrets en volume peuvent les lire automatiquement si l'application relit le fichier, mais cela nécessite du code applicatif explicite pour ça. C'est le même problème avec les ConfigMaps mis à jour dynamiquement : la synchronisation entre la configuration du cluster et l'état des processus en mémoire reste la responsabilité de l'application.
+
+| | Sealed Secrets | External Secrets Operator |
+|---|---|---|
+| **Secret stocké** | Dans Git (chiffré) | Dans un gestionnaire externe |
+| **Rotation** | Manuelle (re-seal + commit) | Automatique (`refreshInterval`) |
+| **Multi-cluster** | Complexe (clés par cluster) | Natif |
+| **Bootstrapping** | Simple | Complexe (credentials initiaux) |
+| **Idéal pour** | Simplicité, petits clusters | Production, secrets dynamiques |

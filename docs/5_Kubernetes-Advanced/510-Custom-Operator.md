@@ -12,12 +12,14 @@ weight: 510
 * Accès à un cluster Kubernetes v1.11.3+
 
 ### Opération 1 : Installer Kubebuilder
+
 ```bash
 curl -L -o kubebuilder "https://go.kubebuilder.io/dl/latest/$(go env GOOS)/$(go env GOARCH)"
 chmod +x kubebuilder && mv kubebuilder /usr/local/bin/
 ```
 
 ### Opération 2 : Créer un projet
+
 ```bash
 mkdir -p ~/projects/guestbook
 cd ~/projects/guestbook
@@ -25,6 +27,7 @@ kubebuilder init --domain my.domain --repo my.domain/guestbook
 ```
 
 ### Opération 3 : Créer une API
+
 ```bash
 kubebuilder create api --group webapp --version v1 --kind Guestbook
 ```
@@ -86,14 +89,20 @@ make manifests
 ```
 
 ### Opération 4 : Installer les CRDs
+
+
 ```bash
 make install
 ```
 
 ### Opération 5 : Lancer le contrôleur
+
+
 ```bash
 make run
 ```
+
+---
 
 ### Optionnel : Installer des Instances de Ressources Personnalisées
 
@@ -112,6 +121,7 @@ make deploy IMG=<some-registry>/<project-name>:tag
 ### Désinstaller 
 
 Pour supprimer vos CRDs du cluster :
+
 ```bash
 make uninstall
 ```
@@ -268,12 +278,14 @@ L'installation est basée sur le tutoriel de https://codeburst.io/kubernetes-ope
 
 Disponible sur https://go.dev/dl/
 
---- 
+---
+
 **Installer make**
 
 Le package est en principe disponible dans Debian / Ubuntu.
 
---- 
+---
+
 **Installer l'Operator SDK**
 
 Disponible sur https://github.com/operator-framework/operator-sdk/releases/download/
@@ -388,7 +400,11 @@ On les met dans `config/crd/base`.
    make deploy IMG=<your-registry>/drink-operator:latest
    ```
 
+---
+
 ### Gestion des versions
+
+---
 
 #### Enjeux d'Évolution
 
@@ -426,9 +442,12 @@ switch cr.APIVersion {
         // Logic for v1beta1
 }
 ```
+
 3. **Approche hybride**
    - Combinaison des deux modèles précédents.
    - Un contrôleur principal gère les versions stables et des contrôleurs supplémentaires pour les versions en développement.
+
+---
 
 #### Convertir les versions de CRD via des webhooks
 

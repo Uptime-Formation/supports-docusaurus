@@ -1,8 +1,17 @@
 ---
 title: Cours matin — Kubernetes Développeur
+author: [Alban CROMMER]
+date: "%DATE%"
+keywords: [Kubernetes, Devops]
+titlepage: true
+titlepage-color: "99e0ff"
+titlepage-text-color: "3366ff"
+titlepage-rule-color: "3366ff"
+titlepage-rule-height: 4
+book: true
 ---
 
-
+# Kubernetes pour développeurs
 
 ![](../../static/img/kubernetes/Kubernetes_Resources.png)
 
@@ -129,7 +138,7 @@ volumes:
 
 ### Quand utiliser quel contrôleur ?
 
-![](/img/kubernetes/k8s_objects_hierarchy.png)
+![](../../static/img/kubernetes/k8s_objects_hierarchy.png)
 
 | Contrôleur | Cas d'usage |
 |---|---|
@@ -241,7 +250,7 @@ Les conteneurs sont immutables : Kubernetes peut les supprimer et recréer autom
 
 Pour du stockage persistant, le flux est :
 
-![](/img/kubernetes/k8s-pvc.png)
+![](../../static/img/kubernetes/k8s-pvc.png)
 1. Un pod crée une **PersistentVolumeClaim** (demande de volume)
 2. La **StorageClass** répond en créant un **PersistentVolume**
 3. Le PVC et le PV sont liés — le pod peut accéder au volume
@@ -306,16 +315,6 @@ Le label automatique `statefulset.kubernetes.io/pod-name: <pod-name>` est ajout�
 ---
 
 ## Transversaux
-
-### GitOps : gérer vos manifestes via Git
-
-**Pourquoi stocker les manifestes YAML dans Git ?**
-- Difficile de savoir quelle version d'un fichier YAML a été appliquée en dernier
-- Difficile de savoir pourquoi une ressource a été modifiée et par qui
-- Git permet de revenir à une version précédente
-- Infrastructure as Code : l'état du cluster est décrit, versionné, auditable
-
-La méthode moderne est le **GitOps** : l'état déclaré dans Git *est* l'état réel du cluster. Un opérateur (ex: ArgoCD) surveille le dépôt et réconcilie automatiquement.
 
 ### Requests et limits : réserver des ressources
 

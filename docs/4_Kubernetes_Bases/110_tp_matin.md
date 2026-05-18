@@ -3,9 +3,9 @@ title: "TP Matin - Premiers pas avec kubectl"
 draft: false
 ---
 
-**Installer Kubernetes, explorer le cluster et déployer un premier pod.**
+## TP Matin
 
-**Durée : ~2h**
+**Installer Kubernetes, explorer le cluster et déployer un premier pod.**
 
 ### Contexte
 
@@ -14,11 +14,14 @@ Votre environnement de lab est un VPS Ubuntu. Vous allez installer k3s, découvr
 ---
 
 ## Focus
+ 
 
-- ✅ **Installation de k3s** : Mettre en place un cluster Kubernetes léger
 - ✅ **kubeconfig** : Comprendre et afficher la configuration de connexion au cluster
+
 - ✅ **kubectl** : Maîtriser les commandes de base (get, describe, run, delete, logs, exec)
+
 - ✅ **Namespaces** : Créer et utiliser un namespace dédié
+
 - ✅ **Premier pod** : Déployer, inspecter et supprimer un pod
 
 ---
@@ -26,8 +29,11 @@ Votre environnement de lab est un VPS Ubuntu. Vous allez installer k3s, découvr
 ## Objectif
 
 - ✅ k3s installé et accessible via kubectl
+
 - ✅ kubeconfig affiché et compris
+
 - ✅ Namespace `mynamespace` créé
+
 - ✅ Pod `ubuntu` déployé, inspecté, puis supprimé
 
 ---
@@ -244,9 +250,13 @@ kubens    # changer de namespace courant
 ### Avancé
 
 - Relancer le pod sans `tail -f /dev/null`. Que se passe-t-il ? Pourquoi ?
+
 - Utiliser `kubectl get pod ubuntu -o jsonpath='{.status.phase}'` pour filtrer l'état
+
 - Lister tous les événements : `kubectl get events --sort-by .lastTimestamp -n mynamespace`
+
 - Installer `viddy` (alternative à `watch`) pour observer l'évolution des ressources en temps réel
+
 - Essayer `kubectl port-forward svc/demonstration-service 8080:8080` — quelle différence avec le NodePort ?
 
 ---

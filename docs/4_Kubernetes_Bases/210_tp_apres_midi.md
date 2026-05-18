@@ -3,6 +3,9 @@ title: "TP Après-midi - Déploiement avec des manifestes YAML"
 draft: false
 ---
 
+## TP Après-midi
+
+
 **Déployer un Pod avec deux conteneurs, puis le convertir en Deployment scalable, via des manifestes YAML.**
 
 ---
@@ -10,10 +13,15 @@ draft: false
 ## Focus
 
 - ✅ **kubectl apply** : Déployer et mettre à jour via des fichiers YAML déclaratifs
+
 - ✅ **Pod multi-conteneurs** : Comprendre le réseau partagé, les logs séparés, l'immutabilité partielle
+
 - ✅ **Deployment** : Self-healing, rollout automatique, gestion des ReplicaSets
+
 - ✅ **kubectl exec / logs** : Débugger un conteneur en cours d'exécution
+
 - ✅ **Scaling et rollout** : Modifier le nombre de réplicas, observer la bascule progressive
+
 - ✅ **Service NodePort** : Exposer l'application à l'extérieur du cluster et comprendre le rôle des labels
 
 ---
@@ -21,8 +29,11 @@ draft: false
 ## Objectif
 
 - ✅ Un Pod `rancher-demo-pod` avec deux conteneurs déployé et exploré
+
 - ✅ Un Deployment `demonstration` avec labels et réplicas déployé via YAML
+
 - ✅ Un Service NodePort créé et fonctionnel
+
 - ✅ Un rollout de version effectué et observé
 
 ---
@@ -201,7 +212,9 @@ kubectl get rs                                  # observer les deux ReplicaSets
 ### Avancé
 
 - Utiliser `kubectl scale deployment demonstration --replicas=5` sans modifier le YAML — puis observer ce qui se passe si on réapplique le YAML avec `replicas: 3`
+
 - Inspecter le détail d'une révision : `kubectl rollout history deployment/demonstration --revision=2`
+
 - Récupérer la correction complète : `git clone -b tp_rancher_demo_files https://github.com/Uptime-Formation/corrections_tp.git`
 
 ---

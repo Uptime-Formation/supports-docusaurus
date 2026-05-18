@@ -90,6 +90,7 @@ Elle vise à fournir des informations précises et fiables pour surveiller, gér
 Les métriques peuvent inclure des mesures telles que l'utilisation du CPU, la mémoire, les temps de réponse, les taux d'erreur, et bien d'autres.
 
 ---
+
 ## Types de métriques
 
 ![](../../static/img/kubernetes/prometheus-metrics-types.png)
@@ -187,6 +188,7 @@ Ce tableau résume les différents composants impliqués dans la collecte des m�
 Doc:
 - Github : https://github.com/prometheus
 - Documentation: https://prometheus.io/docs/introduction/overview/
+
 ---
 
 ### PULL, HTTP, timeseries
@@ -196,6 +198,7 @@ Doc:
   - **Pull** : va chercher les données sur les noeuds depuis le serveur
   - **HTTP** : utilise le protocole standard 
   - **Timeseries** : associe un timestamp avec des données nommées et labelisées  
+
 ---
 
 ### Utilisation de l'autoconfiguration dans Kubernetes
@@ -398,6 +401,7 @@ Pour une liste complète (+50 références...) : https://github.com/xephonhq/awe
 Il permet aux utilisateurs de récupérer, manipuler et visualiser des données de séries temporelles collectées par Prometheus, offrant des capacités avancées pour l'analyse et la surveillance.
 
 ---
+
 ### Exemple de requêtes PromQL
 
 1. **Sélection de base**

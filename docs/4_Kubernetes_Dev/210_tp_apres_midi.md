@@ -4,8 +4,6 @@ title: TP après-midi — Kubernetes Développeur
 
 **Exposer une application avec un Ingress, appliquer des NetworkPolicies, et packager avec Kustomize.**
 
-**Durée : 1h30**
-
 ### Contexte
 
 Vous avez déployé une stack Redis ce matin. Cet après-midi, vous allez exposer une application web via un Ingress, sécuriser les communications réseau avec une NetworkPolicy, puis packager votre configuration avec Kustomize pour gérer deux environnements (dev et prod).

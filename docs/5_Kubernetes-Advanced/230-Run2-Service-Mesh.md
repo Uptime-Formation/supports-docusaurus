@@ -355,6 +355,7 @@ Exemples :
 
 
 ---
+
 ## TP : Installation d'Istio avec mTLS par Défaut et Déploiement de l'Application Bookinfo
 
 Dans ce TP, nous allons installer Istio avec la sécurisation des échanges entre les microservices activée par défaut en mode mTLS.

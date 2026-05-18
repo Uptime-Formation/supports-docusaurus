@@ -5,8 +5,6 @@ draft: false
 
 ## Service Mesh : architecture et historique
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/230-Run2-Service-Mesh.md ## Architecture + Historique -->
-
 **Un service mesh est une couche d'infrastructure logicielle destinée à contrôler la communication entre les services.**
 
 Il se compose de deux plans :
@@ -33,8 +31,6 @@ Il se compose de deux plans :
 
 ## Architecture d'Istio
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/230-Run2-Service-Mesh.md ## Architecture d'Istio -->
-
 Documentation officielle : https://istio.io/latest/docs/ops/deployment/architecture/
 
 ![](/img/kubernetes/istio-architecture.svg)
@@ -44,8 +40,6 @@ Istio injecte automatiquement un proxy sidecar Envoy dans chaque pod. Ce proxy i
 ---
 
 ## Comparatif des solutions de Service Mesh
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/230-Run2-Service-Mesh.md ## Comparatif -->
 
 | Critère | Istio | Linkerd | Consul |
 |---|---|---|---|
@@ -64,8 +58,6 @@ Résumé :
 ---
 
 ## mTLS et sécurité des échanges
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/230-Run2-Service-Mesh.md ## mTLS -->
 
 **mTLS (mutual TLS) assure l'authentification mutuelle : chaque service vérifie le certificat de l'autre avant d'établir la connexion.**
 
@@ -126,8 +118,6 @@ spec:
 
 ## Modèles d'implémentation : Sidecar, Ambient, Cluster Mesh
 
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/230-Run2-Service-Mesh.md ## Les modèles -->
-
 | Caractéristique | Sidecar | Ambient Mesh | Cluster Mesh |
 |---|---|---|---|
 | **Maturité** | Mature (depuis 2016) | En développement | Émergent (~2020) |
@@ -141,8 +131,6 @@ Le modèle **Ambient Mesh** d'Istio supprime le besoin d'injecter un sidecar dan
 ---
 
 ## Sécurité Kubernetes : approche DevSecOps
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/330-Security.md ## La sécurité + Application à la boucle DevOps -->
 
 **La sécurité Kubernetes n'est pas une couche ajoutée en fin de projet : elle doit être intégrée à chaque phase du cycle de vie DevOps.**
 
@@ -181,8 +169,6 @@ Kyverno utilise des policies en YAML natif Kubernetes (plus accessible). OPA uti
 ---
 
 ## HashiCorp Vault pour la gestion des secrets
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/330-Security.md ## Operate + TP Vault -->
 
 **Vault centralise la gestion des secrets avec audit complet, rotation automatique et politiques d'accès granulaires.**
 
@@ -223,15 +209,6 @@ Le Vault Kubernetes Operator permet de synchroniser des secrets Vault vers des K
 ---
 
 ## RBAC et gestion des accès utilisateurs
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes_Advanced_2/05_Administration-de-Kubernetes.md (squelette) -->
-
-> **A REDIGER** :
-> - Rappel RBAC : Role, ClusterRole, RoleBinding, ClusterRoleBinding
-> - ServiceAccounts vs utilisateurs (certificats client, OIDC)
-> - Intégration LDAP/AD (Kubi, Dex, Keycloak)
-> - Namespace isolation par équipe : ResourceQuota + LimitRange + RBAC
-> - Audit logging : qu'est-ce qui est loggé, comment l'exploiter
 
 ### ResourceQuota : limiter les ressources et les objets d'un namespace
 
@@ -311,8 +288,6 @@ limits:
 ---
 
 ## Ingress vs Gateway API
-
-<!-- À REPRENDRE EXISTANT : 5_Kubernetes-Advanced/250-Run2-Ingress.md -->
 
 **La Gateway API est la nouvelle génération d'Ingress, standardisée par le SIG Network de Kubernetes.**
 
