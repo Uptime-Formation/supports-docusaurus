@@ -274,18 +274,6 @@ limits:
 
 ---
 
-## DevSecOps pour les workloads existants
-
-<!-- A REDIGER -->
-
-> **A REDIGER** :
-> - Comment appliquer une démarche DevSecOps à des workloads déjà en production
-> - Stratégie progressive : audit → correction des critiques → automatisation
-> - Outils de scanning continu (Trivy, Falco en mode "observe")
-> - Introduction des Network Policies sans casser l'existant (log mode first)
-> - Migration vers Vault sans downtime
-
----
 
 ## Ingress vs Gateway API
 
@@ -340,3 +328,15 @@ spec:
 ```
 
 La Gateway API est recommandée pour les nouveaux clusters. La migration depuis Ingress est progressive — les deux peuvent coexister.
+
+---
+
+## Greenfield vs Brownfield : deux contextes, une même démarche
+
+Tout ce que vous avez vu aujourd'hui — mTLS, RBAC, Vault, Network Policies, OPA/Kyverno, ResourceQuota — s'applique différemment selon que vous partez de zéro ou que vous intervenez sur un cluster existant.
+
+**En greenfield**, vous posez les fondations dès le départ : les policies Kyverno s'appliquent à tous les nouveaux Deployments, Vault est intégré avant le premier secret applicatif, les Network Policies définissent les règles avant que le trafic existe. Le coût est faible, la couverture est totale.
+
+**En brownfield**, le cluster tourne, les applications sont en production, et chaque changement de sécurité peut casser quelque chose. La stratégie est progressive : commencer par auditer sans bloquer (Falco en mode observe, Trivy en scan continu, Network Policies en log-only), identifier les écarts critiques, corriger par ordre de risque, puis automatiser. Introduire Vault sans downtime signifie faire coexister les Kubernetes Secrets natifs et les secrets Vault le temps de la migration, application par application.
+
+La différence n'est pas dans les outils — c'est les mêmes — mais dans l'ordre et la prudence avec lesquels on les introduit.
