@@ -70,6 +70,72 @@ Au-delà du CPU, il est possible de scaler sur :
 
 ---
 
+## KEDA — Kubernetes Event-Driven Autoscaling
+
+**KEDA est un operator CNCF qui étend le HPA natif Kubernetes pour scaler sur n'importe quelle source de métriques : files de messages, bases de données, métriques Prometheus, plannings cron...**
+
+Le HPA natif est limité aux métriques CPU et mémoire (ou aux métriques custom via Prometheus Adapter, qui nécessite une configuration complexe). KEDA résout ça en agissant comme un pont : il surveille n'importe quelle source externe et alimente le HPA avec les métriques correspondantes.
+
+### Architecture
+
+```
+Source externe       KEDA Operator          Kubernetes
+(RabbitMQ, Kafka,  →  ScaledObject      →   HPA (créé auto)  →  Deployment
+ Prometheus, cron)     surveille et          ajuste les
+                       calcule               replicas
+```
+
+KEDA ne remplace pas le HPA — il en crée un automatiquement et le pilote. Vous pouvez inspecter ce HPA avec `kubectl get hpa`.
+
+### Le ScaledObject
+
+La CRD centrale de KEDA est le `ScaledObject` — il déclare ce qu'on scale, les bornes, et les triggers :
+
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: mon-app-scaledobject
+spec:
+  scaleTargetRef:
+    name: mon-app             # Deployment à scaler
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 15         # vérifie la métrique toutes les 15s
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 300   # attend 5 min avant scale-down
+  triggers:
+  - type: cpu
+    metricType: Utilization
+    metadata:
+      value: "50"             # scale si CPU moyen > 50%
+```
+
+### Quelques scalers notables
+
+| Trigger | Usage |
+|---|---|
+| `cpu` / `memory` | Utilisation des ressources (comme le HPA natif) |
+| `kafka` | Longueur d'un topic Kafka |
+| `rabbitmq` | Longueur d'une queue RabbitMQ |
+| `prometheus` | N'importe quelle métrique PromQL |
+| `cron` | Scaling planifié (horaires d'ouverture, pics prévisibles) |
+| `redis` | Longueur d'une liste Redis |
+
+### Installation
+
+```bash
+helm repo add kedacore https://kedacore.github.io/charts
+helm install keda kedacore/keda --namespace keda --create-namespace
+```
+
+Une fois installé, KEDA déploie trois composants : l'operator, le metrics API server, et l'admission webhook. Les six CRDs installées sont visibles avec `kubectl get crd | grep keda`.
+
+---
+
 ## Vertical Pod Autoscaler (VPA)
 
 **Le VPA ajuste automatiquement les requests et limits CPU/mémoire des pods en fonction des besoins réels.**
