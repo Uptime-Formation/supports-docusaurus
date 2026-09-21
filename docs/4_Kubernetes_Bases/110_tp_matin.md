@@ -68,7 +68,10 @@ source .bash_aliases
 **Objectif** : Avoir un cluster Kubernetes opérationnel.
 
 - **Action** : Installer k3s via le script officiel    
-  **Observation** : La commande `kubectl get nodes` retourne un node en état `Ready`
+  **Observation** : `sudo kubectl get nodes` retourne un node en état `Ready`
+
+- **Action** : Récupérer le kubeconfig pour utiliser `kubectl` **sans `sudo`**  
+  **Observation** : `kubectl get nodes` (sans `sudo`) fonctionne avec votre utilisateur normal
 
 - **Action** : Vérifier les versions client et serveur  
   **Observation** : `kubectl version` affiche les deux versions — elles devraient être dans la même version mineure (ex: `1.28.x`)
@@ -81,9 +84,28 @@ sudo rm /snap/bin/kubectl
 
 curl -sfL https://get.k3s.io | sudo sh -
 
-kubectl get nodes
-kubectl version
+sudo kubectl get nodes
 ```
+
+> ⚠️ **k3s tourne en root et écrit son kubeconfig dans `/etc/rancher/k3s/k3s.yaml`, lisible uniquement par `root`.** Sans étape supplémentaire, toute commande `kubectl` doit être préfixée par `sudo` — ce qui casse l'autocomplétion, les alias, et tout outil qui lit `~/.kube/config` (Lens, k9s, plugins krew...).
+>
+> La solution recommandée : copier ce kubeconfig dans le vôtre, en vous en rendant propriétaire.
+>
+> ```bash
+> mkdir -p ~/.kube
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+> sudo chown $(id -u):$(id -g) ~/.kube/config
+> chmod 600 ~/.kube/config
+> ```
+>
+> Désormais `kubectl get nodes` (sans `sudo`) doit fonctionner :
+>
+> ```bash
+> kubectl get nodes
+> kubectl version
+> ```
+>
+> Cette copie est figée : si k3s régénère son kubeconfig (rare), il faudra recopier. Pour un poste de travail durable, il est aussi possible de configurer k3s au moment de l'installation pour qu'il écrive un fichier accessible à un groupe dédié (`--write-kubeconfig-mode 640` + `--write-kubeconfig-group`), mais la copie manuelle suffit largement pour ce cours.
 
 </details>
 

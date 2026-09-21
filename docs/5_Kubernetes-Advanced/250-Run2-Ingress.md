@@ -11,8 +11,19 @@ weight: 250
 
 * **Installer k3s avec Traefik activé par défaut**
 ```sh
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | sudo sh -
 ```
+
+> ⚠️ **k3s tourne en root et écrit son kubeconfig dans `/etc/rancher/k3s/k3s.yaml`, lisible uniquement par `root`.** Sans étape supplémentaire, toute commande `kubectl` doit être préfixée par `sudo`.
+>
+> Pour utiliser `kubectl` normalement (sans `sudo`), copiez le kubeconfig et rendez-vous en propriétaire :
+>
+> ```sh
+> mkdir -p ~/.kube
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+> sudo chown $(id -u):$(id -g) ~/.kube/config
+> chmod 600 ~/.kube/config
+> ```
 
 ---
 

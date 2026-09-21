@@ -33,13 +33,20 @@ Par défaut, k3s utilise SQLite comme datastore. Pour pouvoir inspecter etcd dir
 
 ```bash
 # Désinstaller k3s existant
-/usr/local/bin/k3s-uninstall.sh
+sudo /usr/local/bin/k3s-uninstall.sh
 
 # Réinstaller avec etcd (sans chiffrement pour l'instant)
-curl -sfL https://get.k3s.io | sh -s - --cluster-init
+curl -sfL https://get.k3s.io | sudo sh -s - --cluster-init
 
 # Attendre que le nœud soit Ready
-until kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+until sudo kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+
+# k3s régénère /etc/rancher/k3s/k3s.yaml (root-only) à chaque réinstallation :
+# recopiez-le pour retrouver un kubectl sans sudo
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $(id -u):$(id -g) ~/.kube/config
+chmod 600 ~/.kube/config
+
 kubectl get nodes
 ```
 
@@ -91,11 +98,16 @@ ETCDCTL_API=3 etcdctl \
 - **Action** :
 
 ```bash
-/usr/local/bin/k3s-uninstall.sh
+sudo /usr/local/bin/k3s-uninstall.sh
 
-curl -sfL https://get.k3s.io | sh -s - --cluster-init --secrets-encryption
+curl -sfL https://get.k3s.io | sudo sh -s - --cluster-init --secrets-encryption
 
-until kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+until sudo kubectl get nodes 2>/dev/null | grep -q Ready; do sleep 3; done
+
+# Recopier le kubeconfig régénéré (root-only) vers ~/.kube/config
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $(id -u):$(id -g) ~/.kube/config
+chmod 600 ~/.kube/config
 ```
 
 Vérifier que le chiffrement est actif :

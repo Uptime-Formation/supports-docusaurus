@@ -13,16 +13,21 @@ Ce quickstart guide à travers l'installation et la configuration de cert-manage
 
 * **Installer k3s avec Traefik activé**
 ```sh
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | sudo sh -
 ```
+
+> ⚠️ **k3s tourne en root et écrit son kubeconfig dans `/etc/rancher/k3s/k3s.yaml`, lisible uniquement par `root`.** `export KUBECONFIG=/etc/rancher/k3s/k3s.yaml` ne suffit pas : le fichier reste illisible pour votre utilisateur. Copiez-le plutôt et rendez-vous en propriétaire :
+>
+> ```sh
+> mkdir -p ~/.kube
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+> sudo chown $(id -u):$(id -g) ~/.kube/config
+> chmod 600 ~/.kube/config
+> ```
 
 Vérifiez que kubectl utilise le bon contexte
 ```sh
 kubectl config view
-```
-Assurez-vous que kubectl pointe vers le bon cluster
-```sh
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 ```
 
 ### Étape 2 : Installer Helm

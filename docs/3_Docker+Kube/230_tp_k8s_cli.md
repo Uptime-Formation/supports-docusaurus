@@ -29,7 +29,20 @@ curl -sfL https://get.k3s.io | sudo sh -
 
 k3s installe sa propre version de kubectl qui utilise le fichier de configuration automatique de k3s. 
 
-- Testez la connexion avec `kubectl get nodes`.
+- Testez la connexion avec `sudo kubectl get nodes`.
+
+> ⚠️ **k3s tourne en root et écrit son kubeconfig dans `/etc/rancher/k3s/k3s.yaml`, lisible uniquement par `root`.** Sans étape supplémentaire, toute commande `kubectl` doit être préfixée par `sudo` — ce qui casse l'autocomplétion, les alias, et tout outil qui lit `~/.kube/config` (Lens, k9s, plugins krew...).
+>
+> Pour utiliser `kubectl` normalement (sans `sudo`), copiez le kubeconfig et rendez-vous en propriétaire :
+>
+> ```bash
+> mkdir -p ~/.kube
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+> sudo chown $(id -u):$(id -g) ~/.kube/config
+> chmod 600 ~/.kube/config
+> ```
+>
+> Désormais `kubectl get nodes` (sans `sudo`) doit fonctionner.
 
 Affichez la version `kubectl version`. 
 
