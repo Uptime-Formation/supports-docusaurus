@@ -1,5 +1,6 @@
 ---
 title: "Labs : Comment ça marche"
+sidebar_label: "🧪 Labs : Comment ça marche"
 sidebar_position: 1
 
 ---

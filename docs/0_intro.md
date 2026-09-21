@@ -1,5 +1,6 @@
 ---
 title: Introduction
+sidebar_label: "👋 Introduction"
 draft: false
 sidebar_position: 1
 ---

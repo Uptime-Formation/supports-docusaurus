@@ -1,6 +1,7 @@
 ---
 slug: /
 title: Accueil
+sidebar_label: "🏠 Accueil"
 sidebar_position: 0
 ---
 
