@@ -48,11 +48,16 @@ Créez un dossier `tp2_yaml/` et ouvrez-le dans VSCode.
 
 **Objectif** : Comprendre le modèle multi-conteneurs de Kubernetes. Les deux conteneurs d'un même pod partagent la même adresse IP et peuvent se parler via `localhost`. Ils ont en revanche des processus, des logs et un système de fichiers distincts. On va aussi observer qu'un pod est largement immutable : certaines propriétés ne peuvent pas être modifiées à chaud.
 
-- **Action** : Créer un fichier `demo-pod.yaml` avec un Pod contenant `rancher-demo` (port 8080) et `redis` (port 6379). Les images à utiliser sont `monachus/rancher-demo:latest` et `docker.io/library/redis:latest`.  
+- **Action** : Créer un fichier `demo-pod.yaml` avec un Pod contenant `rancher-demo` (port 8080) et `redis` (port 6379).  
+  Les images à utiliser sont `monachus/rancher-demo:latest` et `docker.io/library/redis:latest`.  
+  Ajouter le label `app: rancher-demo` au pod.
   **Observation** : `kubectl get pod rancher-demo-pod` affiche `2/2 Running` — les deux conteneurs sont prêts.
 
 - **Action** : Consulter les logs de chaque conteneur séparément avec `-c`.  
   **Observation** : Chaque conteneur a sa propre sortie. `rancher-demo` logue les requêtes HTTP, `redis` logue son démarrage.
+
+- **Action** : Ajouter un **label** au pod rancher-demo (`app: rancher-demo) et réappliquer.  
+  **Observation** : Kubernetes met à jour le pod.
 
 - **Action** : Modifier le **label** du pod (`app: rancher-demo` → `app: demo-v2`) et réappliquer.  
   **Observation** : Kubernetes met à jour le pod — les labels sont mutables.
@@ -60,7 +65,9 @@ Créez un dossier `tp2_yaml/` et ouvrez-le dans VSCode.
 - **Action** : Modifier le **nom d'un conteneur** (`redis-container` → `redis-db`) et réappliquer.  
   **Observation** : Kubernetes refuse la modification — le nom d'un conteneur fait partie de la spec immutable. Il faut supprimer le pod et le recréer.
 
-- **Action** : Ouvrir un shell dans le conteneur `rancher-demo-container` avec `kubectl exec`.  
+- **Action** : Ouvrir un shell dans le conteneur `rancher-demo-container` avec `kubectl exec`.   
+  Utiliser la commande `apk add --update redis` pour utiliser l'utilitaire `redis-cli`.
+  La commande `ping` doit répondre PONG.
   **Observation** : Vous êtes dans le conteneur. Vérifiez que redis est joignable sur `localhost:6379`.
 
 <details><summary>Indice</summary>
@@ -105,7 +112,7 @@ kubectl delete -f demo-pod.yaml
 
 Les labels jouent ici un rôle critique : le `selector.matchLabels` du Deployment doit correspondre exactement aux labels du `template`. C'est ce mécanisme qui permet au Deployment de "trouver" ses pods.
 
-- **Action** : Créer `demo-deploy.yaml` avec un Deployment `demonstration`, 1 réplica, image `monachus/rancher-demo:latest`, stratégie `Recreate`.  
+- **Action** : Créer `demo-deploy.yaml` avec un Deployment `demonstration`, 1 réplica, image `traefik/whoami:v1.11`, stratégie `Recreate`.  
   **Observation** : `kubectl get deployment demonstration` est en état `1/1 Ready`. Observer également le ReplicaSet créé automatiquement avec `kubectl get rs`.
 
 - **Action** : Modifier le nom d'un conteneur dans le YAML et réappliquer.  
@@ -140,10 +147,10 @@ spec:
         nom-app: demonstration
     spec:
       containers:
-        - image: monachus/rancher-demo:latest
-          name: rancher-demo
+        - image: traefik/whoami:v1.11
+          name: whoami
           ports:
-            - containerPort: 8080
+            - containerPort: 80
               name: demo-http
 ```
 
@@ -163,7 +170,7 @@ kubectl describe deployment demonstration
 **Objectif** : Un Service NodePort ouvre un port fixe sur chaque nœud du cluster et redirige le trafic vers les pods sélectionnés par ses labels. On va observer concrètement comment le selector relie le Service aux pods, puis enchaîner avec un rollout de version pour voir comment Kubernetes gère la bascule.
 
 - **Action** : Créer `demo-svc.yaml` avec un Service `NodePort` ciblant le Deployment via ses labels.  
-  **Observation** : `kubectl get services` montre le port 3xxxx assigné. Accédez à `http://<IP-du-node>:<nodePort>` — l'interface de rancher-demo s'affiche et montre le nombre de réplicas actifs.
+  **Observation** : `kubectl get services` montre le port 3xxxx assigné. Accédez à `http://<IP-du-node>:<nodePort>` — `whoami` répond avec le nom du pod (`Hostname: ...`) qui l'a traité. Rafraîchissez plusieurs fois une fois à 3 réplicas : le hostname change à chaque requête.
 
 - **Action** : Modifier le `selector` du Service avec un mauvais label et réappliquer.  
   **Observation** : L'application n'est plus accessible. `kubectl describe service demo-service` montre `Endpoints: <none>` — le Service n'a plus de pods cibles.
@@ -171,8 +178,8 @@ kubectl describe deployment demonstration
 - **Action** : Corriger le selector et réappliquer.  
   **Observation** : Les endpoints se repopulent immédiatement avec les IPs des pods. L'application est de nouveau accessible.
 
-- **Action** : Modifier la stratégie du Deployment en `RollingUpdate`, changer l'image en `monachus/rancher-demo:2` et réappliquer.  
-  **Observation** : `kubectl rollout status deployment/demonstration` suit la progression pod par pod. `kubectl get rs` montre deux ReplicaSets coexistant brièvement pendant la bascule.
+- **Action** : Modifier la stratégie du Deployment en `RollingUpdate`, changer l'image en `traefik/whoami:v1.12` et réappliquer.  
+  **Observation** : `kubectl rollout status deployment/demonstration` suit la progression pod par pod. `kubectl get rs` montre deux ReplicaSets coexistant brièvement pendant la bascule. `curl` le Service pendant le rollout : le champ retourné change au fil du remplacement des pods.
 
 <details><summary>Indice</summary>
 
@@ -186,7 +193,7 @@ metadata:
     nom-app: demonstration
 spec:
   ports:
-    - port: 8080
+    - port: 80
   selector:
     nom-app: demonstration
   type: NodePort
@@ -214,8 +221,6 @@ kubectl get rs                                  # observer les deux ReplicaSets
 - Utiliser `kubectl scale deployment demonstration --replicas=5` sans modifier le YAML — puis observer ce qui se passe si on réapplique le YAML avec `replicas: 3`
 
 - Inspecter le détail d'une révision : `kubectl rollout history deployment/demonstration --revision=2`
-
-- Récupérer la correction complète : `git clone -b tp_rancher_demo_files https://github.com/Uptime-Formation/corrections_tp.git`
 
 ---
 
