@@ -319,6 +319,24 @@ kubectl get services
 kubectl describe service <nom>   # voir les endpoints
 ```
 
+### Différents types de service 
+
+Ils créent un point d'accès stable vers un ensemble de pods, indépendamment de leur durée de vie  .  
+
+Rappel des types :
+
+| Type | Usage |
+|---|---|
+| `ClusterIP` | Accès interne au cluster uniquement — par défaut |
+| `NodePort` | Expose sur un port du nœud — dev/test uniquement |
+| `LoadBalancer` | Provisionne un loadbalancer externe (cloud) |
+
+DNS interne : chaque Service est accessible via `<service>.<namespace>.svc.cluster.local`.
+
+**Le type `LoadBalancer` est limité** : il crée un loadbalancer externe par service, ce qui devient coûteux et ingérable à l'échelle — sur un cloud, chaque `LoadBalancer` facture une adresse IP dédiée  .  
+
+On l'utilise encore pour des services non-HTTP (bases de données, MQTT…), mais il ne gère ni le routage par chemin, ni le TLS mutualisé, ni le virtual hosting.
+
 ---
 
 ## Les health checks (Probes)
@@ -329,6 +347,14 @@ Kubernetes dispose de trois types de sondes pour surveiller l'état des conteneu
 
 - **`readinessProbe`** : vérifie que le conteneur est **prêt à recevoir du trafic**. Tant qu'elle échoue, le pod est retiré des endpoints du Service.
 - **`livenessProbe`** : vérifie que le conteneur est **vivant**. Si elle échoue, Kubernetes redémarre le conteneur.
+
+**Retenez-les par leur conséquence, pas juste leur condition** — c'est ce qui les distingue vraiment :
+
+- **`startupProbe`** : une **barrière d'activation**. Bloque le déclenchement des autres probes tant qu'elle n'est pas validée — aucun impact direct sur le trafic ou le cycle de vie.
+- **`readinessProbe`** : au service du **Service**. Un échec ne redémarre jamais le conteneur — il retire seulement le pod des endpoints, donc du trafic entrant. Le pod continue de tourner.
+- **`livenessProbe`** : au service du **cycle de vie**. Un échec redémarre le conteneur — c'est la seule des trois probes qui déclenche un restart.
+
+> Erreur fréquente : confondre `readinessProbe` et `livenessProbe`. Un `readinessProbe` qui échoue ne redémarre **jamais** le conteneur. Voir la [documentation officielle](https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/) pour le détail exact du comportement de chaque probe.
 
 Paramètres courants :
 

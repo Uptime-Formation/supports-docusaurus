@@ -2,27 +2,44 @@
 title: Cours après-midi — Kubernetes Développeur
 ---
 
-## Le réseau Kubernetes : Services et exposition externe
+## Le réseau Kubernetes 
 
-### Services — l'adressage interne
+---
 
-Les Services sont les objets réseau de base (vus en Bases)  .  
+**Le modèle réseau de Kubernetes pour les communications internes**
 
-Ils créent un point d'accès stable vers un ensemble de pods, indépendamment de leur durée de vie  .  
+- Chaque Pod a sa propre IP, routable depuis n'importe quel autre Pod du cluster — pas de NAT entre Pods.
+- Les Pods d'un même Service sont regroupés derrière une IP stable (le Service).
+- Le DNS interne (CoreDNS) résout automatiquement les noms de Service en IP.
 
-Rappel des types :
+**Ce qu'un Pod peut joindre, et comment :**
 
-| Type | Usage |
-|---|---|
-| `ClusterIP` | Accès interne au cluster uniquement — par défaut |
-| `NodePort` | Expose sur un port du nœud — dev/test uniquement |
-| `LoadBalancer` | Provisionne un loadbalancer externe (cloud) |
+| Cible | Adresse | Exemple |
+|---|---|---|
+| Un autre Pod (même namespace) | IP du Pod directement (rarement utilisé — IP instable) | `10.42.0.15:8080` |
+| Un Service (même namespace) | nom court | `mon-service:8080` |
+| Un Service (autre namespace) | `<service>.<namespace>` | `mon-service.mon-namespace:8080` |
+| Un Service (forme complète) | `<service>.<namespace>.svc.cluster.local` | utile pour du debug ou une config explicite |
+| L'API Kubernetes | Service spécial `kubernetes` dans `default` | `kubernetes.default.svc.cluster.local` |
 
-DNS interne : chaque Service est accessible via `<service>.<namespace>.svc.cluster.local`.
+```bash
+# Depuis un pod, tester la résolution DNS
+kubectl exec -it mon-pod -- getent ahosts mon-service.mon-namespace
+```
 
-**Le type `LoadBalancer` est limité** : il crée un loadbalancer externe par service, ce qui devient coûteux et ingérable à l'échelle — sur un cloud, chaque `LoadBalancer` facture une adresse IP dédiée  .  
+```
+namespace: mon-namespace              namespace: autre-namespace
+┌─────────────────────────┐           ┌─────────────────────────┐
+│  Pod A ──► mon-service   │           │  Service: autre-service  │
+│            (nom court)   │           │                           │
+│                          │──────────►│  mon-service.mon-namespace│
+│                          │  (forme longue depuis l'extérieur)    │
+└─────────────────────────┘           └─────────────────────────┘
+```
 
-On l'utilise encore pour des services non-HTTP (bases de données, MQTT…), mais il ne gère ni le routage par chemin, ni le TLS mutualisé, ni le virtual hosting.
+> À retenir : un Pod ne connaît jamais l'IP réelle des autres Pods qu'il contacte via un Service — il passe toujours par le nom DNS du Service, qui reste stable même quand les Pods derrière changent.
+
+📖 [Documentation officielle — DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)
 
 ---
 
@@ -118,9 +135,114 @@ Elle sépare les responsabilités en trois objets distincts :
 | `Gateway` | Instance du point d'entrée, ports, TLS | Admin réseau |
 | `HTTPRoute` | Règles de routage vers les Services | Développeur |
 
+> Cette répartition (`Gateway` = admin réseau, `HTTPRoute` = dev) est le modèle **prévu par le design**, pas une contrainte technique stricte : rien n'empêche un développeur de créer sa propre `Gateway` sur un petit cluster. Mais le cas d'usage principal de la Gateway API est justement le **partage d'une infrastructure réseau entre plusieurs équipes** : une seule `Gateway` (un seul load balancer, une seule IP) peut accepter des `HTTPRoute` venant de **plusieurs namespaces différents** — chaque équipe applicative gère ses propres règles de routage sans avoir besoin de créer ou toucher à l'infrastructure réseau elle-même.
+>
+> Par défaut, une `Gateway` n'accepte que les `HTTPRoute` de son **propre** namespace — c'est une protection de départ, pas une limite technique. Le champ `allowedRoutes` permet à l'admin réseau d'autoriser explicitement d'autres namespaces (ou tous) à y attacher leurs règles. Ce n'est donc jamais "un proxy par namespace" : c'est un proxy partagé, avec un contrôle explicite de qui peut s'y raccorder.
+
 Cette séparation permet à une équipe dev de modifier ses règles de routage sans toucher à la configuration réseau du cluster, et vice-versa  .  
 
 Les fonctionnalités avancées (canary, header matching, mirroring) sont standardisées — un manifeste `HTTPRoute` fonctionne sur n'importe quel controller compatible.
+
+---
+
+**Le modèle de ressources, en un schéma :**
+
+![Gateway API resource model](https://gateway-api.sigs.k8s.io/images/resource-model-dark.png)
+*(Schéma officiel Gateway API : GatewayClass → Gateway → Route)*
+
+**Les trois manifestes, en pratique :** chaque objet est déclaré séparément et référence le précédent — c'est cette chaîne qui matérialise la séparation des rôles vue plus haut.
+
+```yaml
+# 1. gatewayclass.yaml — déclaré par l'admin cluster (une fois, pour tout le cluster)
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: traefik
+spec:
+  controllerName: traefik.io/gateway-controller
+```
+
+```yaml
+# 2. gateway.yaml — déclaré par l'admin réseau (le point d'entrée réseau)
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: mon-gateway
+  namespace: infra
+spec:
+  gatewayClassName: traefik   # référence le GatewayClass ci-dessus
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces:
+        from: All   # autorise les HTTPRoute de tous les namespaces
+```
+
+```yaml
+# 3. httproute.yaml — déclaré par le développeur (dans le namespace de son app)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mon-app-route
+  namespace: mon-app
+spec:
+  parentRefs:
+  - name: mon-gateway        # référence la Gateway ci-dessus
+    namespace: infra
+  hostnames:
+  - "mon-app.example.com"
+  rules:
+  - backendRefs:
+    - name: mon-app-service
+      port: 8080
+```
+
+**Implémentations installables aujourd'hui :** ce cours utilise déjà **Traefik** (fourni par défaut avec k3s) pour l'Ingress — c'est aussi une implémentation Gateway API à part entière, pas un outil différent à installer :
+
+```bash
+# Installer les CRDs Gateway API (k3s ne les fournit pas par défaut)
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+
+# Activer le provider Gateway API dans Traefik (via sa configuration Helm/statique)
+# providers.kubernetesGateway: {}
+```
+
+**Autres implémentations courantes** (à connaître de nom) : **Istio** (propose une installation minimale conforme Gateway API sans installer tout le service mesh), **Envoy Gateway** (projet dédié, quickstart simple).
+
+**Au-delà du HTTP :** la Gateway API n'est pas limitée au routage HTTP. Selon le controller installé, elle peut aussi router du TCP/UDP brut ou du TLS (`TCPRoute`, `UDPRoute`, `TLSRoute` — kinds "experimental", pas encore stables partout). Un seul `Gateway` peut donc exposer plusieurs types de trafic sur des ports différents.
+
+**Répartition du trafic (poids) :** un `HTTPRoute` peut répartir le trafic entre plusieurs Services via `backendRefs[].weight` — utile pour du canary/blue-green sans outil externe :
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mon-app-route
+spec:
+  parentRefs:
+  - name: mon-gateway
+  rules:
+  - backendRefs:
+    - name: mon-app-v1
+      port: 8080
+      weight: 90   # 90% du trafic
+    - name: mon-app-v2
+      port: 8080
+      weight: 10   # 10% du trafic (canary)
+```
+
+**Avantages vs. Ingress :**
+- Standard portable : un même `HTTPRoute` fonctionne sur n'importe quel controller compatible (pas d'annotations propriétaires par vendor).
+- Modèle de rôles natif (`GatewayClass`/`Gateway` côté admin, `HTTPRoute` côté dev) — pas besoin de RBAC custom pour séparer admin réseau et développeurs.
+- Fonctionnalités avancées (poids, header matching, mirroring) standardisées, pas cachées derrière des annotations spécifiques à chaque Ingress Controller.
+
+**Inconvénients :**
+- Plus récent, moins universellement supporté que l'Ingress (tous les clusters n'ont pas de `GatewayClass` installée par défaut — k3s/Traefik expose l'Ingress nativement, pas la Gateway API).
+- Trois objets à comprendre au lieu d'un seul — courbe d'apprentissage plus longue pour un cas d'usage simple.
+
+📖 [Documentation officielle — Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/) · [Spec complète (types de Route)](https://gateway-api.sigs.k8s.io/api-types/httproute/)
 
 ---
 
@@ -152,46 +274,7 @@ La Gateway API et les API Managers sont des étapes naturelles dès qu'on expose
 
 ---
 
-## CronJob : tâches périodiques
-
-Un **CronJob** crée des Jobs selon un planning cron  .  
-
-Exemple classique : tester périodiquement l'accessibilité d'un service.
-
-```yaml
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: test-cronjob
-  namespace: mynamespace
-spec:
-  schedule: "*/1 * * * *"    # toutes les minutes
-  jobTemplate:
-    spec:
-      template:
-        metadata:
-          labels:
-            app: tester
-        spec:
-          containers:
-          - name: busybox
-            image: busybox
-            command: ["wget", "-qO-", "http://web-service"]
-          restartPolicy: Never   # Never ou OnFailure pour les Jobs
-```
-
-Commandes utiles :
-```bash
-kubectl get jobs                          # Jobs créés par le CronJob
-kubectl logs job/<nom-du-job>             # Logs d'un Job spécifique
-kubectl get cronjob                       # État du CronJob
-```
-
-L'image `busybox` est une image légère contenant des outils basiques Unix dont `wget` et `sh`.
-
----
-
-## NetworkPolicy : firewalls dans le cluster
+### NetworkPolicy : firewalls dans le cluster
 
 **Par défaut, tous les pods peuvent communiquer entre eux** — il n'y a aucune isolation réseau.
 
@@ -222,6 +305,57 @@ spec:
         matchLabels:
           role: allowed
 ```
+
+
+---
+
+### Les Service Mesh
+
+Un **Service Mesh** ajoute une couche réseau transverse entre vos Services, sans toucher au code applicatif — sécurité, observabilité et routage deviennent une responsabilité d'infrastructure plutôt qu'une bibliothèque à intégrer dans chaque service.
+
+**Ce qu'il apporte concrètement :**
+
+- **mTLS** : chaque appel entre Services peut être chiffré et authentifié dans les deux sens (les deux parties prouvent leur identité), sans que le code applicatif gère le moindre certificat. **Pas automatique par défaut** : Istio démarre en mode `PERMISSIVE` (accepte le trafic chiffré ET en clair, pour permettre une migration progressive) — il faut déclarer une politique pour l'imposer :
+
+```yaml
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: namespace-mtls-strict
+  namespace: mon-namespace
+spec:
+  mtls:
+    mode: STRICT   # refuse tout trafic non chiffré dans ce namespace
+```
+
+- **Fonctions de routage avancées** : retry automatique, circuit breaking, canary/blue-green par pourcentage de trafic, timeouts — configurables sans redéploiement de l'application.
+- **Observabilité** : métriques, traces et logs uniformes pour tout le trafic inter-services, même si les services sont écrits dans des langages différents.
+
+**Comment ça s'installe : sidecar vs. ambient mode**
+
+```
+Mode sidecar (historique)              Mode ambient (recent)
+┌─────────────────────┐                ┌─────────────────────┐
+│ Node                │                │ Node                │
+│ ┌─────┐  ┌─────┐    │                │ ┌─────┐  ┌─────┐    │
+│ │ Pod │  │ Pod │    │                │ │ Pod │  │ Pod │    │
+│ │ app │  │ app │    │                │ │ app │  │ app │    │
+│ │proxy│  │proxy│    │  <- 1 proxy    │ └─────┘  └─────┘    │
+│ └─────┘  └─────┘    │     par Pod    │        │       │    │
+│                     │                │   ┌────┴───────┴┐   │
+│                     │                │   │ ztunnel     │ <- 1 proxy
+│                     │                │   │ (par nœud)  │    par nœud
+└─────────────────────┘                └─────────────────────┘
+```
+
+- **Sidecar** (modèle historique) : un proxy (Envoy) est injecté dans **chaque Pod**, à côté du conteneur applicatif — un sidecar est un conteneur secondaire qui tourne aux côtés du conteneur principal pour lui ajouter une responsabilité transverse (ici : réseau, chiffrement, routage) sans toucher à son code. Chaque Pod paie un coût mémoire/CPU pour son proxy.
+- **Ambient mode** (approche récente, ex: Istio Ambient) : plus de proxy par Pod — l'interception du trafic se fait au niveau du nœud (un composant partagé, ex: `ztunnel` chez Istio). Moins de surcoût par Pod, modèle opérationnel plus simple, au prix d'un peu moins de flexibilité par Pod.
+
+> L'identité des services (qui peut parler à qui) repose sur un standard nommé **SPIFFE** (implémenté par **SPIRE**) — chaque Pod reçoit une identité cryptographique vérifiable, indépendante de son IP.
+
+**Outils courants :** Istio, Linkerd, Cilium (mode mesh).
+
+📖 [Documentation officielle Istio — Architecture](https://istio.io/latest/docs/ops/deployment/architecture/) · [Sécurité et mTLS](https://istio.io/latest/docs/concepts/security/) · [Ambient mode](https://istio.io/latest/docs/ops/ambient/)
 
 ---
 
@@ -488,6 +622,163 @@ Si l'utilisation CPU moyenne dépasse 70%, le HPA augmente le nombre de replicas
 
 **Prérequis** : les pods doivent avoir des `requests` CPU définies pour que le HPA puisse calculer le ratio.
 
+**Scénario concret :** votre Deployment a `minReplicas: 2`, `maxReplicas: 10`, seuil CPU 70%.
+
+1. Le trafic augmente, l'utilisation CPU moyenne des pods passe à 90%.
+2. Toutes les **15 secondes** (intervalle de vérification par défaut du controller HPA), le HPA recalcule le nombre de replicas souhaité : `replicas_actuels × (utilisation_actuelle / utilisation_cible)`. Ici : `2 × (90/70) ≈ 3`.
+3. Le HPA met à jour le Deployment à 3 replicas. Le nouveau pod démarre, l'utilisation CPU redescend progressivement vers 70%.
+4. Si le trafic redescend ensuite, le HPA scale down — mais **plus lentement** qu'il ne scale up : un délai de stabilisation par défaut de **5 minutes** (`stabilizationWindowSeconds: 300`) évite qu'un pic de trafic court ne déclenche un aller-retour scale up/scale down permanent ("flapping").
+
+```
+CPU
+90% ┤     ╭──╮                                  scale up immédiat
+    │    ╱    ╲                                 (check toutes les 15s)
+70% ┤───╱──────╲───────────────────────────────
+    │  ╱         ╲___________________________   scale down différé
+    │ ╱                                      ╲  (attend 5 min de stabilité)
+    └──────────────────────────────────────────── temps
+      t0   t0+15s        pic redescendu    t0+15s+5min
+      pic   scale up        à t1              scale down effectif
+      CPU   2→3 pods                          3→2 pods
+```
+
+```bash
+kubectl get hpa mon-app-hpa -w   # observer les décisions du HPA en temps réel
+kubectl describe hpa mon-app-hpa # voir les événements de scaling et leur raison
+```
+
+> Scale up rapide, scale down prudent : c'est un choix de design volontaire — mieux vaut avoir temporairement un peu trop de pods (coût) que pas assez (indisponibilité).
+
+📖 [Documentation officielle — Horizontal Pod Autoscaling](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/)
+
+### HPA/VPA et le risque de "drift" GitOps
+
+Le HPA et le VPA modifient en permanence l'état réel du cluster (`replicas`, `requests`/`limits`) **sans jamais passer par Git**. Si votre manifeste déclare `replicas: 2` et que le HPA a scalé à 9, ces deux sources de vérité divergent — exactement la définition d'un *drift* GitOps.
+
+**Sans aucun outil GitOps, le problème existe déjà.** `kubectl apply` compare trois versions (fichier, dernière config appliquée, état réel du cluster) : si le fichier n'a pas changé depuis le dernier `apply`, il réimpose sa valeur, même si le HPA l'a modifiée entre-temps. Résultat documenté officiellement :
+
+> « Quand un HPA est actif, il est recommandé de retirer `spec.replicas` du manifeste du Deployment et/ou StatefulSet. Si ce n'est pas fait, chaque `kubectl apply -f deployment.yaml` réimposera la valeur de `spec.replicas` du fichier — ce qui peut être indésirable et provoquer un comportement de "thrashing" (oscillation) quand un HPA est actif. »
+
+**La solution : ne pas déclarer dans Git ce que le HPA/VPA doit piloter.**
+
+```yaml
+# À éviter une fois le HPA actif sur ce Deployment :
+spec:
+  replicas: 2   # sera réimposé à chaque apply, en conflit avec le HPA
+
+# Recommandé : ne pas déclarer replicas du tout, laisser le HPA seul décider
+spec:
+  # (pas de champ replicas ici)
+```
+
+> ⚠️ Retirer `replicas` d'un Deployment déjà scalé peut provoquer une dégradation ponctuelle : la valeur par défaut du champ est `1`, donc au moment de l'apply sans `replicas`, Kubernetes peut temporairement redescendre vers 1 pod avant que le HPA ne recalcule et rescale.
+
+**Avec un outil GitOps (ArgoCD, etc.), le même problème existe, en pire** : `selfHeal: true` réappliquerait Git en continu, pas seulement au prochain `kubectl apply` manuel — un vrai combat permanent entre ArgoCD et le HPA. La solution est équivalente mais explicite : dire à ArgoCD quels champs ne lui appartiennent pas.
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+spec:
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas          # laisse le HPA piloter ce champ
+  # ou, plus large : ignorer tout ce qui appartient à un contrôleur donné
+  # managedFieldsManagers:
+  # - horizontal-pod-autoscaler
+```
+
+> Le principe est le même sans ou avec GitOps : **Git (ou le fichier YAML) ne doit déclarer que ce qu'il est censé contrôler.** Un champ piloté par un autre contrôleur (HPA, VPA) doit être explicitement exclu de la comparaison — retiré du manifeste en `kubectl apply` simple, exclu via `ignoreDifferences` en GitOps.
+
+📖 [Documentation officielle — Migrating Deployments and StatefulSets to horizontal autoscaling](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/) · [ArgoCD — Diffing Customization](https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/)
+
+--- 
+
+**Pourquoi KEDA plutôt que le HPA seul ?** Le HPA natif ne sait scaler que sur des métriques de ressources (CPU/RAM) ou des métriques custom déjà exposées à Kubernetes. Pour scaler sur **la profondeur d'une file Kafka** (nombre de messages en attente), il n'a pas de mécanisme natif. **KEDA** (CNCF, Microsoft/Red Hat) comble ce manque : il traduit des métriques externes (lag Kafka, longueur de queue SQS/RabbitMQ, etc.) en métriques que le HPA sait consommer — et il sait aussi scaler **jusqu'à zéro** replica, ce que le HPA seul ne fait pas (il lui faut au moins un pod pour mesurer quelque chose).
+
+**Fonctionnement :** on déclare un `ScaledObject` qui pointe vers le Deployment à scaler et vers la source de métrique (ici, le lag de consommateur Kafka) :
+
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-consumer-scaler
+spec:
+  scaleTargetRef:
+    name: mon-consumer
+  minReplicaCount: 0
+  maxReplicaCount: 20
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: kafka.mynamespace:9092
+      consumerGroup: mon-groupe
+      topic: mes-evenements
+      lagThreshold: "50"   # 1 replica de plus toutes les 50 messages de retard
+```
+
+KEDA crée et pilote automatiquement un HPA standard derrière ce `ScaledObject` — vous n'interagissez jamais avec le HPA directement.
+
+```
+Kafka (lag consumer)
+      │
+      ▼
+┌───────────────┐        ┌──────────┐        ┌────────────┐
+│ ScaledObject  │──────► │ KEDA     │──────► │ HPA (auto- │──────► scale le
+│ (vous écrivez)│        │ operator │        │ généré)    │        Deployment
+└───────────────┘        └──────────┘        └────────────┘
+     ▲
+     │ traduit en métrique standard
+     │ consommable par le HPA
+```
+
+**Kafka n'est qu'un exemple parmi ~60 scalers** fournis par KEDA (RabbitMQ, SQS, Prometheus, cron, etc.). Un service qui n'utilise pas de broker de messages peut aussi exposer sa propre métrique métier (profondeur de file interne, nombre de tâches en attente...) via les scalers `metrics-api` ou `external` — KEDA n'impose donc jamais un transport de messages particulier, il consomme n'importe quelle métrique qu'on lui fournit.
+
+**Avantages :** scaling piloté par la vraie charge métier (retard de traitement) plutôt qu'un proxy indirect (CPU) ; lecture plus explicite du manifeste (`lagThreshold: 50` est plus parlant que "70% CPU" pour une queue) ; scale-to-zero entre les pics.
+
+📖 [Documentation officielle KEDA — Concepts](https://keda.sh/docs/latest/concepts/) · [Scaler Kafka](https://keda.sh/docs/latest/scalers/apache-kafka/)
+
+--- 
+
+**Le problème que VPA résout :** des `requests` fixées "pour être large" gaspillent des ressources réservées mais jamais utilisées — un ratio CPU réservé/CPU réellement utilisé trop élevé, qui bloque le scheduling d'autres pods pour rien.
+
+Le **HPA** ajuste le **nombre** de pods. Le **VPA** (Vertical Pod Autoscaler) ajuste la **taille** (`requests`/`limits`) de chaque pod, en observant sa consommation réelle dans le temps. **Contrairement au HPA, VPA n'est pas un composant natif de Kubernetes** — c'est un add-on séparé (projet `kubernetes/autoscaler`), à installer et opérer soi-même.
+
+**Trois composants distincts, pas une boîte noire :**
+- **Recommender** : analyse l'usage réel et calcule des recommandations de `requests`/`limits`.
+- **Updater** : applique ces recommandations aux pods existants — par redimensionnement à chaud si possible, sinon par éviction/recréation selon le mode choisi (voir ci-dessous).
+- **Admission controller webhook** : applique les recommandations aux nouveaux pods au moment de leur création.
+
+```yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: mon-app-vpa
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mon-app
+  updatePolicy:
+    updateMode: "InPlace"   # ou "Off" (recommandations seules), "Recreate", "InPlaceOrRecreate"
+```
+
+**Modes d'application :**
+- `Off` : VPA calcule des recommandations mais ne touche à rien — utile pour observer avant d'automatiser.
+- `Initial` : applique la recommandation **uniquement à la création** du pod (au premier déploiement) — jamais sur un pod déjà en cours d'exécution. Un compromis entre "rien" (`Off`) et "ça bouge en permanence".
+- `Recreate` : VPA **recrée le pod** pour appliquer un nouveau dimensionnement — le pod redémarre, peut changer de nœud, une éviction n'est pas garantie de réussir immédiatement.
+- `Auto` : **déprécié**, équivalent à `Recreate` — ne pas utiliser dans une config écrite aujourd'hui.
+- `InPlaceOrRecreate` / `InPlace` (modes à privilégier aujourd'hui) : s'appuient sur le **redimensionnement à chaud** des conteneurs (capacité standard de Kubernetes, sans recréation du pod). Ils diffèrent sur l'échec : `InPlaceOrRecreate` retente en mode `Recreate` si le redimensionnement à chaud échoue ; `InPlace` ne bascule jamais vers une recréation — il laisse le kubelet réessayer plus tard. `InPlace` est donc le choix si **aucune interruption** n'est tolérable.
+
+> ⚠️ Ces deux modes à chaud nécessitent d'activer des feature gates : `InPlacePodVerticalScaling` au niveau du cluster, et un gate spécifique `InPlace` côté VPA (admission + updater). Ce n'est pas le comportement par défaut d'une installation VPA standard.
+
+> ⚠️ **Ce n'est pas un simple interrupteur à activer.** Points de vigilance réels : HPA et VPA sur la **même métrique** (ex: CPU) ne doivent jamais être combinés — ils entreraient en conflit sur les mêmes décisions ; combiner VPA (mémoire) et HPA (CPU) sur un même Deployment reste possible. VPA n'est pas garanti compatible avec les workloads utilisant des `resources` au niveau Pod plutôt que conteneur (limitation connue, en cours de résolution). Plusieurs VPA ciblant le même pod produisent un comportement non défini. À tester en mode `Off` avant toute automatisation en production.
+
+**Enjeu de frugalité :** un cluster où chaque équipe sur-réserve "pour être tranquille" force l'ajout de nœuds (donc du coût) alors que l'utilisation réelle reste basse — un cas réel typique : 14% d'usage CPU réel sur le cluster, mais 81% réservé. VPA automatise le juste dimensionnement, mais au prix d'une vraie complexité opérationnelle à assumer.
+
+📖 [Documentation officielle — Autoscaling Workloads](https://kubernetes.io/docs/concepts/workloads/autoscaling/) · [Limitations connues](https://github.com/kubernetes/autoscaler/blob/master/vertical-pod-autoscaler/docs/known-limitations.md)
+
 ---
 
 ## Topologie des workloads : Où sont déployés les pods ?
@@ -519,6 +810,30 @@ Définir des requests est donc aussi un outil de placement.
 Les **Taints** permettent de marquer un nœud pour repousser tous les pods par défaut  .  
 
 Seuls les pods qui déclarent la **Toleration** correspondante peuvent y être schedulés.
+
+
+---
+
+Trois effets de taint existent, avec des conséquences très différentes sur les pods **déjà en cours d'exécution** sur le nœud :
+
+| Effet | Nouveaux pods | Pods déjà en place |
+|---|---|---|
+| `NoSchedule` | Bloqués (sauf toleration) | **Non affectés** — continuent de tourner |
+| `PreferNoSchedule` | Évités si possible, pas garanti | Non affectés |
+| `NoExecute` | Bloqués (sauf toleration) | **Évincés** — immédiatement, ou après `tolerationSeconds` si spécifié |
+
+L'exemple ci-dessous utilise `NoSchedule` : il réserve `gpu-node-1` pour les futurs pods GPU, **sans rien casser** pour ce qui tourne déjà dessus — c'est le comportement voulu pour une réservation de node pool (on ne veut pas évincer un pod existant juste parce qu'on vient de réserver le nœud). Pour forcer aussi le départ des pods déjà présents, il faudrait `NoExecute` à la place.
+
+```
+Nœud GPU, AVANT le taint :          APRÈS kubectl taint ...:NoSchedule
+┌─────────────────┐                 ┌─────────────────┐
+│ pod-web (déjà là)│                 │ pod-web (reste!) │  <- non affecté
+└─────────────────┘                 └─────────────────┘
+                                     nouveaux pods sans toleration
+                                     → refusés ici, placés ailleurs
+```
+
+📖 [Documentation officielle — Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
 
 ```bash
 # Réserver un nœud pour les workloads GPU
@@ -582,6 +897,16 @@ Avec cette configuration, sur un cluster à 3 zones et 6 réplicas : Kubernetes 
 
 Les **Topology Spread Constraints** équilibrent la distribution globale. La **Pod Anti-Affinity** exprime une règle plus ciblée : "ne pas placer ce pod sur un nœud où tourne déjà un pod avec tel label."
 
+---
+
+Avec `requiredDuringSchedulingIgnoredDuringExecution`, le scheduler refuse de placer le pod si la contrainte ne peut pas être respectée — le pod reste en `Pending` plutôt que de violer la règle.
+
+Avec `preferredDuringSchedulingIgnoredDuringExecution`, la contrainte est une préférence : le scheduler essaie de la respecter, mais place quand même le pod si aucun nœud ne convient.
+
+
+
+---
+
 Cas d'usage typique : un Deployment avec 3 réplicas d'un service critique. On veut garantir qu'aucun nœud n'héberge deux réplicas — une panne nœud ne doit emporter qu'un seul réplica.
 
 ```yaml
@@ -595,9 +920,35 @@ spec:
         topologyKey: kubernetes.io/hostname              # un nœud = un domaine
 ```
 
-Avec `requiredDuringSchedulingIgnoredDuringExecution`, le scheduler refuse de placer le pod si la contrainte ne peut pas être respectée — le pod reste en `Pending` plutôt que de violer la règle.
+---
 
-Avec `preferredDuringSchedulingIgnoredDuringExecution`, la contrainte est une préférence : le scheduler essaie de la respecter, mais place quand même le pod si aucun nœud ne convient.
+Contrairement à `requiredDuringScheduling` (tout ou rien), la version `preferred` accepte **plusieurs règles pondérées** : le scheduler note chaque nœud candidat en additionnant le `weight` (1 à 100) de chaque règle satisfaite, puis choisit le nœud avec le meilleur score — sans jamais exclure un nœud comme le ferait `required`.
+
+```
+3 nœuds candidats, 2 règles preferred :
+  - weight: 80  → éviter les pods "app: mon-app"     (anti-colocation)
+  - weight: 20  → préférer la zone "eu-west-1a"
+
+Nœud A : pas de pod "app: mon-app", zone eu-west-1a   → score = 80 + 20 = 100  ✅ choisi
+Nœud B : pas de pod "app: mon-app", zone eu-west-1b   → score = 80 + 0  = 80
+Nœud C : contient déjà "app: mon-app", zone eu-west-1a → score = 0  + 20 = 20
+```
+
+Avec une seule règle `preferred` (comme dans l'exemple ci-dessous), le `weight` n'a pas d'effet observable — il ne devient utile qu'en présence de **plusieurs règles à arbitrer entre elles**. C'est pour ça qu'un seul `weight: 100` isolé peut sembler arbitraire : sa valeur ne compte que relativement aux autres poids déclarés.
+
+**Les opérateurs logiques disponibles dans `matchExpressions` :**
+
+| Opérateur | Effet |
+|---|---|
+| `In` | la valeur du label est dans la liste fournie |
+| `NotIn` | la valeur du label n'est pas dans la liste fournie |
+| `Exists` | un label avec cette clé existe (peu importe sa valeur) |
+| `DoesNotExist` | aucun label avec cette clé n'existe |
+| `Gt` / `Lt` | *(node affinity uniquement)* valeur numérique supérieure/inférieure |
+
+`NotIn` et `DoesNotExist` permettent d'exprimer une forme d'anti-affinité directement dans une règle `nodeAffinity`/`podAffinity`, sans passer par `podAntiAffinity`.
+
+📖 [Documentation officielle — Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
 
 ```yaml
 spec:
@@ -682,72 +1033,7 @@ Le résultat : **tous les nouveaux Deployments du cluster bénéficient d'une r�
 
 ---
 
-### Commandes kubectl pour le réseau et le packaging
-
-```bash
-# Inspecter les objets réseau
-kubectl get ingress                       # liste les Ingresses
-kubectl get ingress -o yaml              # détails complets
-kubectl get nodes -o wide                # IPs des nœuds (utile pour tester)
-
-# Vérifier les NetworkPolicies
-kubectl describe networkpolicy <nom>
-
-# Namespaces
-kubectl create namespace <nom>
-kubectl apply -k ./overlays/dev -n mon-namespace
-
-# Tester l'accès réseau depuis l'extérieur
-# Ajouter une entrée dans /etc/hosts : <IP-cluster>  mon-app.example.com
-# Puis : curl http://mon-app.example.com
-```
-
-### Debugging : logs, events, troubleshooting
-
-Commandes essentielles pour débugger :
-
-```bash
-# Logs d'un pod (tous les conteneurs)
-kubectl logs <pod> --all-containers
-
-# Logs en temps réel
-kubectl logs <pod> -f
-
-# Events du namespace (très utiles pour diagnostiquer les échecs)
-kubectl get events --sort-by='.lastTimestamp'
-
-# Description détaillée (events inclus)
-kubectl describe pod <pod>
-
-# Exécuter une commande dans un pod
-kubectl exec -it <pod> -- /bin/sh
-
-# Port-forward pour accéder localement à un service
-kubectl port-forward svc/<service> 8080:80
-```
-
-Problèmes courants :
-
-| Symptôme | Cause probable |
-|---|---|
-| Pod en `Pending` | Pas de nœud avec suffisamment de ressources, ou PVC non bound |
-| Pod en `CrashLoopBackOff` | L'application plante au démarrage — vérifier les logs |
-| Pod en `ImagePullBackOff` | Image introuvable ou credentials registry manquants |
-| Service sans endpoints | Selector du Service ne correspond pas aux labels des pods |
-
----
-
-### Multi-cluster : paramétrer par environnement
-
-Avec Kustomize ou Helm, on peut maintenir des paramètres différents par environnement sans dupliquer le code :
-- image tag : `dev` vs `v1.2.3`
-- replicas : 1 en dev, 3 en prod
-- ressources : requests/limits plus basses en dev
-- URLs et configuration : différentes par environnement
-
-L'approche GitOps étend cela : chaque branche ou dossier correspond à un environnement, ArgoCD déploie automatiquement.
-
----
+## Sécurité 
 
 ### Sécurité : scanning d'images
 
@@ -764,3 +1050,137 @@ Les bonnes pratiques :
 - Reconstruire régulièrement vos images pour patcher les CVEs sur l'image de base
 - Intégrer le scanning dans la CI/CD — bloquer si trop de failles critiques
 - 6 mois est déjà vieux pour une image de conteneur
+
+
+---
+
+### Les CVE et la course aux mises à jour
+
+Le scanning d'image détecte les CVEs, mais ne les corrige pas. Reconstruire une image régulièrement suppose de savoir **quand** une nouvelle version d'une dépendance ou d'une image de base est disponible — un suivi manuel intenable à l'échelle d'un projet.
+
+**Renovate** automatise ce suivi : il scanne votre dépôt (Dockerfiles, manifestes Kubernetes, fichiers de dépendances applicatives) et ouvre automatiquement une **Pull Request** dès qu'une nouvelle version est disponible.
+
+```yaml
+# Avant (dans un Deployment)
+image: mon-app:1.2.0
+
+# Renovate détecte une nouvelle version et ouvre une PR qui change :
+image: mon-app:1.3.0
+```
+
+> Pour les manifestes Kubernetes, Renovate ne scanne rien par défaut — il faut déclarer explicitement les fichiers à suivre dans sa configuration (`managerFilePatterns`). Oublier cette étape est l'erreur la plus fréquente : "j'ai installé Renovate mais rien ne se passe."
+
+**Ce que ça change concrètement :** au lieu d'un audit manuel périodique, chaque mise à jour disponible devient une PR à review — le patching de CVE devient un flux de travail Git normal (review, CI, merge) plutôt qu'une tâche séparée à ne pas oublier.
+
+**Équivalents existants :** **Dependabot**, intégré nativement à GitHub (pas d'installation séparée, juste un fichier `dependabot.yml`), fait la même chose côté GitHub. Renovate reste plus configurable (regroupement de PRs, planification fine, plus d'écosystèmes couverts) et fonctionne sur GitHub, GitLab, Bitbucket — pas seulement GitHub. En pratique : Dependabot si votre code est déjà 100% sur GitHub et que la configuration par défaut suffit ; Renovate si vous avez besoin de plus de contrôle ou d'un autre hébergeur Git.
+
+📖 [Documentation officielle Renovate](https://docs.renovatebot.com/) · [Support Kubernetes](https://docs.renovatebot.com/modules/manager/kubernetes/) · [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates)
+
+---
+
+### Les Policy Agents et les hooks d'adminssion
+
+**Ce que fait un Policy Agent :** intercepter chaque objet soumis à l'API Kubernetes (via un *admission webhook*) et décider de l'accepter ou de le rejeter selon des règles déclaratives — avant même que l'objet soit persisté dans etcd. Un Policy Agent peut fonctionner en mode **mutation** (il modifie l'objet à la volée, ex: injecter une valeur par défaut) ou en mode **validation** : rejeter purement et simplement ce qui ne respecte pas la politique.
+
+```
+kubectl apply -f pod.yaml
+        │
+        ▼
+┌───────────────┐    mutation     ┌──────────────┐   validation    ┌───────┐
+│ kube-apiserver │ ─────────────► │ Policy Agent │ ──────────────► │ etcd  │
+│                │  (objet modifié│ (webhook)    │  ALLOW / DENY   │(perst)│
+└───────────────┘   si besoin)    └──────────────┘                └───────┘
+                                          │
+                                     DENY │
+                                          ▼
+                                   requête rejetée,
+                                   pod jamais créé
+```
+
+**OPA (Open Policy Agent)** est le projet CNCF fondateur de cette approche — un moteur de politique générique, pas spécifique à Kubernetes. **OPA Gatekeeper** est la couche d'intégration Kubernetes recommandée : elle transforme les politiques en objets Kubernetes natifs (`ConstraintTemplate` + `Constraint`).
+
+```yaml
+# ConstraintTemplate : définit la règle (en Rego, le langage de policy d'OPA)
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8spodsecrequired
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPodSecRequired
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spodsec
+        violation[{"msg": msg}] {
+          volume := input.review.object.spec.volumes[_]
+          volume.hostPath
+          msg := "les volumes hostPath sont interdits"
+        }
+---
+# Constraint : applique la règle à un périmètre (ici : tous les Pods)
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPodSecRequired
+metadata:
+  name: pod-security-required
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+```
+
+Ce couple `ConstraintTemplate`/`Constraint` rejetterait tout Pod déclarant un volume `hostPath` — un pattern à éviter, car il lie un Pod à un nœud spécifique et pose des risques de sécurité (accès direct au filesystem du nœud).
+
+**Concurrents à connaître de nom :** **Kyverno** (politiques exprimées en YAML pur, sans langage dédié à apprendre — plus simple à prendre en main qu'OPA) et **jsPolicy** (politiques en JavaScript). Kyverno est aujourd'hui souvent préféré pour sa syntaxe plus proche de Kubernetes ; OPA/Gatekeeper reste répandu en entreprise et plus générique (utilisable hors Kubernetes aussi).
+
+**Bonnes pratiques usuelles imposées par ces outils :** interdire `hostPath`, exiger un `securityContext` (`runAsNonRoot: true`), interdire les images `:latest`, imposer des `requests`/`limits`.
+
+📖 [Documentation officielle — Open Policy Agent & Kubernetes](https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/) · [OPA Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/)
+
+---
+
+### Les modules de sécurité avancée 
+
+Un contrôle en amont (au moment du déploiement) ne détecte rien de ce qui se passe une fois le conteneur en cours d'exécution. **Falco** couvre cet angle mort : il surveille en continu ce qui se passe réellement dans les conteneurs en cours d'exécution, au niveau du kernel (via eBPF), et alerte sur des comportements suspects — même si l'objet déployé au départ était parfaitement conforme.
+
+**Ce que Falco détecte typiquement :**
+- Un shell lancé dans un conteneur qui ne devrait jamais en avoir besoin
+- Une écriture dans un fichier sensible (`/etc/shadow`, binaires système)
+- Une élévation de privilèges inattendue à l'intérieur d'un conteneur
+- Une connexion réseau sortante vers une IP inhabituelle
+
+```yaml
+# Exemple de règle Falco (extrait) : détecter un shell interactif dans un conteneur
+- rule: Terminal shell in container
+  desc: Un shell interactif a été lancé dans un conteneur
+  condition: >
+    spawned_process and container
+    and shell_procs and proc.tty != 0
+  output: >
+    Shell ouvert dans un conteneur (user=%user.name container=%container.name
+    shell=%proc.name parent=%proc.pname)
+  priority: WARNING
+```
+
+> Policy Agent = prévention (bloque avant que ça existe). Falco = détection (alerte pendant que ça se passe). Les deux sont complémentaires, pas substituables l'un à l'autre.
+
+```
+   déploiement                                   durée de vie du pod
+        │                                        (potentiellement des jours/mois)
+        ▼                                        ────────────────────────────►
+┌───────────────┐
+│ Policy Agent  │  contrôle ponctuel,
+│ (avant)       │  à ce seul instant
+└───────────────┘
+                    ┌──────────────────────────────────────────────┐
+                    │ Falco : surveillance continue (kernel/eBPF)   │
+                    │ alerte à tout moment si comportement suspect  │
+                    └──────────────────────────────────────────────┘
+```
+
+📖 [Documentation officielle Falco](https://falco.org/docs/)
+
+![](../../static/img/kubernetes/kubernetes_top_10_patterns.png)
