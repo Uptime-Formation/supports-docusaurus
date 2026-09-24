@@ -32,6 +32,36 @@ C'est la méthode recommandée en production — les fichiers YAML sont la sourc
 
 ---
 
+### La boucle de réconciliation : ce qui se passe après `kubectl apply`
+
+**`kubectl apply` est asynchrone.** La commande n'exécute rien elle-même — elle envoie à l'API Kubernetes l'état souhaité, puis rend la main immédiatement. Le travail réel (créer les pods, démarrer les conteneurs, mettre à jour un déploiement) se passe **après**, en arrière-plan.
+
+Ce travail est fait par des **controllers** : des processus qui tournent en permanence dans le cluster (le control plane), chacun responsable d'un type d'objet (Deployment, Job, Service...). Chaque controller applique la même boucle, en continu :
+
+```
+  ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+  │  1. Observer │──────► │  2. Comparer │──────► │   3. Agir    │
+  │              │        │              │        │              │
+  └──────────────┘        └──────────────┘        └──────────────┘
+  État actuel du          État souhaité            Créer, supprimer,
+  cluster                 (déclaré via              modifier des
+                           kubectl apply)            ressources
+
+  ▲                                                              │
+  │                        boucle sans fin                       │
+  └──────────────────────────────────────────────────────────────┘
+```
+
+**Le controller ne s'arrête jamais** : il réessaie indéfiniment tant que l'état réel ne correspond pas à l'état souhaité. Un pod crashe ? Le controller du Deployment le détecte à la prochaine itération et en recrée un. Un nœud tombe ? Les pods qu'il hébergeait sont recréés ailleurs, sans intervention humaine.
+
+C'est ce mécanisme — pas une exécution ponctuelle de la commande — qui explique le **self-healing** de Kubernetes : ce n'est pas `kubectl apply` qui "répare" le cluster, c'est la boucle de réconciliation qui tourne en continu et corrige tout écart, y compris ceux survenus bien après l'`apply` initial.
+
+> `kubectl apply -f object.yaml` répond quasi instantanément, mais ça ne veut pas dire que l'état souhaité est atteint — seulement que l'intention a été enregistrée. `kubectl get pods -w` ou `kubectl rollout status` permettent d'observer la convergence réelle.
+
+📖 [Documentation officielle — Controllers](https://kubernetes.io/docs/concepts/architecture/controller/)
+
+---
+
 ### Structure de base d'un objet Kubernetes
 
 ```yaml
@@ -207,7 +237,7 @@ Ils ne peuvent pas être définis dans le manifeste initial, ne redémarrent pas
 
 ### Le pattern Sidecar
 
-Sur le schéma, les trois conteneurs standards sont étiquetés `app`, `logs` et `proxy`. Ce n'est pas un hasard : c'est l'illustration du **pattern sidecar**.
+Sur le schéma du Pod, les trois conteneurs standards sont étiquetés `app`, `logs` et `proxy`. Ce n'est pas un hasard : c'est l'illustration du **pattern sidecar**.
 
 **Un sidecar est un conteneur secondaire qui tourne aux côtés du conteneur applicatif principal pour lui ajouter une responsabilité transverse**, sans modifier son code.
 
@@ -589,11 +619,12 @@ Valider un fichier YAML sans l'appliquer : `kubectl apply --dry-run=client -f fi
 
 Le pod démarre, crashe, redémarre en boucle. Kubernetes augmente progressivement le délai entre les tentatives.
 
-**Causes** : l'application plante au démarrage — mauvaise commande, variable d'environnement manquante, dépendance inaccessible.
+**Causes** : l'application plante au démarrage — mauvaise commande, variable d'environnement manquante, dépendance inaccessible. Le code de sortie du conteneur oriente le diagnostic : **Code 1** est une erreur générique de l'application (à chercher dans ses logs) ; **Code 125** signifie que la commande du conteneur a échoué avant même que l'application démarre (mauvais entrypoint, binaire absent).
 
 ```bash
 kubectl logs <pod-name>             # voir pourquoi l'app crashe
 kubectl logs <pod-name> --previous  # logs du crash précédent
+kubectl describe pod <pod-name>     # champ "Last State" indique le code de sortie
 ```
 
 ---
@@ -637,38 +668,41 @@ kubectl get secret,configmap -n <namespace>
 
 ---
 
-### 5. NodeNotReady
+### 5. Service qui ne répond pas : mauvais label
 
-Un nœud est indisponible — les pods qui y tournent passent en `Unknown` ou sont évincés.
+**L'erreur la plus fréquente une fois l'application déployée** : un Service tout neuf qui ne renvoie rien, ou une erreur de connexion. Ce n'est presque jamais un problème réseau — c'est le `selector` du Service qui ne correspond à aucun pod (faute de frappe, label oublié sur le Deployment).
+
+**Causes** : label du pod différent de celui attendu par le `selector` du Service, ou pod pas encore `Ready` (voir readiness probe ci-dessous).
 
 ```bash
-kubectl get nodes
-kubectl describe node <node-name>  # conditions : MemoryPressure, DiskPressure, NetworkUnavailable
+kubectl describe service <nom>              # section "Endpoints" — vide = aucun pod trouvé
+kubectl get pods -l app=<label-du-selector> # vérifie quels pods portent réellement ce label
 ```
 
 ---
 
 ### 6. Pod en Pending
 
-Le pod n'est pas schedulé — il attend sur la liste d'attente du scheduler.
+Le pod n'est pas schedulé — il attend sur la liste d'attente du scheduler, faute d'avoir trouvé un nœud compatible.
 
-**Causes** : ressources insuffisantes sur les nœuds, PVC non lié, `nodeSelector` ou taint bloquant.
+**Causes** : ressources (`requests`) insuffisantes sur les nœuds disponibles, PVC non lié, `nodeSelector` ou taint trop restrictif.
 
 ```bash
-kubectl describe pod <pod-name>   # section "Events" indique pourquoi le scheduling échoue
+kubectl describe pod <pod-name>   # section "Events" : "0/3 nodes are available: insufficient cpu..."
 kubectl top nodes                 # ressources disponibles par nœud
 ```
 
 ---
 
-### 7. FailedScheduling
+### 7. Pod qui ne devient jamais "Ready"
 
-Le scheduler a cherché un nœud et n'en a trouvé aucun compatible.
+Le pod est `Running`, mais reste `0/1 Ready` indéfiniment — il ne reçoit jamais de trafic (et un `Deployment` en rolling update reste bloqué en attendant).
 
-**Causes** : requests trop élevées, taints sans toleration, nodeSelector trop restrictif.
+**Causes** : `readinessProbe` mal configurée — mauvais port ou chemin HTTP, endpoint qui ne répond jamais 200, `initialDelaySeconds` trop court pour une application lente au démarrage.
 
 ```bash
-kubectl describe pod <pod-name>   # "0/3 nodes are available: insufficient cpu..."
+kubectl describe pod <pod-name>   # section "Events" : échecs successifs de la readiness probe
+kubectl get pod <pod-name> -o jsonpath='{.status.containerStatuses[0].ready}'
 ```
 
 ---
@@ -687,24 +721,29 @@ kubectl logs <pod-name>
 
 ---
 
-### 9. Exit Code 1 / 125
+### 9. Init container qui crashe ou qui reste bloqué
 
-**Code 1** : erreur générique de l'application. **Code 125** : la commande du conteneur a échoué avant même que l'app démarre.
+Le pod reste en `Init:0/1` (ou `Init:X/Y`) indéfiniment, sans jamais démarrer ses conteneurs applicatifs. Deux symptômes très différents, à ne pas confondre :
+
+- **Il crashe** : le kubelet le **redémarre indéfiniment** (comme un `CrashLoopBackOff`), le `RESTARTS` augmente à chaque tentative — sauf si `restartPolicy: Never`, où le pod entier passe directement en échec sans retry.
+- **Il reste bloqué** (attend un service jamais disponible, volume non monté, boucle infinie) : rien ne le détecte. Les init containers ne supportent **aucune probe** (`livenessProbe`, `readinessProbe`) — un init container qui n'échoue jamais mais ne se termine jamais non plus bloque le pod indéfiniment, sans redémarrage ni alerte automatique.
 
 ```bash
-kubectl logs <pod-name>
-# Tester localement : docker run --rm <image> pour reproduire
+kubectl describe pod <pod-name>              # RESTARTS élevé = crash en boucle ; 0 = bloqué sans erreur
+kubectl logs <pod-name> -c <init-container-name>          # logs de la tentative en cours
+kubectl logs <pod-name> -c <init-container-name> --previous  # logs de la tentative précédente (si crash)
 ```
 
 ---
 
-### 10. Pod bloqué en Init / Waiting
+### 10. PVC bloqué en Pending
 
-Les init containers ne se terminent pas — le pod reste en `Init:0/1` indéfiniment.
+Le pod reste en `Pending` (voir #6), mais la vraie cause est en amont : la **PersistentVolumeClaim** elle-même ne trouve pas de volume. Le diagnostic se fait sur le PVC, pas sur le pod.
 
-**Causes** : init container qui attend un service jamais disponible, image incorrecte, volume non monté.
+**Causes** : `storageClassName` qui n'existe pas ou mal orthographié, aucune StorageClass par défaut sur le cluster, aucun provisioner disponible pour créer le volume, ou `accessModes` demandé (ex: `ReadWriteMany`) non supporté par le storage disponible.
 
 ```bash
-kubectl describe pod <pod-name>   # état de chaque init container
-kubectl logs <pod-name> -c <init-container-name>
+kubectl get pvc                    # colonne STATUS : Pending = non résolu
+kubectl describe pvc <nom>         # section "Events" : raison précise du blocage
+kubectl get storageclass           # vérifie qu'une StorageClass existe et laquelle est "(default)"
 ```
