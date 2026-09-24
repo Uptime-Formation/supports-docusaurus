@@ -93,6 +93,103 @@ spec:
 
 ---
 
+### Requests et limits : dimensionner un conteneur
+
+Chaque conteneur peut déclarer deux valeurs de ressources, pour le CPU et la mémoire :
+
+- **`requests`** : ce que le conteneur est garanti d'obtenir — c'est aussi ce que le scheduler utilise pour décider sur quel nœud placer le pod (il ne place un pod que si le nœud a assez de ressources **non déjà réservées** par d'autres requests)
+- **`limits`** : le plafond que le conteneur ne doit pas dépasser
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rancher-demo-pod
+spec:
+  containers:
+    - image: monachus/rancher-demo:latest
+      name: rancher-demo-container
+      resources:
+        requests:
+          cpu: "250m"        # 0.25 cœur CPU
+          memory: "128Mi"    # 128 mébioctets
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+```
+
+---
+
+**Notation :**
+- **CPU** : en cœurs, ou en millicores avec le suffixe `m` — `500m` = 0,5 cœur, `1` = 1 cœur entier
+- **Mémoire** : en octets, avec suffixes binaires `Mi`/`Gi` (mébioctets/gibioctets, base 1024) ou décimaux `M`/`G` (base 1000) — `Mi` est la convention la plus courante dans les manifestes Kubernetes
+
+---
+
+![Requests et limits Kubernetes](../../static/img/kubernetes/requests-limits.png)
+
+Le schéma montre le chemin complet : la capacité totale d'un nœud n'est pas toute allouable (le système et kubelet en réservent une part), puis les **requests** de chaque pod sont garanties sans jamais pouvoir être overcommitées, alors que les **limits** peuvent dépasser la capacité réelle du nœud (overcommitment) — au prix d'un risque de throttling ou de kill si tous les pods consomment leur limite en même temps.
+
+---
+
+**Le dépassement d'une limite ne se comporte pas pareil selon la ressource :**
+- **CPU** : limite **souple**, appliquée par throttling — le kernel ralentit le conteneur, mais ne le tue jamais pour ça
+- **Mémoire** : limite **dure**, appliquée par le kernel via OOM killer — un conteneur qui dépasse sa limite mémoire est **`OOMKilled`** (tué, pas ralenti)
+
+---
+
+**Impact sur le dimensionnement du cluster :** des requests mal calibrées ont un coût direct. Trop basses, et le nœud accepte plus de pods qu'il ne peut réellement en nourrir en cas de pic — risque d'OOM. Trop hautes "pour être tranquille", et les ressources réservées mais jamais utilisées bloquent le scheduling d'autres pods, forçant l'ajout de nœuds inutiles. Un cas réel typique : 14% d'utilisation CPU réelle sur le cluster, mais 81% réservé par des requests trop généreuses.
+
+---
+
+**QoS (Quality of Service) — trois classes automatiques :**
+
+| Classe | Condition | Comportement à l'éviction |
+|---|---|---|
+| **Guaranteed** | `requests` = `limits` pour CPU **et** mémoire, sur tous les conteneurs | Évincé en dernier |
+| **Burstable** | Au moins une request ou limit définie, sans satisfaire Guaranteed | Évincé après les BestEffort |
+| **BestEffort** | Aucune request ni limit définie | Évincé en premier |
+
+Kubernetes assigne cette classe automatiquement — il n'y a rien à déclarer explicitement. Elle détermine l'ordre d'éviction quand un nœud manque de ressources : les pods `BestEffort` sont sacrifiés en premier, les `Guaranteed` en dernier.
+
+> Un pod sans aucune request ni limit (`BestEffort`) peut atterrir n'importe où, y compris sur un nœud déjà saturé — et sera le premier évincé en cas de pression sur les ressources.
+
+📖 [Documentation officielle — Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) · [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/)
+
+---
+
+### SecurityContext : durcir l'exécution d'un conteneur
+
+Par défaut, un conteneur peut tourner en `root` et écrire n'importe où sur son propre système de fichiers. Le `securityContext` restreint ça :
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rancher-demo-pod
+  labels:
+    app: rancher-demo
+spec:
+  containers:
+    - image: monachus/rancher-demo:latest
+      name: rancher-demo-container
+      ports:
+        - containerPort: 8080
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+```
+
+- **`runAsNonRoot` / `runAsUser`** : interdit l'exécution en `root`, impose un UID explicite
+- **`readOnlyRootFilesystem`** : système de fichiers du conteneur en lecture seule — toute écriture doit passer par un volume monté explicitement
+- **`allowPrivilegeEscalation: false`** : empêche le processus d'obtenir plus de privilèges que son parent (bloque par exemple les binaires `setuid`)
+
+Le `securityContext` peut se déclarer au niveau du Pod (s'applique à tous les conteneurs) ou au niveau d'un conteneur précis, comme ci-dessus — la version au niveau conteneur est prioritaire en cas de conflit.
+
+---
+
 **Un pod peut contenir trois types de conteneurs aux rôles distincts :**
 
 **Init containers** : s'exécutent séquentiellement avant les conteneurs principaux, jusqu'à complétion. Utilisés pour des tâches de préparation (attendre une base de données, pré-charger des fichiers). 
@@ -318,6 +415,53 @@ spec:
 kubectl get services
 kubectl describe service <nom>   # voir les endpoints
 ```
+
+### ClusterIP
+
+**`ClusterIP` est le type de Service par défaut** — il crée une IP stable, accessible uniquement **depuis l'intérieur du cluster**. C'est le type le plus utilisé en pratique : la grande majorité des communications entre applications se font en interne, sans jamais sortir du cluster.
+
+Un même Deployment peut être exposé par **plusieurs Services en même temps** — par exemple le `demo-service` NodePort vu ci-dessus pour l'accès externe, et un second Service `ClusterIP` pour l'accès interne, tous deux ciblant les mêmes pods via le même label :
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-internal
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: demonstration   # même label que demo-service : mêmes pods, deux points d'accès
+```
+
+```bash
+kubectl apply -f demo-internal-service.yaml
+kubectl get service demo-internal   # une CLUSTER-IP, pas d'EXTERNAL-IP
+```
+
+---
+
+**Comment le Service retrouve les pods dynamiquement :** le `selector` ne pointe pas vers des IPs fixes — à chaque changement (pod créé, supprimé, ou qui échoue sa readiness probe), Kubernetes met à jour la liste des IPs derrière le Service. Cet objet qui liste les IPs s'appelle un **EndpointSlice** ; il est **entièrement automatique** dès qu'un Service a un `selector` — on ne l'écrit jamais à la main, seulement l'observer :
+
+```bash
+kubectl get endpointslices -l kubernetes.io/service-name=demo-internal
+kubectl describe endpointslice <nom>   # liste des IPs de pods actuellement prêtes
+```
+
+> **Erreur fréquente : un Service tout neuf qui ne répond pas, c'est presque toujours un problème de label.** Si `selector` ne correspond à aucun pod (faute de frappe, mauvaise valeur), l'EndpointSlice reste vide et le trafic n'a nulle part où aller. Pour vérifier rapidement quels pods portent réellement un label donné :
+> ```bash
+> kubectl get pods -l app=demonstration   # liste les pods qui ont EXACTEMENT ce label
+> ```
+> Si cette commande ne retourne rien, le `selector` du Service ne trouvera rien non plus.
+
+---
+
+![Schéma des Services Kubernetes](../../static/img/kubernetes/schemas-perso/k8s-services.drawio.png)
+
+> Le schéma montre les trois types de Service partageant le même mécanisme : une IP stable + un `selector` qui route vers des IPs de pods qui changent en permanence. Seul ce qui se passe **en dehors du cluster** (colonne du bas) diffère entre `ClusterIP`, `NodePort` et `LoadBalancer`.
+
+---
 
 ### Différents types de service 
 

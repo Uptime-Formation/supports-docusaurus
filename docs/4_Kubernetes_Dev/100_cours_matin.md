@@ -77,6 +77,10 @@ containers:
     mountPath: /redis-master
 ```
 
+```bash
+kubectl get configmap <nom> -o yaml
+```
+
 ### Secrets
 
 Les Secrets se manipulent comme des ConfigMaps, mais ils sont encodés en base64 et destinés aux données sensibles : mots de passe, clés privées, certificats, tokens.
@@ -132,6 +136,17 @@ volumes:
     secretName: my-cert
 ```
 
+```bash
+kubectl get secret <nom>           # valeurs en base64
+kubectl describe secret <nom>      # affiche les clés (pas les valeurs)
+```
+
+Pour vérifier qu'un secret est bien exposé dans un pod :
+
+```bash
+kubectl exec -it <pod> -- env | grep POSTGRES
+```
+
 ---
 
 ## Contrôleurs alternatifs : Jobs, CronJobs, StatefulSets
@@ -154,7 +169,7 @@ Les Jobs sont utiles pour des tâches à exécuter une seule fois. Si vous exéc
 
 Un Job garantit que la tâche s'exécute jusqu'à complétion un nombre défini de fois.
 
-## CronJob : tâches périodiques
+### CronJob : tâches périodiques
 
 Comme un Job, mais planifié sur un intervalle régulier, avec la syntaxe cron unix.
 
@@ -238,6 +253,12 @@ spec:
 
 Le `volumeClaimTemplates` crée automatiquement un PVC par pod : `redis-data-redis-set-0`, `redis-data-redis-set-1`, etc.
 
+Le label automatique `statefulset.kubernetes.io/pod-name: <pod-name>` est ajouté par Kubernetes sur chaque pod d'un StatefulSet. On peut l'utiliser dans un Service selector pour cibler un pod précis.
+
+```bash
+kubectl exec -it <pod> -- /bin/sh
+```
+
 ---
 
 ## Stockage et Volumes
@@ -290,64 +311,11 @@ volumes:
     claimName: redis-pvc
 ```
 
----
-
-## Commandes kubectl essentielles
-
 ```bash
-# Gérer le namespace courant
-kubectl create namespace mynamespace
-kubectl config set-context --current --namespace=mynamespace
-kubectl config get-contexts
-
-# Inspecter les objets de configuration
-kubectl get configmap <nom> -o yaml
-kubectl get secret <nom>           # valeurs en base64
-kubectl describe secret <nom>      # affiche les clés (pas les valeurs)
-
-# Inspecter le stockage
 kubectl get storageclass           # classes de stockage disponibles
 kubectl get pvc                    # PersistentVolumeClaims
 kubectl get pv                     # PersistentVolumes
-
-# Inspecter les services
-kubectl get endpoints <service>    # IPs des pods backend d'un service
-
-# Exécuter une commande dans un pod
-kubectl exec -it <pod> -- /bin/sh
-kubectl exec -it <pod> -- env | grep POSTGRES
-kubectl exec <pod> -- cat /data/fichier.txt
 ```
-
-Le label automatique `statefulset.kubernetes.io/pod-name: <pod-name>` est ajouté par Kubernetes sur chaque pod d'un StatefulSet. On peut l'utiliser dans un Service selector pour cibler un pod précis.
-
----
-
-## Transversaux
-
-### Requests et limits : réserver des ressources
-
-Définir des `requests` et `limits` pour chaque conteneur est indispensable pour partager un cluster correctement.
-
-- **Requests** : ressources réservées — utilisées par le scheduler pour décider sur quel nœud placer le pod
-- **Limits** : plafond — le conteneur ne peut pas dépasser cette valeur
-
-```yaml
-resources:
-  requests:
-    memory: "64Mi"
-    cpu: "250m"
-  limits:
-    memory: "128Mi"
-    cpu: "500m"
-```
-
-Un pod sans request peut se faire déplacer en priorité (basse priorité QoS).
-
-**Problème courant** : ratio CPU réservé/CPU utilisé trop élevé. Exemple :
-- Utilisation CPU globale du cluster : 14%
-- Réservation CPU globale : 81%
-- Résultat : impossible de scheduler un nouveau pod — le cloud autoscaler ajoute un nœud inutilement
 
 ### Longhorn : stockage persistant pour clusters on-premise
 
@@ -360,20 +328,6 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/depl
 ```
 
 Après installation, la StorageClass `longhorn` est disponible : `kubectl get storageclass`.
-
-### SecurityContext : sécurité des pods
-
-Un `securityContext` permet de contraindre l'exécution d'un conteneur :
-
-```yaml
-securityContext:
-  runAsUser: 999
-  runAsGroup: 999
-  readOnlyRootFilesystem: true
-```
-
-- **`runAsUser`** : UID sous lequel le processus s'exécute (éviter root)
-- **`readOnlyRootFilesystem`** : système de fichiers du conteneur en lecture seule
 
 ---
 
@@ -391,11 +345,33 @@ En pratique, cela peut mener à des déséquilibres : tous les pods d'un même D
 
 **Le scheduler élimine d'abord les nœuds qui ne peuvent pas accueillir le pod  .**  
 
-La règle est simple : un pod n'est schedulé sur un nœud que si ce nœud a suffisamment de ressources **réservées disponibles** (requests non encore allouées) pour couvrir les requests du pod.
+Définir des `requests` et `limits` pour chaque conteneur est indispensable pour partager un cluster correctement :
+
+- **Requests** : ressources réservées — utilisées par le scheduler pour décider sur quel nœud placer le pod
+- **Limits** : plafond — le conteneur ne peut pas dépasser cette valeur
+
+```yaml
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+```
+
+Un pod sans request peut se faire déplacer en priorité (basse priorité QoS).
+
+La règle de placement est simple : un pod n'est schedulé sur un nœud que si ce nœud a suffisamment de ressources **réservées disponibles** (requests non encore allouées) pour couvrir les requests du pod.
 
 Sans `requests` définies, le pod peut atterrir n'importe où — y compris sur un nœud déjà saturé  .  
 
 Définir des requests est donc aussi un outil de placement.
+
+**Problème courant** : ratio CPU réservé/CPU utilisé trop élevé. Exemple :
+- Utilisation CPU globale du cluster : 14%
+- Réservation CPU globale : 81%
+- Résultat : impossible de scheduler un nouveau pod — le cloud autoscaler ajoute un nœud inutilement
 
 ---
 
