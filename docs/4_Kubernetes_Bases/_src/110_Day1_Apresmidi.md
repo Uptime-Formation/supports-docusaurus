@@ -78,7 +78,7 @@ metadata:
     app: rancher-demo
 spec:
   containers:
-    - image: monachus/rancher-demo:latest
+    - image: bashofmann/rancher-demo:1.1.0
       name: rancher-demo-container
       ports:
         - containerPort: 8080

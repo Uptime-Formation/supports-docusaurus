@@ -29,12 +29,12 @@ kubectl exec -it mon-pod -- getent ahosts mon-service.mon-namespace
 
 ```
 namespace: mon-namespace              namespace: autre-namespace
-┌─────────────────────────┐           ┌─────────────────────────┐
-│  Pod A ──► mon-service   │           │  Service: autre-service  │
-│            (nom court)   │           │                           │
-│                          │──────────►│  mon-service.mon-namespace│
-│                          │  (forme longue depuis l'extérieur)    │
-└─────────────────────────┘           └─────────────────────────┘
+┌─────────────────────────┐           ┌───────────────────────────┐
+│  Pod A ──► mon-service  │           │  Service: autre-service   │
+│            (nom court)  │           │                           │
+│                         │──────────►│  mon-service.mon-namespace│
+│                         │  (forme longue depuis l'extérieur)    │
+└─────────────────────────┘           └───────────────────────────┘
 ```
 
 > À retenir : un Pod ne connaît jamais l'IP réelle des autres Pods qu'il contacte via un Service — il passe toujours par le nom DNS du Service, qui reste stable même quand les Pods derrière changent.
@@ -66,8 +66,6 @@ kind: Ingress
 metadata:
   name: my-app-ingress
   namespace: mynamespace
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: traefik
   rules:
@@ -379,6 +377,8 @@ ArgoCD      → surveille Git, réconcilie le cluster en continu
 Cluster     → reflète exactement ce qui est dans Git
 ```
 
+---
+
 ### Kustomize et Helm dans un workflow GitOps
 
 ArgoCD supporte nativement Kustomize et Helm — il sait les appliquer sans étape intermédiaire.
@@ -406,6 +406,8 @@ source:
 
 Dans les deux cas, la promotion entre environnements (dev → staging → prod) se fait en mettant à jour le fichier de valeurs ou l'overlay correspondant dans Git — pas en exécutant une commande.
 
+---
+
 ### ArgoCD : l'opérateur de réconciliation
 
 **ArgoCD** surveille un dépôt Git et rapproche en continu l'état du cluster avec ce qui y est déclaré. Il ajoute un type d'objet `Application` :
@@ -428,6 +430,8 @@ spec:
 ```
 
 Si un opérateur modifie manuellement une ressource dans le cluster, ArgoCD détecte la dérive et la signale (ou la corrige automatiquement selon la configuration).
+
+---
 
 ### Drift : quand le cluster diverge de Git
 
@@ -543,6 +547,8 @@ kubectl describe hpa mon-app-hpa # voir les événements de scaling et leur rais
 > Scale up rapide, scale down prudent : c'est un choix de design volontaire — mieux vaut avoir temporairement un peu trop de pods (coût) que pas assez (indisponibilité).
 
 📖 [Documentation officielle — Horizontal Pod Autoscaling](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/)
+
+---
 
 ### HPA/VPA et le risque de "drift" GitOps
 

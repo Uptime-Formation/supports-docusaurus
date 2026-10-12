@@ -49,9 +49,9 @@ spec:
     spec:
       containers:
       - name: rancher-demo
-        image: rancher/hello-world
+        image: bashofmann/rancher-demo:1.1.0
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -64,7 +64,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 8080
 ```
 
 * **Appliquer le fichier de déploiement**
@@ -84,8 +84,6 @@ kind: Ingress
 metadata:
   name: rancher-demo
   namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: traefik
   rules:

@@ -107,7 +107,7 @@ metadata:
     app: rancher-demo
 spec:
   containers:
-    - image: monachus/rancher-demo:latest
+    - image: bashofmann/rancher-demo:1.1.0
       name: rancher-demo-container
       ports:
         - containerPort: 8080
@@ -137,7 +137,7 @@ metadata:
   name: rancher-demo-pod
 spec:
   containers:
-    - image: monachus/rancher-demo:latest
+    - image: bashofmann/rancher-demo:1.1.0
       name: rancher-demo-container
       resources:
         requests:
@@ -201,7 +201,7 @@ metadata:
     app: rancher-demo
 spec:
   containers:
-    - image: monachus/rancher-demo:latest
+    - image: bashofmann/rancher-demo:1.1.0
       name: rancher-demo-container
       ports:
         - containerPort: 8080
@@ -341,7 +341,7 @@ spec:
     spec:
       containers:
         - name: rancher-demo
-          image: monachus/rancher-demo:latest
+          image: bashofmann/rancher-demo:1.1.0
           ports:
             - containerPort: 8080
 ```
@@ -707,16 +707,16 @@ kubectl get pod <pod-name> -o jsonpath='{.status.containerStatuses[0].ready}'
 
 ---
 
-### 8. ContainerCannotRun
+### 8. PVC bloqué en Pending
 
-Le conteneur ne démarre pas du tout — avant même que l'application s'exécute.
+Le pod reste en `Pending` (voir #6), mais la vraie cause est en amont : la **PersistentVolumeClaim** elle-même ne trouve pas de volume. Le diagnostic se fait sur le PVC, pas sur le pod.
 
-**Causes** : entrypoint incorrect, permissions manquantes, fichier requis absent.
+**Causes** : `storageClassName` qui n'existe pas ou mal orthographié, aucune StorageClass par défaut sur le cluster, aucun provisioner disponible pour créer le volume, ou `accessModes` demandé (ex: `ReadWriteMany`) non supporté par le storage disponible.
 
 ```bash
-kubectl describe pod <pod-name>
-kubectl logs <pod-name>
-# Tester localement : docker run --rm <image> <commande>
+kubectl get pvc                    # colonne STATUS : Pending = non résolu
+kubectl describe pvc <nom>         # section "Events" : raison précise du blocage
+kubectl get storageclass           # vérifie qu'une StorageClass existe et laquelle est "(default)"
 ```
 
 ---
@@ -736,14 +736,16 @@ kubectl logs <pod-name> -c <init-container-name> --previous  # logs de la tentat
 
 ---
 
-### 10. PVC bloqué en Pending
+### 10. ContainerCannotRun
 
-Le pod reste en `Pending` (voir #6), mais la vraie cause est en amont : la **PersistentVolumeClaim** elle-même ne trouve pas de volume. Le diagnostic se fait sur le PVC, pas sur le pod.
+Le conteneur ne démarre pas du tout — avant même que l'application s'exécute.
 
-**Causes** : `storageClassName` qui n'existe pas ou mal orthographié, aucune StorageClass par défaut sur le cluster, aucun provisioner disponible pour créer le volume, ou `accessModes` demandé (ex: `ReadWriteMany`) non supporté par le storage disponible.
+**Causes** : entrypoint incorrect, permissions manquantes, fichier requis absent.
 
 ```bash
-kubectl get pvc                    # colonne STATUS : Pending = non résolu
-kubectl describe pvc <nom>         # section "Events" : raison précise du blocage
-kubectl get storageclass           # vérifie qu'une StorageClass existe et laquelle est "(default)"
+kubectl describe pod <pod-name>
+kubectl logs <pod-name>
+# Tester localement : docker run --rm <image> <commande>
 ```
+
+---

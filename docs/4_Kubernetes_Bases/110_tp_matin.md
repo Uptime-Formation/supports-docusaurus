@@ -24,6 +24,8 @@ Votre environnement de lab est un VPS Ubuntu. Vous allez installer k3s, découvr
 
 - ✅ **Premier pod** : Déployer, inspecter et supprimer un pod
 
+- ✅ **k9s** : Explorer le cluster depuis une interface terminal
+
 ---
 
 ## Objectif
@@ -35,6 +37,8 @@ Votre environnement de lab est un VPS Ubuntu. Vous allez installer k3s, découvr
 - ✅ Namespace `mynamespace` créé
 
 - ✅ Pod `ubuntu` déployé, inspecté, puis supprimé
+
+- ✅ k9s installé et utilisé pour naviguer dans le cluster
 
 ---
 
@@ -65,47 +69,35 @@ source .bash_aliases
 
 ## Étape 1 - Installer k3s
 
-**Objectif** : Avoir un cluster Kubernetes opérationnel.
+**Objectif** : Avoir un cluster Kubernetes opérationnel, piloté par `kubectl` **sans `sudo`**.
 
-- **Action** : Installer k3s via le script officiel    
-  **Observation** : `sudo kubectl get nodes` retourne un node en état `Ready`
+- **Action** : Installer k3s via le script officiel, en lui demandant d'écrire un kubeconfig lisible par votre utilisateur :
 
-- **Action** : Récupérer le kubeconfig pour utiliser `kubectl` **sans `sudo`**  
-  **Observation** : `kubectl get nodes` (sans `sudo`) fonctionne avec votre utilisateur normal
+> `curl -sfL https://get.k3s.io | sudo sh -s - --write-kubeconfig-mode 644`
+
+  **Observation** : le fichier `/etc/rancher/k3s/k3s.yaml` existe et est lisible (`ls -l /etc/rancher/k3s/k3s.yaml` → `-rw-r--r--`)
+
+- **Action** : Indiquer à `kubectl` où trouver ce kubeconfig grâce à la variable d'environnement `KUBECONFIG`, et rendre ce réglage permanent  
+  **Observation** : `kubectl get nodes` (sans `sudo`) retourne un node en état `Ready`, y compris dans un nouveau terminal
 
 - **Action** : Vérifier les versions client et serveur  
   **Observation** : `kubectl version` affiche les deux versions — elles devraient être dans la même version mineure (ex: `1.28.x`)
 
 <details><summary>Indice</summary>
 
+> 💡 **Comment `kubectl` trouve-t-il son kubeconfig ?** Il regarde d'abord la variable d'environnement `KUBECONFIG` ; si elle n'est pas définie, il utilise `~/.kube/config`. k3s, lui, écrit son kubeconfig dans `/etc/rancher/k3s/k3s.yaml`. Il suffit donc de pointer `KUBECONFIG` vers ce fichier.
+
 ```bash
-# Sur ubuntu, supprimer le kubectl snap si présent
-sudo rm /snap/bin/kubectl
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+echo 'export KUBECONFIG=/etc/rancher/k3s/k3s.yaml' >> ~/.bashrc
 
-curl -sfL https://get.k3s.io | sudo sh -
-
-sudo kubectl get nodes
+kubectl get nodes
+kubectl version
 ```
 
-> ⚠️ **k3s tourne en root et écrit son kubeconfig dans `/etc/rancher/k3s/k3s.yaml`, lisible uniquement par `root`.** Sans étape supplémentaire, toute commande `kubectl` doit être préfixée par `sudo` — ce qui casse l'autocomplétion, les alias, et tout outil qui lit `~/.kube/config` (Lens, k9s, plugins krew...).
+> ⚠️ Par défaut, k3s rend ce fichier lisible uniquement par `root` : sans l'option `--write-kubeconfig-mode 644`, `kubectl` renverrait une erreur `permission denied`. Si k3s est déjà installé, corrigez simplement les droits : `sudo chmod 644 /etc/rancher/k3s/k3s.yaml`.
 >
-> La solution recommandée : copier ce kubeconfig dans le vôtre, en vous en rendant propriétaire.
->
-> ```bash
-> mkdir -p ~/.kube
-> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-> sudo chown $(id -u):$(id -g) ~/.kube/config
-> chmod 600 ~/.kube/config
-> ```
->
-> Désormais `kubectl get nodes` (sans `sudo`) doit fonctionner :
->
-> ```bash
-> kubectl get nodes
-> kubectl version
-> ```
->
-> Cette copie est figée : si k3s régénère son kubeconfig (rare), il faudra recopier. Pour un poste de travail durable, il est aussi possible de configurer k3s au moment de l'installation pour qu'il écrive un fichier accessible à un groupe dédié (`--write-kubeconfig-mode 640` + `--write-kubeconfig-group`), mais la copie manuelle suffit largement pour ce cours.
+> Ce fichier contient les identifiants **administrateur** du cluster : le rendre lisible par tous est acceptable sur un VPS de lab mono-utilisateur, pas sur une machine partagée.
 
 </details>
 
@@ -151,6 +143,7 @@ La liste complète des raccourcis : https://blog.heptio.com/kubectl-resource-sho
 <details><summary>Indice</summary>
 
 ```bash
+echo $KUBECONFIG
 kubectl config view
 kubectl get nodes
 kubectl describe node/<nom-du-node>
@@ -181,38 +174,7 @@ kubectl create namespace mynamespace
 
 ---
 
-## Étape 5 - Déployer une application en CLI
-
-**Objectif** : Créer et explorer un déploiement impératif.
-
-- **Action** : Créer un déploiement `demonstration` avec l'image `monachus/rancher-demo`  
-  **Observation** : `kubectl describe deployment/demonstration` montre les événements de création
-
-- **Action** : Scaler le déploiement à 5 réplicas  
-  **Observation** : `kubectl get pods` montre 5 pods, les événements de scaling apparaissent dans le describe
-
-- **Action** : Exposer le déploiement via un service NodePort sur le port 8080  
-  **Observation** : `kubectl get services` montre le service avec un port 3xxxx assigné
-
-<details><summary>Indice</summary>
-
-```bash
-kubectl create deployment demonstration --image=monachus/rancher-demo
-kubectl describe deployment/demonstration
-kubectl get pods
-
-kubectl scale deployment demonstration --replicas=5
-kubectl describe deployment/demonstration
-
-kubectl expose deployment demonstration --type=NodePort --port=8080 --name=demonstration-service
-kubectl get services
-```
-
-</details>
-
----
-
-## Étape 6 - Déployer et inspecter un pod dans votre namespace
+## Étape 5 - Déployer et inspecter un pod dans votre namespace
 
 **Objectif** : Créer, observer, exécuter des commandes dans et supprimer un pod.
 
@@ -247,23 +209,39 @@ kubectl delete pod ubuntu -n mynamespace
 
 ---
 
-## Étape 7 - Outils CLI supplémentaires
+## Étape 6 - Explorer le cluster avec k9s
 
-**Objectif** : Découvrir l'écosystème kubectl.
+**Objectif** : Découvrir [k9s](https://k9scli.io), une interface en mode terminal qui affiche les ressources du cluster en temps réel. k9s utilise le même kubeconfig que `kubectl` (variable `KUBECONFIG`).
 
-- **Action** : Installer `krew` (gestionnaire de plugins kubectl) puis `kubectx` et `kubens`  
-  **Observation** : `kubectx` liste vos contextes, `kubens` liste vos namespaces et permet d'en choisir un par défaut
+- **Action** : Installer k9s à partir du paquet `.deb` publié sur GitHub  
+  > https://github.com/derailed/k9s  
+  **Observation** : `k9s version` affiche la version installée
+
+- **Action** : Lancer `k9s`, puis afficher les pods de tous les namespaces (`:pod`)  
+  **Observation** : La liste se met à jour en continu ; on retrouve les pods de `kube-system` vus à l'étape 3
 
 <details><summary>Indice</summary>
 
 ```bash
-# Installer krew : https://krew.sigs.k8s.io/docs/user-guide/setup/install/
-kubectl krew install ctx
-kubectl krew install ns
+# Installation sur Ubuntu (cf. https://github.com/derailed/k9s#installation)
+wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb
+sudo apt install ./k9s_linux_amd64.deb
+rm k9s_linux_amd64.deb
 
-kubectx   # changer de cluster
-kubens    # changer de namespace courant
+k9s version
+k9s
 ```
+
+| Raccourci | Effet |
+|---|---|
+| `:pod`, `:deploy`, `:svc`, `:node`, `:ns` | Changer de type de ressource |
+| `/` | Filtrer la liste |
+| `d` | Décrire la ressource (`kubectl describe`) |
+| `l` | Afficher les logs (pods) |
+| `s` | Ouvrir un shell dans le conteneur (pods) |
+| `ctrl-d` | Supprimer la ressource |
+| `?` | Aide |
+| `:q` | Quitter |
 
 </details>
 
@@ -279,7 +257,6 @@ kubens    # changer de namespace courant
 
 - Installer `viddy` (alternative à `watch`) pour observer l'évolution des ressources en temps réel
 
-- Essayer `kubectl port-forward svc/demonstration-service 8080:8080` — quelle différence avec le NodePort ?
 
 ---
 

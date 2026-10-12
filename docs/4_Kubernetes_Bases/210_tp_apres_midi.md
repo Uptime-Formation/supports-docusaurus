@@ -49,7 +49,7 @@ Créez un dossier `tp2_yaml/` et ouvrez-le dans VSCode.
 **Objectif** : Comprendre le modèle multi-conteneurs de Kubernetes. Les deux conteneurs d'un même pod partagent la même adresse IP et peuvent se parler via `localhost`. Ils ont en revanche des processus, des logs et un système de fichiers distincts. On va aussi observer qu'un pod est largement immutable : certaines propriétés ne peuvent pas être modifiées à chaud.
 
 - **Action** : Créer un fichier `demo-pod.yaml` avec un Pod contenant `rancher-demo` (port 8080) et `redis` (port 6379).  
-  Les images à utiliser sont `monachus/rancher-demo:latest` et `docker.io/library/redis:latest`.  
+  Les images à utiliser sont `bashofmann/rancher-demo:1.1.0` et `docker.io/library/redis:latest`.  
   Ajouter le label `app: rancher-demo` au pod.
   **Observation** : `kubectl get pod rancher-demo-pod` affiche `2/2 Running` — les deux conteneurs sont prêts.
 
@@ -82,7 +82,7 @@ metadata:
     app: rancher-demo
 spec:
   containers:
-    - image: monachus/rancher-demo:latest
+    - image: bashofmann/rancher-demo:1.1.0
       name: rancher-demo-container
       ports:
         - containerPort: 8080

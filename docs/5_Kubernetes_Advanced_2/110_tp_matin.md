@@ -142,7 +142,7 @@ spec:
     spec:
       containers:
       - name: rancher-demo
-        image: monachus/rancher-demo:latest
+        image: bashofmann/rancher-demo:1.1.0
         ports:
         - containerPort: 8080
         resources:

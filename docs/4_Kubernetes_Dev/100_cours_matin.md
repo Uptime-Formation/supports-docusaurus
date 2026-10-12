@@ -163,11 +163,18 @@ kubectl exec -it <pod> -- env | grep POSTGRES
 | **Job** | Tâche unique ponctuelle (migration de base de données, batch) |
 | **CronJob** | Tâche récurrente planifiée (backup, nettoyage) |
 
+
+---
+
+
 ### Jobs
 
 Les Jobs sont utiles pour des tâches à exécuter une seule fois. Si vous exécutez une migration de base de données dans un Deployment, dès que la migration se termine, le ReplicaSet va tenter de redémarrer le pod — votre migration tourne en boucle.
 
 Un Job garantit que la tâche s'exécute jusqu'à complétion un nombre défini de fois.
+
+---
+
 
 ### CronJob : tâches périodiques
 
@@ -200,6 +207,10 @@ kubectl logs job/<nom-du-job>             # Logs d'un Job spécifique
 kubectl get cronjob                       # État du CronJob
 
 ```
+
+---
+
+
 ### StatefulSets
 
 L'objet `StatefulSet` est fait pour répliquer des pods dont l'état est important — typiquement des bases de données.
@@ -213,6 +224,9 @@ Un StatefulSet fournit :
 On utilise les StatefulSets quand :
 - L'ordre de création des replicas et le nom des pods est important
 - L'application écrit dans une base de données (opérations stateful)
+
+---
+
 
 #### Exemple minimal : StatefulSet Redis
 
@@ -267,12 +281,18 @@ kubectl exec -it <pod> -- /bin/sh
 
 Les conteneurs sont immutables : Kubernetes peut les supprimer et recréer automatiquement. Tout fichier créé pendant l'exécution est perdu. La persistance des données passe par des **volumes**, montés à un emplacement du système de fichiers du conteneur.
 
+---
+
+
 ### Types de volumes
 
 - **`emptyDir`** : volume temporaire partagé entre les conteneurs d'un même pod — détruit avec le pod
 - **`configMap` / `secret`** : monte la configuration ou les secrets comme fichiers
 - **`hostPath`** : monte un dossier du nœud — **à éviter** (lie le pod à un nœud spécifique, problèmes de sécurité)
 - **`persistentVolumeClaim`** : volume persistant via le système PVC/StorageClass
+
+---
+
 
 ### PersistentVolumeClaim (PVC)
 
@@ -316,6 +336,9 @@ kubectl get storageclass           # classes de stockage disponibles
 kubectl get pvc                    # PersistentVolumeClaims
 kubectl get pv                     # PersistentVolumes
 ```
+
+---
+
 
 ### Longhorn : stockage persistant pour clusters on-premise
 

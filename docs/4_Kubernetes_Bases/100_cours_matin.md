@@ -364,6 +364,23 @@ kubectl scale deployment <nom> --replicas=N  # changer le nombre de réplicas
 kubectl expose deployment <nom> --type=NodePort --port=<port>  # créer un Service
 ```
 
+### Inspecter le cluster
+
+```bash
+kubectl version                   # version du client kubectl et du serveur (API)
+kubectl get nodes                 # lister les nodes et leur état (Ready / NotReady)
+kubectl describe node <nom>       # détail d'un node
+```
+
+`kubectl version` affiche deux versions : celle du **client** (`kubectl`) et celle du **serveur** (l'API du cluster). Elles doivent rester proches : `kubectl` est supporté jusqu'à une version mineure d'écart avec le serveur (ex: client `1.29` avec un serveur `1.28`, `1.29` ou `1.30`).
+
+`kubectl describe node` montre ce que le node offre et ce qui tourne dessus :
+
+- les **labels** du node (OS, architecture, rôle…)  
+- les **conditions** : `Ready`, `MemoryPressure`, `DiskPressure`…  
+- la **capacité** et l'**allouable** (CPU, mémoire, nombre de pods)  
+- la liste des **pods** qui tournent sur le node et les ressources qu'ils réservent  
+
 ### Flags courants
 
 ```bash
@@ -393,7 +410,7 @@ Pour se connecter à un cluster, `kubectl` a besoin de trois informations :
 - un **nom d'utilisateur**  
 - un **certificat** client  
 
-Ces informations sont stockées dans un fichier YAML appelé **kubeconfig**, par défaut à `~/.kube/config`.
+Ces informations sont stockées dans un fichier YAML appelé **kubeconfig**. `kubectl` lit le fichier indiqué par la variable d'environnement `KUBECONFIG`, et à défaut `~/.kube/config`.
 
 ```bash
 kubectl config view              # afficher le kubeconfig
@@ -440,32 +457,13 @@ kubectl config set-context --current --namespace <nom>  # changer le namespace p
 
 ---
 
-## Les Services : exposer une application
-
-Un **Service** crée un point d'accès stable vers un ensemble de pods sélectionnés par leurs labels.
-
-Type **NodePort** : expose le service sur un port du node (accessible depuis l'extérieur du cluster) :
-
-```bash
-kubectl expose deployment <nom> --type=NodePort --port=8080 --name=<service-nom>
-kubectl get services   # affiche le port 3xxxx assigné
-```
-
-Type **port-forward** (debug uniquement) : tunnel temporaire vers un pod ou service :
-
-```bash
-kubectl port-forward svc/<service> 8080:8080
-# Attention : pointe toujours vers le même pod — pas de load balancing
-```
-
----
-
 ## Outils complémentaires
 
 `kubectl` est puissant mais peut être complété par :
 
 | Outil | Usage |
 |---|---|
+| `k9s` | Interface terminal pour naviguer dans le cluster en temps réel — `https://k9scli.io` |
 | `krew` | Gestionnaire de plugins kubectl — `https://krew.sigs.k8s.io` |
 | `kubectx` | Changer de cluster rapidement — `kubectl krew install ctx` |
 | `kubens` | Changer de namespace par défaut — `kubectl krew install ns` |
